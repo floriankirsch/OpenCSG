@@ -41,7 +41,6 @@
 #pragma warning(disable:4786)
 
 #include "RenderTexture.h"
-#include <GL/glut.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdarg.h>
