@@ -113,9 +113,9 @@ namespace OpenCSG {
         if (pbuffer_ == 0) {
         
             if (GLEW_NV_texture_rectangle) {
-                pbuffer_ = new RenderTexture("rgba texRECT depth=24 stencil=8");
+                pbuffer_ = new RenderTexture("rgba texRECT depth=24 stencil=8 single");
             } else {
-                pbuffer_ = new RenderTexture("rgba tex2D depth=24 stencil=8");
+                pbuffer_ = new RenderTexture("rgba tex2D depth=24 stencil=8 single");
             }
             rebuild = true;
         // tx == ty == 0 happens if the window is minimized, in this case don't touch a thing

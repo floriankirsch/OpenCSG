@@ -29,6 +29,7 @@
 // Linux Copy-to-texture: Eric Werness
 // Various Bug Fixes: Daniel (Redge) Sperl 
 //                    Bill Baxter
+//                    Florian Kirsch
 //
 // --------------------------------------------------------------------------
 /**
@@ -396,17 +397,6 @@ bool RenderTexture::Initialize(int width, int height,
         (wglGetPixelFormatAttribivARB(_hDC, iFormat, 0, 1, &attrib, &value)) 
         ? (value?true:false) : false; 
     
-#if defined(_DEBUG) | defined(DEBUG)
-    fprintf(stderr, "Created a %dx%d RenderTexture with BPP(%d, %d, %d, %d)",
-        _iWidth, _iHeight, 
-        _iNumColorBits[0], _iNumColorBits[1], 
-        _iNumColorBits[2], _iNumColorBits[3]);
-    if (_iNumDepthBits) fprintf(stderr, " depth=%d", _iNumDepthBits);
-    if (_iNumStencilBits) fprintf(stderr, " stencil=%d", _iNumStencilBits);
-    if (_bDoubleBuffered) fprintf(stderr, " double buffered");
-    fprintf(stderr, "\n");
-#endif
-
 #else // !_WIN32
     _pDisplay = glXGetCurrentDisplay();
     GLXContext context = glXGetCurrentContext();
@@ -482,23 +472,29 @@ bool RenderTexture::Initialize(int width, int height,
     glXGetConfig(_pDisplay, visual, GLX_RGBA, &iResult);
     if (iResult)
     {
-        _iNumColorBits[0] = (glXGetConfig(_pDisplay, visual, GLX_RED_SIZE,   &iResult)) ? iResult : 8;
-        _iNumColorBits[1] = (glXGetConfig(_pDisplay, visual, GLX_GREEN_SIZE, &iResult)) ? iResult : 8;
-        _iNumColorBits[2] = (glXGetConfig(_pDisplay, visual, GLX_BLUE_SIZE,  &iResult)) ? iResult : 8;
-        _iNumColorBits[3] = (glXGetConfig(_pDisplay, visual, GLX_ALPHA_SIZE, &iResult)) ? iResult : 8;
-        _iNumDepthBits = (glXGetConfig(_pDisplay, visual, GLX_DEPTH_SIZE, &iResult)) ? iResult : 24;
-        _iNumStencilBits = (glXGetConfig(_pDisplay, visual, GLX_STENCIL_SIZE, &iResult)) ? iResult : 8;
-	_bDoubleBuffered = (glXGetConfig(_pDisplay, visual, GLX_DOUBLEBUFFER, &iResult)) ? (iResult?true:false) : false;
+        _iNumColorBits[0] = (glXGetConfig(_pDisplay, visual, GLX_RED_SIZE,   &iResult) == 0) ? iResult : 0;
+        _iNumColorBits[1] = (glXGetConfig(_pDisplay, visual, GLX_GREEN_SIZE, &iResult) == 0) ? iResult : 0;
+        _iNumColorBits[2] = (glXGetConfig(_pDisplay, visual, GLX_BLUE_SIZE,  &iResult) == 0) ? iResult : 0;
+        _iNumColorBits[3] = (glXGetConfig(_pDisplay, visual, GLX_ALPHA_SIZE, &iResult) == 0) ? iResult : 0;
+        _iNumDepthBits =    (glXGetConfig(_pDisplay, visual, GLX_DEPTH_SIZE, &iResult) == 0) ? iResult : 0;
+        _iNumStencilBits =  (glXGetConfig(_pDisplay, visual, GLX_STENCIL_SIZE, &iResult) == 0) ? iResult : 0;
+	_bDoubleBuffered =  (glXGetConfig(_pDisplay, visual, GLX_DOUBLEBUFFER, &iResult) == 0) ? (iResult?true:false) : false;
     }
 
     XFree(visual);
     // [/Florian]
-
-
-    
-    
 #endif
 
+#if defined(_DEBUG) | defined(DEBUG)
+    fprintf(stderr, "Created a %dx%d RenderTexture with BPP(%d, %d, %d, %d)",
+        _iWidth, _iHeight,
+        _iNumColorBits[0], _iNumColorBits[1],
+        _iNumColorBits[2], _iNumColorBits[3]);
+    if (_iNumDepthBits) fprintf(stderr, " depth=%d", _iNumDepthBits);
+    if (_iNumStencilBits) fprintf(stderr, " stencil=%d", _iNumStencilBits);
+    if (_bDoubleBuffered) fprintf(stderr, " double buffered");
+    fprintf(stderr, "\n");
+#endif
     
     // Now that the pbuffer is created, allocate any texture objects needed,
     // and initialize them (for CTT updates only).  These must be allocated
@@ -1222,7 +1218,21 @@ void RenderTexture::_ParseModeString(const char *modeString,
 #endif
             continue;
         }  
-        
+
+        // [Florian]
+        if (kv.first == "singlebuffer" || kv.first == "single")
+        {
+#ifdef _WIN32
+            pfAttribs.push_back(WGL_DOUBLE_BUFFER_ARB);
+            pfAttribs.push_back(false);
+#else
+            pfAttribs.push_back(GLX_DOUBLEBUFFER);
+            pfAttribs.push_back(False);
+#endif
+            continue;
+        }
+	// [/Florian]
+
         if (kv.first == "aux")
         {
 #ifdef _WIN32

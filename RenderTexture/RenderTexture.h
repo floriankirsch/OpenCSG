@@ -29,6 +29,7 @@
 // Linux Copy-to-texture: Eric Werness
 // Various Bug Fixes: Daniel (Redge) Sperl 
 //                    Bill Baxter
+//                    Florian Kirsch
 //
 // -----------------------------------------------------------------------------
 /**
@@ -80,6 +81,7 @@
 * samples=n    - must support n-sample antialiasing (n can be 2 or 4)
 * aux=n        - must have n AUX buffers
 * doublebuffer - must support double buffered rendering
+* singlebuffer - do not support double buffered rendering
 * 
 * tex2D
 * texRECT
