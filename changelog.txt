@@ -1,4 +1,8 @@
 16.12.2004
+    Changed: Moved opencsgConfig.h to src directory. It is not
+        anymore included by opencsg.h
+
+16.12.2004
     Fixed: std::min and std::max should now work with VC 7.0.
         It is really braindead that such a trivial thing is 
         not trivial in practice.
