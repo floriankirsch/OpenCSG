@@ -19,7 +19,7 @@ EXTRA_INCLUDE =
 
 INCLUDE = $(EXTRA_INCLUDE) -Iinclude -I. -Iglew/include -DGLEW_STATIC
 
-LIBRARIES = -ltk -ltcl -lGL -lGLU -lglut -lm -lfreetype -lXmu -lz -lpng -lGLEW
+LIBRARIES = -lGL -lGLU -lglut -lm -lXmu -lGLEW
 LIBPATH = -Lglew/lib -L/usr/lib -L/usr/X11R6/lib 
 
 LIB = $(LIBPATH) $(LIBRARIES)
