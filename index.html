@@ -39,7 +39,7 @@
 
 <hr>
 
-<h3> <a href="news.html">OpenCSG version 1.0.1 released (27.09.2004)</a></h3>
+<h3> <a href="news.html">OpenCSG version 1.0.2 released (04.12.2004)</a></h3>
 
 <hr>
 
@@ -49,7 +49,7 @@
 OpenCSG is a library that does image-based CSG rendering using OpenGL. 
 OpenCSG is written in C++ and supports most modern graphics hardware using
 Microsoft Windows or the Linux operating system. 
-<a href="OpenCSG-1.0.1.zip">OpenCSG-1.0.1</a> is the current version. </p>
+<a href="OpenCSG-1.0.2.zip">OpenCSG-1.0.2</a> is the current version. </p>
 </p>
 
 <p>
@@ -133,7 +133,8 @@ For OpenGL-Extension checking, the OpenGL Extension Wrangler Library
 
 <p>
 OpenCSG is written in C++, uses namespaces and requires the STL. I do not expect major
-compiler incompatibilities under Windows (yes, it runs with MSVC6). Under
+compiler incompatibilities under Windows. Workspaces for with MSVC6, 
+VC2003 .net and <a href="http://www.bloodshed.net/devcpp.html">Dev-C++ 5 beta</a> are provided. Under
 Linux, you must use gcc-3.x.y. gcc-2.95.x will not work, since this compiler
 does not come with a std::map implementation, which is required internally. 
 </p>
@@ -316,13 +317,14 @@ for profiting from depth complexity.
 <h3> <a name="download">Download</a> </h3>
 
 <p>
-Download <a href="OpenCSG-1.0.1.zip">OpenCSG-1.0.1.zip</a>. The archive contains all required helper
+Download <a href="OpenCSG-1.0.2.zip">OpenCSG-1.0.2.zip</a>. The archive contains all required helper
 libraries, i.e., also RenderTexture and GLEW. It comes with 
-makefiles for Linux and with project files for MSVC6 / VS2003.
+makefiles for Linux and with project files for MSVC6, VS2003, and Dev-C++ 5.
 </p>
 
 <p>
 The older versions <br>
+&nbsp;&nbsp; <a href="OpenCSG-1.0.1.zip">OpenCSG-1.0.1.zip</a>, <br>
 &nbsp;&nbsp; <a href="OpenCSG-1.0.0.zip">OpenCSG-1.0.0.zip</a>, <br>
 &nbsp;&nbsp; <a href="http://www.hpi.uni-potsdam.de/user-data/29/OpenCSG-0.9.2.zip">OpenCSG-0.9.2</a>, <br>
 &nbsp;&nbsp; <a href="http://www.hpi.uni-potsdam.de/user-data/29/OpenCSG-0.9.1.zip">OpenCSG-0.9.1</a> and <br>
@@ -345,9 +347,9 @@ Currently, I know of the following applications making use of OpenCSG:
 <td style="text-align: center;"><a href="http://www.ayam3d.org"><img src="http://ayam.sourceforge.net/gp/ayam-splash-icon.jpg" alt="Ayam-Icon" /></a></td>
 <td>
 	<a href="http://www.ayam3d.org">Ayam</a> is a 3D modelling environment for the RenderMan interface, 
-	running on Unix, Win32, and Mac OS X. The current development version contains a plugin for 
+	running on Unix, Win32, and Mac OS X. Since version 1.8, Ayam provides the plugin aycsg for 
 	<a href="http://ayam.sourceforge.net/aycsg-compass.gif">real-time CSG preview of complex CSG hierarchies</a>
-	using OpenCSG as rendering library. This CSG plugin will be included in the next official release of Ayam.
+	using OpenCSG as rendering library. 
 </td>
 </tr>
 <tr>
@@ -427,6 +429,13 @@ their respective authors.
 	the primary color, after calculating z-values with OpenCSG you are free
 	to render the same geometry with primary colors. </p>
   </li>
+  <li>
+    <p><b>What are the dependencies of the example program?</b> </p>
+    <p> The OpenCSG example requires <a href="http://www.opengl.org/resources/libraries/glut.html">GLUT</a>. This library is likely pre-installed with your
+        favorite linux installation. Visual Studio users can install
+        <a href="http://www.xmission.com/~nate/glut.html">GLUT for Windows</a>.
+        Dev-C++ users can install the <a href="http://mywebpage.netscape.com/PtrPck/glut.htm">precompiled GLUT for Mingw32</a>. </p>
+  </li>
 </ol>
 
 <center><a href="http://www.hpi.uni-potsdam.de/user-data/29/grid.jpg"><img src="img/grid.gif" border="0" alt="CSG grid"></a></center>
@@ -436,7 +445,7 @@ their respective authors.
 <center><p>
 &copy; 2002, 2003, 2004 Hasso-Plattner-Institute Potsdam, 
 <a href="mailto:florian.kirsch@hpi.uni-potsdam.de">Florian Kirsch</a>. <br>
-Last change: 27.09.2004
+Last change: 04.12.2004
 </p></center>
 
 </body>
