@@ -29,6 +29,36 @@
 
 <hr>
 
+<h3> 27.09.2004: OpenCSG version 1.0.1 released</h3>
+
+<p>
+<a href="OpenCSG-1.0.1.zip">
+OpenCSG-1.0.1</a> contains the following changes:
+</p>
+<p>
+The settings of the OpenGL scissor test are now respected
+(Former versions just ignored the settings of the scissor test.).
+For certain cases, this can lead to a substantial performance gain.
+Note that this change could, potentially, cause compatibility
+problems in the unlikely case that your application uses the
+scissor test when invoking CSG rendering, but actually does not want 
+scissoring to be active for CSG rendering. The bug fix for this
+case is just to disable scissoring.
+</p>
+<p>
+Besides, OpenCSG now uses the new 
+<a href="http://sourceforge.net/project/showfiles.php?group_id=104004&package_id=115053">
+RenderTexture version 2</a> that has superseded the older version. As before,
+I had to apply some minor patches to RenderTexture for correct functionality under
+Linux.
+</p>
+<p>
+The interface of OpenCSG has remained unchanged.
+</p>
+<p>
+I have also updated some sections on the web and added a short FAQ section.
+</p>
+
 <h3> 06.07.2004: Download problems are gone</h3>
 
 <p>
@@ -64,7 +94,7 @@ OpenCSG-1.0.0</a> contains lots of improvements and additions:
       box values. </li>
   <li>If available, the GL_TEXTURE_RECTANGLE_NV texture format is now 
       used even in case of power-of-two textures, because this format
-      appears to be generally faster.
+      appears to be generally faster. </li>
 </ul>
 The interface of OpenCSG has remained unchanged.
 </p>
@@ -123,7 +153,7 @@ have not changed.
 
 <center><p>
 &copy; 2002, 2003, 2004 Hasso-Plattner-Institute Potsdam, Florian Kirsch. <br>
-Last change: 06.07.2004
+Last change: 27.09.2004
 </p></center>
 
 </body>
