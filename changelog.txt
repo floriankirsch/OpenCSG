@@ -1,0 +1,11 @@
+
+02.11.2003: Added heuristic that makes the pbuffer smaller 
+    if the size of the pbuffer has been bigger than necessary in 
+    x- or y- direction for a certain number of render-calles. 
+    This permits to use OpenCSG for CSG rendering in different
+    canvases with different sizes without constant expensive
+    resizing of the pbuffer for every frame.
+
+01.10.2003: linux: removed accidental linking against tcl/tk  
+
+23.09.2003: release 0.9
