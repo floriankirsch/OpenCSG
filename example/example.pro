@@ -1,8 +1,6 @@
 TEMPLATE	= app
 TARGET		= opencsgexample
 
-DEFINES     += GLEW_STATIC
-
 CONFIG	 	+= opengl warn_on release
 INCLUDEPATH += ../glew/include ../include
 
