@@ -34,14 +34,26 @@ namespace OpenCSG {
         class StencilManager {
         public:
             StencilManager(const PCArea&);
+                // class for saving and restoring the stencil buffer in the main
+                // frame buffer. The area denotes the region in pixel coordinates
+                // which can be saved restored. 
+
+                // Currently this class is deactivated; the stencil buffer will
+                // not be saved!
             virtual ~StencilManager();
 
             const PCArea& getArea() const;
 
             void clear();
+                // clears the stencil buffer, possibly saving a copy of the
+                // current stencil buffer in the given region.
             bool alreadySaved() const;
+                // checks whether the stencil buffer has been already saved
+
             virtual void save();
+                // saves a copy of the current stencil buffer in the given region
             virtual void restore();
+                // restores the current stencil buffer in the given region
 
         private:
             const PCArea area_;
@@ -49,11 +61,9 @@ namespace OpenCSG {
         };
 
         StencilManager* getStencilManager(const PCArea&);
-            // checks for OpenGL-extensions and returns a stencil manager
-            // cannot return zero.
-            //
-            // when the stencil manager object is not needed anymore,
-            // it must be deleted!
+            // checks for OpenGL-extensions and returns a stencil manager.
+            // cannot return zero, but can return a stencil manager which
+            // does not saves / restores the stencil buffer at all.
 
     } // namespace OpenGL
 

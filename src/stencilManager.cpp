@@ -35,6 +35,8 @@ namespace OpenCSG {
     namespace OpenGL {
 
         StencilManager::StencilManager(const PCArea& area) : area_(area), saved_(false) {}
+            // Do not save the stencil buffer at all. 
+            // This is, currently, used always.
 
         StencilManager::~StencilManager() { }
 
@@ -69,6 +71,11 @@ namespace OpenCSG {
         class StencilManagerGL10 : public StencilManager {
         public:
             StencilManagerGL10(const PCArea& area) : StencilManager(area) {};
+                // Saves and restores the stencil buffer by copying it from
+                // graphics memory to main memory and back.
+
+                // Warning: There appears to be a bug in this implementation.
+                //          Saving and restoring does not work at all.
 
             virtual void save();
             virtual void restore();
@@ -122,6 +129,9 @@ namespace OpenCSG {
         class StencilManagerARBBufferRegionW32 : public StencilManager {
         public:
             StencilManagerARBBufferRegionW32(const PCArea& area) : StencilManager(area) {};
+                // Uses the ARB_buffer_region extension for saving and restoring the 
+                // stencil buffer. If this extension is available, this works well
+                // and is reasonably fast.
 
             virtual void save();
             virtual void restore();
@@ -163,12 +173,18 @@ namespace OpenCSG {
 
         StencilManager* getStencilManager(const PCArea& area) {
 #ifdef _WIN32
+            /*
+            // uncomment for possibility of saving the stencilo buffer under windows
             if (WGLEW_ARB_buffer_region) {
                 return new StencilManagerARBBufferRegionW32(area);
             }
+            */
 #endif // _WIN32
 
-            //return new StencilManagerGL10(area);
+            /*
+            // this option has a bug unfortunately and is not usable
+            return new StencilManagerGL10(area);
+            */
             return new StencilManager(area);
         }
 
