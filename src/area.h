@@ -67,3 +67,4 @@ namespace OpenCSG {
 } // namespace OpenCSG
 
 #endif // __OpenCSG__area_h__
+

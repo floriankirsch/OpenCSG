@@ -157,7 +157,7 @@ namespace OpenCSG {
             wglDeleteBufferRegionARB(handle_);
         }
 
-#endif _WIN32
+#endif // _WIN32
 
 
 
@@ -166,7 +166,7 @@ namespace OpenCSG {
             if (WGLEW_ARB_buffer_region) {
                 return new StencilManagerARBBufferRegionW32(area);
             }
-#endif _WIN32
+#endif // _WIN32
 
             //return new StencilManagerGL10(area);
             return new StencilManager(area);
@@ -175,3 +175,5 @@ namespace OpenCSG {
     } // namespace OpenGL
 
 } // namespace OpenCSG
+
+
