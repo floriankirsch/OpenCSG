@@ -12,7 +12,7 @@
 
 <body style="font-family: verdana,arial,sans-serif">
 
-<table cellpadding="10" cellspading="0" border="0" style="width: 80%;">
+<table cellpadding="10" cellspacing="0" border="0">
  <tbody>
   <tr><td><img src="img/logo.gif" alt="OpenCSG logo"></td>
    <td style="text-align: center;">
@@ -28,9 +28,14 @@
      <a href="#license">License</a>
      </b>
    </td>
+   <td><img src="img/ogl.gif" alt="OpenGL logo"></td>
   </tr>
  </tbody>
 </table>
+
+<hr>
+
+<h3> <a href="news.html">News: OpenCSG-0.9.1 released on 21.11.2003</a></h3>
 
 <hr>
 
@@ -272,6 +277,7 @@ else <code>OcclusionQuery</code> or at the last resort <code>DepthComplexitySamp
 If the <code>Automatic</code> setting is not used,
 the <b><code>DepthComplexityAlgorithm</code></b> parameter specifies the strategy 
 for profiting from depth complexity.
+</p>
 <ul>
 <li><code>NoDepthComplexitySampling</code>: Does not employ the depth complexity.
   This essentially makes the algorithm O(n²), but with low constant costs.</li>
@@ -286,7 +292,6 @@ for profiting from depth complexity.
   This strategy requires hardware occlusion queries, i.E., the OpenGL extension 
   <code>GL_NV_occlusion_query</code>.</li>
 </ul>
-</p>
 
 <center><a href="http://www.hpi.uni-potsdam.de/user-data/29/grid.jpg"><img src="img/grid.gif" border="0" alt="CSG grid"></a></center>
 
@@ -295,9 +300,14 @@ for profiting from depth complexity.
 <h3> <a name="download">Download</a> </h3>
 
 <p>
-Download <a href="http://www.hpi.uni-potsdam.de/user-data/29/OpenCSG-0.9.zip">OpenCSG-0.9.zip</a>. The archive contains all required helper
+Download <a href="http://www.hpi.uni-potsdam.de/user-data/29/OpenCSG-0.9.1.zip">OpenCSG-0.9.1.zip</a>. The archive contains all required helper
 libraries, i.e., also RenderTexture and GLEW. It comes with 
 makefiles for Linux and with project files for MSVC6 / VS2003.
+</p>
+
+<p>
+<a href="http://www.hpi.uni-potsdam.de/user-data/29/OpenCSG-0.9.zip">OpenCSG-0.9</a>
+is still available for download.
 </p>
 
 <center><a href="http://www.hpi.uni-potsdam.de/user-data/29/columns.jpg"><img src="img/columns.gif" border="0" alt="CSG columns"></a></center>
@@ -349,10 +359,10 @@ their respective authors.
 
 <hr>
 
-<p><center>
+<center><p>
 &copy; 2002, 2003 Hasso-Plattner-Institute Potsdam, Florian Kirsch. <br>
-Last change: 24.09.2003
-</center></p>
+Last change: 21.11.2003
+</p></center>
 
 </body>
 </html>

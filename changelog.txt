@@ -1,4 +1,15 @@
 
+21.11.2003:
+    Release 0.9.1
+
+21.11.2003:
+    Fixed: std::max() std::min() issue with .net
+
+18.11.2003:
+    Fixed: Bug with heuristic for resizing the pbuffer-resizing
+        that occured for request for sizes of the form 512x1024
+        -> 1024x512 -> 512x1024 -> ... (and similar series)
+
 06.11.2003: 
     Added: Detection of GL_FRONT_FACE OpenGL setting. This means that
         CSG rendering is now also correct if this setting is the
