@@ -1,2 +1,2 @@
 TEMPLATE = subdirs
-SUBDIRS  = glew src example
+SUBDIRS  = src example
