@@ -132,7 +132,7 @@ namespace OpenCSG {
             
             // check whether the pbuffer is too small, in case resize immediately
             if ((tx > pbuffer_->GetWidth()) || (ty > pbuffer_->GetHeight())) {
-                pbuffer_->Resize(std::max(maxPBufferSizeX, tx), std::max(maxPBufferSizeY, ty));
+                pbuffer_->Resize((std::max)(maxPBufferSizeX, tx), (std::max)(maxPBufferSizeY, ty));
                 rebuild = true;
             }           
 
@@ -144,7 +144,7 @@ namespace OpenCSG {
             // else remember the biggest X in the last resizePBufferCounterX frames
               else if (tx < pbuffer_->GetWidth()) {
                 ++resizePBufferCounterX;
-                maxPBufferSizeX = std::max(maxPBufferSizeX, tx);
+                maxPBufferSizeX = (std::max)(maxPBufferSizeX, tx);
             }
 
             // if y-size matches exactly, remember to not resize in the next resizePBufferLimit frames
@@ -155,7 +155,7 @@ namespace OpenCSG {
             // else remember the biggest Y in the last resizePBufferCounterY frames
             else if (ty < pbuffer_->GetHeight()) {
                 ++resizePBufferCounterY;
-                maxPBufferSizeY = std::max(maxPBufferSizeY, ty);
+                maxPBufferSizeY = (std::max)(maxPBufferSizeY, ty);
             }
 
             // X or Y have been smaller than the PBuffer-Size in the last resizePBufferLimit frames

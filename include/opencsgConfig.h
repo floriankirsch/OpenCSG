@@ -39,9 +39,14 @@
 #endif // __INTEL_COMPILER || _MSC_VER
 
 #ifdef _MSC_VER // microsoft visual studio compiler and intel compiler
-// MSVC does not have std::min and std::max unless using .NET (version 1300, VC++ 6 was version 1200)
-// For .net, this still appears to be the case if including some windows headers.
-// instead it defines _cpp_max and _cpp_min
+#if _MSC_VER < 1300
+    // MSVC does not have std::min and std::max unless using .NET. (>=7.0) 
+    // for VC 6.0, we define those function templates in namespace std.
+    // (actually copied from boost). 
+    // min / max macros in windows.h additionally circumvent a correct
+    // use of std::min. To circumvent this macro expansion, in OpenCSG
+    // all occurencies of std::min and std::max are put into brackets.
+    // Hopefully, this will fix all compilation problems in the future.
 
     #ifdef min
     #undef min
@@ -51,9 +56,31 @@
     #undef max
     #endif
 
-    #define max _cpp_max
-    #define min _cpp_min
+    namespace std {
 
+        template <class T>
+        inline const T& min(const T& a, const T& b) {
+           return b < a ? b : a;
+        }
+
+        template <class T>
+        inline const T& max(const T& a, const T& b) {
+           return a < b ? b : a;
+        }
+
+        template <class T, class Compare>
+        inline const T& min(const T& a, const T& b, Compare comp) {
+           return comp(b, a) ? b : a;
+        }
+
+        template <class T, class Compare>
+        inline const T& max(const T& a, const T& b, Compare comp) {
+           return comp(a, b) ? b : a;
+        }
+
+    } // namespace std
+
+#endif // _MSC_VER < 1300, i.e., VS <= 6.0
 #endif // _MSC_VER
 
 #endif // WIN32

@@ -386,7 +386,7 @@ namespace OpenCSG {
             scissor->enable();
             glClear(GL_STENCIL_BUFFER_BIT);
             depthComplexity = 
-                std::min(OpenGL::calcMaxDepthComplexity(subtracted, scissor->getCurrentArea()), 
+                (std::min)(OpenGL::calcMaxDepthComplexity(subtracted, scissor->getCurrentArea()), 
                          subtractedBatches.size());
         }
 

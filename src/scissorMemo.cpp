@@ -72,21 +72,21 @@ namespace OpenCSG {
                 float tminx, tminy, tminz, tmaxx, tmaxy, tmaxz;
                 (*itr)->getBoundingBox(tminx, tminy, tminz, tmaxx, tmaxy, tmaxz);
 
-                minx = std::max(minx, tminx);
-                miny = std::max(miny, tminy);
-                maxx = std::min(maxx, tmaxx);
-                maxy = std::min(maxy, tmaxy);
+                minx = (std::max)(minx, tminx);
+                miny = (std::max)(miny, tminy);
+                maxx = (std::min)(maxx, tmaxx);
+                maxy = (std::min)(maxy, tmaxy);
             }
         }
 
-        minx = std::max(-1.0f, minx);
-        minx = std::min( 1.0f, minx);
-        miny = std::max(-1.0f, miny);
-        miny = std::min( 1.0f, miny);
-        maxx = std::max(-1.0f, maxx);
-        maxx = std::min( 1.0f, maxx);
-        maxy = std::max(-1.0f, maxy);
-        maxy = std::min( 1.0f, maxy);
+        minx = (std::max)(-1.0f, minx);
+        minx = (std::min)( 1.0f, minx);
+        miny = (std::max)(-1.0f, miny);
+        miny = (std::min)( 1.0f, miny);
+        maxx = (std::max)(-1.0f, maxx);
+        maxx = (std::min)( 1.0f, maxx);
+        maxy = (std::max)(-1.0f, maxy);
+        maxy = (std::min)( 1.0f, maxy);
 
         calculateArea();
     }
@@ -112,29 +112,29 @@ namespace OpenCSG {
             float tminx, tminy, tminz, tmaxx, tmaxy, tmaxz;
             (*itr)->getBoundingBox(tminx, tminy, tminz, tmaxx, tmaxy, tmaxz);
 
-            minx = std::min(minx, tminx);
-            miny = std::min(miny, tminy);
-            maxx = std::max(maxx, tmaxx);
-            maxy = std::max(maxy, tmaxy);
+            minx = (std::min)(minx, tminx);
+            miny = (std::min)(miny, tminy);
+            maxx = (std::max)(maxx, tmaxx);
+            maxy = (std::max)(maxy, tmaxy);
         }
 
-        minx = std::max(-1.0f, minx);
-        minx = std::min( 1.0f, minx); 
-        miny = std::max(-1.0f, miny);
-        miny = std::min( 1.0f, miny);
-        maxx = std::max(-1.0f, maxx);
-        maxx = std::min( 1.0f, maxx);
-        maxy = std::max(-1.0f, maxy);
-        maxy = std::min( 1.0f, maxy);
+        minx = (std::max)(-1.0f, minx);
+        minx = (std::min)( 1.0f, minx); 
+        miny = (std::max)(-1.0f, miny);
+        miny = (std::min)( 1.0f, miny);
+        maxx = (std::max)(-1.0f, maxx);
+        maxx = (std::min)( 1.0f, maxx);
+        maxy = (std::max)(-1.0f, maxy);
+        maxy = (std::min)( 1.0f, maxy);
 
         calculateArea();
     }
 
     void ScissorMemo::calculateArea() {
-        area_.minx = std::max(current_.minx, intersection_.minx);
-        area_.miny = std::max(current_.miny, intersection_.miny);
-        area_.maxx = std::min(current_.maxx, intersection_.maxx);
-        area_.maxy = std::min(current_.maxy, intersection_.maxy);
+        area_.minx = (std::max)(current_.minx, intersection_.minx);
+        area_.miny = (std::max)(current_.miny, intersection_.miny);
+        area_.maxx = (std::min)(current_.maxx, intersection_.maxx);
+        area_.maxy = (std::min)(current_.maxy, intersection_.maxy);
     }
 
 } // namespace OpenCSG
