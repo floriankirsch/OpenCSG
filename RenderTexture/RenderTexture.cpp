@@ -431,7 +431,8 @@ bool RenderTexture::Initialize(int width, int height,
     }
     
     // Pick the first returned format that will return a pbuffer
-    for (int i=0;i<nConfigs;i++)
+    int i;
+    for (i=0;i<nConfigs;i++)
     {
         _hPBuffer = glXCreateGLXPbufferSGIX(_pDisplay, fbConfigs[i], 
                                             _iWidth, _iHeight, NULL);
@@ -473,7 +474,28 @@ bool RenderTexture::Initialize(int width, int height,
     
     _bInitialized = true;
     
-    // XXX Query the color format
+    // [Florian] Query the color format
+    XVisualInfo* visual = glXGetVisualFromFBConfig(_pDisplay, fbConfigs[i]);
+
+    int iResult = 0;
+    // [Florian] Unfortunately this only works for non-float buffers (GeForceFX5600, 44.96)
+    glXGetConfig(_pDisplay, visual, GLX_RGBA, &iResult);
+    if (iResult)
+    {
+        _iNumColorBits[0] = (glXGetConfig(_pDisplay, visual, GLX_RED_SIZE,   &iResult)) ? iResult : 8;
+        _iNumColorBits[1] = (glXGetConfig(_pDisplay, visual, GLX_GREEN_SIZE, &iResult)) ? iResult : 8;
+        _iNumColorBits[2] = (glXGetConfig(_pDisplay, visual, GLX_BLUE_SIZE,  &iResult)) ? iResult : 8;
+        _iNumColorBits[3] = (glXGetConfig(_pDisplay, visual, GLX_ALPHA_SIZE, &iResult)) ? iResult : 8;
+        _iNumDepthBits = (glXGetConfig(_pDisplay, visual, GLX_DEPTH_SIZE, &iResult)) ? iResult : 24;
+        _iNumStencilBits = (glXGetConfig(_pDisplay, visual, GLX_STENCIL_SIZE, &iResult)) ? iResult : 8;
+	_bDoubleBuffered = (glXGetConfig(_pDisplay, visual, GLX_DOUBLEBUFFER, &iResult)) ? (iResult?true:false) : false;
+    }
+
+    XFree(visual);
+    // [/Florian]
+
+
+    
     
 #endif
 
