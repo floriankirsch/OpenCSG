@@ -35,6 +35,8 @@ namespace OpenCSG {
         int stencilMax = 0;
         int stencilMask = 0;
 
+        int scissorPos[4];
+
         void scissor(const PCArea& area) {
             const int dx = area.maxx - area.minx;
             const int dy = area.maxy - area.miny;

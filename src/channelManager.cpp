@@ -81,6 +81,15 @@ namespace OpenCSG {
         glGetFloatv(GL_PROJECTION_MATRIX, OpenGL::projection);
         glGetIntegerv(GL_VIEWPORT, OpenGL::canvasPos);
 
+        if (glIsEnabled(GL_SCISSOR_TEST)) {
+            glGetIntegerv(GL_SCISSOR_BOX, OpenGL::scissorPos);
+        } else {
+            OpenGL::scissorPos[0] = OpenGL::canvasPos[0];
+            OpenGL::scissorPos[1] = OpenGL::canvasPos[1];
+            OpenGL::scissorPos[2] = OpenGL::canvasPos[2];
+            OpenGL::scissorPos[3] = OpenGL::canvasPos[3];
+        }
+
         const int dx = OpenGL::canvasPos[2] - OpenGL::canvasPos[0];
         const int dy = OpenGL::canvasPos[3] - OpenGL::canvasPos[1];
 

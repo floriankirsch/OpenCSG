@@ -87,7 +87,19 @@ namespace OpenCSG {
     // the stencil buffer is destroyed when handling concave primitives or 
     // when using the DepthComplexitySampling strategy (see below).
     //
-    // Algorithm specifies the method used for CSG rendering:
+    // render() respects the OpenGL settings of 
+    //   - scissor test (CSG calculating will only occur in the specified region)
+    //   - stencil test, when only convex primitives are used and no layered 
+    //         algorithm is used. Most stenciling ops (increment / decrement 
+    //         / zero / one) will not be useful anyway
+    //
+    // render() ignores
+    //   - depth test (always GL_LESS)
+    //   - alpha test (used internally)
+    //   - cull face  (used internally to distinguish intersected / subtracted 
+    //         primitives)
+    //
+    // The argument Algorithm specifies the method used for CSG rendering:
     //   - Goldfeather: handles convex and concave primitives.
     //   - SCS        : handles only convex primitives
     //   - Automatic  : currently chooses Goldfeather if the primitive vector
@@ -96,8 +108,8 @@ namespace OpenCSG {
     //                  for arrays with few primitives, else OcclusionQuery 
     //                  or at the last resort DepthComplexitySampling)
     //
-    // DepthComplexityAlgorithm specifies the strategy for profiting from 
-    //                  depth complexity.
+    // The argument DepthComplexityAlgorithm specifies the strategy for 
+    //                  profiting from depth complexity.
     //   - NoDepthComplexitySampling: Does not employ the depth complexity.
     //                  This essentially makes the algorithm O(n²), but with
     //                  low constant costs.

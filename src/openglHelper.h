@@ -46,6 +46,9 @@ namespace OpenCSG {
         extern int stencilMask;
             // stencilMax - 1
 
+        extern int scissorPos[4];
+            // copy of the scissor settings for CSG computation
+
         void scissor(const PCArea& area);
             // enables scissoring into area (given in pixel coordinates) 
 

@@ -57,7 +57,15 @@ namespace OpenCSG {
         float& maxx = intersection_.maxx;
         float& maxy = intersection_.maxy;
 
-        minx = -1.0; miny = -1.0; maxx = 1.0; maxy = 1.0;
+        const int dx = OpenGL::canvasPos[2] - OpenGL::canvasPos[0];
+        const int dy = OpenGL::canvasPos[3] - OpenGL::canvasPos[1];
+
+        const float sx  = 2.0f * (static_cast<float>(OpenGL::scissorPos[0]) / static_cast<float>(dx)) - 1.0f;
+        const float sy  = 2.0f * (static_cast<float>(OpenGL::scissorPos[1]) / static_cast<float>(dx)) - 1.0f;
+        const float swx = 2.0f * (static_cast<float>(OpenGL::scissorPos[2] + OpenGL::scissorPos[0]) / static_cast<float>(dx)) - 1.0f;
+        const float swy = 2.0f * (static_cast<float>(OpenGL::scissorPos[3] + OpenGL::scissorPos[1]) / static_cast<float>(dx)) - 1.0f;
+
+        minx = sx; miny = sy; maxx = swx; maxy = swy;
 
         for (std::vector<Primitive*>::const_iterator itr = primitives.begin(); itr != primitives.end(); ++itr) {
             if ((*itr)->getOperation() == Intersection) {

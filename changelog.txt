@@ -1,3 +1,7 @@
+24.09.2004
+    Added: respect scissoring setting of OpenGL; calculate CSG
+        z-values only in the given scissor area.
+
 23.09.2004
     Added: StencilManager, that, in future will possibly save and 
         restore the stencil buffer of the main frame buffer. The
