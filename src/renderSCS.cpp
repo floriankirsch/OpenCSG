@@ -75,7 +75,7 @@ namespace OpenCSG {
                     glCullFace((*j)->getOperation() == Intersection ? GL_BACK : GL_FRONT);
                     RenderData* primitiveData = getRenderData(*j);
                     unsigned char id = primitiveData->stencilID_;
-                    glAlphaFunc(GL_EQUAL, static_cast<float>(id) / 255.0);
+                    glAlphaFunc(GL_EQUAL, static_cast<float>(id) / 255.0f);
                     (*j)->render();
                 }
             }
