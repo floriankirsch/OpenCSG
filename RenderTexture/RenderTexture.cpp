@@ -93,7 +93,9 @@ RenderTexture::RenderTexture(int iWidth, int iHeight, bool bIsTexture /* = true 
 {
   assert(iWidth > 0 && iHeight > 0);
   _iBits[0] = _iBits[1] = _iBits[2] = _iBits[3] = 0;
-  _bRectangle = !(IsPowerOfTwo(iWidth) && IsPowerOfTwo(iHeight));
+  // _bRectangle = !(IsPowerOfTwo(iWidth) && IsPowerOfTwo(iHeight));
+  _bRectangle = GLEW_NV_texture_rectangle != 0; // GL_TEXTURE_RECTANGLE_NV appears to be significantly faster than 
+                                                // GL_TEXTURE_2D (tested on GeForce4 TI4200) so use it whenever possible
 }
 
 
