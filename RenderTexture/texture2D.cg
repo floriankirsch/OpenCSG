@@ -1,0 +1,9 @@
+fragout main(vf30 IN,
+             uniform sampler2D texture)
+{
+  fragout OUT;
+
+  OUT.col = f4tex2D(texture, IN.TEX0.xy);
+  
+  return OUT;
+} 

@@ -1,0 +1,358 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" 
+"http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+  <meta http-equiv="Content-Style-Type" content="text/css">
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <meta name="Author" content="Florian Kirsch">
+  <meta name="KeyWords" content="OpenCSG, CSG, image-based, image-based CSG, rendering, SCS, Goldfeather, OpenGL">
+
+  <title>OpenCSG - The CSG rendering library</title>
+</head>
+
+<body style="font-family: verdana,arial,sans-serif">
+
+<table cellpadding="10" cellspading="0" border="0" style="width: 80%;">
+ <tbody>
+  <tr><td><img src="img/logo.gif" alt="OpenCSG logo"></td>
+   <td style="text-align: center;">
+     <h1> OpenCSG </h1>
+     <h3> The CSG rendering library </h3>
+
+     <b>
+     <a href="#introduction">Introduction</a> &nbsp;&nbsp;
+     <a href="#benefits">Benefits</a> &nbsp;&nbsp;
+     <a href="#prerequisites">Prerequisites</a> &nbsp;&nbsp;
+     <a href="#usage">Usage</a> &nbsp;&nbsp;
+     <a href="#download">Download</a> &nbsp;&nbsp;
+     <a href="#license">License</a>
+     </b>
+   </td>
+  </tr>
+ </tbody>
+</table>
+
+<hr>
+
+<h3> <a name="introduction">Introduction</a> </h3>
+
+<p>
+OpenCSG is a library that does image-based CSG rendering using OpenGL. 
+OpenCSG is written in C++ and supports most modern graphics hardware using
+Microsoft Windows or the Linux operating system.
+</p>
+
+<p>
+What is CSG, anyway? CSG is short for <b>Constructive Solid Geometry</b>
+and denotes an approach to model complex 3D-shapes using simpler ones. I.e.,
+two shapes can be combined by taking the union of them, by intersecting
+them, or by subtracting one shape of the other. The
+most basic shapes, which are not result of such a CSG operation,
+are called <b> primitives</b>. Primitives must be <b>solid</b>, i.e.,
+they must have a clearly defined interior and exterior. By construction,
+a CSG shape is also solid then. 
+</p>
+
+<p>
+Image-based CSG rendering (also z-buffer CSG rendering) is a term that
+denotes algorithms for rendering CSG shapes without an explicit calculation
+of the geometric boundary of a CSG shape. Such algorithms use
+frame-buffer settings of the graphics hardware, e.g., the depth and stencil
+buffer, to compose CSG shapes. <b>OpenCSG</b> implements a variety of 
+those algorithms, namely the <b>Goldfeather</b> algorithm and the <b>SCS</b> 
+algorithm, both of them in several variants.  
+</p>
+
+<center><a href="http://www.hpi.uni-potsdam.de/user-data/29/grid.jpg"><img src="img/grid.gif" border="0" alt="CSG grid"></a></center>
+
+<hr>
+
+<h3> <a name="benefits">Benefits</a> </h3>
+
+<p>
+CSG is often used as fundamental modeling technique in CAD/CAM applications.
+Here, image-based CSG rendering is the key to interactively manipulate CSG 
+shapes. Since OpenCSG renders even complex CSG shapes fast, we expect it 
+could be advantageously used in such applications. 
+</p>
+
+<p>
+Raytracers such as <a href="http://www.povray.org">PovRay</a> have 
+used CSG for shape modeling since long ago. Interactive modeling
+toolkits for such raytracers normally just ignore CSG commands, though. 
+OpenCSG represents a valuable addition for such applications.
+</p>
+
+<p>
+Overall, up to the present CSG rendering has been hardly used in interactive 
+applications, since the necessary algorithms are complicated and error-prone. 
+We hope that by providing a free library that is easy to use, fast, 
+and versatile, CSG rendering can be made more mainstream than it currently 
+is. 
+</p>
+
+<center><a href="http://www.hpi.uni-potsdam.de/user-data/29/columns.jpg"><img src="img/columns.gif" border="0" alt="CSG columns"></a></center>
+
+<hr>
+
+<h3> <a name="prerequisites">Prerequisites</a> </h3>
+
+<p>
+The OpenCSG library requires graphics hardware that supports the <b>PBuffer</b> 
+of OpenGL. It is advantegeous if the related Render-to-Texture facility is also 
+supported. Actually, OpenCSG uses the 
+<a href="http://www.cs.unc.edu/~harrism/misc/rendertexture.html">RenderTexture class</a>
+from Mark Harris as PBuffer library.
+</p>
+
+<p>
+PBuffers have been widely supported since some time ago. NVidia supports them
+since the Riva TNT, and ATI at least since the Radeon series. Graphics
+hardware from other hardware vendors, however, likely do not support 
+PBuffers. Therefore, if you have obscure graphics hardware, you are
+probably out of luck and you cannot run programs using OpenCSG. 
+</p>
+
+<p>
+For OpenGL-Extension checking, the OpenGL Extension Wrangler Library
+<a href="http://glew.sourceforge.net">GLEW</a> is used.
+</p>
+
+<p>
+OpenCSG is written in C++, uses namespaces and requires the STL. I do not expect major
+compiler incompatibilities under Windows (yes, it runs with MSVC6). Under
+Linux, you must use gcc-3.x.y. gcc-2.95.x will not work, since this compiler
+does not come with a std::map implementation, which is required internally. 
+</p>
+
+<p>
+To run OpenCSG well, you should have graphics hardware with lots of fill
+rate. NVidia graphics hardware since GeForce and ATI Radeon qualify. 
+The <code>OpenCSG::OcclusionQuery</code> option obviously requires occlusion
+queries, which are available since Radeon 9x00 (x>=5) and GeForce3
+(beware that the GeForce4MX counts as GeForce2!).
+</p>
+
+<p>
+OpenCSG has been sucessfully run on Intel and AMD hardware using GeForceFX 5600,
+GeForce3, GeForce4MX, Radeon 9700, and TNT2 graphcs hardware (on the latter,
+it crawls ...). On a Radeon 9000, there are currently rendering errors
+in all but the standard Goldfeather rendering path. I am investigating
+this further, but the problem is possibly a driver issue.
+</p>
+
+<center><a href="http://www.hpi.uni-potsdam.de/user-data/29/conc.jpg"><img src="img/conc.gif" border="0" alt="CSG convace shape"></a></center>
+
+<hr>
+
+<h3> <a name="usage">Usage</a> </h3>
+
+<p>
+<a name="primitive"></a>
+The interface of OpenCSG is very easy to use. There
+is only a single abstract class called <code><b>OpenCSG::Primitive</b></code>.
+<a name="interfaceoperation"></a>
+A <code>Primitive</code> object has an attribute <code><b>Operation</b></code>
+that denotes whether the primitive is intersected or subtracted. 
+To use OpenCSG, create a derived concrete primitive class by 
+implementing the <code>render()</code> method. 
+</p>
+
+<p>
+<a name="rendershape"></a>
+To actually do the CSG rendering, there is the function <code><b>OpenCSG::render()</b></code> 
+that takes a <code>std::vector&lt;Primitive*&gt;</code> as argument. 
+The render function evaluates the CSG expression given by the array of primitives
+and initializes the z-buffer with the proper values for the CSG expression.
+The color buffer remains unchanged, so afterwards, you must shade
+the primitives in the array using a <code>GL_EQUAL</code> depth function.
+</p>
+
+<p>
+Note that the render function does not evaluate a generic CSG tree that
+also would contain unions of CSG shapes. It has been shown that a
+generic CSG tree can be converted into an equivalent set of CSG expressions
+that the render function can handle. OpenCSG does not contain the 
+functionality for this conversion since, after all, it is a rendering
+library. 
+</p>
+
+<p>
+Here is the complete interface of OpenCSG:
+</p>
+<p>
+<code>
+namespace OpenCSG { <br>
+ <br>
+&nbsp; enum <b><a href="#interfaceoperation">Operation</a></b> { <b>Intersection</b>, <b>Subtraction</b> }; <br>
+ <br>
+&nbsp; <b><a href="#primitive">class Primitive</a></b> { <br>
+&nbsp; public: <br>
+&nbsp;&nbsp; <b><a href="#primitive">Primitive</a></b>(Operation, unsigned int convexity); <br>
+&nbsp;&nbsp; virtual <b><a href="#primitive">~Primitive</a></b>(); <br>
+ <br>
+&nbsp;&nbsp; void <b><a href="#interfaceoperation">setOperation</a></b>(Operation); <br>
+&nbsp;&nbsp; Operation <b><a href="#interfaceoperation">getOperation</a></b>() const; <br>
+ <br>
+&nbsp;&nbsp; void <b><a href="#interfaceconvexity">setConvexity</a></b>(unsigned int); <br>
+&nbsp;&nbsp; unsigned int <b><a href="#interfaceconvexity">getConvexity</a></b>() const; <br>
+ <br>
+&nbsp;&nbsp; void <b><a href="#interfacebounds">setBoundingBox</a></b>(float  minx, float  miny, float  minz, <br>
+&nbsp;&nbsp;&nbsp;&nbsp; float  maxx, float  maxy, float  maxz); <br>
+&nbsp;&nbsp; void <b><a href="#interfacebounds">getBoundingBox</a></b>(float& minx, float& miny, float& minz, <br>
+&nbsp;&nbsp;&nbsp;&nbsp; float& maxx, float& maxy, float& maxz) const; <br>
+ <br>
+&nbsp;&nbsp; <b><a href="#interfacerenderprimitive">virtual void render</a></b>() = 0; <br>
+&nbsp; }; <br>
+ <br>
+&nbsp; enum <b><a href="#algorithm">Algorithm</a></b> { <b>Automatic</b>, <b>Goldfeather</b>, <b>SCS</b> }; <br>
+&nbsp; enum <b><a href="#depthalgorithm">DepthComplexityAlgorithm</a></b> { <b>NoDepthComplexitySampling</b>, <br>
+&nbsp;&nbsp;&nbsp; <b>OcclusionQuery</b>, <b>DepthComplexitySampling</b> }; <br>
+ <br>
+&nbsp; void <b><a href="#rendershape">render</a></b>(const std::vector&lt;Primitive*&gt;& primitives, <br>
+&nbsp;&nbsp;&nbsp; Algorithm = Automatic, <br>
+&nbsp;&nbsp;&nbsp; DepthComplexityAlgorithm = NoDepthComplexitySampling); <br>
+} <br>
+</code>
+</p>
+
+<p>
+<a name="interfaceconvexity"></a>
+The <b>convexity</b> of a primitive is the maximum number of front (or back) 
+faces of the primitive at a single position. For example, the convexity
+of a sphere is one and the convexity of a torus is two. Actually 
+the convexity attribute is currently only used in the standard Goldfeather
+algorithm. For this algorithm, a convexity too low may result in
+rendering errors, a convexity too high will reduce rendering 
+performance. The other Goldfeather variants render primitives of any
+convexity correctly without analyzing the convexity attribute. 
+The SCS algorithms, on the other hand, can only handle primitives 
+that have a convexity of one, else they produce rendering errors. 
+Hence, SCS algorithms do not check this attribute. 
+</p>
+
+<p>
+<a name="interfacebounds"></a>
+The <b>bounding box</b> of the primitive can be provided using normal device
+coordinates, i.e., after transforming the primitive with modelview and 
+projection transformation. It is not necessary to set the bounding
+box, but it allows for various performance optimizations.
+</p>
+
+<p>
+<a name="interfacerenderprimitive"></a>
+The abstract <b><code>render</code> method</b> of the primitive is implemented in a
+derived class. Your implementation must not alter the modelview or projection 
+matrix (use <code>glPushMatrix</code> / <code>glPopMatrix</code> if in doubt).
+Also you must not change the primary color in your implementation, since 
+OpenCSG uses it internally. For best performance, you should only transmit 
+vertex positions; no normals, tex coords or whatever else.
+</p>
+
+<p>
+The <b><code>render</code> function</b> performs, as said above, z-shading of
+a CSG expression. The content of the stencil buffer is destroyed when
+handling concave primitives or when using the <code>DepthComplexitySampling</code> 
+strategy.
+</p>
+
+<p>
+<a name="algorithm"></a>
+The <b><code>Algorithm</code></b> parameter specifies the method used for CSG rendering.
+Besides <code>Goldfeather</code> and <code>SCS</code>, you can also choose
+<b><code>Automatic</code></b>: This setting chooses the Goldfeather algorithm if 
+the primitive array contains concave primitives, else it chooses SCS. 
+The automatic setting also sets the <code>DepthComplexityAlgorithm</code> 
+(<code>NoDepthComplexitySampling</code> for arrays with few primitives, 
+else <code>OcclusionQuery</code> or at the last resort <code>DepthComplexitySampling</code>).
+</p>
+    
+<p>
+<a name="depthalgorithm"></a>
+If the <code>Automatic</code> setting is not used,
+the <b><code>DepthComplexityAlgorithm</code></b> parameter specifies the strategy 
+for profiting from depth complexity.
+<ul>
+<li><code>NoDepthComplexitySampling</code>: Does not employ the depth complexity.
+  This essentially makes the algorithm O(n²), but with low constant costs.</li>
+<li><code>DepthComplexitySampling</code>: Calculates the depth complexity k using
+  the stencil buffer. This makes algorithm O(n*k), but with high constant costs. 
+  In case of the Goldfeather algorithm, the literature denotes this as 
+  layered Goldfeather algorithm.</li>
+<li><code>OcclusionQuery</code>: Uses occlusion queries to profit implicitly from
+  depth complexity without calculating it. This is especially useful for 
+  the SCS algorithm where this strategy is applied at shape level, resulting in a 
+  O(n*k') algorithm (where k' <= k), without significant constant overhead. 
+  This strategy requires hardware occlusion queries, i.E., the OpenGL extension 
+  <code>GL_NV_occlusion_query</code>.</li>
+</ul>
+</p>
+
+<center><a href="http://www.hpi.uni-potsdam.de/user-data/29/grid.jpg"><img src="img/grid.gif" border="0" alt="CSG grid"></a></center>
+
+<hr>
+
+<h3> <a name="download">Download</a> </h3>
+
+<p>
+Download <a href="http://www.hpi.uni-potsdam.de/user-data/29/OpenCSG-0.9.zip">OpenCSG-0.9.zip</a>. The archive contains all required helper
+libraries, i.e., also RenderTexture and GLEW. It comes with 
+makefiles for Linux and with project files for MSVC6 / VS2003.
+</p>
+
+<center><a href="http://www.hpi.uni-potsdam.de/user-data/29/columns.jpg"><img src="img/columns.gif" border="0" alt="CSG columns"></a></center>
+
+<hr>
+
+<h3> <a name="license">License</a> </h3>
+
+<p>
+OpenCSG is copyrighted by the Hasso-Plattner-Institute at the University of
+Potsdam (HPI), Germany, and by Florian Kirsch.
+</p>
+
+<p>
+You can license OpenCSG by terms of the <a href="http://www.gnu.org/copyleft/gpl.html">
+GNU GPL, Version 2</a>. This means that you may use and link against OpenCSG 
+(a) only if you release the complete source code of your application or library for free
+and (b) only if you release it under the GPL license.
+</p>
+
+<p>
+If you do not want to release your source code unter terms of the GPL, 
+you can't use and link against OpenCSG by licensing it unter GPL. 
+In this case, e.g., if you want to use OpenCSG in a proprietary
+application or library, you can always 
+<a href="mailto:florian.kirsch@hpi.uni-potsdam.de">ask 
+for a commercial license</a> and use 
+it for development and production purposes.
+</p>
+
+<p>
+According to the GPL, you are free to modify and redistribute OpenCSG
+under terms of the GPL. We welcome contribution of your modifications to 
+OpenCSG, however to let us integrate your modifications into OpenCSG, 
+you must assign the copyright of the modifications to the HPI, 
+Florian Kirsch. In other words, your modifications to OpenCSG should not 
+hinder us to distribute OpenCSG under other, non-free licenses. 
+</p>
+
+<p>
+Note that OpenCSG comes with code that is not under copyright
+of the HPI or Florian Kirsch. These are <a href="http://glew.sourceforge.net/">GLEW</a>
+and the <a href="http://www.cs.unc.edu/~harrism/misc/rendertexture.html">
+RenderTexture</a> class. These libraries are licensed under the terms of
+their respective authors. 
+</p>
+
+<center><a href="http://www.hpi.uni-potsdam.de/user-data/29/conc.jpg"><img src="img/conc.gif" border="0" alt="CSG concave shape"></a></center>
+
+<hr>
+
+<p><center>
+&copy; 2002, 2003 Hasso-Plattner-Institute Potsdam, Florian Kirsch. <br>
+Last change: 24.09.2003
+</center></p>
+
+</body>
+</html>
