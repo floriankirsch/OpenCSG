@@ -409,10 +409,16 @@ bool RenderTexture::Initialize(int width, int height,
     
     GLXFBConfigSGIX *fbConfigs;
     int nConfigs;
+
+    // [Andrew Wood]
+    //Add in pbufferAttribs. Needed  to choose pixel format. (Especially for floating point)
+    _pixelFormatAttribs.insert(_pixelFormatAttribs.begin(),
+			       _pbufferAttribs.begin(),_pbufferAttribs.end());
+    // [/Andrew Wood]
     
     fbConfigs = glXChooseFBConfigSGIX(_pDisplay, screen, 
                                       &_pixelFormatAttribs[0], &nConfigs);
-    
+
     if (nConfigs == 0 || !fbConfigs) 
     {
         fprintf(stderr,
@@ -465,24 +471,28 @@ bool RenderTexture::Initialize(int width, int height,
     _bInitialized = true;
     
     // [Florian] Query the color format
-    XVisualInfo* visual = glXGetVisualFromFBConfig(_pDisplay, fbConfigs[i]);
+    //XVisualInfo* visual = glXGetVisualFromFBConfigSGIX(_pDisplay, fbConfigs[i]);
+
+    // [Andrew Wood]
 
     int iResult = 0;
-    // [Florian] Unfortunately this only works for non-float buffers (GeForceFX5600, 44.96)
-    glXGetConfig(_pDisplay, visual, GLX_RGBA, &iResult);
-    if (iResult)
-    {
-        _iNumColorBits[0] = (glXGetConfig(_pDisplay, visual, GLX_RED_SIZE,   &iResult) == 0) ? iResult : 0;
-        _iNumColorBits[1] = (glXGetConfig(_pDisplay, visual, GLX_GREEN_SIZE, &iResult) == 0) ? iResult : 0;
-        _iNumColorBits[2] = (glXGetConfig(_pDisplay, visual, GLX_BLUE_SIZE,  &iResult) == 0) ? iResult : 0;
-        _iNumColorBits[3] = (glXGetConfig(_pDisplay, visual, GLX_ALPHA_SIZE, &iResult) == 0) ? iResult : 0;
-        _iNumDepthBits =    (glXGetConfig(_pDisplay, visual, GLX_DEPTH_SIZE, &iResult) == 0) ? iResult : 0;
-        _iNumStencilBits =  (glXGetConfig(_pDisplay, visual, GLX_STENCIL_SIZE, &iResult) == 0) ? iResult : 0;
-        _bDoubleBuffered =  (glXGetConfig(_pDisplay, visual, GLX_DOUBLEBUFFER, &iResult) == 0) ? (iResult?true:false) : false;
-    }
+    glXGetFBConfigAttribSGIX(_pDisplay, fbConfigs[i], GLX_RENDER_TYPE, &iResult);
 
-    XFree(visual);
+    if (iResult == GLX_RGBA_BIT)
+    {
+        _iNumColorBits[0] = (glXGetFBConfigAttribSGIX(_pDisplay, fbConfigs[i], GLX_RED_SIZE,   &iResult) == 0) ? iResult : 0;
+        _iNumColorBits[1] = (glXGetFBConfigAttribSGIX(_pDisplay, fbConfigs[i], GLX_GREEN_SIZE, &iResult) == 0) ? iResult : 0;
+        _iNumColorBits[2] = (glXGetFBConfigAttribSGIX(_pDisplay, fbConfigs[i], GLX_BLUE_SIZE,  &iResult) == 0) ? iResult : 0;
+        _iNumColorBits[3] = (glXGetFBConfigAttribSGIX(_pDisplay, fbConfigs[i], GLX_ALPHA_SIZE, &iResult) == 0) ? iResult : 0;
+        _iNumDepthBits =    (glXGetFBConfigAttribSGIX(_pDisplay, fbConfigs[i], GLX_DEPTH_SIZE, &iResult) == 0) ? iResult : 0;
+        _iNumStencilBits =  (glXGetFBConfigAttribSGIX(_pDisplay, fbConfigs[i], GLX_STENCIL_SIZE, &iResult) == 0) ? iResult : 0;
+        _bDoubleBuffered =  (glXGetFBConfigAttribSGIX(_pDisplay, fbConfigs[i], GLX_DOUBLEBUFFER, &iResult) == 0) ? (iResult?true:false) : false;
+    }
+    // [/Andrew Wood]
+
+    //XFree(visual);
     // [/Florian]
+
 #endif
 
 #if defined(_DEBUG) | defined(DEBUG)
@@ -1358,8 +1368,8 @@ void RenderTexture::_ParseModeString(const char *modeString,
         pfAttribs.push_back(GLX_STENCIL_SIZE);
         pfAttribs.push_back(0);
 #endif
-
     }
+
     if (_iNumComponents < 4)
     {
         // Can't do this right now -- on NVIDIA drivers, currently get 

@@ -30,6 +30,7 @@
 // Various Bug Fixes: Daniel (Redge) Sperl 
 //                    Bill Baxter
 //                    Florian Kirsch
+//                    Andrew Wood
 //
 // -----------------------------------------------------------------------------
 /**
