@@ -393,8 +393,8 @@ int main(int argc, char **argv)
     int err = glewInit();
     if (GLEW_OK != err) {
         // problem: glewInit failed, something is seriously wrong
-        fprintf(stderr, "GLEW Error: %s\n", glewGetErrorString(err));
-        exit(-1);
+        std::cerr << "GLEW Error: " << glewGetErrorString(err) << std::endl;
+        return 1;
     }  
 
     int menuShape     = glutCreateMenu(menu);
