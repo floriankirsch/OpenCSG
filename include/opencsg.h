@@ -55,9 +55,9 @@ namespace OpenCSG {
                             float  maxx, float  maxy, float  maxz);
         void getBoundingBox(float& minx, float& miny, float& minz,
                             float& maxx, float& maxy, float& maxz) const;
-            // Sets the bounding box of the primitive in normal device coor-
-            // dinates, i.e. after modelview and projection transformation. 
-            // Setting this is not mandatory, but allows for various 
+            // Sets the bounding box of the primitive in normalized device 
+            // coordinates, i.e. after modelview and projection transfor-
+            // mation. Setting this is not mandatory, but allows for various 
             // performance optimizations.
 
         virtual void render() = 0;
@@ -80,7 +80,7 @@ namespace OpenCSG {
     void render(const std::vector<Primitive*>& primitives, 
                 Algorithm = Automatic, 
                 DepthComplexityAlgorithm = NoDepthComplexitySampling);
-    // Performs CSG rendering. I.e, this function initializes the z-buffer
+    // Performs CSG rendering. I.e., this function initializes the z-buffer
     // with the z-values of the CSG product given as array of primitives. 
     // render() does not alter the color buffer, so you have to shade the 
     // primitives using GL_EQUAL depth function afterwards. The content of 
