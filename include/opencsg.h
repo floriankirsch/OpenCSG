@@ -24,7 +24,6 @@
 #ifndef __OpenCSG__opencsg_h__
 #define __OpenCSG__opencsg_h__
 
-#include "opencsgConfig.h"
 #include <vector>
 
 namespace OpenCSG {
