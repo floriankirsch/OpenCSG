@@ -30,6 +30,7 @@
 #include "openglHelper.h"
 #include "primitiveHelper.h"
 #include "scissorMemo.h"
+#include "stencilManager.h"
 #include <algorithm>
 
 namespace OpenCSG {
@@ -37,6 +38,7 @@ namespace OpenCSG {
     namespace {
 
         ScissorMemo* scissor;
+        OpenGL::StencilManager* stencilMgr;
 
         class GoldfeatherChannelManager : public ChannelManagerForBatches {
         public:
@@ -74,7 +76,7 @@ namespace OpenCSG {
                     // shapes of interest: we need to determine the appropriate layer of 
                     // the shapes, using stencil counting
                     glClearStencil(0);
-                    glClear(GL_STENCIL_BUFFER_BIT);
+                    stencilMgr->clear();
                     OpenGL::renderLayer(getLayer(*c), primitives);
                     glDisable(GL_STENCIL_TEST);
                 }
@@ -260,6 +262,7 @@ namespace OpenCSG {
         Batcher batches(primitives);
 
         scissor->setIntersected(primitives);
+        stencilMgr = OpenGL::getStencilManager(scissor->getIntersectedArea());
 
         for (std::vector<Batch>::const_iterator itr = batches.begin(); itr != batches.end(); ++itr) {
             unsigned int maxConvexity = Algo::getConvexity(*itr);
@@ -311,8 +314,10 @@ namespace OpenCSG {
         }
 
         channelMgr->free();
+        stencilMgr->restore();
         
         delete scissor;
+        delete stencilMgr;
         delete channelMgr;
     }
 
@@ -324,6 +329,7 @@ namespace OpenCSG {
         unsigned int layer = 0;
 
         scissor->setIntersected(primitives);
+        stencilMgr = OpenGL::getStencilManager(scissor->getIntersectedArea());
         scissor->setCurrent(primitives);
 
         OpenGL::OcclusionQuery* occlusionTest = 0;
@@ -375,8 +381,10 @@ namespace OpenCSG {
         delete occlusionTest;
 
         channelMgr->free();
+        stencilMgr->restore();
 
         delete scissor;
+        delete stencilMgr;
         delete channelMgr;
     }
 
@@ -386,10 +394,11 @@ namespace OpenCSG {
         scissor = new ScissorMemo;
 
         scissor->setIntersected(primitives);
+        stencilMgr = OpenGL::getStencilManager(scissor->getIntersectedArea());
         scissor->setCurrent(primitives);
         scissor->enable();
 
-        glClear(GL_STENCIL_BUFFER_BIT);
+        stencilMgr->clear();
         unsigned int depthComplexity = OpenGL::calcMaxDepthComplexity(primitives, scissor->getIntersectedArea());
 
         scissor->disable();
@@ -422,8 +431,10 @@ namespace OpenCSG {
         }
 
         channelMgr->free();
+        stencilMgr->restore();
 
         delete scissor;
+        delete stencilMgr;
         delete channelMgr;
     }
 
