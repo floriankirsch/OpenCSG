@@ -91,11 +91,6 @@ uicables: $(UICDECLS) $(UICIMPLS)
 $(MOC): 
 	( cd $(QTDIR)/src/moc ; $(MAKE) )
 
-Makefile: example.pro  /usr/local/qt-3.2.0/mkspecs/default/qmake.conf /usr/local/qt-3.2.0/lib/libqt.prl
-	$(QMAKE) -o Makefile example.pro
-qmake: 
-	@$(QMAKE) -o Makefile example.pro
-
 dist: 
 	@mkdir -p .tmp/opencsgexample && $(COPY_FILE) --parents $(SOURCES) $(HEADERS) $(FORMS) $(DIST) .tmp/opencsgexample/ && ( cd `dirname .tmp/opencsgexample` && $(TAR) opencsgexample.tar opencsgexample && $(GZIP) opencsgexample.tar ) && $(MOVE) `dirname .tmp/opencsgexample`/opencsgexample.tar.gz . && $(DEL_FILE) -r .tmp/opencsgexample
 

@@ -144,11 +144,6 @@ uicables: $(UICDECLS) $(UICIMPLS)
 $(MOC): 
 	( cd $(QTDIR)/src/moc ; $(MAKE) )
 
-Makefile: src.pro  /usr/local/qt-3.2.0/mkspecs/default/qmake.conf /usr/local/qt-3.2.0/lib/libqt.prl
-	$(QMAKE) -o Makefile src.pro
-qmake: 
-	@$(QMAKE) -o Makefile src.pro
-
 dist: 
 	@mkdir -p .tmp/opencsg && $(COPY_FILE) --parents $(SOURCES) $(HEADERS) $(FORMS) $(DIST) .tmp/opencsg/ && ( cd `dirname .tmp/opencsg` && $(TAR) opencsg.tar opencsg && $(GZIP) opencsg.tar ) && $(MOVE) `dirname .tmp/opencsg`/opencsg.tar.gz . && $(DEL_FILE) -r .tmp/opencsg
 
