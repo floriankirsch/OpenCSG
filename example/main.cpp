@@ -157,8 +157,8 @@ void setGrid2D() {
     GLuint id1 = glGenLists(1);
     glNewList(id1, GL_COMPILE);
     glPushMatrix();
-    glScalef(1.0, 0.2, 1.0);
-    glTranslatef(0.0, -1.25, 0.0);
+    glScalef(1.0f, 0.2f, 1.0f);
+    glTranslatef(0.0f, -1.25f, 0.0f);
     glutSolidCube(2.5);
     glPopMatrix();
     glEndList();
@@ -235,7 +235,7 @@ void setConcave() {
     glNewList(id3, GL_COMPILE);
     glPushMatrix();
     glRotatef(90, 0.0, 1.0, 0.0);
-    glTranslatef(0.0, 0.0, -1.65);
+    glTranslatef(0.0f, 0.0f, -1.65f);
     solidCylinder(0.3, 3.3, 20, 20);
     glPopMatrix();
     glEndList();
@@ -244,8 +244,8 @@ void setConcave() {
     GLuint id4 = glGenLists(1);
     glNewList(id4, GL_COMPILE);
     glPushMatrix();
-    glRotatef(90, 1.0, 0.0, 0.0);
-    glTranslatef(0.0, 0.0, -1.65);
+    glRotatef(90.0f, 1.0f, 0.0f, 0.0f);
+    glTranslatef(0.0f, 0.0f, -1.65f);
     solidCylinder(0.3, 3.3, 20, 20);
     glPopMatrix();
     glEndList();
@@ -355,7 +355,7 @@ void menu(int value) {
 void init()
 {
     // gray background
-    glClearColor(0.9, 0.9, 0.9, 1.0);
+    glClearColor(0.9f, 0.9f, 0.9f, 1.0f);
 
     // Enable two OpenGL lights
     GLfloat light_diffuse[] = {1.0, 0.0, 0.0, 1.0};       // Red diffuse light
