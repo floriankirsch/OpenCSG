@@ -166,6 +166,12 @@
 				RelativePath="..\src\channelManager.h">
 			</File>
 			<File
+				RelativePath="..\src\occlusionQueryAdapter.cpp">
+			</File>
+			<File
+				RelativePath="..\src\occlusionQueryAdapter.h">
+			</File>
+			<File
 				RelativePath="..\src\opencsgRender.cpp">
 				<FileConfiguration
 					Name="Release|Win32">

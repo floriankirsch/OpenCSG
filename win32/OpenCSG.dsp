@@ -101,6 +101,14 @@ SOURCE=..\src\channelManager.h
 # End Source File
 # Begin Source File
 
+SOURCE=..\src\occlusionQueryAdapter.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=..\src\occlusionQueryAdapter.h
+# End Source File
+# Begin Source File
+
 SOURCE=..\src\opencsgRender.cpp
 # End Source File
 # Begin Source File

@@ -1,4 +1,7 @@
 
+17.02.2004
+    Added: Support for ARB_occlusion_query extension
+
 21.11.2003:
     Release 0.9.1
 

@@ -26,6 +26,7 @@
 #include "opencsgRender.h"
 #include "batch.h"
 #include "channelManager.h"
+#include "occlusionQueryAdapter.h"
 #include "openglHelper.h"
 #include "primitiveHelper.h"
 #include "scissorMemo.h"
@@ -324,6 +325,8 @@ namespace OpenCSG {
         scissor->setIntersected(primitives);
         scissor->setCurrent(primitives);
 
+        OpenGL::OcclusionQueryAdapter* occlusionTest = 0;
+
         while (true) {
             if (channelMgr->request() == NoChannel) {
                 channelMgr->free();
@@ -333,8 +336,9 @@ namespace OpenCSG {
             scissor->store(channelMgr->current());
             scissor->enable();
 
-            static GLuint query = 0;
-            if (query == 0) glGenOcclusionQueriesNV(1, &query);
+            if (!occlusionTest) {
+                occlusionTest = OpenGL::getOcclusionQuery();
+            }
 
             channelMgr->renderToChannel(true);
 
@@ -346,20 +350,17 @@ namespace OpenCSG {
             glDepthMask(GL_TRUE);
             glColor4ub(255, 255, 255, 255);
 
-            glBeginOcclusionQueryNV(query);
+            occlusionTest->beginQuery();
             OpenGL::renderLayer(layer, primitives);
-            glEndOcclusionQueryNV();
+            occlusionTest->endQuery();
             // the fragment count query could occur here, but benches show that
             // the algorithm is faster if the query is delayed.
             glClear(GL_STENCIL_BUFFER_BIT);
 
             parityTestAndDiscard(primitives, primitives, true, OpenGL::stencilMax);
 
-            unsigned int fragmentCount;
-            glGetOcclusionQueryuivNV(query, GL_PIXEL_COUNT_NV, &fragmentCount);
+            unsigned int fragmentCount = occlusionTest->getQueryResult();
             if (fragmentCount == 0) {
-                glDeleteOcclusionQueriesNV(1, &query);
-                query = 0;
                 break;
             }
 
@@ -369,6 +370,8 @@ namespace OpenCSG {
 
             ++layer;
         }
+
+        delete occlusionTest;
 
         channelMgr->free();
 
