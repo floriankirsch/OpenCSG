@@ -388,7 +388,7 @@ int main(int argc, char **argv)
     glutInit(&argc, argv);
     glutInitWindowSize(512, 512);
     glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGB | GLUT_DEPTH | GLUT_STENCIL);
-    glutCreateWindow("red 3D lighted cube");
+    glutCreateWindow("OpenCSG example application");
 
     int err = glewInit();
     if (GLEW_OK != err) {
