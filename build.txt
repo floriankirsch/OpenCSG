@@ -18,3 +18,9 @@ Linux
 	is to copy them to /usr/local/lib and running "ldconfig -v"). 
 	Currently there is no automatic way for this.
 
+
+Dev-C++ 5
+---------
+
+Open OpenCSG.dev
+Compile and Run
