@@ -37,8 +37,10 @@ namespace OpenCSG {
     
     RenderTexture* ChannelManager::pbuffer_ = 0;
     bool ChannelManager::inUse_ = false;
-
+    
     namespace {
+
+        GLint FaceOrientation = GL_CCW;
 
         int nextPow2(int value) {
             if(value <= 0) { return 0; }
@@ -72,6 +74,8 @@ namespace OpenCSG {
         glColorMask(GL_FALSE, GL_FALSE, GL_FALSE, GL_FALSE);
         glDisable(GL_LIGHTING);
         glShadeModel(GL_FLAT);
+
+        glGetIntegerv(GL_FRONT_FACE, &FaceOrientation);
 
         glGetFloatv(GL_MODELVIEW_MATRIX, OpenGL::modelview);
         glGetFloatv(GL_PROJECTION_MATRIX, OpenGL::projection);
@@ -225,6 +229,8 @@ namespace OpenCSG {
             glGetIntegerv(GL_STENCIL_BITS, &OpenGL::stencilBits);
             OpenGL::stencilMax = 1 << OpenGL::stencilBits;
             OpenGL::stencilMask = OpenGL::stencilMax - 1;
+
+            glFrontFace(FaceOrientation);
 
             currentChannel_ = NoChannel;
             occupiedChannels_ = NoChannel;
