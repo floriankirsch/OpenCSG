@@ -1,5 +1,5 @@
 02.05.2004
-    Release 0.9.3
+    Release 1.0.0
 
 22.04.2004:
     Changed: Makefiles on Linux are now derived from qmake. However,
@@ -15,7 +15,7 @@
         faster. 
 
 29.03.2004
-    Changed: Stenciling area was chosen too big, because I had 
+    Changed: Scissoring area was chosen too big, because I had 
         confused width/height with right/top margin. This is fixed
         now, resulting in better performance for some models
 
