@@ -478,7 +478,7 @@ bool RenderTexture::Initialize(int width, int height,
         _iNumColorBits[3] = (glXGetConfig(_pDisplay, visual, GLX_ALPHA_SIZE, &iResult) == 0) ? iResult : 0;
         _iNumDepthBits =    (glXGetConfig(_pDisplay, visual, GLX_DEPTH_SIZE, &iResult) == 0) ? iResult : 0;
         _iNumStencilBits =  (glXGetConfig(_pDisplay, visual, GLX_STENCIL_SIZE, &iResult) == 0) ? iResult : 0;
-	_bDoubleBuffered =  (glXGetConfig(_pDisplay, visual, GLX_DOUBLEBUFFER, &iResult) == 0) ? (iResult?true:false) : false;
+        _bDoubleBuffered =  (glXGetConfig(_pDisplay, visual, GLX_DOUBLEBUFFER, &iResult) == 0) ? (iResult?true:false) : false;
     }
 
     XFree(visual);
