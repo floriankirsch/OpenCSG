@@ -120,6 +120,12 @@
 			Name="Source Files"
 			Filter="cpp;c;cxx;rc;def;r;odl;idl;hpj;bat">
 			<File
+				RelativePath="..\src\area.cpp">
+			</File>
+			<File
+				RelativePath="..\src\area.h">
+			</File>
+			<File
 				RelativePath="..\src\batch.cpp">
 				<FileConfiguration
 					Name="Release|Win32">

@@ -1,7 +1,12 @@
+25.03.2004
+    Added: Area structs for pixel and normlized device coordinates. 
+        Used to speed up depth complexity sampling by restricting 
+        readback to smaller Area
+    Added: Check whether primitive vector is empty
 
-24.04.2004
-    hided occlusion query implementations in cpp
-    renamed OcclusionQueryAdapter to OcclusionQuery
+24.03.2004
+    Changed: Hided occlusion query implementations in cpp
+        Renamed OcclusionQueryAdapter to OcclusionQuery
 
 02.03.2004
     Release 0.9.2

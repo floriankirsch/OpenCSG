@@ -28,10 +28,10 @@
 namespace OpenCSG {
 
     ScissorMemo::ScissorMemo() : 
-        intersection_(Area(-1.0f, -1.0f, 1.0f, 1.0f)),
-        current_(Area(1.0f, 1.0f, -1.0f, -1.0f)),
-        area_(Area(-1.0f, -1.0f, 1.0f, 1.0f)),
-        scissor_(std::vector<Area>(Blue + 1)) {
+        intersection_(NDCArea(-1.0f, -1.0f, 1.0f, 1.0f)),
+        current_(NDCArea(1.0f, 1.0f, -1.0f, -1.0f)),
+        area_(NDCArea(-1.0f, -1.0f, 1.0f, 1.0f)),
+        scissor_(std::vector<NDCArea>(Blue + 1)) {
     }
 
     void ScissorMemo::store(Channel ch) {
@@ -43,7 +43,7 @@ namespace OpenCSG {
     }
 
     void ScissorMemo::enable() const {
-        OpenGL::scissor(area_.minx, area_.miny, area_.maxx, area_.maxy);
+        OpenGL::scissor(area_);
     }
 
     void ScissorMemo::disable() const {
@@ -81,6 +81,14 @@ namespace OpenCSG {
         maxy = std::min( 1.0f, maxy);
 
         calculateArea();
+    }
+
+    const NDCArea& ScissorMemo::getIntersectedArea() const {
+        return intersection_;
+    }
+
+    const NDCArea& ScissorMemo::getCurrentArea() const {
+        return area_;
     }
 
     void ScissorMemo::setCurrent(const std::vector<Primitive*>& primitives) {

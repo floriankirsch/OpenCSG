@@ -65,7 +65,8 @@ namespace OpenCSG {
 
     namespace OpenGL {
 
-        unsigned int calcMaxDepthComplexity(const std::vector<Primitive*>& primitives) {
+        unsigned int calcMaxDepthComplexity(const std::vector<Primitive*>& primitives,
+                                            const PCArea& area) {
 
             glColorMask(GL_FALSE, GL_FALSE, GL_FALSE, GL_FALSE);
 
@@ -82,10 +83,8 @@ namespace OpenCSG {
                 (*itr)->render();
             }
 
-            GLint canvasPos[4];
-            glGetIntegerv(GL_VIEWPORT, canvasPos);
-            int dx = canvasPos[2] - canvasPos[0];
-            int dy = canvasPos[3] - canvasPos[1];
+            int dx = area.maxx - area.minx;
+            int dy = area.maxy - area.miny;
 
             unsigned int size = (8+dx)*dy; // 8 needed due to possible alignment (?)
             static std::vector<GLubyte> buf = std::vector<GLubyte>(size, 0);
@@ -93,7 +92,7 @@ namespace OpenCSG {
                 buf = std::vector<GLubyte>(size, 0);
             }
 
-            glReadPixels(canvasPos[0], canvasPos[1], canvasPos[2], canvasPos[3], GL_STENCIL_INDEX, GL_UNSIGNED_BYTE, &(buf[0]));
+            glReadPixels(area.minx, area.miny, dx, dy, GL_STENCIL_INDEX, GL_UNSIGNED_BYTE, &(buf[0]));
 
             glEnable(GL_DEPTH_TEST);
             glDisable(GL_CULL_FACE);

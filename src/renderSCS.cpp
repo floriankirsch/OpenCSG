@@ -377,14 +377,18 @@ namespace OpenCSG {
         }
 
         Batcher subtractedBatches(subtracted);
-        unsigned int depthComplexity = 0;
-        if (algorithm == DepthComplexitySampling) {
-            glClear(GL_STENCIL_BUFFER_BIT);
-            depthComplexity = std::min(OpenGL::calcMaxDepthComplexity(subtracted), subtractedBatches.size());
-        }
 
         scissor->setIntersected(intersected);
         scissor->setCurrent(intersected);
+
+        unsigned int depthComplexity = 0;
+        if (algorithm == DepthComplexitySampling) {
+            scissor->enable();
+            glClear(GL_STENCIL_BUFFER_BIT);
+            depthComplexity = 
+                std::min(OpenGL::calcMaxDepthComplexity(subtracted, scissor->getCurrentArea()), 
+                         subtractedBatches.size());
+        }
 
         channelMgr->request();
         channelMgr->renderToChannel(true);

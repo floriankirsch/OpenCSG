@@ -25,6 +25,7 @@
 #define __OpenCSG__primitive_helper_h__
 
 #include <opencsgConfig.h>
+#include "area.h"
 #include <vector>
 
 namespace OpenCSG {
@@ -44,10 +45,12 @@ namespace OpenCSG {
 
     namespace OpenGL {
 
-        unsigned int calcMaxDepthComplexity(const std::vector<Primitive*>& primitives);
+        unsigned int calcMaxDepthComplexity(const std::vector<Primitive*>& primitives,
+                                            const PCArea& area);
             // calculates depth complexity of the given primitives using the
-            // stencil buffer. Expects a clean stencil buffer, and does not
-            // clear the stencil buffer afterwards
+            // stencil buffer, in the bounding box given by area. 
+            // Expects a clean stencil buffer, and does not clear 
+            // the stencil buffer afterwards
         void renderLayer(unsigned int layer, const std::vector<Primitive*>& primitives);
             // renders a rendering layer of the given primitives using the
             // stencil buffer. The rendering layers are not ordered from 

@@ -25,6 +25,7 @@
 #define __OpenCSG__scissor_memo_h__
 
 #include <opencsgConfig.h>
+#include "area.h"
 #include "channelManager.h"
 #include <vector>
 
@@ -51,7 +52,12 @@ namespace OpenCSG {
             // by intersecting the bounding boxes of them.
         void setCurrent(const std::vector<Primitive*>& primitives);
             // sets the area of primitives whose visilibity is determined
-            // next.  
+            // next.
+        const NDCArea& getIntersectedArea() const;
+            // returns the maximum area of the intersected CSG-primitives
+        const NDCArea& getCurrentArea() const;
+            // returns the maximum area of the intersected CSG-primitives
+            // intersected with the currently used primitives
 
     protected:
         void calculateArea();
@@ -59,16 +65,11 @@ namespace OpenCSG {
             // and current. This is invoked implicetely.
 
     private:
-        struct Area {
-            Area(float minxx = 0.0, float minyy = 0.0, float maxxx = 0.0, float maxyy = 0.0) 
-                : minx(minxx), miny(minyy), maxx(maxxx), maxy(maxyy) { } 
-            float minx, miny, maxx, maxy;
-        };
 
-        Area intersection_;
-        Area current_;
-        Area area_;
-        std::vector<Area> scissor_;
+        NDCArea intersection_;
+        NDCArea current_;
+        NDCArea area_;
+        std::vector<NDCArea> scissor_;
     };
 
 } // namespace OpenCSG

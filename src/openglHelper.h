@@ -26,7 +26,7 @@
 
 #include <opencsgConfig.h>
 #include <GL/glew.h>
-#include <vector>
+#include "area.h"
 
 namespace OpenCSG {
 
@@ -46,9 +46,8 @@ namespace OpenCSG {
         extern int stencilMask;
             // stencilMax - 1
 
-        void scissor(float minx, float miny, float maxx, float maxy);
-            // enables scissoring into area [minx, miny] x [maxx, maxy], which are
-            // GIVEN IN NORMAL DEVICE COORDINDATES ( i.e., [-1 ... 1, -1 ... 1] ) 
+        void scissor(const PCArea& area);
+            // enables scissoring into area (given in pixel coordinates) 
 
         void drawQuad();
             // renders a full screen quad

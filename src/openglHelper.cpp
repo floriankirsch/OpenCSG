@@ -35,13 +35,8 @@ namespace OpenCSG {
         int stencilMax = 0;
         int stencilMask = 0;
 
-        void scissor(float minx, float miny, float maxx, float maxy) {
-            int iminx = static_cast<int>( (minx + 1.0)*0.5 * (canvasPos[2] - canvasPos[0]) );
-            int imaxx = static_cast<int>( (maxx + 1.0)*0.5 * (canvasPos[2] - canvasPos[0]) );
-            int iminy = static_cast<int>( (miny + 1.0)*0.5 * (canvasPos[3] - canvasPos[1]) );
-            int imaxy = static_cast<int>( (maxy + 1.0)*0.5 * (canvasPos[3] - canvasPos[1]) );
-
-            glScissor(iminx, iminy, imaxx, imaxy);
+        void scissor(const PCArea& area) {
+            glScissor(area.minx, area.miny, area.maxx, area.maxy);
             glEnable(GL_SCISSOR_TEST);
         }
 
