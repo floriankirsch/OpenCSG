@@ -1,5 +1,10 @@
 22.04.2004:
-    Changed: Build system on Linux is now based on qmake
+    Changed: Makefiles on Linux are now derived from qmake. However,
+        the provided Makefiles should work directly without using
+        qmake, it is best to stick with them.
+
+22.04.2004: 
+    Changed: Compile a shared library on Linux now
 	
 08.04.2004:
     Changed: When possible use GL_TEXTURE_RECTANGLE_NV texture format
