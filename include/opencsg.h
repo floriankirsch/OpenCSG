@@ -113,7 +113,7 @@ namespace OpenCSG {
     //                  O(n*k') algorithm (where k' <= k), without significant
     //                  constant overhead. This strategy requires hardware 
     //                  occlusion queries (i.E., the OpenGL-extension 
-    //                  GL_NV_occlusion_query)
+    //                  GL_ARB_occlusion_query or GL_NV_occlusion_query)
 
 } // namespace OpenCSG
 
