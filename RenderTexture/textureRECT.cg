@@ -1,9 +1,0 @@
-fragout main(vf30 IN,
-             uniform samplerRECT texture)
-{
-  fragout OUT;
-
-  OUT.col = f4texRECT(texture, IN.TEX0.xy);
-  
-  return OUT;
-} 

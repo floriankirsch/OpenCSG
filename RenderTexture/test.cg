@@ -1,8 +1,0 @@
-fragout main(vf30 IN)
-{
-  fragout OUT;
-
-  OUT.col = IN.COL0;//float4(1, 1, 1, 1);
-  
-  return OUT;
-} 

@@ -1,3 +1,8 @@
+20.07.2004
+    Changed: Updated RenderTexture to version 2.0.3. This requires 
+        further testing on all possible platforms because I have 
+        removed some private hacks due to this change.
+
 02.05.2004
     Release 1.0.0
 

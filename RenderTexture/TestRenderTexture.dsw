@@ -3,7 +3,7 @@ Microsoft Developer Studio Workspace File, Format Version 6.00
 
 ###############################################################################
 
-Project: "TestRenderDepthTexture"=.\TestRenderDepthTexture.dsp - Package Owner=<4>
+Project: "TestRenderTexture"=.\TestRenderTexture.dsp - Package Owner=<4>
 
 Package=<5>
 {{{
@@ -15,7 +15,7 @@ Package=<4>
 
 ###############################################################################
 
-Project: "TestRenderTexture"=.\TestRenderTexture.dsp - Package Owner=<4>
+Project: "UnitTestRenderTexture"=.\UnitTestRenderTexture.dsp - Package Owner=<4>
 
 Package=<5>
 {{{
