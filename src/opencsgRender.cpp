@@ -35,18 +35,20 @@ namespace OpenCSG {
 
         Algorithm chooseAlgorithm(const std::vector<Primitive*>& primitives) {
             if (Algo::getConvexity(primitives) >= 2) {
-                return Goldfeather;                
+                return Goldfeather;
             }
             return SCS;
         }
 
         DepthComplexityAlgorithm chooseDepthComplexityAlgorithm(const std::vector<Primitive*>& primitives) {
-            if (primitives.size() > 20) {
-                if (haveHardwareOcclusionQueries() && primitives.size() > 40) {
-                    return DepthComplexitySampling;
-                }
+            if (!haveHardwareOcclusionQueries() && primitives.size() > 40) {
+                return DepthComplexitySampling;
+            }
+
+            if (haveHardwareOcclusionQueries() && primitives.size() > 20) {
                 return OcclusionQuery;
             }
+
             return NoDepthComplexitySampling;
         }
 

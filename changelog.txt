@@ -1,3 +1,7 @@
+28.09.2004
+    Fixed: refactored heuristic for depth complexity sampling
+        thereby fixing an odd performance bug
+
 27.09.2004
     Release 1.0.1
 
