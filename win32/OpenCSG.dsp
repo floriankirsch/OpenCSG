@@ -25,7 +25,7 @@ CFG=OpenCSG - Win32 Debug
 # PROP AllowPerConfigDependencies 0
 # PROP Scc_ProjName ""
 # PROP Scc_LocalPath ""
-CPP=xicl6.exe
+CPP=cl.exe
 RSC=rc.exe
 
 !IF  "$(CFG)" == "OpenCSG - Win32 Release"
@@ -41,7 +41,8 @@ RSC=rc.exe
 # PROP Intermediate_Dir "Release"
 # PROP Target_Dir ""
 # ADD BASE CPP /nologo /W3 /GX /O2 /D "WIN32" /D "NDEBUG" /D "_WINDOWS" /YX /FD /c
-# ADD CPP /nologo /W3 /GX /O2 /I ".." /I "../include" /I "../glew/include" /D "WIN32" /D "NDEBUG" /D "_WINDOWS" /D "GLEW_STATIC" /YX /FD /c
+# ADD CPP /nologo /W3 /GX /O2 /I ".." /I "../include" /I "../glew/include" /D "WIN32" /D "NDEBUG" /D "_WINDOWS" /D "GLEW_STATIC" /FD /c
+# SUBTRACT CPP /YX /Yc /Yu
 # ADD BASE RSC /l 0x407 /d "NDEBUG"
 # ADD RSC /l 0x407 /d "NDEBUG"
 BSC32=bscmake.exe
@@ -64,7 +65,8 @@ LIB32=link.exe -lib
 # PROP Intermediate_Dir "Debug"
 # PROP Target_Dir ""
 # ADD BASE CPP /nologo /W3 /Gm /GX /ZI /Od /D "WIN32" /D "_DEBUG" /D "_WINDOWS" /YX /FD /GZ /c
-# ADD CPP /nologo /W3 /Gm /GX /ZI /Od /I ".." /I "../include" /I "../glew/include" /D "WIN32" /D "_DEBUG" /D "_WINDOWS" /D "GLEW_STATIC" /YX /FD /GZ /c
+# ADD CPP /nologo /W3 /Gm /GX /ZI /Od /I ".." /I "../include" /I "../glew/include" /D "WIN32" /D "_DEBUG" /D "_WINDOWS" /D "GLEW_STATIC" /FD /GZ /c
+# SUBTRACT CPP /YX /Yc /Yu
 # ADD BASE RSC /l 0x407 /d "_DEBUG"
 # ADD RSC /l 0x407 /d "_DEBUG"
 BSC32=bscmake.exe
