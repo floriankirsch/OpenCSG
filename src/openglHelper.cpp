@@ -36,7 +36,9 @@ namespace OpenCSG {
         int stencilMask = 0;
 
         void scissor(const PCArea& area) {
-            glScissor(area.minx, area.miny, area.maxx, area.maxy);
+            const int dx = area.maxx - area.minx;
+            const int dy = area.maxy - area.miny;
+            glScissor(area.minx, area.miny, dx, dy);
             glEnable(GL_SCISSOR_TEST);
         }
 
