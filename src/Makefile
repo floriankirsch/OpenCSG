@@ -53,6 +53,7 @@ HEADERS = ../include/opencsg.h \
 		openglHelper.h \
 		primitiveHelper.h \
 		scissorMemo.h \
+		stencilManager.h \
 		../RenderTexture/RenderTexture.h
 SOURCES = area.cpp \
 		batch.cpp \
@@ -65,6 +66,7 @@ SOURCES = area.cpp \
 		renderGoldfeather.cpp \
 		renderSCS.cpp \
 		scissorMemo.cpp \
+		stencilManager.cpp \
 		../RenderTexture/RenderTexture.cpp
 OBJECTS = area.o \
 		batch.o \
@@ -77,6 +79,7 @@ OBJECTS = area.o \
 		renderGoldfeather.o \
 		renderSCS.o \
 		scissorMemo.o \
+		stencilManager.o \
 		RenderTexture.o
 FORMS = 
 UICDECLS = 
@@ -202,6 +205,7 @@ renderGoldfeather.o: renderGoldfeather.cpp opencsgRender.h \
 		openglHelper.h \
 		primitiveHelper.h \
 		scissorMemo.h \
+		stencilManager.h \
 		area.h
 
 renderSCS.o: renderSCS.cpp opencsgRender.h \
@@ -217,6 +221,9 @@ scissorMemo.o: scissorMemo.cpp openglHelper.h \
 		scissorMemo.h \
 		area.h \
 		channelManager.h
+
+stencilManager.o: stencilManager.cpp area.h \
+		stencilManager.h	
 
 RenderTexture.o: ../RenderTexture/RenderTexture.cpp ../RenderTexture/RenderTexture.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o RenderTexture.o ../RenderTexture/RenderTexture.cpp
