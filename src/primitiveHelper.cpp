@@ -19,7 +19,7 @@
 // primitiveHelper.cpp
 //
 
-#include <opencsgConfig.h>
+#include "opencsgConfig.h"
 #include <opencsg.h>
 #include <GL/glew.h>
 #include "openglHelper.h"

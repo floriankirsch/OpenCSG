@@ -24,7 +24,7 @@
 #ifndef __OpenCSG__area_h__
 #define __OpenCSG__area_h__
 
-#include <opencsgConfig.h>
+#include "opencsgConfig.h"
 
 namespace OpenCSG {
 

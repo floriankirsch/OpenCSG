@@ -19,7 +19,7 @@
 // stencilManager.cpp
 //
 
-#include <opencsgConfig.h>
+#include "opencsgConfig.h"
 #include <GL/glew.h>
 #ifdef _WIN32
 #include <GL/wglew.h>

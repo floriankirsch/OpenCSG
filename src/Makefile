@@ -44,7 +44,7 @@ OBJECTS_DIR = ./
 ####### Files
 
 HEADERS = ../include/opencsg.h \
-		../include/opencsgConfig.h \
+		opencsgConfig.h \
 		area.h \
 		batch.h \
 		channelManager.h \

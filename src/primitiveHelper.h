@@ -24,7 +24,7 @@
 #ifndef __OpenCSG__primitive_helper_h__
 #define __OpenCSG__primitive_helper_h__
 
-#include <opencsgConfig.h>
+#include "opencsgConfig.h"
 #include "area.h"
 #include <vector>
 

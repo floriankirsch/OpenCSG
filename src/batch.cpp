@@ -19,7 +19,7 @@
 // batch.cpp
 //
 
-#include <opencsgConfig.h>
+#include "opencsgConfig.h"
 #include "batch.h"
 #include "primitiveHelper.h"
 

@@ -24,7 +24,7 @@
 #ifndef __OpenCSG__occlusion_query_adapter_h__
 #define __OpenCSG__occlusion_query_adapter_h__
 
-#include <opencsgConfig.h>
+#include "opencsgConfig.h"
 
 namespace OpenCSG {
 

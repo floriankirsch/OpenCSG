@@ -25,7 +25,7 @@
 #ifndef __OpenCSG__batch_h__
 #define __OpenCSG__batch_h__
 
-#include <opencsgConfig.h>
+#include "opencsgConfig.h"
 #include <vector>
 
 namespace OpenCSG {

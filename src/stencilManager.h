@@ -24,7 +24,7 @@
 #ifndef __OpenCSG__stencil_manager_h__
 #define __OpenCSG__stencil_manager_h__
 
-#include <opencsgConfig.h>
+#include "opencsgConfig.h"
 #include "area.h"
 
 namespace OpenCSG {

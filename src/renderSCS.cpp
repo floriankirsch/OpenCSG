@@ -21,7 +21,7 @@
 // stuff specific for the SCS algorithm
 //
 
-#include <opencsgConfig.h>
+#include "opencsgConfig.h"
 #include <opencsg.h>
 #include "opencsgRender.h"
 #include "batch.h"

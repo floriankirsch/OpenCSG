@@ -19,7 +19,7 @@
 // openglHelper.h 
 //
 
-#include <opencsgConfig.h>
+#include "opencsgConfig.h"
 #include <GL/glew.h>
 #include "openglHelper.h"
 

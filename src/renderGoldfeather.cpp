@@ -21,7 +21,7 @@
 // stuff specific for the Goldfeather algorithm
 //
 
-#include <opencsgConfig.h>
+#include "opencsgConfig.h"
 #include <opencsg.h>
 #include "opencsgRender.h"
 #include "batch.h"

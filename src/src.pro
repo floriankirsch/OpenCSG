@@ -7,7 +7,7 @@ CONFIG		+= opengl warn_on release
 INCLUDEPATH += ../include ../glew/include ../
 
 HEADERS		= ../include/opencsg.h \
-              ../include/opencsgConfig.h \
+              opencsgConfig.h \
               area.h \
 			  batch.h \
 			  channelManager.h \

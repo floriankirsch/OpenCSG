@@ -24,7 +24,7 @@
 #ifndef __OpenCSG__channel_manager_h__
 #define __OpenCSG__channel_manager_h__
 
-#include <opencsgConfig.h>
+#include "opencsgConfig.h"
 #include <utility>
 #include <vector>
 

@@ -24,7 +24,7 @@
 #ifndef __OpenCSG__opengl_helper_h__
 #define __OpenCSG__opengl_helper_h__
 
-#include <opencsgConfig.h>
+#include "opencsgConfig.h"
 #include <GL/glew.h>
 #include "area.h"
 

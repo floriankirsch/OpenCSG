@@ -21,7 +21,7 @@
 // implements Primitive interface (declared in opencsg.h)
 //
 
-#include <opencsgConfig.h>
+#include "opencsgConfig.h"
 #include <opencsg.h>
 #include <cassert>
 

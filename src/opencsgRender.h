@@ -24,7 +24,7 @@
 #ifndef __OpenCSG__opencsg_render_h__
 #define __OpenCSG__opencsg_render_h__
 
-#include <opencsgConfig.h>
+#include "opencsgConfig.h"
 #include <opencsg.h>
 #include <vector>
 
