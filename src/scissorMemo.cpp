@@ -61,9 +61,9 @@ namespace OpenCSG {
         const int dy = OpenGL::canvasPos[3] - OpenGL::canvasPos[1];
 
         const float sx  = 2.0f * (static_cast<float>(OpenGL::scissorPos[0]) / static_cast<float>(dx)) - 1.0f;
-        const float sy  = 2.0f * (static_cast<float>(OpenGL::scissorPos[1]) / static_cast<float>(dx)) - 1.0f;
+        const float sy  = 2.0f * (static_cast<float>(OpenGL::scissorPos[1]) / static_cast<float>(dy)) - 1.0f;
         const float swx = 2.0f * (static_cast<float>(OpenGL::scissorPos[2] + OpenGL::scissorPos[0]) / static_cast<float>(dx)) - 1.0f;
-        const float swy = 2.0f * (static_cast<float>(OpenGL::scissorPos[3] + OpenGL::scissorPos[1]) / static_cast<float>(dx)) - 1.0f;
+        const float swy = 2.0f * (static_cast<float>(OpenGL::scissorPos[3] + OpenGL::scissorPos[1]) / static_cast<float>(dy)) - 1.0f;
 
         minx = sx; miny = sy; maxx = swx; maxy = swy;
 

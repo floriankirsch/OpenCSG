@@ -1,3 +1,6 @@
+25.09.2004
+    Fixed: stupid bug in respect scissoring change
+
 24.09.2004
     Added: respect scissoring setting of OpenGL; calculate CSG
         z-values only in the given scissor area.
