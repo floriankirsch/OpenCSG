@@ -1,4 +1,7 @@
 26.11.2004
+    Added: Workspace for dev-cpp 4.9.9.0
+
+26.11.2004
     Changed: queries for the p-buffer facilities in RenderTexture
 
 28.09.2004
