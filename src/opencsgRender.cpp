@@ -56,6 +56,10 @@ namespace OpenCSG {
                 Algorithm algorithm, 
                 DepthComplexityAlgorithm depthComplexityAlgorithm) {
 
+        if (primitives.size() == 0) {
+            return;
+        }
+
         if (algorithm == Automatic) {
             algorithm = chooseAlgorithm(primitives);
             depthComplexityAlgorithm = chooseDepthComplexityAlgorithm(primitives);
