@@ -1,3 +1,8 @@
+08.04.2004:
+    Changed: When possible use GL_TEXTURE_RECTANGLE_NV texture format
+        even if GL_TEXTURE_2D would work also. The former appears to be
+        faster. 
+
 29.03.2004
     Changed: Stenciling area was chosen too big, because I had 
         confused width/height with right/top margin. This is fixed
