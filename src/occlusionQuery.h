@@ -25,51 +25,24 @@
 #define __OpenCSG__occlusion_query_adapter_h__
 
 #include <opencsgConfig.h>
-#include <GL/glew.h>
 
 namespace OpenCSG {
 
     namespace OpenGL {
 
-        class OcclusionQueryAdapter {
+        class OcclusionQuery {
         public:
-            virtual ~OcclusionQueryAdapter() {};
+            virtual ~OcclusionQuery() {};
 
             virtual void beginQuery() = 0;
             virtual void endQuery() = 0;
             virtual unsigned int getQueryResult() = 0;
 
         protected:
-            OcclusionQueryAdapter() {};
+            OcclusionQuery() {};
         };
 
-        class OcclusionQueryARB : public OcclusionQueryAdapter {
-        public:
-            OcclusionQueryARB();
-            virtual ~OcclusionQueryARB();
-
-            virtual void beginQuery();
-            virtual void endQuery();
-            virtual unsigned int getQueryResult();
-
-        private:
-            GLuint queryObject_;
-        };
-
-        class OcclusionQueryNV : public OcclusionQueryAdapter {
-        public:
-            OcclusionQueryNV();
-            virtual ~OcclusionQueryNV();
-
-            virtual void beginQuery();
-            virtual void endQuery();
-            virtual unsigned int getQueryResult();
-
-        private:
-            GLuint queryObject_;
-        };
-
-        OcclusionQueryAdapter* getOcclusionQuery();
+        OcclusionQuery* getOcclusionQuery();
             // checks for OpenGL-extensions and returns a matching occlusion
             // query object. may return 0 if occlusion queries are not
             // supported by graphics hardware.

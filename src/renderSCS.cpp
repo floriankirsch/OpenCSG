@@ -26,7 +26,7 @@
 #include "opencsgRender.h"
 #include "batch.h"
 #include "channelManager.h"
-#include "occlusionQueryAdapter.h"
+#include "occlusionQuery.h"
 #include "openglHelper.h"
 #include "primitiveHelper.h"
 #include "scissorMemo.h"
@@ -255,7 +255,7 @@ namespace OpenCSG {
             glEnable(GL_STENCIL_TEST);
             glEnable(GL_CULL_FACE);
 
-            OpenGL::OcclusionQueryAdapter* occlusionTest = OpenGL::getOcclusionQuery();
+            OpenGL::OcclusionQuery* occlusionTest = OpenGL::getOcclusionQuery();
 
             std::vector<unsigned int> fragmentcount(numberOfBatches, 0);
 

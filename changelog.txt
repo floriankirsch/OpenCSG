@@ -1,4 +1,8 @@
 
+24.04.2004
+    hided occlusion query implementations in cpp
+    renamed OcclusionQueryAdapter to OcclusionQuery
+
 02.03.2004
     Release 0.9.2
 

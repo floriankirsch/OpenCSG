@@ -26,7 +26,7 @@
 #include "opencsgRender.h"
 #include "batch.h"
 #include "channelManager.h"
-#include "occlusionQueryAdapter.h"
+#include "occlusionQuery.h"
 #include "openglHelper.h"
 #include "primitiveHelper.h"
 #include "scissorMemo.h"
@@ -325,7 +325,7 @@ namespace OpenCSG {
         scissor->setIntersected(primitives);
         scissor->setCurrent(primitives);
 
-        OpenGL::OcclusionQueryAdapter* occlusionTest = 0;
+        OpenGL::OcclusionQuery* occlusionTest = 0;
 
         while (true) {
             if (channelMgr->request() == NoChannel) {

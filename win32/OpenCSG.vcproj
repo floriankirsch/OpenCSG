@@ -166,10 +166,10 @@
 				RelativePath="..\src\channelManager.h">
 			</File>
 			<File
-				RelativePath="..\src\occlusionQueryAdapter.cpp">
+				RelativePath="..\src\occlusionQuery.cpp">
 			</File>
 			<File
-				RelativePath="..\src\occlusionQueryAdapter.h">
+				RelativePath="..\src\occlusionQuery.h">
 			</File>
 			<File
 				RelativePath="..\src\opencsgRender.cpp">

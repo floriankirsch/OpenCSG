@@ -21,11 +21,24 @@
 
 #include <opencsgConfig.h>
 #include <GL/glew.h>
-#include "occlusionQueryAdapter.h"
+#include "occlusionQuery.h"
 
 namespace OpenCSG {
 
     namespace OpenGL {
+
+        class OcclusionQueryARB : public OcclusionQuery {
+        public:
+            OcclusionQueryARB();
+            virtual ~OcclusionQueryARB();
+
+            virtual void beginQuery();
+            virtual void endQuery();
+            virtual unsigned int getQueryResult();
+
+        private:
+            GLuint queryObject_;
+        };
 
         OcclusionQueryARB::OcclusionQueryARB() {
             glGenQueriesARB(1, &queryObject_);
@@ -51,6 +64,19 @@ namespace OpenCSG {
 
 
 
+        class OcclusionQueryNV : public OcclusionQuery {
+        public:
+            OcclusionQueryNV();
+            virtual ~OcclusionQueryNV();
+
+            virtual void beginQuery();
+            virtual void endQuery();
+            virtual unsigned int getQueryResult();
+
+        private:
+            GLuint queryObject_;
+        };
+
         OcclusionQueryNV::OcclusionQueryNV() {
             glGenOcclusionQueriesNV(1, &queryObject_);
         }
@@ -75,7 +101,7 @@ namespace OpenCSG {
 
 
 
-        OcclusionQueryAdapter* getOcclusionQuery() {
+        OcclusionQuery* getOcclusionQuery() {
             if (GLEW_ARB_occlusion_query) {
                 return new OcclusionQueryARB;
             }

@@ -25,7 +25,7 @@ CFG=OpenCSG - Win32 Debug
 # PROP AllowPerConfigDependencies 0
 # PROP Scc_ProjName ""
 # PROP Scc_LocalPath ""
-CPP=cl.exe
+CPP=xicl6.exe
 RSC=rc.exe
 
 !IF  "$(CFG)" == "OpenCSG - Win32 Release"
@@ -103,11 +103,11 @@ SOURCE=..\src\channelManager.h
 # End Source File
 # Begin Source File
 
-SOURCE=..\src\occlusionQueryAdapter.cpp
+SOURCE=..\src\occlusionQuery.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=..\src\occlusionQueryAdapter.h
+SOURCE=..\src\occlusionQuery.h
 # End Source File
 # Begin Source File
 
