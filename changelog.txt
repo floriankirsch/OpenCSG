@@ -1,3 +1,6 @@
+26.11.2004
+    Changed: queries for the p-buffer facilities in RenderTexture
+
 28.09.2004
     Fixed: refactored heuristic for depth complexity sampling
         thereby fixing an odd performance bug
