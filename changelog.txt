@@ -1,3 +1,6 @@
+27.09.2004
+    Release 1.0.1
+
 25.09.2004
     Fixed: stupid bug in respect scissoring change
 
