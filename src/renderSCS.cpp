@@ -164,6 +164,7 @@ namespace OpenCSG {
 
             glDepthRange(0.0, 1.0);
             glDepthFunc(GL_LESS);
+            glDisable(GL_STENCIL_TEST);
         }
 
         void subtractPrimitives(std::vector<Batch>::const_iterator begin, 
