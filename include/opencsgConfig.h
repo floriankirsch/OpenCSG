@@ -40,8 +40,8 @@
 
 #ifdef _MSC_VER // microsoft visual studio compiler and intel compiler
 // MSVC does not have std::min and std::max unless using .NET (version 1300, VC++ 6 was version 1200)
+// For .net, this still appears to be the case if including some windows headers.
 // instead it defines _cpp_max and _cpp_min
-# if _MSC_VER < 1300
 
     #ifdef min
     #undef min
@@ -53,8 +53,6 @@
 
     #define max _cpp_max
     #define min _cpp_min
-
-# endif // _MSC_VER < 1300
 
 #endif // _MSC_VER
 
