@@ -23,9 +23,6 @@
 // Various Bug Fixes: Daniel (Redge) Sperl 
 //                    Bill Baxter
 //
-//
-// This file contains some private changes from Florian Kirsch
-//
 // -----------------------------------------------------------------------------
 /**
  * @file RenderTexture.cpp
@@ -262,9 +259,9 @@ bool RenderTexture::Initialize(bool         bShare       /* = true */,
     PrintExtensionError("GLX_SGIX_fbconfig");
     return false;
   }
-  if (_bIsDepthTexture)
+  if (_bIsDepthTexture && !GLEW_ARB_depth_texture)
   {
-    PrintExtensionError("I don't know");
+    PrintExtensionError("GL_ARB_depth_texture");
     return false;
   }
   if (updateMode == RT_RENDER_TO_TEXTURE)
@@ -941,14 +938,17 @@ bool RenderTexture::Initialize(bool         bShare       /* = true */,
   // [Florian] Query the color format 
   XVisualInfo* visual = glXGetVisualFromFBConfig(_pDpy, fbConfigs[i]);
   
-  int iResult;
-  glXGetConfig(_pDpy, visual, GLX_RGBA, &iResult);
+  int iResult = 0;
+  // [Florian] Unfortunately this only works for non-float buffers (GeForceFX5600, 44.96)
+  //           currently deactivated.
+  //glXGetConfig(_pDpy, visual, GLX_RGBA, &iResult);
   if (iResult)
   {
     _iBits[0] = (glXGetConfig(_pDpy, visual, GLX_RED_SIZE,   &iResult)) ? iResult : iRBits;
     _iBits[1] = (glXGetConfig(_pDpy, visual, GLX_GREEN_SIZE, &iResult)) ? iResult : iGBits;
     _iBits[2] = (glXGetConfig(_pDpy, visual, GLX_BLUE_SIZE,  &iResult)) ? iResult : iBBits;
     _iBits[3] = (glXGetConfig(_pDpy, visual, GLX_ALPHA_SIZE, &iResult)) ? iResult : iABits;
+    _iBits[4] = (glXGetConfig(_pDpy, visual, GLX_DEPTH_SIZE, &iResult)) ? iResult : 24;
   }
   else
   {
@@ -956,9 +956,8 @@ bool RenderTexture::Initialize(bool         bShare       /* = true */,
     _iBits[1] = iGBits;
     _iBits[2] = iBBits;
     _iBits[3] = iABits;
+    _iBits[4] = 24;
   }
-
-  _iBits[4] = (glXGetConfig(_pDpy, visual, GLX_DEPTH_SIZE, &iResult)) ? iResult : 24;
 
   XFree(visual);
   // [/Florian]
@@ -1229,9 +1228,16 @@ bool RenderTexture::EndCapture()
     }
   }
 #else
-  assert(_bIsTexture);
-  glBindTexture(_iTextureTarget, _iTextureID);
-  glCopyTexSubImage2D(_iTextureTarget, 0, 0, 0, 0, 0, _iWidth, _iHeight);
+  if (_bIsTexture)
+  {
+    glBindTexture(_iTextureTarget, _iTextureID);
+    glCopyTexSubImage2D(_iTextureTarget, 0, 0, 0, 0, 0, _iWidth, _iHeight);
+  }
+  if (_bIsDepthTexture)
+  {
+    glBindTexture(_iTextureTarget, _iDepthTextureID);
+    glCopyTexSubImage2D(_iTextureTarget, 0, 0, 0, 0, 0, _iWidth, _iHeight);
+  }
 
   if(!bContextReset)
   {
@@ -1276,3 +1282,4 @@ void RenderTexture::BindDepth() const
     glBindTexture(_iTextureTarget, _iDepthTextureID); 
   }
 }
+
