@@ -1,3 +1,6 @@
+22.04.2004:
+    Changed: Build system on Linux is now based on qmake
+	
 08.04.2004:
     Changed: When possible use GL_TEXTURE_RECTANGLE_NV texture format
         even if GL_TEXTURE_2D would work also. The former appears to be
@@ -58,3 +61,4 @@
 
 23.09.2003: 
     Release 0.9
+
