@@ -127,7 +127,7 @@ namespace OpenCSG {
             
             // check whether the pbuffer is too small, in case resize immediately
             if ((tx > pbuffer_->GetWidth()) || (ty > pbuffer_->GetHeight())) {
-                pbuffer_->Reset(tx, ty);
+                pbuffer_->Reset(std::max(maxPBufferSizeX, tx), std::max(maxPBufferSizeY, ty));
                 rebuild = true;
             }           
 
