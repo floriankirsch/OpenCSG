@@ -461,7 +461,7 @@ bool RenderTexture::Initialize(bool         bShare       /* = true */,
             iTextureFormat = WGL_TEXTURE_RGB_ARB; 
           }
         }
-#else if defined(DEBUG) || defined(_DEBUG)
+#elif defined(DEBUG) || defined(_DEBUG)
         printf("RenderTexture Error: Render-to-Texture not supported in Linux\n");
 #endif    
       }
