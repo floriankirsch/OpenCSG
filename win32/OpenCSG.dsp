@@ -169,6 +169,14 @@ SOURCE=..\src\scissorMemo.cpp
 
 SOURCE=..\src\scissorMemo.h
 # End Source File
+# Begin Source File
+
+SOURCE=..\src\stencilManager.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=..\src\stencilManager.h
+# End Source File
 # End Group
 # Begin Group "Header Files"
 

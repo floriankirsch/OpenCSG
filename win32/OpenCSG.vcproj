@@ -352,6 +352,12 @@
 			<File
 				RelativePath="..\src\scissorMemo.h">
 			</File>
+			<File
+				RelativePath="..\src\stencilManager.cpp">
+			</File>
+			<File
+				RelativePath="..\src\stencilManager.h">
+			</File>
 		</Filter>
 		<Filter
 			Name="Header Files"
