@@ -33,6 +33,7 @@ bool        bShowDepthTexture = false;
 static const char *g_modeTestStrings[] = 
 {
     "rgb tex2D",
+    "r=32f texRECT ctt aux=4",
     "rgba tex2D depthTex2D",
     "rgba=8 depthTexRECT ctt",
     "rgba samples=4 tex2D ctt",
@@ -40,6 +41,7 @@ static const char *g_modeTestStrings[] =
     "rgb=5,6,5 tex2D",
     "rgba=16f texRECT",
     "rgba=32f texRECT depthTexRECT",
+    "rgb=5,6,5 tex2D",
     "rgba=16f texRECT depthTexRECT ctt",
     "r=32f texRECT depth ctt",
     "rgb double tex2D",
@@ -183,13 +185,15 @@ RenderTexture* CreateRenderTexture(const char *initstr)
         // Setup Cg
         cgSetErrorCallback(cgErrorCallback);
         cgContext = cgCreateContext();
-        
+        cgGLSetManageTextureParameters(cgContext,CG_TRUE);
+
         // get the best profile for this hardware
         cgProfile = cgGLGetLatestProfile(CG_GL_FRAGMENT);
         assert(cgProfile != CG_PROFILE_UNKNOWN);
         cgGLSetOptimalOptions(cgProfile);
-        
-        const char* strTextureProgram = rt->IsRectangleTexture() ?
+
+        // [Andrew Wood] - Used to refer to global rt RenderTexture & get previous value
+        const char* strTextureProgram = rt2->IsRectangleTexture() ?
             "float4 main(half2       coords   : TEX0,\n"
             "    uniform samplerRECT texture) : COLOR {\n"
             "    return f4texRECT(texture, coords); }\n" 
@@ -278,6 +282,7 @@ void DestroyRenderTexture(RenderTexture *rt2)
     if (rt2->IsFloatTexture())
     {
 #ifdef USE_CG
+      
         cgDestroyProgram(textureProgram);
         cgDestroyProgram(passThroughProgram);
         cgDestroyContext(cgContext);
@@ -356,7 +361,7 @@ void Reshape(int w, int h)
 // Function     	: Display
 // Description	    : 
 //---------------------------------------------------------------------------
-void Display()
+void display()
 {
     if (rt->IsInitialized() && rt->BeginCapture())
     {
@@ -401,21 +406,23 @@ void Display()
     glMatrixMode(GL_MODELVIEW);
     glPushMatrix();
     glRotatef(rectAngle / 10, 0, 1, 0);
-        
+
     if(bShowDepthTexture && rt->IsDepthTexture())
         rt->BindDepth();
     else if (rt->IsTexture()) {
+#ifdef _WIN32
         if (rt->IsDoubleBuffered()) rt->BindBuffer(WGL_BACK_LEFT_ARB);
+#endif
         rt->Bind();
     }
 
 #ifdef USE_CG
     if (!bShowDepthTexture && rt->IsFloatTexture())
     {
-        cgGLBindProgram(textureProgram);
         cgGLEnableProfile(cgProfile);
+        cgGLBindProgram(textureProgram);
         cgGLSetTextureParameter(textureParam, rt->GetTextureID());
-        cgGLEnableTextureParameter(textureParam);
+	//cgGLEnableTextureParameter(textureParam);
     }
     else 
     {
@@ -445,7 +452,7 @@ void Display()
     if (!bShowDepthTexture && rt->IsFloatTexture())
     {
 #ifdef USE_CG
-        cgGLDisableTextureParameter(textureParam);
+      //cgGLDisableTextureParameter(textureParam);
         cgGLDisableProfile(cgProfile);
     }
     else
@@ -472,7 +479,7 @@ void Display()
 // Function     	: main
 // Description	    : 
 //---------------------------------------------------------------------------
-void main()
+int main()
 {
     glutInitDisplayMode(GLUT_RGB | GLUT_DEPTH | GLUT_DOUBLE);
     glutInitWindowPosition(50, 50);
@@ -487,7 +494,7 @@ void main()
         exit(-1);
     }  
     
-    glutDisplayFunc(Display);
+    glutDisplayFunc(display);
     glutIdleFunc(Idle);
     glutReshapeFunc(Reshape);
     glutKeyboardFunc(Keyboard);
