@@ -25,7 +25,7 @@ CFG=OpenCSG - Win32 Debug
 # PROP AllowPerConfigDependencies 0
 # PROP Scc_ProjName ""
 # PROP Scc_LocalPath ""
-CPP=xicl6.exe
+CPP=cl.exe
 RSC=rc.exe
 
 !IF  "$(CFG)" == "OpenCSG - Win32 Release"
@@ -119,6 +119,10 @@ SOURCE=..\src\occlusionQuery.h
 # End Source File
 # Begin Source File
 
+SOURCE=..\src\opencsgConfig.h
+# End Source File
+# Begin Source File
+
 SOURCE=..\src\opencsgRender.cpp
 # End Source File
 # Begin Source File
@@ -184,10 +188,6 @@ SOURCE=..\src\stencilManager.h
 # Begin Source File
 
 SOURCE=..\include\opencsg.h
-# End Source File
-# Begin Source File
-
-SOURCE=..\include\opencsgConfig.h
 # End Source File
 # End Group
 # End Target

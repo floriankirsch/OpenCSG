@@ -178,6 +178,9 @@
 				RelativePath="..\src\occlusionQuery.h">
 			</File>
 			<File
+				RelativePath="..\src\opencsgConfig.h">
+			</File>
+			<File
 				RelativePath="..\src\opencsgRender.cpp">
 				<FileConfiguration
 					Name="Release|Win32">
@@ -364,9 +367,6 @@
 			Filter="h;hpp;hxx;hm;inl">
 			<File
 				RelativePath="..\include\opencsg.h">
-			</File>
-			<File
-				RelativePath="..\include\opencsgConfig.h">
 			</File>
 		</Filter>
 	</Files>
