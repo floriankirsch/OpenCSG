@@ -24,10 +24,13 @@
 #ifndef __OpenCSG__channel_manager_h__
 #define __OpenCSG__channel_manager_h__
 
+// #define USE_FBO
+
 #include "opencsgConfig.h"
 #include <utility>
 #include <vector>
 
+class AbstractRenderTexture;
 class RenderTexture;
 
 namespace OpenCSG {
@@ -75,7 +78,11 @@ namespace OpenCSG {
             // moved into alpha, to allow alpha testing of the channel
 
     private:
+#ifdef USE_FBO
+        static AbstractRenderTexture* pbuffer_;
+#else
         static RenderTexture* pbuffer_;
+#endif
         static bool inUse_;
 
         bool inPBuf_;
