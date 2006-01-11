@@ -82,6 +82,10 @@ namespace OpenCSG {
                 }
             }
 
+            glDisable(GL_ALPHA_TEST);
+            glDisable(GL_CULL_FACE);
+            glDepthFunc(GL_LEQUAL);
+
             scissor->disable();
 
             resetProjectiveTexture();
