@@ -1,0 +1,170 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" 
+"http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+  <meta http-equiv="Content-Style-Type" content="text/css">
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <meta name="Author" content="Florian Kirsch">
+  <meta name="KeyWords" content="OpenCSG, CSG, image-based, image-based CSG, rendering, SCS, Goldfeather, OpenGL">
+
+  <title>Publications related to OpenCSG</title>
+  <link rel="shortcut icon" href="http://www.opencsg.org/favicon.ico" type="image/ico">
+</head>
+
+<body style="font-family: verdana,arial,sans-serif">
+
+<table cellpadding="10" cellspacing="0" border="0">
+ <tbody>
+  <tr><td><img src="img/logo.gif" alt="OpenCSG logo"></td>
+   <td width="480" style="text-align: center;">
+     <h1> Publications related to OpenCSG </h1>
+     <b>
+     <a href="index.html">Back to main page</a> &nbsp;&nbsp;
+     </b>
+   </td>
+   <td><img src="img/ogl.gif" alt="OpenGL logo"></td>
+  </tr>
+ </tbody>
+</table>
+
+<hr>
+
+<a name="wscg"><h3>Florian Kirsch and Jürgen Döllner:<br>Rendering Techniques for Hardware-Accelerated Image-Based CSG</h3></a>
+
+<table cellpadding="10" cellspacing="0" border="0">
+<tbody>
+<tr>
+<td>
+
+<p><small>Journal of WSCG, 12(2):221-228, 2004.</small></p>
+
+<p>
+<b>Abstract: </b> Image-based CSG rendering algorithms for standard
+graphics hardware rely on multipass rendering that includes reading and 
+writing large amounts of pixel data from and to the frame buffer. 
+Since the performance of this data path has hardly improved over the 
+last years, we describe new implementation techniques that efficiently 
+use modern graphics hardware.
+</p>
+
+<p>
+1) The render-to-texture ability is used to temporarily store shape
+visibility, avoiding the expensive copy of z-buffer content to external memory.
+Shape visibility is encoded discretely instead of using depth values. 
+Hence, the technique is also not susceptible to artifacts in contrast to 
+previously described methods.
+</p>
+
+<p>
+2) We present an image-based technique for calculating the depth complexity 
+of a CSG shape that avoids reading and analyzing pixel data from the 
+frame buffer.
+</p>
+
+<p>
+Both techniques optimize various CSG rendering algorithms, namely the
+Goldfeather and the layered Goldfeather algorithm, and the
+Sequenced-Convex-Subtraction (SCS) algorithm. This way, these 
+image-based CSG algorithms now operate accelerated by graphics
+hardware and, therefore, represent a significant improvement
+towards real-time image-based CSG rendering for complex models. 
+</p>
+
+<p>Download:</p>
+<ul>
+<li><a href="http://wscg.zcu.cz/wscg2004/Papers_2004_Full/M11.pdf">Paper</a></li>
+<li><a href="data/csg_wscg2005_talk.pdf">Talk</a></li>
+</ul>
+
+</td>
+
+<td valign="top"><img src="img/drivetrain.png" alt="WSCG04-Image" /></td>
+
+</tr></tbody></table>
+
+<hr>
+
+<a name="freenix"><h3>Florian Kirsch and Jürgen Döllner:<br>OpenCSG: A Library for Image-Based CSG Rendering</h3></a>
+
+<table cellpadding="10" cellspacing="0" border="0">
+<tbody>
+<tr>
+<td>
+
+<p><small>Proceedings of the FREENIX / Open Source Track, 2005 USENIX Annual Technical Conference, 129-140, 2005.</small></p>
+
+<p>
+<b>Abstract: </b> We present the design and implementation of a real-time 
+3D graphics library for Constructive Solid Geometry (CSG).
+This major approach of 3D modeling has not been supported 
+by real-time computer graphics until recently.
+</p>
+
+<p>
+We describe two essential image-based CSG rendering 
+algorithms and an API that provides a compact access
+to their complex functionality and implementation. 
+As an important feature, the CSG library seamlessly
+integrates application-defined 3D shapes as primitives
+of CSG operations to ensure high adaptability and openness.
+We also outline optimization techniques to improve the 
+performance in the case of complex CSG models.
+A number of use cases demonstrate potential applications of the library.
+</p>
+
+<p>Download:</p>
+<ul>
+<li><a href="data/csg_freenix2005_paper.pdf">Paper</a></li>
+<li><a href="data/csg_freenix2005_talk.pdf">Talk</a></li>
+</ul>
+
+</td>
+
+<td valign="top"><img src="img/logo.gif" alt="Bumpmapped, shadowed CSG widget" /></td>
+
+</tr></tbody></table>
+
+<a name="diss"><h3>Florian Kirsch:<br>Entwurf und Implementierung eines computergraphischen Systems zur Integration komplexer, echtzeitfähiger 3D-Renderingverfahren</h3></a>
+
+<table cellpadding="10" cellspacing="0" border="0">
+<tbody>
+<tr>
+<td>
+
+<p><small><a href="http://opus.kobv.de/ubp/volltexte/2005/607/">Published online, URN: urn:nbn:de:kobv:517-opus-6079</a>, 2005.</small></p>
+
+<p>
+In my doctoral dissertation, I discuss how to integrate a variety of
+different rendering algorithms, such as shadow mapping, reflection algorithms,
+bump mapping, CSG rendering, etc., into a scene graph system. The goal
+is to be able to use and combine several of those algorithms at the same time.
+To simplify this task for the programmer using the scene graph, the
+rendering effects are specified in the scene graph in a declarative way,
+without notion of settings of the graphics hardware or of the required
+rendering algorithms. Those are, consequently, derived internally 
+by the library for evaluating the scene graph. 
+</p>
+
+<p>
+In practice, this means that using this system I have combined all algorithms
+provided by OpenCSG with different flavors of shadow mapping, stenciled
+and textured reflections, environment mapping and bump mapping. 
+</p>
+
+<p><a href="http://opus.kobv.de/ubp/volltexte/2005/607/">Download</a></p>
+
+</td>
+
+<td valign="top"><img src="img/diss.jpg" alt="OpenCSG Logo" /></td>
+
+</tr></tbody></table>
+
+<hr>
+
+<center><p>
+&copy; 2006 Florian Kirsch. <br>
+Last change: 29.01.2006
+</p></center>
+
+</body>
+</html>

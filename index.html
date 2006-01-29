@@ -28,8 +28,10 @@
      <a href="#usage">Usage</a> &nbsp;&nbsp;
      <a href="#download">Download</a> &nbsp;&nbsp;
      <a href="#applications">Applications</a> &nbsp;&nbsp;
+     <a href="#background">Background</a> &nbsp;&nbsp;
+     <a href="publications.html">Publications</a> &nbsp;&nbsp;
+     <a href="#FAQ">FAQ</a> &nbsp;&nbsp;
      <a href="#license">License</a> &nbsp;&nbsp;
-     <a href="#FAQ">FAQ</a> 
      </b>
    </td>
    <td><img src="img/ogl.gif" alt="OpenGL logo"></td>
@@ -148,7 +150,7 @@ queries, which are available since Radeon 9x00 (x>=5) and GeForce3
 </p>
 
 <p>
-OpenCSG has been sucessfully run on Intel and AMD hardware using GeForceFX 5600,
+OpenCSG has been sucessfully run on Intel and AMD hardware using GeForceFX 6800, GeForceFX 5600,
 GeForce3, GeForce4MX, Radeon 9700, and TNT2 graphcs hardware (on the latter,
 it crawls ...). On a Radeon 9000, there are currently rendering errors
 in all but the standard Goldfeather rendering path. I am investigating
@@ -369,6 +371,90 @@ Currently, I know of the following applications making use of OpenCSG:
 
 <hr>
 
+<h3> <a name="background">Background</a> </h3>
+
+<p>
+I have developed the algorithms for OpenCSG in my time as research assistent
+at HPI at the University Potsdam. In this time the following publications 
+about OpenCSG and about image-based CSG rendering have been written:
+</p>
+
+<table cellpadding="5" cellspacing="0" border="0" style="text-align: left;">
+<tbody>
+<tr>
+<td style="text-align: center;"><a href="http://www.opencsg.org/publications.html#wscg"><img src="img/drivetrain.gif" alt="WSCG04-Icon" /></a></td>
+<td>
+<p><b>F. Kirsch, J. Döllner: 
+      <a href="http://www.opencsg.org/publications.html#wscg">Rendering Techniques for Hardware-Accelerated Image-Based CSG</a>.
+</b> Journal of WSCG, 12(2):221-228, 2004. </p>
+<p> This paper gives an introduction to image-based CSG rendering and describes
+    the two techniques that are used in OpenCSG to accelerate rendering compared
+    to older implementations: Visibility transfer using textures and occlusion
+    queries for the SCS algorithm. </p>
+</td>
+</tr>
+<tr>
+<td style="text-align: center;"><a href="http://www.opencsg.org/publications.html#freenix"><img src="img/opencsglogo.gif" alt="OpenCSG-Icon" /></a></td>
+<td>
+<p><b>F. Kirsch, J. Döllner:
+      <a href="http://www.opencsg.org/publications.html#freenix">OpenCSG: A Library for Image-Based CSG Rendering</a>.
+</b> Proceedings of the FREENIX / Open Source Track, 2005 USENIX Annual Technical Conference, 129-140, 2005. </p>
+<p> This paper describes OpenCSG itself. It concentrates on the API, explaining
+    internal implementation details only as shortly as possible. It also outlines
+    possible non-obvious uses of OpenCSG. </p>
+</td>
+</tr>
+<tr>
+<td style="text-align: center;"><a href="http://www.opencsg.org/publications.html#diss"><img src="img/diss.gif" alt="Dissertation-Icon" /></a></td>
+<td>
+<p><b>F. Kirsch:
+      <a href="http://www.opencsg.org/publications.html#diss">Entwurf und Implementierung eines computergraphischen Systems zur Integration komplexer, echtzeitfähiger 3D-Renderingverfahren</a>.
+</b> <a href="http://opus.kobv.de/ubp/volltexte/2005/607/">Published online, URN: urn:nbn:de:kobv:517-opus-6079</a>, 2005. </p>
+<p> My doctoral dissertation (in german) describes an approach for integration
+    and combination of several rendering techniques using a scene graph system. 
+    As such, it contains a long chapter covering CSG rendering. </p>
+</td>
+</tr>
+</tbody>
+</table>
+
+<center><a href="http://www.opencsg.org/img/grid.jpg"><img src="img/grid.gif" border="0" alt="CSG columns"></a></center>
+
+<hr>
+
+<h3> <a name="FAQ">FAQ</a> </h3>
+
+<ol>
+  <li>
+    <p><b>Can I render a shape with
+    different colors? The documentation says I must not change the primary
+    color in the function of my class for primitives, since
+    OpenCSG uses the color for internal purposes.</b> </p>
+    <p> You can shade your shapes with whatever color you want.
+      While your primitive objects for use in OpenCSG must not use
+    the primary color, after calculating z-values with OpenCSG you are free
+    to render the same geometry with primary colors. </p>
+  </li>
+  <li>
+    <p><b>Can OpenCSG calculate the geometry of a CSG expression?</b> </p>
+    <p> No, unfortunately this is not possible using image-based CSG algorithms
+        (at least not in a trivial way). If you require this, have a look
+        at other libraries such as the
+        <a href="http://gts.sourceforge.net">GTS library</a>. </p>
+  </li>
+  <li>
+    <p><b>What are the dependencies of the example program?</b> </p>
+    <p> The OpenCSG example requires <a href="http://www.opengl.org/resources/libraries/glut.html">GLUT</a>. This library is likely pre-installed with your
+        favorite linux installation. Visual Studio users can install
+        <a href="http://www.xmission.com/~nate/glut.html">GLUT for Windows</a>.
+        Dev-C++ users can install the <a href="http://mywebpage.netscape.com/PtrPck/glut.htm">precompiled GLUT for Mingw32</a>. </p>
+  </li>
+</ol>
+
+<center><a href="http://www.opencsg.org/img/columns.jpg"><img src="img/columns.gif" border="0" alt="CSG columns"></a></center>
+
+<hr>
+
 <h3> <a name="license">License</a> </h3>
 
 <p>
@@ -412,40 +498,14 @@ RenderTexture</a>. These libraries are licensed under the terms of
 their respective authors. 
 </p>
 
-<center><a href="http://www.opencsg.org/img/columns.jpg"><img src="img/columns.gif" border="0" alt="CSG columns"></a></center>
-
-<hr>
-
-<h3> <a name="FAQ">FAQ</a> </h3>
-
-<ol>
-  <li>
-    <p><b>Can I render a shape with
-	different colors? The documentation says I must not change the primary
-	color in the function of my class for primitives, since
-	OpenCSG uses the color for internal purposes.</b> </p>
-    <p> You can shade your shapes with whatever color you want.
-      While your primitive objects for use in OpenCSG must not use
-	the primary color, after calculating z-values with OpenCSG you are free
-	to render the same geometry with primary colors. </p>
-  </li>
-  <li>
-    <p><b>What are the dependencies of the example program?</b> </p>
-    <p> The OpenCSG example requires <a href="http://www.opengl.org/resources/libraries/glut.html">GLUT</a>. This library is likely pre-installed with your
-        favorite linux installation. Visual Studio users can install
-        <a href="http://www.xmission.com/~nate/glut.html">GLUT for Windows</a>.
-        Dev-C++ users can install the <a href="http://mywebpage.netscape.com/PtrPck/glut.htm">precompiled GLUT for Mingw32</a>. </p>
-  </li>
-</ol>
-
-<center><a href="http://www.opencsg.org/img/grid.jpg"><img src="img/grid.gif" border="0" alt="CSG grid"></a></center>
+<center><a href="http://www.opencsg.org/img/grid.jpg"><img src="img/grid.gif" border="0" alt="CSG columns"></a></center>
 
 <hr>
 
 <center><p>
 &copy; 2002-2005 Hasso-Plattner-Institute Potsdam, 
 <a href="mailto:florian.kirsch@hpi.uni-potsdam.de">Florian Kirsch</a>. <br>
-Last change: 27.01.2006
+Last change: 29.01.2006
 </p></center>
 
 </body>
