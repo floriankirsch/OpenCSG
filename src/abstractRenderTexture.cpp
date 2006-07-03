@@ -43,7 +43,6 @@ bool AbstractRenderTexture::Initialize(int width, int height, bool shareObjects,
 
     glGenFramebuffersEXT(1, &framebufferID);
     glGenRenderbuffersEXT(1, &depthID); 
-    //glGenRenderbuffersEXT(1, &stencilID); 
     glGenTextures(1, &textureID);
 
     glBindFramebufferEXT(GL_FRAMEBUFFER_EXT, framebufferID);	
@@ -53,10 +52,6 @@ bool AbstractRenderTexture::Initialize(int width, int height, bool shareObjects,
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR); 
     glFramebufferTexture2DEXT(GL_FRAMEBUFFER_EXT, GL_COLOR_ATTACHMENT0_EXT, GL_TEXTURE_2D, textureID, 0);
 
-    //glBindRenderbufferEXT(GL_RENDERBUFFER_EXT, stencilID);
-    //glRenderbufferStorageEXT(GL_RENDERBUFFER_EXT, GL_STENCIL_INDEX8_EXT, 512, 512);
-    //glFramebufferRenderbufferEXT(GL_FRAMEBUFFER_EXT, GL_STENCIL_ATTACHMENT_EXT, GL_RENDERBUFFER_EXT, stencilID);
-	
     glBindRenderbufferEXT(GL_RENDERBUFFER_EXT, depthID);
     glRenderbufferStorageEXT(GL_RENDERBUFFER_EXT, GL_DEPTH_STENCIL_NV, width, height);
     glFramebufferRenderbufferEXT(GL_FRAMEBUFFER_EXT, GL_DEPTH_ATTACHMENT_EXT, GL_RENDERBUFFER_EXT, depthID);
@@ -77,7 +72,6 @@ bool AbstractRenderTexture::Reset(const char* strMode,...)
 {
     glDeleteTextures(1, &textureID);
     glDeleteRenderbuffersEXT(1, &depthID); 
-    glDeleteRenderbuffersEXT(1, &stencilID); 
     glDeleteFramebuffersEXT(1, &framebufferID);
     return true;
 }
@@ -86,9 +80,7 @@ bool AbstractRenderTexture::Reset(const char* strMode,...)
 bool AbstractRenderTexture::Resize(int width, int height)
 {
     Reset(0);
-    Resize(width, height);
     return true;
-
 }
 
 // !Begin drawing to the texture. (i.e. use as "output" texture)

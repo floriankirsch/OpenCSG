@@ -1,3 +1,7 @@
+03.07.2006
+    Fixed: Infinite recursion when resizing viewer in framebuffer
+        object code
+
 11.01.2006
     Added: Framebuffer object support
 

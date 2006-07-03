@@ -65,7 +65,6 @@ protected: // data
     GLenum       textureTarget;
     unsigned int textureID;
     unsigned int depthID;
-    unsigned int stencilID;
 
     unsigned int framebufferID;
 

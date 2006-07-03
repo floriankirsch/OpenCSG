@@ -185,7 +185,6 @@ namespace OpenCSG {
         }
 
         if (rebuild) {
-            // should not be required after Resize() - but in practice I get errors (20.07.2004, Quadro FX500, 61.40)
             if (!pbuffer_->Initialize(tx, ty, true, false)) {
                 assert(0);
             }
