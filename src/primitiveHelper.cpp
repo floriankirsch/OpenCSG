@@ -94,8 +94,9 @@ namespace OpenCSG {
 
             glReadPixels(area.minx, area.miny, dx, dy, GL_STENCIL_INDEX, GL_UNSIGNED_BYTE, &(buf[0]));
 
-            glEnable(GL_DEPTH_TEST);
             glDisable(GL_CULL_FACE);
+            glDisable(GL_STENCIL_TEST);
+            glEnable(GL_DEPTH_TEST);
 
             unsigned char m = *std::max_element(buf.begin(), buf.end());
 
