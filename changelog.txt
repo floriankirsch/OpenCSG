@@ -1,3 +1,7 @@
+12.07.2006
+    Fixed: SCS / depth-complexity sampling / FBO: After depth-complexity
+        sampling, stencil test was enabled resulting in rendering errors
+
 03.07.2006
     Fixed: Infinite recursion when resizing viewer in framebuffer
         object code
