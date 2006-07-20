@@ -1,3 +1,10 @@
+20.07.2006
+    Added: getOptioni / setOptioni interface
+        OffscreenType setting to switch between framebuffer objects and pbuffer
+        offscreenBuffer abstract base class to support this and corresponding
+        implementations frameBufferObject and pBufferTexture
+        Added such options in example program
+
 12.07.2006
     Fixed: SCS / depth-complexity sampling / FBO: After depth-complexity
         sampling, stencil test was enabled resulting in rendering errors

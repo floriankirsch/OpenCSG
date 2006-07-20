@@ -22,25 +22,16 @@
 #include "opencsgConfig.h"
 #include <GL/glew.h>
 
-#ifdef _WIN32
-#include <GL/wglew.h>
-#else // _WIN32 not defined, assume glX
-#include <GL/glxew.h>
-#endif // _WIN32
-
 #include "channelManager.h"
+#include "offscreenBuffer.h"
 #include "openglHelper.h"
-#include "RenderTexture/RenderTexture.h"
-#include "abstractRenderTexture.h"
+#include "settings.h"
 #include <cassert>
 
 namespace OpenCSG {
-    
-#ifdef USE_FBO
-    AbstractRenderTexture* ChannelManager::pbuffer_ = 0;
-#else
-    RenderTexture* ChannelManager::pbuffer_ = 0;
-#endif
+
+    OpenCSG::OpenGL::OffscreenBuffer* ChannelManager::pbuffer_ = 0;
+
     bool ChannelManager::inUse_ = false;
     
     namespace {
@@ -125,16 +116,11 @@ namespace OpenCSG {
 
         bool rebuild = false;
         if (pbuffer_ == 0) {
-
-#ifdef USE_FBO
-            pbuffer_ = new AbstractRenderTexture("rgba tex2D depth=24 stencil=8 single");
-#else 
-            if (GLEW_NV_texture_rectangle) {
-                pbuffer_ = new RenderTexture("rgba texRECT depth=24 stencil=8 single");
+            if (getOptioni(OffscreenSetting) == FrameBufferObject) {
+                pbuffer_ = OpenGL::getOffscreenBuffer(true);
             } else {
-                pbuffer_ = new RenderTexture("rgba tex2D depth=24 stencil=8 single");
-            }
-#endif
+                pbuffer_ = OpenGL::getOffscreenBuffer(false);
+            } 
             rebuild = true;
         // tx == ty == 0 happens if the window is minimized, in this case don't touch a thing
         } else if (tx != 0 && ty != 0) {
@@ -238,26 +224,29 @@ namespace OpenCSG {
     Channel ChannelManager::request() {
         if (!inPBuf_) {
             pbuffer_->BeginCapture();
-#ifdef USE_FBO
-            glPushAttrib(GL_ALL_ATTRIB_BITS);
-#endif
+            if (pbuffer_->haveSeparateContext()) {
+                glFrontFace(FaceOrientation);
+            } else {
+                glPushAttrib(GL_ALL_ATTRIB_BITS);
+            }
+
             inPBuf_ = true;
 
             glGetIntegerv(GL_STENCIL_BITS, &OpenGL::stencilBits);
             OpenGL::stencilMax = 1 << OpenGL::stencilBits;
             OpenGL::stencilMask = OpenGL::stencilMax - 1;
 
-            glFrontFace(FaceOrientation);
-
             currentChannel_ = NoChannel;
             occupiedChannels_ = NoChannel;
         }
 
-        glViewport(OpenGL::canvasPos[0], OpenGL::canvasPos[1], OpenGL::canvasPos[2], OpenGL::canvasPos[3]);
-        glMatrixMode(GL_PROJECTION);
-        glLoadMatrixf(OpenGL::projection);
-        glMatrixMode(GL_MODELVIEW);
-        glLoadMatrixf(OpenGL::modelview);
+        if (pbuffer_->haveSeparateContext()) {
+            glViewport(OpenGL::canvasPos[0], OpenGL::canvasPos[1], OpenGL::canvasPos[2], OpenGL::canvasPos[3]);
+            glMatrixMode(GL_PROJECTION);
+            glLoadMatrixf(OpenGL::projection);
+            glMatrixMode(GL_MODELVIEW);
+            glLoadMatrixf(OpenGL::modelview);
+        }
 
         currentChannel_ = find();
         occupiedChannels_ |= currentChannel_;
@@ -364,16 +353,12 @@ namespace OpenCSG {
         // Therefore we do not check for the extension, but simply for the texture format
         // Update (08.04.2004): Fixed the flaw, but kept checking the texture format.
         // Actually that seems safer, since it should work always
-#ifndef USE_FBO
         if (pbuffer_->GetTextureTarget() == GL_TEXTURE_2D) {
-#endif
             // with ordinary pow-of-two texture coordinates are between 0 and 1
             // but we must assure only the used part of the texture is taken.
             factorX /= static_cast<float>(pbuffer_->GetWidth());
             factorY /= static_cast<float>(pbuffer_->GetHeight());
-#ifndef USE_FBO
         }
-#endif
 
         float   texCorrect[16] = { factorX, 0.0, 0.0, 0.0, 
                                    0.0, factorY, 0.0, 0.0, 
@@ -393,18 +378,16 @@ namespace OpenCSG {
     }
 
     void ChannelManager::resetProjectiveTexture() {
-        glMatrixMode(GL_TEXTURE);
-#ifdef USE_FBO
-        glPopMatrix();
-#endif
+        if (!pbuffer_->haveSeparateContext()) {
+            glDisable(GL_TEXTURE_GEN_S);
+            glDisable(GL_TEXTURE_GEN_T);
+            glDisable(GL_TEXTURE_GEN_R);
+            glDisable(GL_TEXTURE_GEN_Q);
+            glMatrixMode(GL_TEXTURE);
+            glPopMatrix();
+        }
         glMatrixMode(GL_MODELVIEW);
 
-#ifdef USE_FBO
-        glDisable(GL_TEXTURE_GEN_S);
-        glDisable(GL_TEXTURE_GEN_T);
-        glDisable(GL_TEXTURE_GEN_R);
-        glDisable(GL_TEXTURE_GEN_Q);
-#endif
         pbuffer_->DisableTextureTarget();
     }
 
@@ -441,6 +424,13 @@ namespace OpenCSG {
             glTexEnvi(GL_TEXTURE_ENV, GL_SOURCE1_RGB_EXT, GL_PRIMARY_COLOR);
             glTexEnvi(GL_TEXTURE_ENV, GL_OPERAND1_RGB_EXT, GL_SRC_COLOR);
         }
+    }
+
+    ChannelManager::invalidateOffscreenBuffer() {
+        if (pbuffer_) {
+            pbuffer_->Reset();
+        }
+        pbuffer_ = 0;
     }
 
 

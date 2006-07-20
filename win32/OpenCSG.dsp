@@ -87,14 +87,6 @@ LIB32=link.exe -lib
 # PROP Default_Filter "cpp;c;cxx;rc;def;r;odl;idl;hpj;bat"
 # Begin Source File
 
-SOURCE=..\src\abstractRenderTexture.cpp
-# End Source File
-# Begin Source File
-
-SOURCE=..\src\abstractRenderTexture.h
-# End Source File
-# Begin Source File
-
 SOURCE=..\src\area.cpp
 # End Source File
 # Begin Source File
@@ -119,11 +111,27 @@ SOURCE=..\src\channelManager.h
 # End Source File
 # Begin Source File
 
+SOURCE=..\src\frameBufferObject.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=..\src\frameBufferObject.h
+# End Source File
+# Begin Source File
+
 SOURCE=..\src\occlusionQuery.cpp
 # End Source File
 # Begin Source File
 
 SOURCE=..\src\occlusionQuery.h
+# End Source File
+# Begin Source File
+
+SOURCE=..\src\offscreenBuffer.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=..\src\offscreenBuffer.h
 # End Source File
 # Begin Source File
 
@@ -144,6 +152,14 @@ SOURCE=..\src\openglHelper.cpp
 # Begin Source File
 
 SOURCE=..\src\openglHelper.h
+# End Source File
+# Begin Source File
+
+SOURCE=..\src\pBufferTexture.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=..\src\pBufferTexture.h
 # End Source File
 # Begin Source File
 
@@ -180,6 +196,14 @@ SOURCE=..\src\scissorMemo.cpp
 # Begin Source File
 
 SOURCE=..\src\scissorMemo.h
+# End Source File
+# Begin Source File
+
+SOURCE=..\src\settings.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=..\src\settings.h
 # End Source File
 # Begin Source File
 

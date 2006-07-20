@@ -24,16 +24,15 @@
 #ifndef __OpenCSG__channel_manager_h__
 #define __OpenCSG__channel_manager_h__
 
-// #define USE_FBO
-
 #include "opencsgConfig.h"
 #include <utility>
 #include <vector>
 
-class AbstractRenderTexture;
-class RenderTexture;
-
 namespace OpenCSG {
+
+    namespace OpenGL {
+        class OffscreenBuffer;
+    }
 
     class Primitive;
 
@@ -77,12 +76,13 @@ namespace OpenCSG {
             // activate texenv settings such that information in channel is
             // moved into alpha, to allow alpha testing of the channel
 
+        static invalidateOffscreenBuffer();
+            // sets the pbuffer_ variable to 0, such that it is recreated
+            // in the next iteration
+
     private:
-#ifdef USE_FBO
-        static AbstractRenderTexture* pbuffer_;
-#else
-        static RenderTexture* pbuffer_;
-#endif
+
+        static OpenGL::OffscreenBuffer* pbuffer_;
         static bool inUse_;
 
         bool inPBuf_;

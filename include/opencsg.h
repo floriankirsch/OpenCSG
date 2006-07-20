@@ -30,42 +30,44 @@ namespace OpenCSG {
 
     enum Operation { Intersection, Subtraction };
 
-    // abstract base class for CSG primitives. 
-    // from this class, derive concrete classes to do CSG rendering
+    // Abstract base class for CSG primitives. 
+    // From this class, derive concrete classes to do CSG rendering
     class Primitive {
     public:
         Primitive(Operation, unsigned int convexity);
         virtual ~Primitive();
 
+        // The Operation specifies whether the primitive is intersected
+        // or subtracted
         void setOperation(Operation);
         Operation getOperation() const;
-            // specifies whether the primitive is intersected or subtracted
 
+        // The Convexity is the maximum number of front faces of the
+        // primitive at a single position. For example, the convexity
+        // of a sphere is 1, and of a torus is 2. Actually the convexity
+        // is only used in the Goldfeather algorithm. For this algorithm, 
+        // a convexity too low may result in rendering errors, a convexity
+        // too high will reduce rendering performance.
         void setConvexity(unsigned int);
         unsigned int getConvexity() const;
-            // maximum number of front faces of the primitive at a single
-            // position. For example, the convexity of a sphere is 1, and
-            // of a torus is 2. Actually the convexity is only used in the 
-            // Goldfeather algorithm. For this algorithm, a convexity too 
-            // low may result in rendering errors, a convexity too high will
-            // reduce rendering performance.
 
+        // The bounding box of the primitive is given in normalized device 
+        // coordinates, i.e. after modelview and projection transformation.
+        // Setting it is not required, but allows for various performance
+        // optimizations.
         void setBoundingBox(float  minx, float  miny, float  minz,
                             float  maxx, float  maxy, float  maxz);
         void getBoundingBox(float& minx, float& miny, float& minz,
                             float& maxx, float& maxy, float& maxz) const;
-            // Sets the bounding box of the primitive in normalized device 
-            // coordinates, i.e. after modelview and projection transfor-
-            // mation. Setting this is not mandatory, but allows for various 
-            // performance optimizations.
 
+        // render() is the abstract render method, to be implemented in
+        // derived classes. In the implementation, be sure not to alter
+        // the modelview or projection (glPushMatrix/glPopMatrix might be
+        // a good idea). Also do not alter colors in your render() method:
+        // OpenCSG uses them internally. For best performance, you should
+        // only transmit vertex positions; no normals, tex coords or
+        // whatever else.
         virtual void render() = 0;
-            // abstract render method. overwrite it in derived classes. Be 
-            // sure not to alter the modelview or projection (glPush/PopMatrix
-            // might be a good idea). Also do not alter colors in your render-
-            // method; OpenCSG uses them internally. For best performance, you
-            // should only transmit vertex positions; no normals, tex coords 
-            // or whatever else.
 
     private:
         Operation operation_;
@@ -73,42 +75,42 @@ namespace OpenCSG {
         float minx_, miny_, minz_, maxx_, maxy_, maxz_;
     };
 
-    enum Algorithm { Automatic, Goldfeather, SCS };
-    enum DepthComplexityAlgorithm { NoDepthComplexitySampling, OcclusionQuery, DepthComplexitySampling };
+    enum OptionType {
+        AlgorithmSetting       = 0,
+        DepthComplexitySetting = 1,
+        OffscreenSetting       = 2,
+        OptionTypeUnused       = 3
+    };
 
-    void render(const std::vector<Primitive*>& primitives, 
-                Algorithm = Automatic, 
-                DepthComplexityAlgorithm = NoDepthComplexitySampling);
-    // Performs CSG rendering. I.e., this function initializes the z-buffer
-    // with the z-values of the CSG product given as array of primitives. 
-    // render() does not alter the color buffer, so you have to shade the 
-    // primitives using GL_EQUAL depth function afterwards. The content of 
-    // the stencil buffer is destroyed when handling concave primitives or 
-    // when using the DepthComplexitySampling strategy (see below).
-    //
-    // render() respects the OpenGL settings of 
-    //   - scissor test (CSG calculating will only occur in the specified region)
-    //   - stencil test, when only convex primitives are used and no layered 
-    //         algorithm is used. Most stenciling ops (increment / decrement 
-    //         / zero / one) will not be useful anyway
-    //
-    // render() ignores
-    //   - depth test (always GL_LESS)
-    //   - alpha test (used internally)
-    //   - cull face  (used internally to distinguish intersected / subtracted 
-    //         primitives)
-    //
-    // The argument Algorithm specifies the method used for CSG rendering:
-    //   - Goldfeather: handles convex and concave primitives.
-    //   - SCS        : handles only convex primitives
-    //   - Automatic  : currently chooses Goldfeather if the primitive vector
-    //                  contains concave primitives, else it choses SCS. Also
-    //                  sets the DepthComplexityAlgorithm (NoDepthComplexitySampling
-    //                  for arrays with few primitives, else OcclusionQuery 
-    //                  or at the last resort DepthComplexitySampling)
-    //
-    // The argument DepthComplexityAlgorithm specifies the strategy for 
-    //                  profiting from depth complexity.
+    // Sets / gets a rendering option. The option parameter specifies
+    // which option to set. The newSetting is the new setting and should
+    // be one of the Algorithm, DepthComplexityAlgorithm, or OffscreenType
+    // enums below.
+    void setOptioni(OptionType option, int newSetting);
+    int  getOptioni(OptionType option);
+
+    // The Algorithm specifies the method used for CSG rendering:
+    //   - Goldfeather: This algorithm handles convex and concave primitives.
+    //   - SCS        : This algorithm handles only convex primitives
+    //   - Automatic  : This setting currently choses Goldfeather if the
+    //                  primitive vector contains concave primitives, else it
+    //                  choses SCS. Also sets the DepthComplexityAlgorithm
+    //                  (NoDepthComplexitySampling for arrays with few
+    //                  primitives, else OcclusionQuery or at the last resort
+    //                  DepthComplexitySampling). This setting is the default.
+    //   - AlgorithmUnused : Invalid input for use with setOption. As parameter
+    //                  of the render() function, specifies to read all OpenCSG
+    //                  settings from the settings set with setOption() and not
+    //                  from the parameter list of render().
+    enum Algorithm {
+        Automatic        = 0,
+        Goldfeather      = 1,
+        SCS              = 2,
+        AlgorithmUnused  = 3
+    };
+
+    // The DepthComplexityAlgorithm specifies the strategy for profiting
+    // from depth complexity.
     //   - NoDepthComplexitySampling: Does not employ the depth complexity.
     //                  This essentially makes the algorithm O(n²), but with
     //                  low constant costs.
@@ -125,6 +127,54 @@ namespace OpenCSG {
     //                  constant overhead. This strategy requires hardware 
     //                  occlusion queries (i.E., the OpenGL-extension 
     //                  GL_ARB_occlusion_query or GL_NV_occlusion_query)
+    //   - DepthComplexityAlgorithmUnused: Invalid input. 
+    enum DepthComplexityAlgorithm {
+        NoDepthComplexitySampling      = 0,
+        OcclusionQuery                 = 1,
+        DepthComplexitySampling        = 2,
+        DepthComplexityAlgorithmUnused = 3
+    };
+
+    // The OffscreenType sets the type of offscreen buffer which is used for
+    // the internal calculations. 
+    //   - AutomaticOffscreenType: Chooses internally depending on available
+    //                  OpenGL extensions. 
+    //   - FrameBufferObject: Uses frame buffer objects. This method does 
+    //                  not require context switches on the graphics hardware
+    //                  to change between offscreen and main frame buffer, so
+    //                  in theory this method should be faster.
+    //   - PBuffer: Uses PBuffers. This is the older offscreen type, which
+    //                  is likely to work with older graphics hardware and
+    //                  drivers.
+    //   - OffscreenTypeUnused: Invalid input. 
+    enum OffscreenType {
+        AutomaticOffscreenType = 0,
+        FrameBufferObject      = 1,
+        PBuffer                = 2,
+        OffscreenTypeUnused    = 3
+    };
+
+    // The function render() performs CSG rendering. The function initializes 
+    // the z-buffer with the z-values of the CSG product given as array of 
+    // primitives. It does not alter the color buffer, so you have to shade
+    // the primitives using GL_EQUAL depth function afterwards. The content
+    // of the stencil buffer is destroyed when handling concave primitives or 
+    // when using the DepthComplexitySampling strategy.
+    //
+    // render() respects the OpenGL settings of 
+    //   - scissor test (CSG calculating will only occur in the specified region)
+    //   - stencil test, when only convex primitives are used and no layered 
+    //         algorithm is used. Most stenciling ops (increment / decrement 
+    //         / zero / one) will not be useful anyway
+    //
+    // render() ignores
+    //   - depth test (always GL_LESS)
+    //   - alpha test (used internally)
+    //   - cull face  (used internally to distinguish intersected / subtracted 
+    //         primitives)
+    void render(const std::vector<Primitive*>& primitives, 
+                Algorithm = AlgorithmUnused, 
+                DepthComplexityAlgorithm = NoDepthComplexitySampling);
 
 } // namespace OpenCSG
 

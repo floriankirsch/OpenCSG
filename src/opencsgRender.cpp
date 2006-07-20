@@ -24,6 +24,7 @@
 #include <GL/glew.h>
 #include "opencsgRender.h"
 #include "primitiveHelper.h"
+#include "settings.h"
 
 namespace OpenCSG {
 
@@ -62,6 +63,18 @@ namespace OpenCSG {
             return;
         }
 
+        int algorithmOrig;
+        int depthComplOrig;
+        bool legacyInterface = false;
+        if (algorithm != AlgorithmUnused) {
+            algorithmOrig  = getOptioni(AlgorithmSetting);
+            depthComplOrig = getOptioni(DepthComplexitySetting);
+            legacyInterface = true;
+        } else {
+            algorithm = (Algorithm)getOptioni(AlgorithmSetting);
+            depthComplexityAlgorithm = (DepthComplexityAlgorithm)getOptioni(DepthComplexitySetting);
+        }
+
         if (algorithm == Automatic) {
             algorithm = chooseAlgorithm(primitives);
             depthComplexityAlgorithm = chooseDepthComplexityAlgorithm(primitives);
@@ -93,6 +106,11 @@ namespace OpenCSG {
         
         default:
             ;
+        }
+
+        if (legacyInterface) {
+            setOptioni(AlgorithmSetting, algorithmOrig);
+            setOptioni(DepthComplexitySetting, depthComplOrig);
         }
     }
 
