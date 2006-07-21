@@ -61,8 +61,8 @@ using namespace std;
 * @brief Mode-string-based Constructor.
 */ 
 RenderTexture::RenderTexture(const char *strMode)
-:   _iWidth(0), 
-    _iHeight(0), 
+:   _iWidth(-1), 
+    _iHeight(-1), 
     _bIsTexture(false),
     _bIsDepthTexture(false),
     _bHasARBDepthTexture(true),            // [Redge]

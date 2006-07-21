@@ -76,7 +76,6 @@ namespace OpenCSG {
                 return false;
             }
 
-
         protected: // data
             int          width;     // width of the pbuffer
             int          height;    // height of the pbuffer

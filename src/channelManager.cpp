@@ -31,8 +31,8 @@
 namespace OpenCSG {
 
     OpenCSG::OpenGL::OffscreenBuffer* ChannelManager::pbuffer_ = 0;
-
-    bool ChannelManager::inUse_ = false;
+                                  int ChannelManager::offscreenType_ = OpenCSG::AutomaticOffscreenType;
+                                 bool ChannelManager::inUse_ = false;
     
     namespace {
 
@@ -115,13 +115,28 @@ namespace OpenCSG {
         static int maxPBufferSizeY = 1;
 
         bool rebuild = false;
-        if (pbuffer_ == 0) {
-            if (getOptioni(OffscreenSetting) == FrameBufferObject) {
+        int newOffscreenType = getOptioni(OffscreenSetting);
+        if (!pbuffer_ || (offscreenType_ != newOffscreenType)) {
+            offscreenType_ = newOffscreenType;
+            if (newOffscreenType == OpenCSG::AutomaticOffscreenType) {
+                if (   GLEW_EXT_framebuffer_object != 0
+                    && GLEW_EXT_packed_depth_stencil != 0)
+                {
+                     newOffscreenType =  OpenCSG::FrameBufferObject;
+                } else {
+                     newOffscreenType =  OpenCSG::PBuffer;
+                }
+            }
+            if (newOffscreenType == FrameBufferObject) {
                 pbuffer_ = OpenGL::getOffscreenBuffer(true);
             } else {
                 pbuffer_ = OpenGL::getOffscreenBuffer(false);
-            } 
-            rebuild = true;
+            }
+            if (pbuffer_->GetWidth() < tx || pbuffer_->GetHeight() < ty) {
+                // in particular, this detects newly created offscreen buffers,
+                // of which the width / height is -1
+                rebuild = true;
+            }
         // tx == ty == 0 happens if the window is minimized, in this case don't touch a thing
         } else if (tx != 0 && ty != 0) {
             
@@ -279,7 +294,9 @@ namespace OpenCSG {
 
     void ChannelManager::free() {
         if (inPBuf_) {
-            glPopAttrib();
+            if (!pbuffer_->haveSeparateContext()) {
+                glPopAttrib();
+            }
             pbuffer_->EndCapture();
             inPBuf_ = false;
         }
@@ -383,9 +400,10 @@ namespace OpenCSG {
             glDisable(GL_TEXTURE_GEN_T);
             glDisable(GL_TEXTURE_GEN_R);
             glDisable(GL_TEXTURE_GEN_Q);
-            glMatrixMode(GL_TEXTURE);
-            glPopMatrix();
         }
+
+        glMatrixMode(GL_TEXTURE);
+        glPopMatrix();
         glMatrixMode(GL_MODELVIEW);
 
         pbuffer_->DisableTextureTarget();
@@ -426,12 +444,6 @@ namespace OpenCSG {
         }
     }
 
-    ChannelManager::invalidateOffscreenBuffer() {
-        if (pbuffer_) {
-            pbuffer_->Reset();
-        }
-        pbuffer_ = 0;
-    }
 
 
 

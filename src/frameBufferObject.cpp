@@ -48,11 +48,14 @@ namespace OpenCSG {
 
         // ctor / dtor
         FrameBufferObject::FrameBufferObject()
-          : textureID(0),
+          : width(-1),
+            height(-1),
+            textureID(0),
             depthID(0),
             framebufferID(0)
         {
-            bool haveFBO = GLEW_EXT_framebuffer_object != 0;
+            bool haveFBO =    GLEW_EXT_framebuffer_object != 0 
+                           && GLEW_EXT_packed_depth_stencil != 0;
 
             //assert(haveFBO);
         }

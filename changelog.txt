@@ -1,3 +1,13 @@
+21.07.2006
+    Fixed: automatic offscreen option is now considered in some way (in
+        doubt, frame buffer object is used).
+        Correctly check also for packed_depth_stencil extension before 
+        using frame objects
+
+21.07.2006    
+    Fixed: two stack overflows in pbuffer path
+        
+        
 20.07.2006
     Added: getOptioni / setOptioni interface
         OffscreenType setting to switch between framebuffer objects and pbuffer

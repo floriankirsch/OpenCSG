@@ -21,7 +21,6 @@
 
 #include "opencsgConfig.h"
 #include <opencsg.h>
-#include "channelManager.h"
 
 namespace OpenCSG {
 
@@ -41,8 +40,6 @@ namespace OpenCSG {
             initIntOptions();
             gSetting[option] = newSetting;
         }
-        if (option == OpenCSG::OffscreenSetting)
-            ChannelManager::invalidateOffscreenBuffer();
     }
 
     int getOptioni(OptionType option) {

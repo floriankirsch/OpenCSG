@@ -25,7 +25,7 @@
 #define __OpenCSG__settings_h__
 
 #include "opencsgConfig.h"
-#include "opencsg.h"
+#include <opencsg.h>
 
 namespace OpenCSG {
 

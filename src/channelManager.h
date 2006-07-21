@@ -76,13 +76,10 @@ namespace OpenCSG {
             // activate texenv settings such that information in channel is
             // moved into alpha, to allow alpha testing of the channel
 
-        static invalidateOffscreenBuffer();
-            // sets the pbuffer_ variable to 0, such that it is recreated
-            // in the next iteration
-
     private:
 
         static OpenGL::OffscreenBuffer* pbuffer_;
+        static int offscreenType_;
         static bool inUse_;
 
         bool inPBuf_;

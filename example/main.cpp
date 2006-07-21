@@ -436,7 +436,7 @@ int main(int argc, char **argv)
     glutDisplayFunc(display);
     glutKeyboardFunc(key);
 
-    menu(OFFSCREEN_PBUFFER);
+    menu(OFFSCREEN_AUTOMATIC);
 
     glutIdleFunc(idle);
     init();
