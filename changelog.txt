@@ -1,3 +1,8 @@
+23.07.2006
+    Fixed: Explicitely disable 1D/2D texturing and blending when creating
+        channel manager to fix rendering problems in frame buffer object
+        path if those settings are enabled
+
 21.07.2006
     Fixed: automatic offscreen option is now considered in some way (in
         doubt, frame buffer object is used).
