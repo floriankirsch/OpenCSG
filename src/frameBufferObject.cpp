@@ -30,10 +30,10 @@
     status = glCheckFramebufferStatusEXT(GL_FRAMEBUFFER_EXT); \
     switch(status) {                                          \
       case GL_FRAMEBUFFER_COMPLETE_EXT:                       \
-        std::cout << "framebuffer complete" << std::endl;     \
+        /*std::cout << "framebuffer complete" << std::endl;*/ \
         break;                                                \
       case GL_FRAMEBUFFER_UNSUPPORTED_EXT:                    \
-        std::cout << "framebuffer unsupported" << std::endl;  \
+        /*std::cout << "framebuffer unsupported" << std::endl;*/\
         /* choose different formats */                        \
         break;                                                \
       default:                                                \
