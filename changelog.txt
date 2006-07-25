@@ -1,3 +1,8 @@
+25.07.2006
+    Changed: some more or less trivial STL performance improvements
+        do not glPushAttrib / glPopAttrib when enabling / disabling
+        frame buffer object anymore
+
 23.07.2006
     Fixed: Explicitely disable 1D/2D texturing and blending when creating
         channel manager to fix rendering problems in frame buffer object

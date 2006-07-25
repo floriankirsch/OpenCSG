@@ -29,6 +29,7 @@ namespace OpenCSG {
 
         const unsigned int numberOfPrimitives = primitives.size();
         std::vector<int> done(numberOfPrimitives, 0);
+        batches_.reserve(numberOfPrimitives);
 
         unsigned int i = 0;
         for (std::vector<Primitive*>::const_iterator itr = primitives.begin(); itr != primitives.end(); ++itr, ++i) {
@@ -36,7 +37,8 @@ namespace OpenCSG {
             if (done[i]) continue;
             done[i] = 1;
 
-            Batch batch;
+            batches_.push_back(Batch());
+            Batch& batch = batches_.back();
             batch.push_back(*itr);
 
             std::vector<Primitive*>::const_iterator batchCandidate = itr;
@@ -56,8 +58,6 @@ namespace OpenCSG {
                     done[j] = 1;
                 }
             }
-
-            batches_.push_back(batch);
         }        
     }
 

@@ -202,6 +202,9 @@ namespace OpenCSG {
 
             pbuffer_->BeginCapture();
             defaults();
+            glGetIntegerv(GL_STENCIL_BITS, &OpenGL::stencilBits);
+            OpenGL::stencilMax = 1 << OpenGL::stencilBits;
+            OpenGL::stencilMask = OpenGL::stencilMax - 1;
             pbuffer_->EndCapture();
             pbuffer_->Bind();
             glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
@@ -244,15 +247,9 @@ namespace OpenCSG {
             pbuffer_->BeginCapture();
             if (pbuffer_->haveSeparateContext()) {
                 glFrontFace(FaceOrientation);
-            } else {
-                glPushAttrib(GL_ALL_ATTRIB_BITS);
             }
 
             inPBuf_ = true;
-
-            glGetIntegerv(GL_STENCIL_BITS, &OpenGL::stencilBits);
-            OpenGL::stencilMax = 1 << OpenGL::stencilBits;
-            OpenGL::stencilMask = OpenGL::stencilMax - 1;
 
             currentChannel_ = NoChannel;
             occupiedChannels_ = NoChannel;
@@ -278,6 +275,7 @@ namespace OpenCSG {
     std::vector<Channel> ChannelManager::occupied() const {
 
         std::vector<Channel> result;
+        result.reserve(4);
 
         if ((occupiedChannels_ & Alpha) != 0) {
             result.push_back(Alpha);
@@ -297,9 +295,6 @@ namespace OpenCSG {
 
     void ChannelManager::free() {
         if (inPBuf_) {
-            if (!pbuffer_->haveSeparateContext()) {
-                glPopAttrib();
-            }
             pbuffer_->EndCapture();
             inPBuf_ = false;
         }

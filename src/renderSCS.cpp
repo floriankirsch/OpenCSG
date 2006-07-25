@@ -361,8 +361,8 @@ namespace OpenCSG {
         channelMgr = new SCSChannelManager;
         scissor = new ScissorMemo;
 
-        std::vector<Primitive*> intersected;
-        std::vector<Primitive*> subtracted;
+        std::vector<Primitive*> intersected; intersected.reserve(primitives.size());
+        std::vector<Primitive*> subtracted;  subtracted.reserve(primitives.size());
 
         {
             for (std::vector<Primitive*>::const_iterator itr = primitives.begin(); itr != primitives.end(); ++itr) {
