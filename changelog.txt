@@ -1,3 +1,7 @@
+27.07.2006
+    Changed: made pbuffer path default again (no real performance gain
+        width FBO, less tested)
+
 25.07.2006
     Changed: some more or less trivial STL performance improvements
         do not glPushAttrib / glPopAttrib when enabling / disabling

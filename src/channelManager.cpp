@@ -21,6 +21,11 @@
 
 #include "opencsgConfig.h"
 #include <GL/glew.h>
+#ifdef _WIN32
+#include <GL/wglew.h>
+#else
+#include <GL/glxeh.h>
+#endif
 
 #include "channelManager.h"
 #include "offscreenBuffer.h"
@@ -122,11 +127,20 @@ namespace OpenCSG {
         if (!pbuffer_ || (offscreenType_ != newOffscreenType)) {
             offscreenType_ = newOffscreenType;
             if (newOffscreenType == OpenCSG::AutomaticOffscreenType) {
+
+                if (   WGLEW_ARB_pbuffer
+                    && WGLEW_ARB_pixel_format
+                ) {
+                     newOffscreenType =  OpenCSG::PBuffer;
+                }
+                else 
                 if (   GLEW_EXT_framebuffer_object != 0
-                    && GLEW_EXT_packed_depth_stencil != 0)
-                {
-                     newOffscreenType =  OpenCSG::FrameBufferObject;
-                } else {
+                    && GLEW_EXT_packed_depth_stencil != 0
+                ) {
+                    newOffscreenType =  OpenCSG::FrameBufferObject;
+                } 
+                else {
+                     // This should gracefully exit without doing anything
                      newOffscreenType =  OpenCSG::PBuffer;
                 }
             }
