@@ -1,6 +1,6 @@
 // OpenCSG - library for image-based CSG rendering for OpenGL
-// Copyright (C) 2002-2004
-// Hasso-Plattner-Institute at the University of Potsdam, Germany, and Florian Kirsch
+// Copyright (C) 2002-2006, Florian Kirsch,
+// Hasso-Plattner-Institute at the University of Potsdam, Germany
 //
 // This library is free software; you can redistribute it and/or 
 // modify it under the terms of the GNU General Public License, 
@@ -33,37 +33,38 @@ namespace OpenCSG {
 
         class StencilManager {
         public:
+            /// class for saving and restoring the stencil buffer in the main
+            /// frame buffer. The area denotes the region in pixel coordinates
+            /// which can be saved restored. 
+            /// Currently this class is deactivated; the stencil buffer will
+            /// not be saved!
             StencilManager(const PCArea&);
-                // class for saving and restoring the stencil buffer in the main
-                // frame buffer. The area denotes the region in pixel coordinates
-                // which can be saved restored. 
-
-                // Currently this class is deactivated; the stencil buffer will
-                // not be saved!
             virtual ~StencilManager();
 
+            /// Returns the area of the stencil buffer that is saved / restored.
             const PCArea& getArea() const;
-
+            
+            /// clears the stencil buffer, possibly saving a copy of the
+            /// current stencil buffer in the given region.
             void clear();
-                // clears the stencil buffer, possibly saving a copy of the
-                // current stencil buffer in the given region.
+            /// checks whether the stencil buffer has been already saved
             bool alreadySaved() const;
-                // checks whether the stencil buffer has been already saved
 
+            /// saves a copy of the current stencil buffer in the given region
             virtual void save();
-                // saves a copy of the current stencil buffer in the given region
+            /// restores the current stencil buffer in the given region
             virtual void restore();
-                // restores the current stencil buffer in the given region
+                
 
         private:
-            const PCArea area_;
-            bool saved_;
+            const PCArea mArea;
+            bool mSaved;
         };
 
+        // checks for OpenGL-extensions and returns a stencil manager.
+        // cannot return zero, but can return a stencil manager which
+        // does not saves / restores the stencil buffer at all.
         StencilManager* getStencilManager(const PCArea&);
-            // checks for OpenGL-extensions and returns a stencil manager.
-            // cannot return zero, but can return a stencil manager which
-            // does not saves / restores the stencil buffer at all.
 
     } // namespace OpenGL
 

@@ -1,6 +1,6 @@
 // OpenCSG - library for image-based CSG rendering for OpenGL
-// Copyright (C) 2002-2004
-// Hasso-Plattner-Institute at the University of Potsdam, Germany, and Florian Kirsch
+// Copyright (C) 2002-2006, Florian Kirsch,
+// Hasso-Plattner-Institute at the University of Potsdam, Germany
 //
 // This library is free software; you can redistribute it and/or 
 // modify it under the terms of the GNU General Public License, 
@@ -27,15 +27,22 @@ namespace OpenCSG {
 
     class DisplayListPrimitive : public Primitive {
     public:
+        /// An object of this class contains the OpenGL id of a display
+        /// list that is compiled by the application. render() just invokes
+        /// this display list. 
+        /// Operation and convexity are just forwarded to the base Primitive class.
         DisplayListPrimitive(unsigned int displayListId_, Operation, unsigned int convexity);
 
+        /// Sets the display list id
         void setDisplayListId(unsigned int);
+        /// Returns the display list id
         unsigned int getDisplayListId() const;
 
+        /// Calls the display list.
         virtual void render();
 
     private:
-        unsigned int displayListId_;
+        unsigned int mDisplayListId;
     };
 
 } // namespace OpenCSG

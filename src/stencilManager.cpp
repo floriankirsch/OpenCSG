@@ -1,6 +1,6 @@
 // OpenCSG - library for image-based CSG rendering for OpenGL
-// Copyright (C) 2002-2004
-// Hasso-Plattner-Institute at the University of Potsdam, Germany, and Florian Kirsch
+// Copyright (C) 2002-2006, Florian Kirsch,
+// Hasso-Plattner-Institute at the University of Potsdam, Germany
 //
 // This library is free software; you can redistribute it and/or 
 // modify it under the terms of the GNU General Public License, 
@@ -34,26 +34,26 @@ namespace OpenCSG {
 
     namespace OpenGL {
 
-        StencilManager::StencilManager(const PCArea& area) : area_(area), saved_(false) {}
+        StencilManager::StencilManager(const PCArea& area) : mArea(area), mSaved(false) {}
             // Do not save the stencil buffer at all. 
             // This is, currently, used always.
 
         StencilManager::~StencilManager() { }
 
         const PCArea& StencilManager::getArea() const {
-            return area_;
+            return mArea;
         }
 
         void StencilManager::clear() {
-            if (!saved_) {
+            if (!mSaved) {
                 save();
-                saved_ = true;
+                mSaved = true;
             }
             glClear(GL_STENCIL_BUFFER_BIT);
         }
 
         bool StencilManager::alreadySaved() const {
-            return saved_;
+            return mSaved;
         }
 
         void StencilManager::save() {
@@ -136,8 +136,8 @@ namespace OpenCSG {
             virtual void save();
             virtual void restore();
         private:
-            HDC hdc_; 
-            HANDLE handle_;
+            HDC hdc; 
+            HANDLE handle;
         };
 
         void StencilManagerARBBufferRegionW32::save() {
@@ -146,12 +146,12 @@ namespace OpenCSG {
             dx = area.maxx - area.minx;
             dy = area.maxy - area.miny;
 
-            hdc_ = wglGetCurrentDC();
-            handle_ = wglCreateBufferRegionARB(hdc_, 1, WGL_STENCIL_BUFFER_BIT_ARB);
-            if (handle_ == 0) {
+            hdc = wglGetCurrentDC();
+            handle = wglCreateBufferRegionARB(hdc, 1, WGL_STENCIL_BUFFER_BIT_ARB);
+            if (handle == 0) {
                 return;
             }
-            int result = wglSaveBufferRegionARB(handle_, area.minx, area.miny, dx, dy);
+            int result = wglSaveBufferRegionARB(handle, area.minx, area.miny, dx, dy);
 
         }
 
@@ -163,8 +163,8 @@ namespace OpenCSG {
             dx = area.maxx - area.minx;
             dy = area.maxy - area.miny;
 
-            wglRestoreBufferRegionARB(handle_, area.minx, area.miny, dx, dy, 0, 0);
-            wglDeleteBufferRegionARB(handle_);
+            wglRestoreBufferRegionARB(handle, area.minx, area.miny, dx, dy, 0, 0);
+            wglDeleteBufferRegionARB(handle);
         }
 
 #endif // _WIN32

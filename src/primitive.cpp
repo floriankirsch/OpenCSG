@@ -1,6 +1,6 @@
 // OpenCSG - library for image-based CSG rendering for OpenGL
-// Copyright (C) 2002-2004
-// Hasso-Plattner-Institute at the University of Potsdam, Germany, and Florian Kirsch
+// Copyright (C) 2002-2006, Florian Kirsch,
+// Hasso-Plattner-Institute at the University of Potsdam, Germany
 //
 // This library is free software; you can redistribute it and/or 
 // modify it under the terms of the GNU General Public License, 
@@ -28,56 +28,56 @@
 namespace OpenCSG {
     
     Primitive::Primitive(Operation o, unsigned int c) :
-        operation_(o),
-        convexity_(c),
-        minx_(-1.0),
-        miny_(-1.0),
-        minz_(-1.0),
-        maxx_(1.0),
-        maxy_(1.0),
-        maxz_(1.0) {
+        mOperation(o),
+        mConvexity(c),
+        mMinx(-1.0),
+        mMiny(-1.0),
+        mMinz(-1.0),
+        mMaxx(1.0),
+        mMaxy(1.0),
+        mMaxz(1.0) {
     }
 
     Primitive::~Primitive() { }
 
     void Primitive::setOperation(Operation o) {
-        operation_ = o;
+        mOperation = o;
     }
 
     Operation Primitive::getOperation() const {
-        return operation_;
+        return mOperation;
     }
 
     void Primitive::setConvexity(unsigned int c) {
-        convexity_ = c;
+        mConvexity = c;
     }
 
     unsigned int Primitive::getConvexity() const {
-        return convexity_;
+        return mConvexity;
     }
 
     void Primitive::setBoundingBox(float minx, float miny, float minz,
                                    float maxx, float maxy, float maxz) {
-        assert(minx <= maxx);        
-        assert(miny <= maxy);        
+        assert(minx <= maxx);
+        assert(miny <= maxy);
         assert(minz <= maxz);
-        minx_ = minx;
-        miny_ = miny;
-        minz_ = minz;
-        maxx_ = maxx;
-        maxy_ = maxy;
-        maxz_ = maxz;
+        mMinx = minx;
+        mMiny = miny;
+        mMinz = minz;
+        mMaxx = maxx;
+        mMaxy = maxy;
+        mMaxz = maxz;
     }
 
 
     void Primitive::getBoundingBox(float& minx, float& miny, float& minz,
                                    float& maxx, float& maxy, float& maxz) const {
-        minx = minx_;
-        miny = miny_;
-        minz = minz_;
-        maxx = maxx_;
-        maxy = maxy_;
-        maxz = maxz_;
+        minx = mMinx;
+        miny = mMiny;
+        minz = mMinz;
+        maxx = mMaxx;
+        maxy = mMaxy;
+        maxz = mMaxz;
     }
 
 } // namespace OpenCSG

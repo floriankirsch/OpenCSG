@@ -1,6 +1,5 @@
 // OpenCSG - library for image-based CSG rendering for OpenGL
-// Copyright (C) 2002-2006
-// Hasso-Plattner-Institute at the University of Potsdam, Germany, and Florian Kirsch
+// Copyright (C) 2006, Florian Kirsch
 //
 // This library is free software; you can redistribute it and/or 
 // modify it under the terms of the GNU General Public License, 
@@ -33,52 +32,48 @@ namespace OpenCSG {
 
     namespace OpenGL {
 
-        class PBufferTexture : public OffscreenBuffer
-        {
-
-        public: // interface
+        class PBufferTexture : public OffscreenBuffer {
+        public:
             // ctor / dtor
             PBufferTexture();
             virtual ~PBufferTexture();
 
-            //! Call this once before use.  Set bShare to true to share lists, textures, 
-            //! and program objects between the render texture context and the 
-            //! current active GL context.
-            virtual bool Initialize(int width, int height, 
-                            bool shareObjects=true, 
-                            bool copyContext=false);
+            /// Call this once before use.  Set bShare to true to share lists, textures, 
+            /// and program objects between the render texture context and the 
+            /// current active GL context.
+            virtual bool Initialize(int width, int height, bool shareObjects=true, bool copyContext=false);
 
-            // !Change the render texture format.
+            /// Change the render texture format.
             virtual bool Reset();
-            // !Change the size of the render texture.
+            /// Change the size of the render texture.
             virtual bool Resize(int width, int height);
 
-            // !Begin drawing to the texture. (i.e. use as "output" texture)
+            /// Begin drawing to the texture. (i.e. use as "output" texture)
             virtual bool BeginCapture();
-            // !End drawing to the texture.
+            /// End drawing to the texture.
             virtual bool EndCapture();
 
-            // !Bind the texture to the active texture unit for use as an "input" texture
+            /// Bind the texture to the active texture unit for use as an "input" texture
             virtual void Bind() const;
 
-            //! Enables the texture target appropriate for this render texture.
+            /// Enables the texture target appropriate for this render texture.
             virtual void EnableTextureTarget() const;
-            //! Disables the texture target appropriate for this render texture.
+            /// Disables the texture target appropriate for this render texture.
             virtual void DisableTextureTarget() const;
 
-            //! Returns the texture target this texture is bound to.
+            /// Returns the texture target this texture is bound to.
             virtual unsigned int GetTextureTarget() const;
-            //! Returns the width of the offscreen buffer.
+            /// Returns the width of the offscreen buffer.
             virtual int GetWidth() const;
-            //! Returns the width of the offscreen buffer.
+            /// Returns the width of the offscreen buffer.
             virtual int GetHeight() const;
 
-            virtual bool haveSeparateContext() const {
-                return true;
-            }
+            /// PBuffers have a separate rendering context (which is, in the case
+            /// of OpenCSG, shared with the main context, i.e., we can use display
+            /// lists uva. in both contexts
+            virtual bool haveSeparateContext() const { return true; }
 
-
-        protected: // data
+        protected:
             RenderTexture* r;
         };
 

@@ -1,6 +1,6 @@
 // OpenCSG - library for image-based CSG rendering for OpenGL
-// Copyright (C) 2002-2004
-// Hasso-Plattner-Institute at the University of Potsdam, Germany, and Florian Kirsch
+// Copyright (C) 2002-2006, Florian Kirsch,
+// Hasso-Plattner-Institute at the University of Potsdam, Germany
 //
 // This library is free software; you can redistribute it and/or 
 // modify it under the terms of the GNU General Public License, 
@@ -31,24 +31,28 @@ namespace OpenCSG {
     namespace OpenGL {
 
         class OcclusionQuery {
-        public:
+        public: // abstract base class
             virtual ~OcclusionQuery() {};
 
+            /// begins an occlusion query
             virtual void beginQuery() = 0;
+            /// stops an occlusion query
             virtual void endQuery() = 0;
+            /// returns the number of fragments that have been put into
+            /// the frame buffer between beginQuery() and endQuery().
             virtual unsigned int getQueryResult() = 0;
 
         protected:
             OcclusionQuery() {};
         };
 
+        /// checks for OpenGL-extensions and returns a matching occlusion
+        /// query object. may return 0 if occlusion queries are not
+        /// supported by graphics hardware.
+        ///
+        /// when the occlusion query object is not needed anymore,
+        /// it must be deleted!
         OcclusionQuery* getOcclusionQuery();
-            // checks for OpenGL-extensions and returns a matching occlusion
-            // query object. may return 0 if occlusion queries are not
-            // supported by graphics hardware.
-            //
-            // when the occlusion query object is not needed anymore,
-            // it must be deleted!
 
     } // namespace OpenGL
 

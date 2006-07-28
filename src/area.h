@@ -1,6 +1,6 @@
 // OpenCSG - library for image-based CSG rendering for OpenGL
-// Copyright (C) 2002-2004
-// Hasso-Plattner-Institute at the University of Potsdam, Germany, and Florian Kirsch
+// Copyright (C) 2002-2006, Florian Kirsch,
+// Hasso-Plattner-Institute at the University of Potsdam, Germany
 //
 // This library is free software; you can redistribute it and/or 
 // modify it under the terms of the GNU General Public License, 
@@ -28,7 +28,7 @@
 
 namespace OpenCSG {
 
-    // area in pixel coordinates
+    /// area in pixel coordinates
     struct PCArea {
         PCArea(
             int minxx = 0, 
@@ -45,7 +45,7 @@ namespace OpenCSG {
         int minx, miny, maxx, maxy;
     };
 
-    // area in normalized device coordinates
+    /// area in normalized device coordinates
     struct NDCArea {
         NDCArea(
             float minxx = 0.0f, 

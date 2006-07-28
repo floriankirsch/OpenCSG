@@ -1,6 +1,6 @@
 // OpenCSG - library for image-based CSG rendering for OpenGL
-// Copyright (C) 2002-2004
-// Hasso-Plattner-Institute at the University of Potsdam, Germany, and Florian Kirsch
+// Copyright (C) 2002-2006, Florian Kirsch,
+// Hasso-Plattner-Institute at the University of Potsdam, Germany
 //
 // This library is free software; you can redistribute it and/or 
 // modify it under the terms of the GNU General Public License, 
@@ -34,29 +34,31 @@ namespace OpenCSG {
 
     namespace Algo {
 
+        /// checks whether primitives intersect in xy direction
         bool intersectXY(const Primitive* a, const Primitive* b);
-            // checks whether primitives intersect in xy direction
+        /// checks whether primitives intersect in xyz direction
         bool intersectXYZ(const Primitive* a, const Primitive* b);
-            // checks whether primitives intersect in xyz direction
+        /// calculates maximum convexity of all primitives in array
         unsigned int getConvexity(const std::vector<Primitive*>& primitives);
-            // calculates maximum convexity of all primitives in array
 
     } // namespace Algo
 
     namespace OpenGL {
 
+        /// calculates depth complexity of the given primitives using the
+        /// stencil buffer, in the bounding box given by area. 
+        /// Expects a clean stencil buffer, and does not clear 
+        /// the stencil buffer afterwards
         unsigned int calcMaxDepthComplexity(const std::vector<Primitive*>& primitives,
                                             const PCArea& area);
-            // calculates depth complexity of the given primitives using the
-            // stencil buffer, in the bounding box given by area. 
-            // Expects a clean stencil buffer, and does not clear 
-            // the stencil buffer afterwards
+
+        /// renders a rendering layer of the given primitives using the
+        /// stencil buffer. The rendering layers are not ordered from 
+        /// front to back, so the ordering of the array matters! 
+        /// Expects a clean stencil buffer, and does not clear the stencil
+        /// buffer afterwards. 
         void renderLayer(unsigned int layer, const std::vector<Primitive*>& primitives);
-            // renders a rendering layer of the given primitives using the
-            // stencil buffer. The rendering layers are not ordered from 
-            // front to back, so the ordering of the array matters! 
-            // Expects a clean stencil buffer, and does not clear the stencil
-            // buffer afterwards. 
+
 
     } // namespace OpenGL
 

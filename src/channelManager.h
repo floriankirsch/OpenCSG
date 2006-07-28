@@ -1,6 +1,6 @@
 // OpenCSG - library for image-based CSG rendering for OpenGL
-// Copyright (C) 2002-2004
-// Hasso-Plattner-Institute at the University of Potsdam, Germany, and Florian Kirsch
+// Copyright (C) 2002-2006, Florian Kirsch,
+// Hasso-Plattner-Institute at the University of Potsdam, Germany
 //
 // This library is free software; you can redistribute it and/or 
 // modify it under the terms of the GNU General Public License, 
@@ -42,69 +42,75 @@ namespace OpenCSG {
 
     class ChannelManager {
     public:
+        /// An offscreen buffer is used to collect CSG results in its four
+        /// color channels. These resources are managed in a ChannelManager
+        /// object. Since we use one offscreen buffer only, this class is
+        /// a singleton in practice (pointer to internal offscreen buffer 
+        /// object is static)
         ChannelManager();
-            // A pbuffer is used to collect CSG results in its four color
-            // channels. These resources are managed in a ChannelManager
-            // object. Since we use one pbuffer only, this class is a singleton
         virtual ~ChannelManager();
 
+        /// returns a free channel, or NoChannel if nothings available
         Channel find() const;
-            // returns a free channel, or NoChannel if nothings available
+        /// allocates a new channel for temporary calculation of visibility
+        /// information. return NoChannel if no free channel was found.
         Channel request();
-            // allocates a new channel for temporary calculation of visibility
-            // information. return NoChannel if no free channel was found.
+        /// returns the currently used channel for visibility calculation
         Channel current() const;
-            // returns the currently used channel for visibility calculation
+        /// returns channels that currently contain visibility information
         std::vector<Channel> occupied() const;
-            // returns channels that currently contain visibility information
+        /// releases the offscreen buffer and invokes merge() to transfer
+        /// the visibility information into the main canvas.
         void free();
-            // releases the pbuffer and invokes merge() to transfer the
-            // visibility information into the main canvas. 
+        /// transfers visibility information into the main canvas. 
+        /// implemented by subclasses SCSChannelManager and 
+        /// GoldfeatherChannelManager
         virtual void merge() = 0;
-            // transfers visibility information into the main canvas. 
-            // implemented by subclasses SCSChannelManager and 
-            // GoldfeatherChannelManager
 
+        /// activates or deactivates rendering into a channel
         void renderToChannel(bool on);
-            // activates or deactivates rendering into a channel
+        /// setups texture stuff that makes the size of the offscreen buffer
+        /// and the size of the main canvas correspond. activates texture
+        /// containing the content of the offscreen buffer
         void setupProjectiveTexture();
-            // setups texture stuff that makes the size of the pbuffer and the
-            // size of the main canvas correspond. activates pbuffer-texture
+        /// undoes texture settings
         void resetProjectiveTexture();
-            // undoes texture settings
+        /// activate texenv settings such that information in channel is
+        /// moved into alpha, to allow alpha testing of the channel.
         static void setupTexEnv(Channel channel);
-            // activate texenv settings such that information in channel is
-            // moved into alpha, to allow alpha testing of the channel
 
     private:
 
-        static OpenGL::OffscreenBuffer* pbuffer_;
-        static int offscreenType_;
-        static bool inUse_;
+        static OpenGL::OffscreenBuffer* gOffscreenBuffer;
+        static int gOffscreenType;
+        static bool gInUse;
 
-        bool inPBuf_;
-        Channel currentChannel_;
-        int occupiedChannels_;
+        bool mInOffscreenBuffer;
+        Channel mCurrentChannel;
+        int mOccupiedChannels;
     };
 
     class ChannelManagerForBatches : public ChannelManager {
     public:
+        /// Remembers which color channel is used to store visibility 
+        /// information of a batch of primitives.
         ChannelManagerForBatches();
 
+        /// allows to remember which primitives are stored in which channel
+        /// layer == -1: convex primitives
+        /// layer ==  0: frontmost surface
+        /// etc ...
         void store(Channel channel, const std::vector<Primitive*>& primitives, int layer);
-            // allows to remember which primitives are stored in which channel
-            // layer == -1: convex primitives
-            // layer ==  0: frontmost surface
-            // etc ...
+
+        /// returns primitives for a channel
         const std::vector<Primitive*> getPrimitives(Channel channel) const;
-            // returns primitives for a channel
+        /// returns layer for a channel
         int getLayer(Channel channel) const;
-            // returns layer for a channel
+        /// clears information
         void clear();
-            // clears information
 
     private:
-        std::vector<std::pair<std::vector<Primitive*>, int> > primitives_;
+        std::vector<std::pair<std::vector<Primitive*>, int> > mPrimitives;
     };
 
 } // namespace OpenCSG

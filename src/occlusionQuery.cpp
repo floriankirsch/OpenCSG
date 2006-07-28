@@ -1,6 +1,6 @@
 // OpenCSG - library for image-based CSG rendering for OpenGL
-// Copyright (C) 2002-2004
-// Hasso-Plattner-Institute at the University of Potsdam, Germany, and Florian Kirsch
+// Copyright (C) 2002-2006, Florian Kirsch,
+// Hasso-Plattner-Institute at the University of Potsdam, Germany
 //
 // This library is free software; you can redistribute it and/or 
 // modify it under the terms of the GNU General Public License, 
@@ -37,19 +37,19 @@ namespace OpenCSG {
             virtual unsigned int getQueryResult();
 
         private:
-            GLuint queryObject_;
+            GLuint mQueryObject;
         };
 
         OcclusionQueryARB::OcclusionQueryARB() {
-            glGenQueriesARB(1, &queryObject_);
+            glGenQueriesARB(1, &mQueryObject);
         }
 
         OcclusionQueryARB::~OcclusionQueryARB() {
-            glDeleteQueriesARB(1, &queryObject_);
+            glDeleteQueriesARB(1, &mQueryObject);
         }
 
         void OcclusionQueryARB::beginQuery() {
-            glBeginQueryARB(GL_SAMPLES_PASSED_ARB, queryObject_);
+            glBeginQueryARB(GL_SAMPLES_PASSED_ARB, mQueryObject);
         }
 
         void OcclusionQueryARB::endQuery() {
@@ -58,7 +58,7 @@ namespace OpenCSG {
 
         unsigned int OcclusionQueryARB::getQueryResult() {
             unsigned int fragmentCount;
-            glGetQueryObjectuivARB(queryObject_, GL_QUERY_RESULT_ARB, &fragmentCount);
+            glGetQueryObjectuivARB(mQueryObject, GL_QUERY_RESULT_ARB, &fragmentCount);
             return fragmentCount;
         }
 
@@ -74,19 +74,19 @@ namespace OpenCSG {
             virtual unsigned int getQueryResult();
 
         private:
-            GLuint queryObject_;
+            GLuint mQueryObject;
         };
 
         OcclusionQueryNV::OcclusionQueryNV() {
-            glGenOcclusionQueriesNV(1, &queryObject_);
+            glGenOcclusionQueriesNV(1, &mQueryObject);
         }
 
         OcclusionQueryNV::~OcclusionQueryNV() {
-            glDeleteOcclusionQueriesNV(1, &queryObject_);
+            glDeleteOcclusionQueriesNV(1, &mQueryObject);
         }
 
         void OcclusionQueryNV::beginQuery() {
-            glBeginOcclusionQueryNV(queryObject_);
+            glBeginOcclusionQueryNV(mQueryObject);
         }
 
         void OcclusionQueryNV::endQuery() {
@@ -95,7 +95,7 @@ namespace OpenCSG {
 
         unsigned int OcclusionQueryNV::getQueryResult() {
             unsigned int fragmentCount;
-            glGetOcclusionQueryuivNV(queryObject_, GL_PIXEL_COUNT_NV, &fragmentCount);
+            glGetOcclusionQueryuivNV(mQueryObject, GL_PIXEL_COUNT_NV, &fragmentCount);
             return fragmentCount;
         }
 

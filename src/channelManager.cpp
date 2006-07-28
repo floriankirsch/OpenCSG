@@ -1,6 +1,6 @@
 // OpenCSG - library for image-based CSG rendering for OpenGL
-// Copyright (C) 2002-2004
-// Hasso-Plattner-Institute at the University of Potsdam, Germany, and Florian Kirsch
+// Copyright (C) 2002-2006, Florian Kirsch,
+// Hasso-Plattner-Institute at the University of Potsdam, Germany
 //
 // This library is free software; you can redistribute it and/or 
 // modify it under the terms of the GNU General Public License, 
@@ -35,9 +35,9 @@
 
 namespace OpenCSG {
 
-    OpenCSG::OpenGL::OffscreenBuffer* ChannelManager::pbuffer_ = 0;
-                                  int ChannelManager::offscreenType_ = OpenCSG::AutomaticOffscreenType;
-                                 bool ChannelManager::inUse_ = false;
+    OpenCSG::OpenGL::OffscreenBuffer* ChannelManager::gOffscreenBuffer = 0;
+                                  int ChannelManager::gOffscreenType = OpenCSG::AutomaticOffscreenType;
+                                 bool ChannelManager::gInUse = false;
     
     namespace {
 
@@ -68,8 +68,8 @@ namespace OpenCSG {
 
     ChannelManager::ChannelManager() {
 
-        assert(!inUse_);      
-        inUse_ = true;
+        assert(!gInUse);      
+        gInUse = true;
 
         glPushAttrib(GL_ALL_ATTRIB_BITS);
         glColorMask(GL_FALSE, GL_FALSE, GL_FALSE, GL_FALSE);
@@ -105,27 +105,27 @@ namespace OpenCSG {
             ty = nextPow2(dy);
         }
 
-        // these variables are for a heuristic that makes the pbuffer smaller
-        // if the size of the pbuffer has been bigger than necessary in 
-        // x- or y- direction for resizePBufferLimit frames. 
+        // these variables are for a heuristic that makes the offscreen buffer
+        // smaller if the size of the buffer has been bigger than necessary
+        // in x- or y- direction for resizeOffscreenBufferLimit frames. 
         //
         // this permits to use OpenCSG for CSG rendering in different
         // canvases with different sizes without constant expensive
-        // resizing of the pbuffer for every frame.
+        // resizing of the offscreen buffer for every frame.
         //
         // possible improvements: 
         //   - the algorithm is not beautifully implemented. maybe encapsulate it?
-        //   - allow the user to define the resizePBufferLimit?
-        static const unsigned int resizePBufferLimit = 100;
-        static unsigned int resizePBufferCounterX = 0;
-        static unsigned int resizePBufferCounterY = 0;
-        static int maxPBufferSizeX = 1;
-        static int maxPBufferSizeY = 1;
+        //   - allow the user to define the resizeOffscreenBufferLimit?
+        static const unsigned int resizeOffscreenBufferLimit = 100;
+        static unsigned int resizeOffscreenBufferCounterX = 0;
+        static unsigned int resizeOffscreenBufferCounterY = 0;
+        static int maxOffscreenBufferSizeX = 1;
+        static int maxOffscreenBufferSizeY = 1;
 
         bool rebuild = false;
         int newOffscreenType = getOptioni(OffscreenSetting);
-        if (!pbuffer_ || (offscreenType_ != newOffscreenType)) {
-            offscreenType_ = newOffscreenType;
+        if (!gOffscreenBuffer || (gOffscreenType != newOffscreenType)) {
+            gOffscreenType = newOffscreenType;
             if (newOffscreenType == OpenCSG::AutomaticOffscreenType) {
 
                 if (   WGLEW_ARB_pbuffer
@@ -145,11 +145,11 @@ namespace OpenCSG {
                 }
             }
             if (newOffscreenType == FrameBufferObject) {
-                pbuffer_ = OpenGL::getOffscreenBuffer(true);
+                gOffscreenBuffer = OpenGL::getOffscreenBuffer(true);
             } else {
-                pbuffer_ = OpenGL::getOffscreenBuffer(false);
+                gOffscreenBuffer = OpenGL::getOffscreenBuffer(false);
             }
-            if (pbuffer_->GetWidth() < tx || pbuffer_->GetHeight() < ty) {
+            if (gOffscreenBuffer->GetWidth() < tx || gOffscreenBuffer->GetHeight() < ty) {
                 // in particular, this detects newly created offscreen buffers,
                 // of which the width / height is -1
                 rebuild = true;
@@ -157,119 +157,119 @@ namespace OpenCSG {
         // tx == ty == 0 happens if the window is minimized, in this case don't touch a thing
         } else if (tx != 0 && ty != 0) {
             
-            // check whether the pbuffer is too small, in case resize immediately
-            if ((tx > pbuffer_->GetWidth()) || (ty > pbuffer_->GetHeight())) {
-                pbuffer_->Resize((std::max)(maxPBufferSizeX, tx), (std::max)(maxPBufferSizeY, ty));
+            // check whether the offscreen buffer is too small, in case resize immediately
+            if ((tx > gOffscreenBuffer->GetWidth()) || (ty > gOffscreenBuffer->GetHeight())) {
+                gOffscreenBuffer->Resize((std::max)(maxOffscreenBufferSizeX, tx), (std::max)(maxOffscreenBufferSizeY, ty));
                 rebuild = true;
             }           
 
-            // if x-size matches exactly, remember to not resize in the next resizePBufferLimit frames
-            if (tx == pbuffer_->GetWidth()) {
-                resizePBufferCounterX = 0;
-                maxPBufferSizeX = tx;
+            // if x-size matches exactly, remember to not resize in the next resizeOffscreenBufferLimit frames
+            if (tx == gOffscreenBuffer->GetWidth()) {
+                resizeOffscreenBufferCounterX = 0;
+                maxOffscreenBufferSizeX = tx;
             }
-            // else remember the biggest X in the last resizePBufferCounterX frames
-              else if (tx < pbuffer_->GetWidth()) {
-                ++resizePBufferCounterX;
-                maxPBufferSizeX = (std::max)(maxPBufferSizeX, tx);
+            // else remember the biggest X in the last resizeOffscreenBufferCounterX frames
+              else if (tx < gOffscreenBuffer->GetWidth()) {
+                ++resizeOffscreenBufferCounterX;
+                maxOffscreenBufferSizeX = (std::max)(maxOffscreenBufferSizeX, tx);
             }
 
-            // if y-size matches exactly, remember to not resize in the next resizePBufferLimit frames
-            if (ty == pbuffer_->GetHeight()) {
-                resizePBufferCounterY = 0;
-                maxPBufferSizeY = ty;
+            // if y-size matches exactly, remember to not resize in the next resizeOffscreenBufferLimit frames
+            if (ty == gOffscreenBuffer->GetHeight()) {
+                resizeOffscreenBufferCounterY = 0;
+                maxOffscreenBufferSizeY = ty;
             } 
-            // else remember the biggest Y in the last resizePBufferCounterY frames
-            else if (ty < pbuffer_->GetHeight()) {
-                ++resizePBufferCounterY;
-                maxPBufferSizeY = (std::max)(maxPBufferSizeY, ty);
+            // else remember the biggest Y in the last resizeOffscreenBufferCounterY frames
+            else if (ty < gOffscreenBuffer->GetHeight()) {
+                ++resizeOffscreenBufferCounterY;
+                maxOffscreenBufferSizeY = (std::max)(maxOffscreenBufferSizeY, ty);
             }
 
-            // X or Y have been smaller than the PBuffer-Size in the last resizePBufferLimit frames
+            // X or Y have been smaller than the offscreen buffer size in the last resizeOffscreenBufferLimit frames
             // -> resize!
-            if (resizePBufferCounterX >= resizePBufferLimit || resizePBufferCounterY >= resizePBufferLimit) {
-                if (maxPBufferSizeX != pbuffer_->GetWidth() || maxPBufferSizeY != pbuffer_->GetHeight()) {
+            if (resizeOffscreenBufferCounterX >= resizeOffscreenBufferLimit || resizeOffscreenBufferCounterY >= resizeOffscreenBufferLimit) {
+                if (maxOffscreenBufferSizeX != gOffscreenBuffer->GetWidth() || maxOffscreenBufferSizeY != gOffscreenBuffer->GetHeight()) {
                     // a beautiful algorithm would ensure that this inner if-condition 
                     // would always be fulfilled.  
-                    pbuffer_->Resize(maxPBufferSizeX, maxPBufferSizeY);
+                    gOffscreenBuffer->Resize(maxOffscreenBufferSizeX, maxOffscreenBufferSizeY);
                     rebuild = true;
                 }
-                resizePBufferCounterX = 0;
-                resizePBufferCounterY = 0;
-                maxPBufferSizeX = tx;
-                maxPBufferSizeY = ty;
+                resizeOffscreenBufferCounterX = 0;
+                resizeOffscreenBufferCounterY = 0;
+                maxOffscreenBufferSizeX = tx;
+                maxOffscreenBufferSizeY = ty;
             }
 
         }
 
         if (rebuild) {
-            if (!pbuffer_->Initialize(tx, ty, true, false)) {
+            if (!gOffscreenBuffer->Initialize(tx, ty, true, false)) {
                 assert(0);
             }
 
-            resizePBufferCounterX = 0;
-            resizePBufferCounterY = 0;
-            maxPBufferSizeX = tx;
-            maxPBufferSizeY = ty;
+            resizeOffscreenBufferCounterX = 0;
+            resizeOffscreenBufferCounterY = 0;
+            maxOffscreenBufferSizeX = tx;
+            maxOffscreenBufferSizeY = ty;
 
             // assert(pbuffer_->HasStencil());
 
-            pbuffer_->BeginCapture();
+            gOffscreenBuffer->BeginCapture();
             defaults();
             glGetIntegerv(GL_STENCIL_BITS, &OpenGL::stencilBits);
             OpenGL::stencilMax = 1 << OpenGL::stencilBits;
             OpenGL::stencilMask = OpenGL::stencilMax - 1;
-            pbuffer_->EndCapture();
-            pbuffer_->Bind();
+            gOffscreenBuffer->EndCapture();
+            gOffscreenBuffer->Bind();
             glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
             glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
         }
 
-        inPBuf_ = false;
-        currentChannel_ = NoChannel;
-        occupiedChannels_ = NoChannel;
+        mInOffscreenBuffer = false;
+        mCurrentChannel = NoChannel;
+        mOccupiedChannels = NoChannel;
     }
 
     ChannelManager::~ChannelManager() {
         glPopAttrib();
-        assert(inUse_);
-        inUse_ = false;
+        assert(gInUse);
+        gInUse = false;
     }
 
     Channel ChannelManager::find() const {
 
-        Channel channel_ = NoChannel;
+        Channel channel = NoChannel;
 
         // find free channel
-        if ((occupiedChannels_ & Alpha) == 0) {
-            channel_ = Alpha;
+        if ((mOccupiedChannels & Alpha) == 0) {
+            channel = Alpha;
         }  else if (GLEW_ARB_texture_env_dot3) {
-            if ((occupiedChannels_ & Red) == 0)   {
-                channel_ = Red;
-            } else if ((occupiedChannels_ & Green) == 0) {
-                channel_ = Green;
-            } else if ((occupiedChannels_ & Blue) == 0)  {
-                channel_ = Blue;
+            if ((mOccupiedChannels & Red) == 0)   {
+                channel = Red;
+            } else if ((mOccupiedChannels & Green) == 0) {
+                channel = Green;
+            } else if ((mOccupiedChannels & Blue) == 0)  {
+                channel = Blue;
             }
         }
 
-        return channel_;
+        return channel;
     }
 
     Channel ChannelManager::request() {
-        if (!inPBuf_) {
-            pbuffer_->BeginCapture();
-            if (pbuffer_->haveSeparateContext()) {
+        if (!mInOffscreenBuffer) {
+            gOffscreenBuffer->BeginCapture();
+            if (gOffscreenBuffer->haveSeparateContext()) {
                 glFrontFace(FaceOrientation);
             }
 
-            inPBuf_ = true;
+            mInOffscreenBuffer = true;
 
-            currentChannel_ = NoChannel;
-            occupiedChannels_ = NoChannel;
+            mCurrentChannel = NoChannel;
+            mOccupiedChannels = NoChannel;
         }
 
-        if (pbuffer_->haveSeparateContext()) {
+        if (gOffscreenBuffer->haveSeparateContext()) {
             glViewport(OpenGL::canvasPos[0], OpenGL::canvasPos[1], OpenGL::canvasPos[2], OpenGL::canvasPos[3]);
             glMatrixMode(GL_PROJECTION);
             glLoadMatrixf(OpenGL::projection);
@@ -277,13 +277,13 @@ namespace OpenCSG {
             glLoadMatrixf(OpenGL::modelview);
         }
 
-        currentChannel_ = find();
-        occupiedChannels_ |= currentChannel_;
-        return currentChannel_;
+        mCurrentChannel = find();
+        mOccupiedChannels |= mCurrentChannel;
+        return mCurrentChannel;
     }
 
     Channel ChannelManager::current() const {
-        return currentChannel_;
+        return mCurrentChannel;
     }
 
     std::vector<Channel> ChannelManager::occupied() const {
@@ -291,16 +291,16 @@ namespace OpenCSG {
         std::vector<Channel> result;
         result.reserve(4);
 
-        if ((occupiedChannels_ & Alpha) != 0) {
+        if ((mOccupiedChannels & Alpha) != 0) {
             result.push_back(Alpha);
         }        
-        if ((occupiedChannels_ & Red) != 0) {
+        if ((mOccupiedChannels & Red) != 0) {
             result.push_back(Red);
         }        
-        if ((occupiedChannels_ & Green) != 0) {
+        if ((mOccupiedChannels & Green) != 0) {
             result.push_back(Green);
         }        
-        if ((occupiedChannels_ & Blue) != 0) {
+        if ((mOccupiedChannels & Blue) != 0) {
             result.push_back(Blue);
         }
      
@@ -308,9 +308,9 @@ namespace OpenCSG {
     }
 
     void ChannelManager::free() {
-        if (inPBuf_) {
-            pbuffer_->EndCapture();
-            inPBuf_ = false;
+        if (mInOffscreenBuffer) {
+            gOffscreenBuffer->EndCapture();
+            mInOffscreenBuffer = false;
         }
 
         merge();
@@ -319,7 +319,7 @@ namespace OpenCSG {
     void ChannelManager::renderToChannel(bool on) {
 
         if (on) {
-            switch (currentChannel_) {
+            switch (mCurrentChannel) {
                 case NoChannel:
                     glColorMask(GL_FALSE, GL_FALSE, GL_FALSE, GL_FALSE);
                     break;
@@ -349,8 +349,8 @@ namespace OpenCSG {
         static float rplane[4] = { 0.0, 0.0, 1.0, 0.0 };
         static float qplane[4] = { 0.0, 0.0, 0.0, 1.0 };
 
-        pbuffer_->Bind();
-        pbuffer_->EnableTextureTarget();
+        gOffscreenBuffer->Bind();
+        gOffscreenBuffer->EnableTextureTarget();
 
         glTexGeni(GL_S, GL_TEXTURE_GEN_MODE, GL_EYE_LINEAR);
         glTexGeni(GL_T, GL_TEXTURE_GEN_MODE, GL_EYE_LINEAR);
@@ -382,11 +382,11 @@ namespace OpenCSG {
         // Therefore we do not check for the extension, but simply for the texture format
         // Update (08.04.2004): Fixed the flaw, but kept checking the texture format.
         // Actually that seems safer, since it should work always
-        if (pbuffer_->GetTextureTarget() == GL_TEXTURE_2D) {
+        if (gOffscreenBuffer->GetTextureTarget() == GL_TEXTURE_2D) {
             // with ordinary pow-of-two texture coordinates are between 0 and 1
             // but we must assure only the used part of the texture is taken.
-            factorX /= static_cast<float>(pbuffer_->GetWidth());
-            factorY /= static_cast<float>(pbuffer_->GetHeight());
+            factorX /= static_cast<float>(gOffscreenBuffer->GetWidth());
+            factorY /= static_cast<float>(gOffscreenBuffer->GetHeight());
         }
 
         float   texCorrect[16] = { factorX, 0.0, 0.0, 0.0, 
@@ -407,7 +407,7 @@ namespace OpenCSG {
     }
 
     void ChannelManager::resetProjectiveTexture() {
-        if (!pbuffer_->haveSeparateContext()) {
+        if (!gOffscreenBuffer->haveSeparateContext()) {
             glDisable(GL_TEXTURE_GEN_S);
             glDisable(GL_TEXTURE_GEN_T);
             glDisable(GL_TEXTURE_GEN_R);
@@ -418,7 +418,7 @@ namespace OpenCSG {
         glPopMatrix();
         glMatrixMode(GL_MODELVIEW);
 
-        pbuffer_->DisableTextureTarget();
+        gOffscreenBuffer->DisableTextureTarget();
     }
 
     void ChannelManager::setupTexEnv(Channel channel) {
@@ -459,26 +459,26 @@ namespace OpenCSG {
 
 
 
-    
+
     ChannelManagerForBatches::ChannelManagerForBatches() : 
         ChannelManager(), 
-        primitives_(std::vector<std::pair<std::vector<Primitive*>, int> >(Blue + 1)) {
+        mPrimitives(std::vector<std::pair<std::vector<Primitive*>, int> >(Blue + 1)) {
     }
 
     void ChannelManagerForBatches::store(Channel channel, const std::vector<Primitive*>& primitives, int layer) {
-        primitives_[channel] = std::make_pair(primitives, layer);
+        mPrimitives[channel] = std::make_pair(primitives, layer);
     }
 
     const std::vector<Primitive*> ChannelManagerForBatches::getPrimitives(Channel channel) const {
-        return primitives_[channel].first;
+        return mPrimitives[channel].first;
     }    
     
     int ChannelManagerForBatches::getLayer(Channel channel) const {
-        return primitives_[channel].second;
+        return mPrimitives[channel].second;
     }
 
     void ChannelManagerForBatches::clear() {
-        primitives_ = std::vector<std::pair<std::vector<Primitive*>, int> >(Blue + 1);
+        mPrimitives = std::vector<std::pair<std::vector<Primitive*>, int> >(Blue + 1);
     }
 
 } // namespace OpenCSG

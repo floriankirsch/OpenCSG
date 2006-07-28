@@ -1,6 +1,6 @@
 // OpenCSG - library for image-based CSG rendering for OpenGL
-// Copyright (C) 2002-2004
-// Hasso-Plattner-Institute at the University of Potsdam, Germany, and Florian Kirsch
+// Copyright (C) 2002-2006, Florian Kirsch,
+// Hasso-Plattner-Institute at the University of Potsdam, Germany
 //
 // This library is free software; you can redistribute it and/or 
 // modify it under the terms of the GNU General Public License, 
@@ -32,23 +32,23 @@ namespace OpenCSG {
 
     class Primitive;
 
+    /// a Batch is a list of primitives that do not overlap in screen space
     typedef std::vector<Primitive*> Batch;
-        // a Batch is a list of primitives that do not overlap in screen space
 
     class Batcher {
     public:
+        /// subdivides an array of primitives into batches
         Batcher(const std::vector<Primitive*>& primitives);
-            // subdivides an array of primitives into batches
 
+        /// returns first batch
         std::vector<Batch>::const_iterator begin() const;
-            // returns first batch
+        /// returns end of batches
         std::vector<Batch>::const_iterator end() const;
-            // returns end of batches
+        /// return number of batches
         unsigned int size() const;
-            // return number of batches
 
     private:
-        std::vector<Batch> batches_;
+        std::vector<Batch> mBatches;
     };
 
 } // namespace OpenCSG

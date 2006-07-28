@@ -1,3 +1,6 @@
+28.07.2006
+    Changed: Lots of cosmetical and documentation updates
+
 27.07.2006
     Changed: made pbuffer path default again (no real performance gain
         width FBO, less tested)

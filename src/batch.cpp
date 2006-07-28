@@ -1,6 +1,6 @@
 // OpenCSG - library for image-based CSG rendering for OpenGL
-// Copyright (C) 2002-2004
-// Hasso-Plattner-Institute at the University of Potsdam, Germany, and Florian Kirsch
+// Copyright (C) 2002-2006, Florian Kirsch
+// Hasso-Plattner-Institute at the University of Potsdam, Germany
 //
 // This library is free software; you can redistribute it and/or 
 // modify it under the terms of the GNU General Public License, 
@@ -29,7 +29,7 @@ namespace OpenCSG {
 
         const unsigned int numberOfPrimitives = primitives.size();
         std::vector<int> done(numberOfPrimitives, 0);
-        batches_.reserve(numberOfPrimitives);
+        mBatches.reserve(numberOfPrimitives);
 
         unsigned int i = 0;
         for (std::vector<Primitive*>::const_iterator itr = primitives.begin(); itr != primitives.end(); ++itr, ++i) {
@@ -37,8 +37,8 @@ namespace OpenCSG {
             if (done[i]) continue;
             done[i] = 1;
 
-            batches_.push_back(Batch());
-            Batch& batch = batches_.back();
+            mBatches.push_back(Batch());
+            Batch& batch = mBatches.back();
             batch.push_back(*itr);
 
             std::vector<Primitive*>::const_iterator batchCandidate = itr;
@@ -62,15 +62,15 @@ namespace OpenCSG {
     }
 
     std::vector<Batch>::const_iterator Batcher::begin() const {
-        return batches_.begin();
+        return mBatches.begin();
     }
 
     std::vector<Batch>::const_iterator Batcher::end() const {
-        return batches_.end();
+        return mBatches.end();
     }
 
     unsigned int Batcher::size() const {
-        return batches_.size();
+        return mBatches.size();
     }
 
 } // namespace OpenCSG

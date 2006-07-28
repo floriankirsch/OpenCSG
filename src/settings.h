@@ -1,6 +1,6 @@
 // OpenCSG - library for image-based CSG rendering for OpenGL
-// Copyright (C) 2002-2006
-// Hasso-Plattner-Institute at the University of Potsdam, Germany, and Florian Kirsch
+// Copyright (C) 2002-2006, Florian Kirsch,
+// Hasso-Plattner-Institute at the University of Potsdam, Germany
 //
 // This library is free software; you can redistribute it and/or 
 // modify it under the terms of the GNU General Public License, 
@@ -29,8 +29,12 @@
 
 namespace OpenCSG {
 
+    /// Initializes the set of options. No need to call this from outside,
+    /// because invoked from setOptioni() and getOptioni() when they are first called.
     void initOptions();
+    /// redeclared from opencsg.h
     void setOptioni(OptionType option, int newSetting);
+    /// redeclared from opencsg.h
     int  getOptioni(OptionType option);
 
 } // namespace OpenCSG
