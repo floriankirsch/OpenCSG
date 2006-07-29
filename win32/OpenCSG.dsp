@@ -1,6 +1,6 @@
 # Microsoft Developer Studio Project File - Name="OpenCSG" - Package Owner=<4>
 # Microsoft Developer Studio Generated Build File, Format Version 6.00
-# ** NICHT BEARBEITEN **
+# ** NICHT BEARBEITEN ** 
 
 # TARGTYPE "Win32 (x86) Static Library" 0x0104
 
