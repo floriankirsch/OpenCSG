@@ -56,7 +56,7 @@ namespace OpenCSG {
             bool haveFBO =    GLEW_EXT_framebuffer_object != 0 
                            && GLEW_EXT_packed_depth_stencil != 0;
 
-            //assert(haveFBO);
+            assert(haveFBO);
         }
 
         FrameBufferObject::~FrameBufferObject() {
@@ -65,7 +65,7 @@ namespace OpenCSG {
 
         // Creates frame buffer texture and combined depth/stencil render buffer.
         // shareObjects and copyContext do not make sense here, context remains the same.
-        bool FrameBufferObject::Initialize(int width, int height, bool shareObjects, bool copyContext) {
+        bool FrameBufferObject::Initialize(int width, int height, bool /* shareObjects */, bool /* copyContext */ ) {
 
             this->width = width;
             this->height = height;
@@ -115,7 +115,7 @@ namespace OpenCSG {
         }
 
         // ?
-        bool FrameBufferObject::Resize(int width, int height)
+        bool FrameBufferObject::Resize(int /* width */, int /* height */ )
         {
             Reset();
             return true;

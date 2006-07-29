@@ -85,27 +85,33 @@ namespace OpenCSG {
             depthComplexityAlgorithm = DepthComplexitySampling;
         }
 
-        switch (algorithm) {
-        case Goldfeather:
-            switch (depthComplexityAlgorithm) {
-            case NoDepthComplexitySampling: 
-                renderGoldfeather(primitives);
+        if (   algorithm != Automatic
+            && depthComplexityAlgorithm != DepthComplexityAlgorithmUnused
+        ) {
+            switch (algorithm) {
+            case Goldfeather:
+                switch (depthComplexityAlgorithm) {
+                case NoDepthComplexitySampling: 
+                    renderGoldfeather(primitives);
+                    break;
+                case OcclusionQuery:
+                    renderOcclusionQueryGoldfeather(primitives);
+                    break;
+                case DepthComplexitySampling:
+                    renderDepthComplexitySamplingGoldfeather(primitives);
+                    break;
+                case DepthComplexityAlgorithmUnused:
+                    break; // does not happen               
+                }
                 break;
-            case OcclusionQuery:
-                renderOcclusionQueryGoldfeather(primitives);
+    
+            case SCS:
+                renderSCS(primitives, depthComplexityAlgorithm);
                 break;
-            case DepthComplexitySampling:
-                renderDepthComplexitySamplingGoldfeather(primitives);
+            
+            default:
                 break;
             }
-            break;
-
-        case SCS:
-            renderSCS(primitives, depthComplexityAlgorithm);
-            break;
-        
-        default:
-            ;
         }
 
         if (legacyInterface) {

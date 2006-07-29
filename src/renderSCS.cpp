@@ -417,7 +417,9 @@ namespace OpenCSG {
             break;
         case DepthComplexitySampling:
             subtractPrimitives(subtractedBatches.begin(), subtractedBatches.end(), depthComplexity);
-            break;      
+            break;
+        case DepthComplexityAlgorithmUnused:
+            break; // does not happen when invoked correctly           
         }
         renderIntersectedBack(intersected);
 
