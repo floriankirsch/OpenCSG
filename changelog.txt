@@ -1,3 +1,7 @@
+30.07.2006
+    Fixed: Linux stuff
+        Assertion when frame buffer object extension is not available
+
 28.07.2006
     Changed: Lots of cosmetical and documentation updates
 

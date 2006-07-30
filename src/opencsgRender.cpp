@@ -63,12 +63,10 @@ namespace OpenCSG {
             return;
         }
 
-        int algorithmOrig;
-        int depthComplOrig;
+        int algorithmOrig  = getOptioni(AlgorithmSetting);
+        int depthComplOrig = getOptioni(DepthComplexitySetting);
         bool legacyInterface = false;
         if (algorithm != AlgorithmUnused) {
-            algorithmOrig  = getOptioni(AlgorithmSetting);
-            depthComplOrig = getOptioni(DepthComplexitySetting);
             legacyInterface = true;
         } else {
             algorithm = (Algorithm)getOptioni(AlgorithmSetting);
