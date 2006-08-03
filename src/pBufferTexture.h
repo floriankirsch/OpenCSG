@@ -75,6 +75,7 @@ namespace OpenCSG {
 
         protected:
             RenderTexture* r;
+            char*          s;
         };
 
     } // namespace OpenGL

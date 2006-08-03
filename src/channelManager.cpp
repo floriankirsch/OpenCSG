@@ -74,7 +74,6 @@ namespace OpenCSG {
         glPushAttrib(GL_ALL_ATTRIB_BITS);
         glColorMask(GL_FALSE, GL_FALSE, GL_FALSE, GL_FALSE);
         glDisable(GL_LIGHTING);
-        glShadeModel(GL_FLAT);
         glDisable(GL_TEXTURE_1D);
         glDisable(GL_TEXTURE_2D);
         glDisable(GL_BLEND);

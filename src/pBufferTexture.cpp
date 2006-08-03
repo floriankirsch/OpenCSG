@@ -22,6 +22,9 @@
 #include "pBufferTexture.h"
 #include "RenderTexture/RenderTexture.h"
 #include <GL/glew.h>
+#ifdef _WIN32
+#include <GL/wglew.h>
+#endif
 
 namespace OpenCSG {
 
@@ -29,10 +32,26 @@ namespace OpenCSG {
 
         PBufferTexture::PBufferTexture() {
             if (GLEW_NV_texture_rectangle) {
-                r = new RenderTexture("rgba texRECT depth=24 stencil=8 single");
+#ifdef _WIN32
+                if (WGLEW_ARB_render_texture) {
+                    s = "rgba texRECT depth=24 stencil=8 single rtt";
+                } else
+#endif
+                { 
+                    s = "rgba texRECT depth=24 stencil=8 single ctt"; 
+                }
             } else {
-                r = new RenderTexture("rgba tex2D depth=24 stencil=8 single");
+#ifdef _WIN32
+                if (WGLEW_ARB_render_texture) {
+                    s = "rgba tex2D depth=24 stencil=8 single rtt";
+                } else 
+#endif
+                {
+                    s = "rgba tex2D depth=24 stencil=8 single ctt";
+                }
             }
+
+            r = new RenderTexture(s);
         }
 
         PBufferTexture::~PBufferTexture() {
@@ -44,11 +63,7 @@ namespace OpenCSG {
         }
 
         bool PBufferTexture::Reset() {
-            if (GLEW_NV_texture_rectangle) {
-                return r->Reset("rgba texRECT depth=24 stencil=8 single");
-            } else {
-                return r->Reset("rgba tex2D depth=24 stencil=8 single");
-            }
+            return r->Reset(s);
         }
 
         bool PBufferTexture::Resize(int width, int height) {

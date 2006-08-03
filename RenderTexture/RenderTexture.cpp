@@ -1660,7 +1660,7 @@ bool RenderTexture::_VerifyExtensions()
         PrintExtensionError("WGL_ARB_pixel_format");
         return false;
     }
-    if (_bIsTexture && !WGLEW_ARB_render_texture)
+    if (_eUpdateMode == RT_RENDER_TO_TEXTURE && !WGLEW_ARB_render_texture)
     {
         PrintExtensionError("WGL_ARB_render_texture");
         return false;
