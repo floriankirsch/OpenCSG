@@ -1,4 +1,5 @@
 03.08.2006
+    Fixed: Memory leak in RenderTexture reported a year ago to me.
     Fixed: Several issues on found on TNT2 (creepy, isn't it?):
         RenderTexture actually did not support copy-to-texture only,
         because ARB_render_texture was checked in error
