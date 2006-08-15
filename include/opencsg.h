@@ -177,7 +177,7 @@ namespace OpenCSG {
     ///   - scissor test (CSG calculating will only occur in the specified region)
     ///   - stencil test, when only convex primitives are used and no layered 
     ///         algorithm is used. Most stenciling ops (increment / decrement 
-    ///         / zero / one) will not be useful anyway
+    ///         / zero / one) will not be useful anyway.
     ///
     /// render() ignores
     ///   - depth test (always GL_LESS)
