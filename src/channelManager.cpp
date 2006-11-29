@@ -64,6 +64,41 @@ namespace OpenCSG {
             glEnable(GL_DEPTH_TEST);
         }
 
+        template<int FRAMES>
+        class MaximumMemorizer {
+            int value[FRAMES];
+            int idx;
+        public:
+            MaximumMemorizer() : idx(1) {
+                for (int i=0; i<FRAMES; ++i) {
+                    value[i] = 0;
+                }
+            }
+            void newValue(int v) {
+                if (v>=value[0]) {
+                    value[0] = v;
+                    idx = 1;
+                } else {
+                    if (idx < FRAMES) {
+                        value[idx] = v;
+                        ++idx;
+                    } else {
+                        int secondMax = -1;
+                        for (int i=1; i<FRAMES; ++i) {
+                            if (value[i] > secondMax) {
+                                secondMax = value[i];
+                            }
+                        }
+                        value[0] = secondMax;
+                        idx = 1;
+                    }
+                }
+            }
+            int getMax() const {
+                return value[0];
+            }
+        };
+
     } // unnamed namespace
 
     ChannelManager::ChannelManager() {
@@ -104,22 +139,25 @@ namespace OpenCSG {
             ty = nextPow2(dy);
         }
 
-        // these variables are for a heuristic that makes the offscreen buffer
+        // The following implements a heuristic that makes the offscreen buffer
         // smaller if the size of the buffer has been bigger than necessary
         // in x- or y- direction for resizeOffscreenBufferLimit frames. 
         //
         // this permits to use OpenCSG for CSG rendering in different
-        // canvases with different sizes without constant expensive
+        // canvases with different sizes without permanent expensive
         // resizing of the offscreen buffer for every frame.
         //
         // possible improvements: 
-        //   - the algorithm is not beautifully implemented. maybe encapsulate it?
         //   - allow the user to define the resizeOffscreenBufferLimit?
-        static const unsigned int resizeOffscreenBufferLimit = 100;
-        static unsigned int resizeOffscreenBufferCounterX = 0;
-        static unsigned int resizeOffscreenBufferCounterY = 0;
-        static int maxOffscreenBufferSizeX = 1;
-        static int maxOffscreenBufferSizeY = 1;
+        static const unsigned int resizeOffscreenBufferLimit = 64;
+
+        static MaximumMemorizer<resizeOffscreenBufferLimit> sizeX;
+        static MaximumMemorizer<resizeOffscreenBufferLimit> sizeY;
+        // tx == ty == 0 happens if the window is minimized, in this case don't touch a thing
+        if (tx != 0 && ty != 0) {
+            sizeX.newValue(tx);
+            sizeY.newValue(ty);
+        }
 
         bool rebuild = false;
         int newOffscreenType = getOptioni(OffscreenSetting);
@@ -152,68 +190,27 @@ namespace OpenCSG {
             } else {
                 gOffscreenBuffer = OpenGL::getOffscreenBuffer(false);
             }
-            if (gOffscreenBuffer->GetWidth() < tx || gOffscreenBuffer->GetHeight() < ty) {
+            if (   gOffscreenBuffer->GetWidth() != sizeX.getMax()
+                || gOffscreenBuffer->GetHeight() != sizeY.getMax()
+            ) {
                 // in particular, this detects newly created offscreen buffers,
                 // of which the width / height is -1
                 rebuild = true;
             }
         // tx == ty == 0 happens if the window is minimized, in this case don't touch a thing
         } else if (tx != 0 && ty != 0) {
-            
-            // check whether the offscreen buffer is too small, in case resize immediately
-            if ((tx > gOffscreenBuffer->GetWidth()) || (ty > gOffscreenBuffer->GetHeight())) {
-                gOffscreenBuffer->Resize((std::max)(maxOffscreenBufferSizeX, tx), (std::max)(maxOffscreenBufferSizeY, ty));
+            if (   gOffscreenBuffer->GetWidth() != sizeX.getMax()
+                || gOffscreenBuffer->GetHeight() != sizeY.getMax()
+            ) {
+                gOffscreenBuffer->Resize(sizeX.getMax(), sizeY.getMax());
                 rebuild = true;
-            }           
-
-            // if x-size matches exactly, remember to not resize in the next resizeOffscreenBufferLimit frames
-            if (tx == gOffscreenBuffer->GetWidth()) {
-                resizeOffscreenBufferCounterX = 0;
-                maxOffscreenBufferSizeX = tx;
             }
-            // else remember the biggest X in the last resizeOffscreenBufferCounterX frames
-              else if (tx < gOffscreenBuffer->GetWidth()) {
-                ++resizeOffscreenBufferCounterX;
-                maxOffscreenBufferSizeX = (std::max)(maxOffscreenBufferSizeX, tx);
-            }
-
-            // if y-size matches exactly, remember to not resize in the next resizeOffscreenBufferLimit frames
-            if (ty == gOffscreenBuffer->GetHeight()) {
-                resizeOffscreenBufferCounterY = 0;
-                maxOffscreenBufferSizeY = ty;
-            } 
-            // else remember the biggest Y in the last resizeOffscreenBufferCounterY frames
-            else if (ty < gOffscreenBuffer->GetHeight()) {
-                ++resizeOffscreenBufferCounterY;
-                maxOffscreenBufferSizeY = (std::max)(maxOffscreenBufferSizeY, ty);
-            }
-
-            // X or Y have been smaller than the offscreen buffer size in the last resizeOffscreenBufferLimit frames
-            // -> resize!
-            if (resizeOffscreenBufferCounterX >= resizeOffscreenBufferLimit || resizeOffscreenBufferCounterY >= resizeOffscreenBufferLimit) {
-                if (maxOffscreenBufferSizeX != gOffscreenBuffer->GetWidth() || maxOffscreenBufferSizeY != gOffscreenBuffer->GetHeight()) {
-                    // a beautiful algorithm would ensure that this inner if-condition 
-                    // would always be fulfilled.  
-                    gOffscreenBuffer->Resize(maxOffscreenBufferSizeX, maxOffscreenBufferSizeY);
-                    rebuild = true;
-                }
-                resizeOffscreenBufferCounterX = 0;
-                resizeOffscreenBufferCounterY = 0;
-                maxOffscreenBufferSizeX = tx;
-                maxOffscreenBufferSizeY = ty;
-            }
-
         }
 
         if (rebuild) {
-            if (!gOffscreenBuffer->Initialize(tx, ty, true, false)) {
+            if (!gOffscreenBuffer->Initialize(sizeX.getMax(), sizeY.getMax(), true, false)) {
                 assert(0);
             }
-
-            resizeOffscreenBufferCounterX = 0;
-            resizeOffscreenBufferCounterY = 0;
-            maxOffscreenBufferSizeX = tx;
-            maxOffscreenBufferSizeY = ty;
 
             // assert(pbuffer_->HasStencil());
 

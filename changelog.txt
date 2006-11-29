@@ -1,3 +1,10 @@
+29.11.2006
+    Fixed: Offscreen buffer resizing issue with alternating buffers
+        of the resolution (x1, y1) / (x2, y2) where x1>x2 but y1<y2.
+        In that case the offscreen buffer was permanently recreated.
+        The new implementation is clearer and for normal use should
+        have no performance overhead.
+
 03.08.2006
     Fixed: Memory leak in RenderTexture reported a year ago to me.
     Fixed: Several issues on found on TNT2 (creepy, isn't it?):
