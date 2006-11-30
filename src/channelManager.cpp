@@ -66,36 +66,29 @@ namespace OpenCSG {
 
         template<int FRAMES>
         class MaximumMemorizer {
-            int value[FRAMES];
-            int idx;
+            int mMax;
+            int mSecondMax;
+            int mCounter;
         public:
-            MaximumMemorizer() : idx(1) {
-                for (int i=0; i<FRAMES; ++i) {
-                    value[i] = 0;
-                }
-            }
+            MaximumMemorizer() : mMax(0), mSecondMax(-1) { }
             void newValue(int v) {
-                if (v>=value[0]) {
-                    value[0] = v;
-                    idx = 1;
+                if (v>=mMax) {
+                    mMax = v;
+                    mSecondMax = -1;
+                    mCounter = 0;
                 } else {
-                    if (idx < FRAMES) {
-                        value[idx] = v;
-                        ++idx;
-                    } else {
-                        int secondMax = -1;
-                        for (int i=1; i<FRAMES; ++i) {
-                            if (value[i] > secondMax) {
-                                secondMax = value[i];
-                            }
-                        }
-                        value[0] = secondMax;
-                        idx = 1;
+                    if (v>mSecondMax) {
+                        mSecondMax = v;
+                    }
+                    if (++mCounter >= FRAMES) {
+                        mMax = mSecondMax;
+                        mSecondMax = -1;
+                        mCounter = 0;
                     }
                 }
             }
             int getMax() const {
-                return value[0];
+                return mMax;
             }
         };
 

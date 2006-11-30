@@ -1,3 +1,6 @@
+30.11.2006
+    Changed: Refined offscreen buffer resizing
+
 29.11.2006
     Fixed: Offscreen buffer resizing issue with alternating buffers
         of the resolution (x1, y1) / (x2, y2) where x1>x2 but y1<y2.
