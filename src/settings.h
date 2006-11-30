@@ -33,9 +33,9 @@ namespace OpenCSG {
     /// because invoked from setOptioni() and getOptioni() when they are first called.
     void initOptions();
     /// redeclared from opencsg.h
-    void setOptioni(OptionType option, int newSetting);
+    void setOption(OptionType option, int newSetting);
     /// redeclared from opencsg.h
-    int  getOptioni(OptionType option);
+    int  getOption(OptionType option);
 
 } // namespace OpenCSG
 

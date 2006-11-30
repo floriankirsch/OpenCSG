@@ -63,14 +63,14 @@ namespace OpenCSG {
             return;
         }
 
-        int algorithmOrig  = getOptioni(AlgorithmSetting);
-        int depthComplOrig = getOptioni(DepthComplexitySetting);
+        int algorithmOrig  = getOption(AlgorithmSetting);
+        int depthComplOrig = getOption(DepthComplexitySetting);
         bool legacyInterface = false;
         if (algorithm != AlgorithmUnused) {
             legacyInterface = true;
         } else {
-            algorithm = (Algorithm)getOptioni(AlgorithmSetting);
-            depthComplexityAlgorithm = (DepthComplexityAlgorithm)getOptioni(DepthComplexitySetting);
+            algorithm = (Algorithm)getOption(AlgorithmSetting);
+            depthComplexityAlgorithm = (DepthComplexityAlgorithm)getOption(DepthComplexitySetting);
         }
 
         if (algorithm == Automatic) {
@@ -113,8 +113,8 @@ namespace OpenCSG {
         }
 
         if (legacyInterface) {
-            setOptioni(AlgorithmSetting, algorithmOrig);
-            setOptioni(DepthComplexitySetting, depthComplOrig);
+            setOption(AlgorithmSetting, algorithmOrig);
+            setOption(DepthComplexitySetting, depthComplOrig);
         }
     }
 

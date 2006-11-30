@@ -34,14 +34,14 @@ namespace OpenCSG {
         }
     }
 
-    void setOptioni(OptionType option, int newSetting) {
+    void setOption(OptionType option, int newSetting) {
         if ((unsigned int)option < OptionTypeUnused) {
             initIntOptions();
             gSetting[option] = newSetting;
         }
     }
 
-    int getOptioni(OptionType option) {
+    int getOption(OptionType option) {
         initIntOptions();
         if ((unsigned int)option < OptionTypeUnused) {
             return gSetting[option];

@@ -153,7 +153,7 @@ namespace OpenCSG {
         }
 
         bool rebuild = false;
-        int newOffscreenType = getOptioni(OffscreenSetting);
+        int newOffscreenType = getOption(OffscreenSetting);
         if (!gOffscreenBuffer || (gOffscreenType != newOffscreenType)) {
             gOffscreenType = newOffscreenType;
             if (newOffscreenType == OpenCSG::AutomaticOffscreenType) {

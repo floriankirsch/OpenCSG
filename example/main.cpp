@@ -350,9 +350,9 @@ void menu(int value) {
     case SCS_DC:        algo = OpenCSG::SCS;            depthalgo = OpenCSG::DepthComplexitySampling;   break;
     case SCS_OQ:        algo = OpenCSG::SCS;            depthalgo = OpenCSG::OcclusionQuery;            break;
 
-    case OFFSCREEN_AUTOMATIC: OpenCSG::setOptioni(OpenCSG::OffscreenSetting, OpenCSG::AutomaticOffscreenType); break;
-    case OFFSCREEN_FBO:       OpenCSG::setOptioni(OpenCSG::OffscreenSetting, OpenCSG::FrameBufferObject);      break;
-    case OFFSCREEN_PBUFFER:   OpenCSG::setOptioni(OpenCSG::OffscreenSetting, OpenCSG::PBuffer);                break;
+    case OFFSCREEN_AUTOMATIC: OpenCSG::setOption(OpenCSG::OffscreenSetting, OpenCSG::AutomaticOffscreenType); break;
+    case OFFSCREEN_FBO:       OpenCSG::setOption(OpenCSG::OffscreenSetting, OpenCSG::FrameBufferObject);      break;
+    case OFFSCREEN_PBUFFER:   OpenCSG::setOption(OpenCSG::OffscreenSetting, OpenCSG::PBuffer);                break;
 
     default: break;
     }

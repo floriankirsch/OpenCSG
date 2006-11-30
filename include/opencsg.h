@@ -92,9 +92,9 @@ namespace OpenCSG {
     /// The option parameter specifies which option to set. The newSetting
     /// is the new setting and should be one of the Algorithm, 
     /// DepthComplexityAlgorithm, or OffscreenType enums below.
-    void setOptioni(OptionType option, int newSetting);
+    void setOption(OptionType option, int newSetting);
     /// Returns the current setting of the provided option type.
-    int  getOptioni(OptionType option);
+    int  getOption(OptionType option);
 
     /// The Algorithm specifies the method used for CSG rendering:
     ///   - Goldfeather: This algorithm handles convex and concave primitives.
