@@ -1,3 +1,6 @@
+03.12.2006
+    Release 1.1.0
+
 30.11.2006
     Changed: Renamed setOptioni -> setOption, getOptioni -> getOption
     Changed: Refined offscreen buffer resizing
