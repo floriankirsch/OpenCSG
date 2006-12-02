@@ -1,9 +1,13 @@
 03.12.2006
     Release 1.1.0
 
+02.12.2006
+    Fixed: Free for mode string failed in debug mode in VC6, commented
+        out.
+
 30.11.2006
-    Changed: Renamed setOptioni -> setOption, getOptioni -> getOption
-    Changed: Refined offscreen buffer resizing
+    Changed: Renamed setOptioni -> setOption, getOptioni -> getOption.
+    Changed: Refined offscreen buffer resizing.
 
 29.11.2006
     Fixed: Offscreen buffer resizing issue with alternating buffers

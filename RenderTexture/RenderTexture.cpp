@@ -1031,7 +1031,13 @@ void RenderTexture::_ParseModeString(const char *modeString,
         tokens.push_back(buf);
         buf = strtok(NULL, " ");
     }
+
+#ifndef _MSC_VER
+    // in debug mode, microsoft visual studio (6.0, 7.1 works apparently)
+    // assert that the heap is corrupt when this free is done. To be safe, 
+    // just don't do it with these compilers (memory leak is negligable here)
     free(mode);
+#endif
 
     for (unsigned int i = 0; i < tokens.size(); i++)
     {
