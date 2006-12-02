@@ -10,13 +10,13 @@ Linux
 -----
 
 1) Just type 'make'. Maybe you must adjust the Makefiles in
-    the src/ and the example/ directory for sucessful compilation.
+   the src/ and the example/ directory for sucessful compilation.
 2) The OpenCSG library will have been build in lib/, GLEW in glew/lib/,
-    and the example "opencsgexample" will reside in the src/ directory. 
-	To run the opencsg example, you must ensure that the GLEW and the 
-	OpenCSG libs are in your LD_LIBRARY_PATH (e.G., one way to do this 
-	is to copy them to /usr/local/lib and running "ldconfig -v"). 
-	Currently there is no automatic way for this.
+   and the example "opencsgexample" will reside in the src/ directory. 
+   To run the opencsg example, you must ensure that the GLEW and the 
+   OpenCSG libs are in your LD_LIBRARY_PATH (e.G., one way to do this 
+   is to copy them to /usr/local/lib and running "ldconfig -v"). 
+   Currently there is no automatic way for this.
 
 
 Dev-C++ 5
