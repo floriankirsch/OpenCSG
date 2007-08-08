@@ -1,3 +1,8 @@
+08.08.2007
+    Added: Support for depth bounds extension for performance improvements.
+        Currently, standard Goldfeather and all SCS algorithms use this
+        functionality. 
+
 03.12.2006
     Release 1.1.0
 
