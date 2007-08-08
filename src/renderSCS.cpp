@@ -69,7 +69,7 @@ namespace OpenCSG {
 
                 setupTexEnv(*c);
                 scissor->recall(*c);
-                scissor->enable();
+                scissor->enableScissor();
 
                 const std::vector<Primitive*> primitives = getPrimitives(*c);
                 for (std::vector<Primitive*>::const_iterator j = primitives.begin(); j != primitives.end(); ++j) {
@@ -81,7 +81,7 @@ namespace OpenCSG {
                 }
             }
 
-            scissor->disable();
+            scissor->disableScissor();
 
             glDisable(GL_ALPHA_TEST);
             glDisable(GL_CULL_FACE);
@@ -334,7 +334,7 @@ namespace OpenCSG {
 
         void renderIntersectedBack(const std::vector<Primitive*>& primitives) {
             // where a back face of intersected shape is in front of any subtracted shape
-            // mask fragment as invisible. Updating depth calues is not necessary, so when
+            // mask fragment as invisible. Updating depth values is not necessary, so when
             // having IDs, this is kind of simple. 
             channelMgr->renderToChannel(true);
             glEnable(GL_CULL_FACE);
@@ -387,7 +387,7 @@ namespace OpenCSG {
 
         unsigned int depthComplexity = 0;
         if (algorithm == DepthComplexitySampling) {
-            scissor->enable();
+            scissor->enableScissor();
             glClear(GL_STENCIL_BUFFER_BIT);
             depthComplexity = 
                 (std::min)(OpenGL::calcMaxDepthComplexity(subtracted, scissor->getCurrentArea()), 
@@ -397,7 +397,7 @@ namespace OpenCSG {
         channelMgr->request();
         channelMgr->renderToChannel(true);
         
-        scissor->enable();
+        scissor->enableScissor();
         scissor->store(channelMgr->current());
 
         glDepthMask(GL_TRUE);
@@ -408,6 +408,7 @@ namespace OpenCSG {
         glClearDepth(1.0);
 
         renderIntersectedFront(intersected);
+        scissor->enableDepthBounds();
         switch (algorithm) {
         case NoDepthComplexitySampling:
             subtractPrimitives(subtractedBatches.begin(), subtractedBatches.end(), subtractedBatches.size());
@@ -421,9 +422,10 @@ namespace OpenCSG {
         case DepthComplexityAlgorithmUnused:
             break; // does not happen when invoked correctly           
         }
+        scissor->disableDepthBounds();
         renderIntersectedBack(intersected);
 
-        scissor->disable();
+        scissor->disableScissor();
 
         channelMgr->store(channelMgr->current(), primitives, 0);
         channelMgr->free();

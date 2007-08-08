@@ -28,10 +28,12 @@
 namespace OpenCSG {
 
     ScissorMemo::ScissorMemo() : 
-        mIintersection(NDCArea(-1.0f, -1.0f, 1.0f, 1.0f)),
-        mCurrent(NDCArea(1.0f, 1.0f, -1.0f, -1.0f)),
-        mArea(NDCArea(-1.0f, -1.0f, 1.0f, 1.0f)),
-        mScissor(std::vector<NDCArea>(Blue + 1)) {
+        mIintersection(NDCVolume(-1.0f, -1.0f, 0.0f, 1.0f, 1.0f, 1.0f)),
+        mCurrent(NDCVolume(1.0f, 1.0f, 1.0f, -1.0f, -1.0f, 0.0f)),
+        mArea(NDCVolume(-1.0f, -1.0f, 0.0f, 1.0f, 1.0f, 1.0f)),
+        mScissor(std::vector<NDCVolume>(Blue + 1)),
+        mHaveDepthBoundsTest(GLEW_EXT_depth_bounds_test != 0) 
+    {
     }
 
     void ScissorMemo::store(Channel ch) {
@@ -42,21 +44,44 @@ namespace OpenCSG {
         mArea = mScissor[ch];
     }
 
-    void ScissorMemo::enable() const {
+    void ScissorMemo::enableScissor() const {
         OpenGL::scissor(mArea);
     }
 
-    void ScissorMemo::disable() const {
+    void ScissorMemo::disableScissor() const {
         glDisable(GL_SCISSOR_TEST);
+    }
+
+    void ScissorMemo::enableDepthBounds() const {
+        if (!mHaveDepthBoundsTest)
+            return;
+        glDepthBoundsEXT(mArea.minz, mArea.maxz);
+        glEnable(GL_DEPTH_BOUNDS_TEST_EXT);
+    }
+
+    void ScissorMemo::enableDepthBoundsBack() const {
+        if (!mHaveDepthBoundsTest)
+            return;
+        glDepthBoundsEXT(0.0f, mCurrent.maxz);
+        glEnable(GL_DEPTH_BOUNDS_TEST_EXT);
+    }
+
+    void ScissorMemo::disableDepthBounds() const {
+        if (!mHaveDepthBoundsTest)
+            return;
+        glDisable(GL_DEPTH_BOUNDS_TEST_EXT);
     }
 
     void ScissorMemo::setIntersected(const std::vector<Primitive*>& primitives) {
 
         float& minx = mIintersection.minx;
         float& miny = mIintersection.miny;
+        float& minz = mIintersection.minz;
         float& maxx = mIintersection.maxx;
         float& maxy = mIintersection.maxy;
+        float& maxz = mIintersection.maxz;
 
+        // dont let intersected area exceed scissor region set by the application (outside OpenCSG)
         const int dx = OpenGL::canvasPos[2] - OpenGL::canvasPos[0];
         const int dy = OpenGL::canvasPos[3] - OpenGL::canvasPos[1];
 
@@ -65,7 +90,10 @@ namespace OpenCSG {
         const float swx = 2.0f * (static_cast<float>(OpenGL::scissorPos[2] + OpenGL::scissorPos[0]) / static_cast<float>(dx)) - 1.0f;
         const float swy = 2.0f * (static_cast<float>(OpenGL::scissorPos[3] + OpenGL::scissorPos[1]) / static_cast<float>(dy)) - 1.0f;
 
-        minx = sx; miny = sy; maxx = swx; maxy = swy;
+        minx = sx; maxx = swx; 
+        miny = sy; maxy = swy;
+
+        minz = 0.0f; maxz = 1.0f; // might read current depth value, but usefulness is unclear 
 
         for (std::vector<Primitive*>::const_iterator itr = primitives.begin(); itr != primitives.end(); ++itr) {
             if ((*itr)->getOperation() == Intersection) {
@@ -74,8 +102,10 @@ namespace OpenCSG {
 
                 minx = (std::max)(minx, tminx);
                 miny = (std::max)(miny, tminy);
+                minz = (std::max)(minz, tminz);
                 maxx = (std::min)(maxx, tmaxx);
                 maxy = (std::min)(maxy, tmaxy);
+                maxz = (std::min)(maxz, tmaxz);
             }
         }
 
@@ -83,19 +113,23 @@ namespace OpenCSG {
         minx = (std::min)( 1.0f, minx);
         miny = (std::max)(-1.0f, miny);
         miny = (std::min)( 1.0f, miny);
+        minz = (std::max)( 0.0f, minz);
+        minz = (std::min)( 1.0f, minz);
         maxx = (std::max)(-1.0f, maxx);
         maxx = (std::min)( 1.0f, maxx);
         maxy = (std::max)(-1.0f, maxy);
         maxy = (std::min)( 1.0f, maxy);
+        maxz = (std::max)( 0.0f, maxz);
+        maxz = (std::min)( 1.0f, maxz);
 
         calculateArea();
     }
 
-    const NDCArea& ScissorMemo::getIntersectedArea() const {
+    const NDCVolume& ScissorMemo::getIntersectedArea() const {
         return mIintersection;
     }
 
-    const NDCArea& ScissorMemo::getCurrentArea() const {
+    const NDCVolume& ScissorMemo::getCurrentArea() const {
         return mArea;
     }
 
@@ -103,10 +137,14 @@ namespace OpenCSG {
 
         float& minx = mCurrent.minx;
         float& miny = mCurrent.miny;
+        float& minz = mCurrent.minz;
         float& maxx = mCurrent.maxx;
         float& maxy = mCurrent.maxy;
+        float& maxz = mCurrent.maxz;
 
-        minx = 1.0; miny = 1.0; maxx = -1.0; maxy = -1.0;
+        minx = 1.0f;  maxx = -1.0f;
+        miny = 1.0f;  maxy = -1.0f;
+        minz = 1.0f;  maxz =  0.0f;
 
         for (std::vector<Primitive*>::const_iterator itr = primitives.begin(); itr != primitives.end(); ++itr) {
             float tminx, tminy, tminz, tmaxx, tmaxy, tmaxz;
@@ -114,18 +152,24 @@ namespace OpenCSG {
 
             minx = (std::min)(minx, tminx);
             miny = (std::min)(miny, tminy);
+            minz = (std::min)(minz, tminz);
             maxx = (std::max)(maxx, tmaxx);
             maxy = (std::max)(maxy, tmaxy);
+            maxz = (std::max)(maxz, tmaxz);
         }
 
         minx = (std::max)(-1.0f, minx);
         minx = (std::min)( 1.0f, minx); 
         miny = (std::max)(-1.0f, miny);
         miny = (std::min)( 1.0f, miny);
+        minz = (std::max)( 0.0f, minz);
+        minz = (std::min)( 1.0f, minz);
         maxx = (std::max)(-1.0f, maxx);
         maxx = (std::min)( 1.0f, maxx);
         maxy = (std::max)(-1.0f, maxy);
         maxy = (std::min)( 1.0f, maxy);
+        maxz = (std::max)( 0.0f, maxz);
+        maxz = (std::min)( 1.0f, maxz);
 
         calculateArea();
     }
@@ -133,8 +177,10 @@ namespace OpenCSG {
     void ScissorMemo::calculateArea() {
         mArea.minx = (std::max)(mCurrent.minx, mIintersection.minx);
         mArea.miny = (std::max)(mCurrent.miny, mIintersection.miny);
+        mArea.minz = (std::max)(mCurrent.minz, mIintersection.minz);
         mArea.maxx = (std::min)(mCurrent.maxx, mIintersection.maxx);
         mArea.maxy = (std::min)(mCurrent.maxy, mIintersection.maxy);
+        mArea.maxz = (std::min)(mCurrent.maxz, mIintersection.maxz);
     }
 
 } // namespace OpenCSG

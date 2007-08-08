@@ -45,23 +45,27 @@ namespace OpenCSG {
         int minx, miny, maxx, maxy;
     };
 
-    /// area in normalized device coordinates
-    struct NDCArea {
-        NDCArea(
+    /// 3d volume in normal device coordinates
+    struct NDCVolume {
+        NDCVolume(
             float minxx = 0.0f, 
             float minyy = 0.0f, 
+            float minzz = 0.0f, 
             float maxxx = 0.0f, 
-            float maxyy = 0.0f
+            float maxyy = 0.0f,
+            float maxzz = 0.0f
         ) : 
             minx(minxx), 
             miny(minyy), 
+            minz(minzz), 
             maxx(maxxx), 
-            maxy(maxyy) 
+            maxy(maxyy),  
+            maxz(maxzz)
         { } 
 
         operator PCArea() const;
 
-        float minx, miny, maxx, maxy;
+        float minx, miny, minz, maxx, maxy, maxz;
     };
 
 } // namespace OpenCSG

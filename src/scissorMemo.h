@@ -43,9 +43,16 @@ namespace OpenCSG {
         void recall(Channel);
 
         /// enables scissoring of area
-        void enable() const;
+        void enableScissor() const;
         /// disables scissoring
-        void disable() const;
+        void disableScissor() const;
+
+        /// enables depth bounds test of volume (if supported by graphics hardware)
+        void enableDepthBounds() const;
+        /// enables depth bounds test of back of current volume (if supported by graphics hardware)
+        void enableDepthBoundsBack() const;
+        /// disables depth bounds test of volume (if supported by graphics hardware)
+        void disableDepthBounds() const;
 
         /// sets the maximum area of the intersected CSG-primitives
         /// by intersecting the bounding boxes of them.
@@ -54,10 +61,10 @@ namespace OpenCSG {
         /// sets the area of primitives whose visilibity is determined next.
         void setCurrent(const std::vector<Primitive*>& primitives);
         /// returns the maximum area of the intersected CSG-primitives
-        const NDCArea& getIntersectedArea() const;
+        const NDCVolume& getIntersectedArea() const;
         /// returns the maximum area of the intersected CSG-primitives
         /// intersected with the currently used primitives
-        const NDCArea& getCurrentArea() const;
+        const NDCVolume& getCurrentArea() const;
 
     protected:
         /// calculates rendering area by intersecting intersected
@@ -65,10 +72,12 @@ namespace OpenCSG {
         void calculateArea();
 
     private:
-        NDCArea mIintersection;
-        NDCArea mCurrent;
-        NDCArea mArea;
-        std::vector<NDCArea> mScissor;
+        NDCVolume mIintersection;
+        NDCVolume mCurrent;
+        NDCVolume mArea;
+        std::vector<NDCVolume> mScissor;
+
+        bool mHaveDepthBoundsTest;
     };
 
 } // namespace OpenCSG
