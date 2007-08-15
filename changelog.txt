@@ -1,3 +1,9 @@
+15.08.2007
+    Fixed: stencil mask was not reset after doing the parity test.
+        Then, the stencil buffer was not fully reset in the next
+        glClear(GL_STENCIL_BUFFER_BIT). Bug only manifested in layered
+        Goldfeather algorithms with FBO.
+
 08.08.2007
     Added: Support for depth bounds extension for performance improvements.
         Currently, standard Goldfeather and all SCS algorithms use this

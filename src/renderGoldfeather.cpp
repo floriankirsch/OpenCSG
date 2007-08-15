@@ -358,7 +358,6 @@ namespace OpenCSG {
 
             glStencilMask(OpenGL::stencilMask);
             glClear(GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
-            glEnable(GL_STENCIL_TEST);
 
             glDepthFunc(GL_ALWAYS);
             glDepthMask(GL_TRUE);
@@ -421,6 +420,7 @@ namespace OpenCSG {
 
             channelMgr->renderToChannel(true);
 
+            glStencilMask(OpenGL::stencilMask);
             glClear(GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
 
             glDepthFunc(GL_ALWAYS);

@@ -27,6 +27,7 @@
 #include <GL/glxew.h>
 #endif
 #include "area.h"
+#include "openglHelper.h"
 #include "stencilManager.h"
 #include <vector>
 
@@ -49,6 +50,7 @@ namespace OpenCSG {
                 save();
                 mSaved = true;
             }
+            glStencilMask(OpenGL::stencilMask);
             glClear(GL_STENCIL_BUFFER_BIT);
         }
 
