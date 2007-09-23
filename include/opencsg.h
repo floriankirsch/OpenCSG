@@ -82,10 +82,11 @@ namespace OpenCSG {
     };
 
     enum OptionType {
-        AlgorithmSetting       = 0,
-        DepthComplexitySetting = 1,
-        OffscreenSetting       = 2,
-        OptionTypeUnused       = 3
+        AlgorithmSetting        = 0,
+        DepthComplexitySetting  = 1,
+        OffscreenSetting        = 2,
+        DepthBoundsOptimization = 3,
+        OptionTypeUnused        = 4
     };
 
     /// Sets an OpenCSG option.
@@ -160,6 +161,26 @@ namespace OpenCSG {
         FrameBufferObject      = 1,
         PBuffer                = 2,
         OffscreenTypeUnused    = 3
+    };
+
+    /// The Optimization sets whether a specific kind of optimization is enabled
+    /// or not. This can be set for the following kinds of optimizations:
+    ///   - DepthBoundsOptimization: Chooses internally depending on available
+    ///                  OpenGL extensions. If graphics hardware both support
+    ///                  frame buffer objects and PBuffers, PBuffers are chosen.
+    /// Each optimization can be independently set
+    ///   - OptimizationDefault     to its default value (depending of the kind
+    ///                             of optimization)
+    ///   - OptimizationForceOn     on (does not check OpenGL extensions)
+    ///   - OptimizationOn          on if required OpenGL extensions are supported,
+    ///   - OptimizationOff         off
+    ///   - OptimizationUnused:     Invalid input. 
+    enum Optimization {
+        OptimizationDefault   = 0,
+        OptimizationForceOn   = 1,
+        OptimizationOn        = 2,
+        OptimizationOff       = 3,
+        OptimizationUnused    = 4
     };
 
     /// The function render() performs CSG rendering. The function initializes 

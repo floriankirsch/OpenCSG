@@ -32,8 +32,16 @@ namespace OpenCSG {
         mCurrent(NDCVolume(1.0f, 1.0f, 1.0f, -1.0f, -1.0f, 0.0f)),
         mArea(NDCVolume(-1.0f, -1.0f, 0.0f, 1.0f, 1.0f, 1.0f)),
         mScissor(std::vector<NDCVolume>(Blue + 1)),
-        mHaveDepthBoundsTest(GLEW_EXT_depth_bounds_test != 0) 
+        mUseDepthBoundsTest(false)
     {
+        int optimizationSetting = getOption(DepthBoundsOptimization);
+        if (optimizationSetting == OptimizationForceOn)
+            mUseDepthBoundsTest = true;
+        else if (   optimizationSetting == OptimizationDefault
+                 || optimizationSetting == OptimizationOff)
+            mUseDepthBoundsTest = false;
+        else if (optimizationSetting == OptimizationOn)
+            mUseDepthBoundsTest = (GLEW_EXT_depth_bounds_test != 0);
     }
 
     void ScissorMemo::store(Channel ch) {
@@ -53,21 +61,21 @@ namespace OpenCSG {
     }
 
     void ScissorMemo::enableDepthBounds() const {
-        if (!mHaveDepthBoundsTest)
+        if (!mUseDepthBoundsTest)
             return;
         glDepthBoundsEXT(mArea.minz, mArea.maxz);
         glEnable(GL_DEPTH_BOUNDS_TEST_EXT);
     }
 
     void ScissorMemo::enableDepthBoundsBack() const {
-        if (!mHaveDepthBoundsTest)
+        if (!mUseDepthBoundsTest)
             return;
         glDepthBoundsEXT(0.0f, mCurrent.maxz);
         glEnable(GL_DEPTH_BOUNDS_TEST_EXT);
     }
 
     void ScissorMemo::disableDepthBounds() const {
-        if (!mHaveDepthBoundsTest)
+        if (!mUseDepthBoundsTest)
             return;
         glDisable(GL_DEPTH_BOUNDS_TEST_EXT);
     }

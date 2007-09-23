@@ -77,7 +77,7 @@ namespace OpenCSG {
         NDCVolume mArea;
         std::vector<NDCVolume> mScissor;
 
-        bool mHaveDepthBoundsTest;
+        bool mUseDepthBoundsTest;
     };
 
 } // namespace OpenCSG

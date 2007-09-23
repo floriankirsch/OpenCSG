@@ -1,3 +1,6 @@
+23.09.2007
+    Added: made depth bounds optimization configurable, default off. 
+
 15.08.2007
     Fixed: stencil mask was not reset after doing the parity test.
         Then, the stencil buffer was not fully reset in the next
