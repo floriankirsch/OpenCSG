@@ -43,9 +43,6 @@ bool               spin = true;
 float              rot = 0;
 std::ostringstream fpsStream;
 
-OpenCSG::Algorithm algo = OpenCSG::Automatic;
-OpenCSG::DepthComplexityAlgorithm depthalgo = OpenCSG::NoDepthComplexitySampling;
-
 void clearPrimitives() {
     for (std::vector<OpenCSG::Primitive*>::const_iterator i = primitives.begin(); i != primitives.end(); ++i) {
         OpenCSG::DisplayListPrimitive* p = 
@@ -283,7 +280,7 @@ void display()
     glRotatef(rot, 0.0, 1.0, 0.0);
 
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
-    OpenCSG::render(primitives, algo, depthalgo);
+    OpenCSG::render(primitives);
     glDepthFunc(GL_EQUAL);
     for (std::vector<OpenCSG::Primitive*>::const_iterator i = primitives.begin(); i != primitives.end(); ++i) {
         (*i)->render();
@@ -336,23 +333,39 @@ void key(unsigned char k, int, int) {
 
 void menu(int value) {
     switch (value) {
-    case CSG_BASIC:     setBasicShape();    break;
-    case CSG_WIDGET:    setWidget();        break;
-    case CSG_GRID2D:    setGrid2D();        break;
-    case CSG_GRID3D:    setGrid3D();        break;
-    case CSG_CONCAVE:   setConcave();       break;
+    case CSG_BASIC:      setBasicShape();    break;
+    case CSG_WIDGET:     setWidget();        break;
+    case CSG_GRID2D:     setGrid2D();        break;
+    case CSG_GRID3D:     setGrid3D();        break;
+    case CSG_CONCAVE:    setConcave();       break;
 
-    case ALGO_AUTOMATIC:algo = OpenCSG::Automatic; break;
-    case GF_STANDARD:   algo = OpenCSG::Goldfeather;    depthalgo = OpenCSG::NoDepthComplexitySampling; break;
-    case GF_DC:         algo = OpenCSG::Goldfeather;    depthalgo = OpenCSG::DepthComplexitySampling;   break;
-    case GF_OQ:         algo = OpenCSG::Goldfeather;    depthalgo = OpenCSG::OcclusionQuery;            break;
-    case SCS_STANDARD:  algo = OpenCSG::SCS;            depthalgo = OpenCSG::NoDepthComplexitySampling; break;
-    case SCS_DC:        algo = OpenCSG::SCS;            depthalgo = OpenCSG::DepthComplexitySampling;   break;
-    case SCS_OQ:        algo = OpenCSG::SCS;            depthalgo = OpenCSG::OcclusionQuery;            break;
+    case ALGO_AUTOMATIC: OpenCSG::setOption(OpenCSG::AlgorithmSetting, OpenCSG::Automatic);
+                         break;
+    case GF_STANDARD:    OpenCSG::setOption(OpenCSG::AlgorithmSetting, OpenCSG::Goldfeather);
+                         OpenCSG::setOption(OpenCSG::DepthComplexitySetting, OpenCSG::NoDepthComplexitySampling);
+                         break;
+    case GF_DC:          OpenCSG::setOption(OpenCSG::AlgorithmSetting, OpenCSG::Goldfeather);
+                         OpenCSG::setOption(OpenCSG::DepthComplexitySetting, OpenCSG::DepthComplexitySampling);
+                         break;
+    case GF_OQ:          OpenCSG::setOption(OpenCSG::AlgorithmSetting, OpenCSG::Goldfeather);
+                         OpenCSG::setOption(OpenCSG::DepthComplexitySetting, OpenCSG::OcclusionQuery);
+                         break;
+    case SCS_STANDARD:   OpenCSG::setOption(OpenCSG::AlgorithmSetting, OpenCSG::SCS);
+                         OpenCSG::setOption(OpenCSG::DepthComplexitySetting, OpenCSG::NoDepthComplexitySampling);
+                         break;
+    case SCS_DC:         OpenCSG::setOption(OpenCSG::AlgorithmSetting, OpenCSG::SCS);
+                         OpenCSG::setOption(OpenCSG::DepthComplexitySetting, OpenCSG::DepthComplexitySampling);
+                         break;
+    case SCS_OQ:         OpenCSG::setOption(OpenCSG::AlgorithmSetting, OpenCSG::SCS);
+                         OpenCSG::setOption(OpenCSG::DepthComplexitySetting, OpenCSG::OcclusionQuery);
+                         break;
 
-    case OFFSCREEN_AUTOMATIC: OpenCSG::setOption(OpenCSG::OffscreenSetting, OpenCSG::AutomaticOffscreenType); break;
-    case OFFSCREEN_FBO:       OpenCSG::setOption(OpenCSG::OffscreenSetting, OpenCSG::FrameBufferObject);      break;
-    case OFFSCREEN_PBUFFER:   OpenCSG::setOption(OpenCSG::OffscreenSetting, OpenCSG::PBuffer);                break;
+    case OFFSCREEN_AUTOMATIC: OpenCSG::setOption(OpenCSG::OffscreenSetting, OpenCSG::AutomaticOffscreenType);
+                              break;
+    case OFFSCREEN_FBO:       OpenCSG::setOption(OpenCSG::OffscreenSetting, OpenCSG::FrameBufferObject);
+                              break;
+    case OFFSCREEN_PBUFFER:   OpenCSG::setOption(OpenCSG::OffscreenSetting, OpenCSG::PBuffer);
+                              break;
 
     default: break;
     }

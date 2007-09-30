@@ -1,3 +1,8 @@
+30.09.2007
+    Changed: made a default and a legacy render() function for
+        interface cleanup and more logical documentation in the
+        header file. 
+
 23.09.2007
     Added: made depth bounds optimization configurable, default off. 
 
