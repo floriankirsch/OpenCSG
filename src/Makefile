@@ -12,8 +12,8 @@ CC       = gcc
 CXX      = g++
 LEX      = flex
 YACC     = yacc
-CFLAGS   = -pipe -Wall -W -O2 -march=athlon-xp -pipe -fPIC  -DQT_NO_DEBUG
-CXXFLAGS = -pipe -Wall -W -O2 -march=athlon-xp -pipe -fPIC  -DQT_NO_DEBUG
+CFLAGS   = -pipe -Wall -W -O2 -pipe -fPIC -DQT_NO_DEBUG
+CXXFLAGS = -pipe -Wall -W -O2 -pipe -fPIC -DQT_NO_DEBUG
 LEXFLAGS = 
 YACCFLAGS= -d
 INCPATH  = -I/usr/qt/3/mkspecs/linux-g++ -I. -I../include -I../glew/include -I.. -I$(QTDIR)/include -I/usr/include
