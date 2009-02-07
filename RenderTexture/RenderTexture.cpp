@@ -1006,7 +1006,7 @@ void RenderTexture::_ParseModeString(const char *modeString,
                                      vector<int> &pfAttribs, 
                                      vector<int> &pbAttribs)
 {
-    if (!modeString || strcmp(modeString, "") == 0)
+    if (!modeString || (modeString[0] == '\0'))
         return;
 
 	_iNumComponents = 0;
