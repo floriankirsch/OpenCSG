@@ -29,6 +29,19 @@
 
 <hr>
 
+<h3> 19.07.2009: OpenCSG 1.1.1 released</h3>
+
+<p>
+<a href="http://www.opencsg.org/OpenCSG-1.1.1.tar.gz">OpenCSG 1.1.1</a>
+is a maintenance release. Issues in the makefiles for Linux
+and portability problems for 64-bit Linux have been resolved. Additionally,
+a performance problem was fixed in the case of lots of CSG primitives
+(several 10000s) with standard bounding boxes. Rendering this is slow
+anyways, but before, the rendering time was dominated by the computation
+time for generating the batches of primitives. This was, without bounding boxes,
+wasted time, because the batches are trivial anyways. 
+</p>
+
 <h3> 03.12.2006: OpenCSG 1.1.0 with Frame Buffer Object Support</h3>
 
 <p>
@@ -201,7 +214,7 @@ have not changed.
 <center><p>
 &copy; 2002-2007, Florian Kirsch, e-mail: <b>mail at opencsg dot org</b>, <br>
 2002-2005 Hasso-Plattner-Institute Potsdam.<br>
-Last change: 05.05.2007
+Last change: 19.07.2009
 </p></center>
 
 </body>
