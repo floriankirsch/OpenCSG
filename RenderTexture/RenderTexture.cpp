@@ -44,6 +44,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdarg.h>
+#include <string.h>
 #include <assert.h>
 
 #ifdef _WIN32
@@ -1006,7 +1007,7 @@ void RenderTexture::_ParseModeString(const char *modeString,
                                      vector<int> &pfAttribs, 
                                      vector<int> &pbAttribs)
 {
-    if (!modeString || (modeString[0] == '\0'))
+    if (!modeString || strcmp(modeString, "") == 0)
         return;
 
 	_iNumComponents = 0;
