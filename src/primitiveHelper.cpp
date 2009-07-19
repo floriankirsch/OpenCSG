@@ -36,7 +36,7 @@ namespace OpenCSG {
             b->getBoundingBox(bminx, bminy, bminz, bmaxx, bmaxy, bmaxz);
 
             return (bmaxx >= aminx) && (amaxx >= bminx)
-                && (bmaxy >= aminy) && (amaxy >= bminy);     
+                && (bmaxy >= aminy) && (amaxy >= bminy);
         }
     
         bool intersectXYZ(const Primitive* a, const Primitive* b) {
@@ -47,7 +47,17 @@ namespace OpenCSG {
 
             return (bmaxx >= aminx) && (amaxx >= bminx)
                 && (bmaxy >= aminy) && (amaxy >= bminy) 
-                && (bmaxz >= aminz) && (amaxz >= bminz);            
+                && (bmaxz >= aminz) && (amaxz >= bminz);
+        }
+
+        bool containsXY(const Primitive* a, const Primitive* b) {
+            float aminx, aminy, aminz, amaxx, amaxy, amaxz,
+                  bminx, bminy, bminz, bmaxx, bmaxy, bmaxz;
+            a->getBoundingBox(aminx, aminy, aminz, amaxx, amaxy, amaxz);
+            b->getBoundingBox(bminx, bminy, bminz, bmaxx, bmaxy, bmaxz);
+
+            return (aminx >= bminx) && (amaxx <= bmaxx)
+                && (aminy >= bminy) && (amaxy <= bmaxy);
         }
 
         unsigned int getConvexity(const std::vector<Primitive*>& batch) {

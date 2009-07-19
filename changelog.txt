@@ -1,3 +1,7 @@
+19.07.2009:
+    Fixed: bad performance behaviour of Batcher when called with 
+        many primitives with standard bounding boxes. 
+
 07.02.2009:
     Fixed: removed -athlon-xp optimization in makefile, which was 
         not portable obviously, in particular for x64 platforms.

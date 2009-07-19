@@ -20,45 +20,93 @@
 //
 
 #include "opencsgConfig.h"
+#include <opencsg.h>
 #include "batch.h"
 #include "primitiveHelper.h"
 
 namespace OpenCSG {
 
+    class FullscreenPrimitive : public Primitive
+    {
+    public:
+        FullscreenPrimitive()
+            : Primitive(OpenCSG::Intersection, 1)
+        {
+        }
+
+        virtual void render()
+        {
+        }
+    };
+
     Batcher::Batcher(const std::vector<Primitive*>& primitives) { 
 
+        FullscreenPrimitive fullscreen;
+
         const unsigned int numberOfPrimitives = primitives.size();
-        std::vector<int> done(numberOfPrimitives, 0);
         mBatches.reserve(numberOfPrimitives);
 
-        unsigned int i = 0;
-        for (std::vector<Primitive*>::const_iterator itr = primitives.begin(); itr != primitives.end(); ++itr, ++i) {
-            // primitive has already been handled?
-            if (done[i]) continue;
-            done[i] = 1;
+        std::vector<Batch> batchCandidates;
+        batchCandidates.reserve(numberOfPrimitives);
 
-            mBatches.push_back(Batch());
-            Batch& batch = mBatches.back();
-            batch.push_back(*itr);
+        for (std::vector<Primitive*>::const_iterator itr = primitives.begin(); itr != primitives.end(); ++itr) {
 
-            std::vector<Primitive*>::const_iterator batchCandidate = itr;
-            unsigned int j=i+1;
-            for (++batchCandidate; batchCandidate != primitives.end(); ++batchCandidate, ++j) {            
-                // omit candidate if candidate is already contained in another batch
-                if (done[j]) continue;
+            // primitive completely outside viewport, no need to process it any further
+            if (!Algo::intersectXY(*itr, &fullscreen))
+                continue;
 
-                Batch::const_iterator currentPrimitives;
-                for (currentPrimitives = batch.begin(); currentPrimitives != batch.end(); ++currentPrimitives) {
-                    if (Algo::intersectXY(*batchCandidate, *currentPrimitives)) {
+            // fullscreen is completely part of the primitive's bounding box,
+            // no other primitive can be part of the same batch
+            if (Algo::containsXY(&fullscreen, *itr)) {
+                mBatches.push_back(Batch());
+                Batch& batch = mBatches.back();
+                batch.push_back(*itr);
+            }
+            else
+            {
+                std::vector<Batch>::iterator batchItr = batchCandidates.begin();
+                std::vector<Batch>::iterator batchEnd = batchCandidates.end();
+
+                for ( ; batchItr != batchEnd; ++batchItr) {
+
+                    Batch & batch = *batchItr;
+                    Batch::const_iterator batchPrimitives = batch.begin();
+                    Batch::const_iterator batchPrimitivesEnd = batch.end();
+
+                    // if the primitive does not intersect any of the primitives in
+                    // the current batch, we can add the primitive to that batch
+                    for ( ; batchPrimitives != batchPrimitivesEnd; ++batchPrimitives) {
+                        if (Algo::intersectXY(*itr, *batchPrimitives)) {
+                            break;
+                        }
+                    }
+                    if (batchPrimitives == batchPrimitivesEnd) {
+                        batch.push_back(*itr);
                         break;
                     }
                 }
-                if (currentPrimitives == batch.end()) {
-                    batch.push_back(*batchCandidate);
-                    done[j] = 1;
+
+                // primitive could not added to any batch -> create a new batch
+                if (batchItr == batchEnd) {
+                    batchCandidates.push_back(Batch());
+                    Batch& batch = batchCandidates.back();
+                    batch.push_back(*itr);
                 }
             }
-        }        
+        }
+
+        // Could do here the following. But since since batchCandidates is not needed anymore,
+        // we can use the std::vector swap trick to avoid calling of the copy constructor.
+        // std::copy(batchCandidates.begin(), batchCandidates.end(), std::back_inserter(mBatches));
+
+        std::vector<Batch>::iterator batchItr = batchCandidates.begin();
+        std::vector<Batch>::iterator batchEnd = batchCandidates.end();
+
+        for ( ; batchItr != batchEnd; ++batchItr) {
+            mBatches.push_back(Batch());
+            Batch& batch = mBatches.back();
+            batch.swap(*batchItr);
+        }
     }
 
     std::vector<Batch>::const_iterator Batcher::begin() const {

@@ -38,6 +38,9 @@ namespace OpenCSG {
         bool intersectXY(const Primitive* a, const Primitive* b);
         /// checks whether primitives intersect in xyz direction
         bool intersectXYZ(const Primitive* a, const Primitive* b);
+        /// checks whether the bounding box of primitive a is completely
+        /// contained in the bounding box of primitive b
+        bool containsXY(const Primitive* a, const Primitive* b);
         /// calculates maximum convexity of all primitives in array
         unsigned int getConvexity(const std::vector<Primitive*>& primitives);
 
