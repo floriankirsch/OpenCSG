@@ -82,7 +82,7 @@ namespace OpenCSG {
 
             unsigned int framebufferID;
 
-            bool initialized;
+            bool         initialized;
         };
 
     } // namespace OpenGL

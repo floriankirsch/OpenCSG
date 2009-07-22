@@ -51,7 +51,8 @@ namespace OpenCSG {
             height(-1),
             textureID(0),
             depthID(0),
-            framebufferID(0)
+            framebufferID(0),
+            initialized(false)
         {
         }
 
@@ -86,13 +87,15 @@ namespace OpenCSG {
             glRenderbufferStorageEXT(GL_RENDERBUFFER_EXT, GL_DEPTH_STENCIL_NV, width, height);
             glFramebufferRenderbufferEXT(GL_FRAMEBUFFER_EXT, GL_DEPTH_ATTACHMENT_EXT, GL_RENDERBUFFER_EXT, depthID);
             glFramebufferRenderbufferEXT(GL_FRAMEBUFFER_EXT, GL_STENCIL_ATTACHMENT_EXT, GL_RENDERBUFFER_EXT, depthID);
-	        
+
             CHECK_FRAMEBUFFER_STATUS();
-    
+
             glBindFramebufferEXT(GL_FRAMEBUFFER_EXT, 0);	
             glBindTexture(GL_TEXTURE_2D, 0);
 
             textureTarget = GL_TEXTURE_2D;
+
+            initialized = true;
 
             return true;
         }
