@@ -40,7 +40,7 @@
 				Name="VCLinkerTool"
 				AdditionalDependencies="OpenCSGd.lib glew32sd.lib glu32.lib glut32.lib opengl32.lib"
 				OutputFile=".\Debug/OpenCSGexample.exe"
-				LinkIncremental="1"
+				LinkIncremental="2"
 				SuppressStartupBanner="TRUE"
 				AdditionalLibraryDirectories="../lib,../glew/lib"
 				IgnoreAllDefaultLibraries="FALSE"
