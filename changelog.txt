@@ -1,3 +1,7 @@
+03.08.2009
+    Added: support for ARB frame buffer objects (in addition
+        to EXT frame buffer objects)
+
 22.07.2009
     Fixed: uninitialized variable in framebuffer object path.
         Might have caused the visibility transfer to fail.

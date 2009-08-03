@@ -1,5 +1,5 @@
 // OpenCSG - library for image-based CSG rendering for OpenGL
-// Copyright (C) 2006-2009, Florian Kirsch
+// Copyright (C) 2009, Florian Kirsch
 //
 // This library is free software; you can redistribute it and/or 
 // modify it under the terms of the GNU General Public License, 
@@ -15,23 +15,23 @@
 // Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
 
 //
-// frameBufferObject.cpp 
+// frameBufferObjectExt.cpp 
 //
 
 #include "opencsgConfig.h"
-#include "frameBufferObject.h"
+#include "frameBufferObjectExt.h"
 #include <cassert>
 #include <iostream>
 
 #define CHECK_FRAMEBUFFER_STATUS()                            \
 {                                                             \
     GLenum status;                                            \
-    status = glCheckFramebufferStatus(GL_FRAMEBUFFER);        \
+    status = glCheckFramebufferStatusEXT(GL_FRAMEBUFFER_EXT); \
     switch(status) {                                          \
-      case GL_FRAMEBUFFER_COMPLETE:                           \
+      case GL_FRAMEBUFFER_COMPLETE_EXT:                       \
         /*std::cout << "framebuffer complete" << std::endl;*/ \
         break;                                                \
-      case GL_FRAMEBUFFER_UNSUPPORTED:                        \
+      case GL_FRAMEBUFFER_UNSUPPORTED_EXT:                    \
         /*std::cout << "framebuffer unsupported" << std::endl;*/\
         /* choose different formats */                        \
         break;                                                \
@@ -46,7 +46,7 @@ namespace OpenCSG {
     namespace OpenGL {
 
         // ctor / dtor
-        FrameBufferObject::FrameBufferObject()
+        FrameBufferObjectExt::FrameBufferObjectExt()
           : width(-1),
             height(-1),
             textureID(0),
@@ -56,40 +56,41 @@ namespace OpenCSG {
         {
         }
 
-        FrameBufferObject::~FrameBufferObject() {
+        FrameBufferObjectExt::~FrameBufferObjectExt() {
             Reset();
         }
 
         // Creates frame buffer texture and combined depth/stencil render buffer.
         // shareObjects and copyContext do not make sense here, context remains the same.
-        bool FrameBufferObject::Initialize(int width, int height, bool /* shareObjects */, bool /* copyContext */ ) {
+        bool FrameBufferObjectExt::Initialize(int width, int height, bool /* shareObjects */, bool /* copyContext */ ) {
 
-            bool haveFBO = GLEW_ARB_framebuffer_object != 0;
+            bool haveFBO =    GLEW_EXT_framebuffer_object != 0 
+                           && GLEW_EXT_packed_depth_stencil != 0;
 
             assert(haveFBO);
 
             this->width = width;
             this->height = height;
 
-            glGenFramebuffers(1, &framebufferID);
-            glGenRenderbuffers(1, &depthID); 
+            glGenFramebuffersEXT(1, &framebufferID);
+            glGenRenderbuffersEXT(1, &depthID); 
             glGenTextures(1, &textureID);
 
-            glBindFramebuffer(GL_FRAMEBUFFER, framebufferID);
+            glBindFramebufferEXT(GL_FRAMEBUFFER_EXT, framebufferID);	
             glBindTexture(GL_TEXTURE_2D, textureID);
             glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA8, width, height, 0, GL_RGBA, GL_INT, 0);
             glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR); 
             glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR); 
-            glFramebufferTexture2DEXT(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, textureID, 0);
+            glFramebufferTexture2DEXT(GL_FRAMEBUFFER_EXT, GL_COLOR_ATTACHMENT0_EXT, GL_TEXTURE_2D, textureID, 0);
 
-            glBindRenderbuffer(GL_RENDERBUFFER, depthID);
-            glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH_STENCIL, width, height);
-            glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_RENDERBUFFER, depthID);
-            glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_STENCIL_ATTACHMENT, GL_RENDERBUFFER, depthID);
+            glBindRenderbufferEXT(GL_RENDERBUFFER_EXT, depthID);
+            glRenderbufferStorageEXT(GL_RENDERBUFFER_EXT, GL_DEPTH_STENCIL_NV, width, height);
+            glFramebufferRenderbufferEXT(GL_FRAMEBUFFER_EXT, GL_DEPTH_ATTACHMENT_EXT, GL_RENDERBUFFER_EXT, depthID);
+            glFramebufferRenderbufferEXT(GL_FRAMEBUFFER_EXT, GL_STENCIL_ATTACHMENT_EXT, GL_RENDERBUFFER_EXT, depthID);
 
             CHECK_FRAMEBUFFER_STATUS();
 
-            glBindFramebuffer(GL_FRAMEBUFFER, 0);
+            glBindFramebufferEXT(GL_FRAMEBUFFER_EXT, 0);	
             glBindTexture(GL_TEXTURE_2D, 0);
 
             textureTarget = GL_TEXTURE_2D;
@@ -100,46 +101,46 @@ namespace OpenCSG {
         }
 
         // Releases frame buffer objects
-        bool FrameBufferObject::Reset()
+        bool FrameBufferObjectExt::Reset()
         {
             if (textureID) {
                 glDeleteTextures(1, &textureID);
                 textureID = 0;
             }
             if (depthID) {
-                glDeleteRenderbuffers(1, &depthID); 
+                glDeleteRenderbuffersEXT(1, &depthID); 
                 depthID = 0;
             }
             if (framebufferID) {
-                glDeleteFramebuffers(1, &framebufferID);
+                glDeleteFramebuffersEXT(1, &framebufferID);
                 framebufferID = 0;
             }
             return true;
         }
 
         // ?
-        bool FrameBufferObject::Resize(int /* width */, int /* height */ )
+        bool FrameBufferObjectExt::Resize(int /* width */, int /* height */ )
         {
             Reset();
             return true;
         }
 
         // Binds the created frame buffer texture such we can render into it.
-        bool FrameBufferObject::BeginCapture()
+        bool FrameBufferObjectExt::BeginCapture()
         {
-            glBindFramebuffer(GL_FRAMEBUFFER, framebufferID);
+            glBindFramebufferEXT(GL_FRAMEBUFFER_EXT, framebufferID);
             return true;
         }
 
         // Unbinds frame buffer texture.
-        bool FrameBufferObject::EndCapture()
+        bool FrameBufferObjectExt::EndCapture()
         {
-            glBindFramebuffer(GL_FRAMEBUFFER, 0);
+            glBindFramebufferEXT(GL_FRAMEBUFFER_EXT, 0);
             return true;
         }
 
         // Sets the frame buffer texture as active texture object.
-        void FrameBufferObject::Bind() const
+        void FrameBufferObjectExt::Bind() const
         {
             glBindTexture(GL_TEXTURE_2D, textureID);
         }

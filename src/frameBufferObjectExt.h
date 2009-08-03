@@ -1,5 +1,5 @@
 // OpenCSG - library for image-based CSG rendering for OpenGL
-// Copyright (C) 2006-2009, Florian Kirsch
+// Copyright (C) 2009, Florian Kirsch
 //
 // This library is free software; you can redistribute it and/or 
 // modify it under the terms of the GNU General Public License, 
@@ -15,13 +15,13 @@
 // Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
 
 //
-// frameBufferObject.h 
+// frameBufferObjectExt.h 
 //
 // frame buffer object class implementing the offscreen buffer interface
 //
 
-#ifndef __OpenCSG__frame_buffer_object_h__
-#define __OpenCSG__frame_buffer_object_h__
+#ifndef __OpenCSG__frame_buffer_object_ext_h__
+#define __OpenCSG__frame_buffer_object_ext_h__
 
 #include "opencsgConfig.h"
 #include "offscreenBuffer.h"
@@ -31,11 +31,11 @@ namespace OpenCSG {
 
     namespace OpenGL {
 
-        class FrameBufferObject : public OffscreenBuffer {
+        class FrameBufferObjectExt : public OffscreenBuffer {
         public:
             /// ctor / dtor
-            FrameBufferObject();
-            virtual ~FrameBufferObject();
+            FrameBufferObjectExt();
+            virtual ~FrameBufferObjectExt();
 
             /// Call this once before use. shareObjects and copyContext are
             /// ignored, since there are no separate contexts for frame
@@ -89,4 +89,4 @@ namespace OpenCSG {
 
 } // namespace OpenCSG
 
-#endif // __OpenCSG__frame_buffer_object_h__
+#endif // __OpenCSG__frame_buffer_object_ext_h__

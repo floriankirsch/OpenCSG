@@ -178,6 +178,12 @@
 				RelativePath="..\src\frameBufferObject.h">
 			</File>
 			<File
+				RelativePath="..\src\frameBufferObjectExt.cpp">
+			</File>
+			<File
+				RelativePath="..\src\frameBufferObjectExt.h">
+			</File>
+			<File
 				RelativePath="..\src\occlusionQuery.cpp">
 			</File>
 			<File

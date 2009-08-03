@@ -165,17 +165,21 @@ namespace OpenCSG {
                     && GLXEW_SGIX_fbconfig
 #endif
                 ) {
-                     newOffscreenType =  OpenCSG::PBuffer;
+                    newOffscreenType = OpenCSG::PBuffer;
+                }
+                else
+                if (GLEW_ARB_framebuffer_object) {
+                    newOffscreenType = OpenCSG::FrameBufferObject;
                 }
                 else 
                 if (   GLEW_EXT_framebuffer_object
                     && GLEW_EXT_packed_depth_stencil
                 ) {
-                    newOffscreenType =  OpenCSG::FrameBufferObject;
-                } 
+                    newOffscreenType = OpenCSG::FrameBufferObject;
+                }
                 else {
-                     // This should gracefully exit without doing anything
-                     newOffscreenType =  OpenCSG::PBuffer;
+                    // This should gracefully exit without doing anything
+                    newOffscreenType = OpenCSG::PBuffer;
                 }
             }
             if (newOffscreenType == FrameBufferObject) {

@@ -9,7 +9,7 @@ CppCompiler=-D__GNUWIN32__ -W -Wall -DWIN32 -DNDEBUG -D_WINDOWS -DGLEW_STATIC_@@
 Includes=include;glew/include;.
 Linker=-lopengl32_@@_-lglu32_@@_-lglut32_@@_
 Libs=
-UnitCount=39
+UnitCount=41
 Folders="Header Files","Source Files","Source Files/glew","Source Files/OpenCSG","Source Files/OpenCSGexample","Source Files/RenderTexture"
 ObjFiles=
 PrivateResource=
@@ -429,6 +429,26 @@ BuildCmd=
 
 [Unit39]
 FileName=src\settings.cpp
+CompileCpp=1
+Folder=Source Files/OpenCSG
+Compile=1
+Link=1
+Priority=1000
+OverrideBuildCmd=0
+BuildCmd=
+
+[Unit40]
+FileName=src\frameBufferObjectExt.cpp
+CompileCpp=1
+Folder=Source Files/OpenCSG
+Compile=1
+Link=1
+Priority=1000
+OverrideBuildCmd=0
+BuildCmd=
+
+[Unit41]
+FileName=src\frameBufferObjectExt.h
 CompileCpp=1
 Folder=Source Files/OpenCSG
 Compile=1

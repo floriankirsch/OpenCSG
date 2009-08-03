@@ -1,16 +1,16 @@
 Microsoft Visual Studio Solution File, Format Version 8.00
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "OpenCSG", "win32\OpenCSG.vcproj", "{934506C1-ABD2-4D13-B1FF-35BB2985A60F}"
 	ProjectSection(ProjectDependencies) = postProject
-		{9C45DF99-B4E2-4B18-9BA4-8C9BBC2E07DA} = {9C45DF99-B4E2-4B18-9BA4-8C9BBC2E07DA}
+		{9E7140BE-2064-45BD-9492-0EF5BCD28B8E} = {9E7140BE-2064-45BD-9492-0EF5BCD28B8E}
 	EndProjectSection
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "OpenCSGexample", "example\OpenCSGexample.vcproj", "{8B99F85D-6EF5-4F64-86A6-D1CBA2804169}"
 	ProjectSection(ProjectDependencies) = postProject
+		{9E7140BE-2064-45BD-9492-0EF5BCD28B8E} = {9E7140BE-2064-45BD-9492-0EF5BCD28B8E}
 		{934506C1-ABD2-4D13-B1FF-35BB2985A60F} = {934506C1-ABD2-4D13-B1FF-35BB2985A60F}
-		{9C45DF99-B4E2-4B18-9BA4-8C9BBC2E07DA} = {9C45DF99-B4E2-4B18-9BA4-8C9BBC2E07DA}
 	EndProjectSection
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "glew_static", "glew\build\vc6\glew_static.vcproj", "{9C45DF99-B4E2-4B18-9BA4-8C9BBC2E07DA}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "glew_static", "glew\build\vc6\glew_static.vcproj", "{9E7140BE-2064-45BD-9492-0EF5BCD28B8E}"
 	ProjectSection(ProjectDependencies) = postProject
 	EndProjectSection
 EndProject
@@ -28,10 +28,10 @@ Global
 		{8B99F85D-6EF5-4F64-86A6-D1CBA2804169}.Debug.Build.0 = Debug|Win32
 		{8B99F85D-6EF5-4F64-86A6-D1CBA2804169}.Release.ActiveCfg = Release|Win32
 		{8B99F85D-6EF5-4F64-86A6-D1CBA2804169}.Release.Build.0 = Release|Win32
-		{9C45DF99-B4E2-4B18-9BA4-8C9BBC2E07DA}.Debug.ActiveCfg = Debug|Win32
-		{9C45DF99-B4E2-4B18-9BA4-8C9BBC2E07DA}.Debug.Build.0 = Debug|Win32
-		{9C45DF99-B4E2-4B18-9BA4-8C9BBC2E07DA}.Release.ActiveCfg = Release|Win32
-		{9C45DF99-B4E2-4B18-9BA4-8C9BBC2E07DA}.Release.Build.0 = Release|Win32
+		{9E7140BE-2064-45BD-9492-0EF5BCD28B8E}.Debug.ActiveCfg = Debug|Win32
+		{9E7140BE-2064-45BD-9492-0EF5BCD28B8E}.Debug.Build.0 = Debug|Win32
+		{9E7140BE-2064-45BD-9492-0EF5BCD28B8E}.Release.ActiveCfg = Release|Win32
+		{9E7140BE-2064-45BD-9492-0EF5BCD28B8E}.Release.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 	EndGlobalSection
