@@ -104,10 +104,10 @@ namespace OpenCSG {
     /// of which the possible parameters are described below. An overloaded
     /// version of the render() function is provided below, which takes 
     /// some parameters for specifying Algorithm and DepthComplexityAlgorithm 
-    /// directly. In future versions of OpenCSG, this overloaded render() method
-    /// will probably be removed.
+    /// directly. 
     void render(const std::vector<Primitive*>& primitives);
 
+    /// OpenCSG option for use with setOption() / getOption() below
     enum OptionType {
         AlgorithmSetting        = 0,
         DepthComplexitySetting  = 1,
@@ -176,11 +176,14 @@ namespace OpenCSG {
     /// the internal calculations. 
     ///   - AutomaticOffscreenType: Chooses internally depending on available
     ///                  OpenGL extensions. If graphics hardware both support
-    ///                  frame buffer objects and PBuffers, PBuffers are chosen.
+    ///                  frame buffer objects and PBuffers, frame buffer objects
+    ///                  are chosen.
     ///   - FrameBufferObject: Uses frame buffer objects. This method does 
     ///                  not require context switches on the graphics hardware
     ///                  to change between offscreen and main frame buffer, so
-    ///                  in theory this method should be faster.
+    ///                  in theory this method should be faster. Both ARB and
+    ///                  EXT frame buffer objects OpenGL extensions are supported
+    ///                  internally.
     ///   - PBuffer: Uses PBuffers. This is the older offscreen type, which
     ///                  is likely to work with older graphics hardware and
     ///                  drivers.
@@ -215,11 +218,13 @@ namespace OpenCSG {
     };
 
     /// Alternate render() function provided for compatibility with older
-    /// versions of OpenCSG. The function performs CSG rendering as the
-    /// render() function described above. Additionally, the Algorithm parameter
-    /// must and the DepthComplexityAlgorithm parameter can be provided. They
-    /// supercede the options set by setOption(). This function is considered
-    /// obsolete and, in future versions of OpenCSG, will probably be removed.
+    /// versions of OpenCSG (version 1.1.1 and before). The function performs
+    /// CSG rendering as the render() function described above. Additionally,
+    /// the Algorithm parameter must and the DepthComplexityAlgorithm parameter
+    /// can be provided. They supercede the options set by setOption().
+    /// This function is considered obsolete. New software should use the
+    /// render() function above and set the Options for rendering in separate
+    /// setOption() calls. 
     void render(const std::vector<Primitive*>& primitives, 
                 Algorithm, 
                 DepthComplexityAlgorithm = NoDepthComplexitySampling);

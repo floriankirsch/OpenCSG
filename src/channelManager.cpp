@@ -157,6 +157,16 @@ namespace OpenCSG {
         if (!gOffscreenBuffer || (gOffscreenType != newOffscreenType)) {
             gOffscreenType = newOffscreenType;
             if (newOffscreenType == OpenCSG::AutomaticOffscreenType) {
+                if (GLEW_ARB_framebuffer_object) {
+                    newOffscreenType = OpenCSG::FrameBufferObject;
+                }
+                else 
+                if (   GLEW_EXT_framebuffer_object
+                    && GLEW_EXT_packed_depth_stencil
+                ) {
+                    newOffscreenType = OpenCSG::FrameBufferObject;
+                }
+                else
 #ifdef WIN32
                 if (   WGLEW_ARB_pbuffer
                     && WGLEW_ARB_pixel_format
@@ -167,19 +177,9 @@ namespace OpenCSG {
                 ) {
                     newOffscreenType = OpenCSG::PBuffer;
                 }
-                else
-                if (GLEW_ARB_framebuffer_object) {
-                    newOffscreenType = OpenCSG::FrameBufferObject;
-                }
-                else 
-                if (   GLEW_EXT_framebuffer_object
-                    && GLEW_EXT_packed_depth_stencil
-                ) {
-                    newOffscreenType = OpenCSG::FrameBufferObject;
-                }
                 else {
                     // This should gracefully exit without doing anything
-                    newOffscreenType = OpenCSG::PBuffer;
+                    newOffscreenType = OpenCSG::FrameBufferObject;
                 }
             }
             if (newOffscreenType == FrameBufferObject) {

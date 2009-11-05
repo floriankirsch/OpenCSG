@@ -41,7 +41,7 @@
 
 <hr>
 
-<h3> <a href="news.html">Latest release: OpenCSG 1.1.1 (19.07.2009)</a></h3>
+<h3> <a href="news.html">Latest release: OpenCSG 1.2.0 (08.11.2009)</a></h3>
 
 <hr>
 
@@ -51,7 +51,7 @@
 OpenCSG is a library that does image-based CSG rendering using OpenGL. 
 OpenCSG is written in C++ and supports most modern graphics hardware using
 Microsoft Windows or the Linux operating system. 
-<a href="OpenCSG-1.1.1.tar.gz">OpenCSG-1.1.1</a> is the current version.
+<a href="OpenCSG-1.2.0.tar.gz">OpenCSG-1.2.0</a> is the current version.
 </p>
 
 <p>
@@ -119,7 +119,7 @@ RenderTexture class</a> as PBuffer library.
 </p>
 
 <p>
-PBuffers have been widely supported since some time ago. NVidia supports them
+PBuffers have been widely supported since a long time now. NVidia supports them
 since the Riva TNT, and ATI at least since the Radeon series. Graphics
 hardware from other hardware vendors, however, likely do not support 
 PBuffers. Therefore, if you have obscure graphics hardware, you are
@@ -130,11 +130,11 @@ rendering and PBuffers at the same time.
 </p>
 
 <p>
-Frame buffer objects are a relatively new extension for OpenGL. They are
-easier to develop for, but setting up a usable stencil buffer within a
-frame buffer object is still somewhat experimental (and probably only works
-on NVidia boards). Therefore, PBuffers are the default setting currently
-used by OpenCSG. 
+Frame buffer objects are a more recent extension for OpenGL. They are
+easier to develop for, and can nowadays (2009) be considered mature.
+They are also part of OpenGL 3.0. Beginning with OpenCSG 1.2.0, they
+are used by default by OpenCSG. In older versions, PBuffers were the
+default.
 </p>
 
 <p>
@@ -146,7 +146,7 @@ Library <a href="http://glew.sourceforge.net">GLEW</a>.
 OpenCSG is written in C++, uses namespaces and requires the STL. I do not expect major
 compiler incompatibilities under Windows. Workspaces for with MSVC6, 
 VC2003 .net and <a href="http://www.bloodshed.net/devcpp.html">Dev-C++ 5 beta</a> are provided. Under
-Linux, you must use gcc-3.x.y. gcc-2.95.x will not work, since this compiler
+Linux, you should use gcc version 3 or newer. gcc-2.95.x will not work, since this compiler
 does not come with a std::map implementation, which is required internally. 
 </p>
 
@@ -160,12 +160,21 @@ queries, which are available since Radeon 9x00 (x>=5) and GeForce3
 
 <p>
 OpenCSG has been sucessfully run on Intel and AMD hardware using 
+Radeon HD 4670,
 GeForce 8x00, 
-GeForceFX 6800, GeForceFX 5600,
-GeForce3, GeForce4MX, Radeon 9700, and TNT2 graphcs hardware (on the latter,
-it crawls ...). On a Radeon 9000, there are currently rendering errors
-in all but the standard Goldfeather rendering path. I am investigating
-this further, but the problem is possibly a driver issue.
+GeForceFX 6800,
+GeForceFX 5600,
+Radeon 9700,
+GeForce3,
+GeForce4MX,
+and TNT2 graphcs hardware (on the latter, it crawls ...).
+</p>
+
+<p>
+On a Radeon 9000, OpenCSG was once known to produce rendering errors
+in all but the standard Goldfeather rendering path. It is unclear whether
+this was possibly a driver issue. I have no experiences running OpenCSG
+on graphics hardware other than from NVidia or ATI/AMD.
 </p>
 
 <center><a href="http://www.opencsg.org/img/conc.jpg"><img src="img/conc.gif" border="0" alt="CSG convace shape"></a></center>
@@ -236,6 +245,7 @@ namespace OpenCSG { <br>
 &nbsp;&nbsp; <b><a href="#algorithm">AlgorithmSetting</a></b>, <br>
 &nbsp;&nbsp; <b><a href="#depthalgorithm">DepthComplexitySetting</a></b>, <br>
 &nbsp;&nbsp; <b><a href="#offscreentype">OffscreenSetting</a></b>, <br>
+&nbsp;&nbsp; <b><a href="#depthboundsoptimization">DepthBoundsOptimization</a></b>, <br>
 &nbsp; }; <br>
 <br>
 &nbsp; void <b><a href="#options">setOption</a></b>(OptionType option, int newSetting);<br>
@@ -244,10 +254,9 @@ namespace OpenCSG { <br>
 &nbsp; enum <b><a href="#algorithm">Algorithm</a></b> { <b>Automatic</b>, <b>Goldfeather</b>, <b>SCS</b> }; <br>
 &nbsp; enum <b><a href="#depthalgorithm">DepthComplexityAlgorithm</a></b> { <b>NoDepthComplexitySampling</b>, <b>OcclusionQuery</b>, <b>DepthComplexitySampling</b> }; <br>
 &nbsp; enum <b><a href="#offscreentype">OffscreenType</a></b> { <b>AutomaticOffscreenType</b>, <b>FrameBufferObject</b>, <b>PBuffer</b> }; <br>
+&nbsp; enum <b><a href="#optimization">Optimization</a></b> { <b>OptimizationDefault</b>, <b>OptimizationDefault</b>, <b>OptimizationOn</b>, <b>OptimizationOff</b> }; <br>
 <br>
-&nbsp; void <b><a href="#rendershape">render</a></b>(const std::vector&lt;Primitive*&gt;&amp; primitives, <br>
-&nbsp;&nbsp;&nbsp; Algorithm = Automatic, <br>
-&nbsp;&nbsp;&nbsp; DepthComplexityAlgorithm = NoDepthComplexitySampling); <br>
+&nbsp; void <b><a href="#rendershape">render</a></b>(const std::vector&lt;Primitive*&gt;&amp; primitives); <br>
 } <br>
 </code>
 </p>
@@ -301,9 +310,9 @@ functions were introduced with version 1.1.0 of OpenCSG. You can specify the
 <a href="#algorithm"> Algorithm</a>, the method of 
 <a href="#depthalgorithm">depth
 complexity usage</a> and the <a href="#offscreentype">type of offscreen
-buffer</a>. When providing the corresponding arguments of the 
-<b><code>render</code></b> function, options set using these functions are
-temporarily overridden. 
+buffer</a>. There is an obsolete variant of the <b><code>render()</code></b>
+function that takes these two options as additional arguments, temporarily
+overriding the currently set options.
 </p>
 
 <p>
@@ -356,6 +365,17 @@ a separate rendering context for the offscreen buffer and hence require
 no context switching. In typical scenarios, there is no difference though.
 </p>
 
+<p>
+<a name="depthboundsoptimization"></a>
+The depth bounds optimization improves the rendering performance by using
+the OpenGL extension <code>GL_EXT_depth_bounds_test</code> to restrict
+rendering to only the depth range indicated by the bounding box of a 
+primitive. This optimization is, by default, turned off. If you enable
+it, ensure that the z-ranges of the bounding boxes are large enough,
+otherwise they will not be correctly rendered. The gains you will get
+from this optimization is probably only small. 
+</p>
+
 <center><a href="http://www.opencsg.org/img/grid.jpg"><img src="img/grid.gif" border="0" alt="CSG grid"></a></center>
 
 <hr>
@@ -363,13 +383,14 @@ no context switching. In typical scenarios, there is no difference though.
 <h3> <a name="download">Download</a> </h3>
 
 <p>
-Download <a href="http://www.opencsg.org/OpenCSG-1.1.1.tar.gz">OpenCSG-1.1.1.tar.gz</a>. The archive contains all required helper
+Download <a href="http://www.opencsg.org/OpenCSG-1.2.0.tar.gz">OpenCSG-1.2.0.tar.gz</a>. The archive contains all required helper
 libraries, i.e., also RenderTexture and GLEW. It comes with 
 makefiles for Linux and with project files for MSVC6, VS2003, and Dev-C++ 5.
 </p>
 
 <p>
 The older versions <br>
+&nbsp;&nbsp; <a href="http://www.opencsg.org/OpenCSG-1.1.1.tar.gz">OpenCSG-1.1.1</a>, <br>
 &nbsp;&nbsp; <a href="http://www.opencsg.org/OpenCSG-1.1.0.tar.gz">OpenCSG-1.1.0</a>, <br>
 &nbsp;&nbsp; <a href="http://www.opencsg.org/OpenCSG-1.0.2.zip">OpenCSG-1.0.2</a>, <br>
 &nbsp;&nbsp; <a href="http://www.opencsg.org/OpenCSG-1.0.1.zip">OpenCSG-1.0.1</a>, <br>
@@ -549,7 +570,7 @@ their respective authors.
 <center><p>
 &copy; 2002-2009, Florian Kirsch, e-mail: <b>mail at opencsg dot org</b>, <br>
 2002-2005 Hasso-Plattner-Institute Potsdam.<br>
-Last change: 19.07.2009
+Last change: 08.11.2009
 </p></center>
 
 </body>
