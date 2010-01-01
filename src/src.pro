@@ -1,6 +1,6 @@
 TEMPLATE	= lib
 TARGET		= opencsg
-VERSION     = 1.1.1
+VERSION     = 1.2.0
 DESTDIR     = ../lib
 
 CONFIG		+= opengl warn_on release
@@ -12,6 +12,7 @@ HEADERS		= ../include/opencsg.h \
 		  batch.h \
 		  channelManager.h \
 		  frameBufferObject.h \
+		  frameBufferObjectExt.h \
 		  occlusionQuery.h \
 		  offscreenBuffer.h \
 		  opencsgRender.h \
@@ -26,6 +27,7 @@ SOURCES		= area.cpp \
 		  batch.cpp \
 		  channelManager.cpp \
 		  frameBufferObject.cpp	\
+		  frameBufferObjectExt.cpp \
 		  occlusionQuery.cpp \
 		  offscreenBuffer.cpp \
 		  opencsgRender.cpp \
