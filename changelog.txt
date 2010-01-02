@@ -1,3 +1,6 @@
+03.01.2010
+    Release 1.2.0
+
 05.11.2009
     Changed: frame buffer objects are now used by default
         (instead of pbuffers)
