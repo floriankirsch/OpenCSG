@@ -1,3 +1,7 @@
+16.01.2010
+    Fixed: rendering error in SCS algorithm due to impresice
+        float value provided to alpha test.
+
 03.01.2010
     Release 1.2.0
 

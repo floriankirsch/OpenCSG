@@ -76,7 +76,31 @@ namespace OpenCSG {
                     glCullFace((*j)->getOperation() == Intersection ? GL_BACK : GL_FRONT);
                     RenderData* primitiveData = getRenderData(*j);
                     unsigned char id = primitiveData->stencilID_;
-                    glAlphaFunc(GL_EQUAL, static_cast<float>(id) / 255.0f);
+
+                    // Here is an interesting bug, which happened on an ATI HD4670, but actually
+                    // might happen on every hardware. I am not sure whether it can be solved 
+                    // correctly.
+
+                    // Problem is that in optimized mode with some compilers (VC6, Visual Studio 2003
+                    // in particular), when setting the alpha func as follows:
+                    // glAlphaFunc(GL_EQUAL, static_cast<float>(id) / 255.0f);
+                    // the division is optimized as multiplication with 1.0f/255.0f.
+                    // This is a fine and valid optimization. Unfortunately, the results
+                    // are not exactly the same as the direct division for some ids.
+                    // Which is apparently what the ATI driver is doing internally.
+                    // So with comparison with GL_EQUAL fails. 
+
+                    // Fortunately the OpenGL standard enforces that the mapping of color byte
+                    // values to float fragment values be done by division. So if the
+                    // solution found below (just working at double precision) proves
+                    // to work once, it should work forever, such that a precompiling
+                    // lookup table containing the correct alpha reference values is 
+                    // not required. However a bad feeling remains.
+
+                    double alpha = static_cast<double>(id) / 255.0;
+                    GLfloat fAlpha = static_cast<float>(alpha);
+                    glAlphaFunc(GL_EQUAL, fAlpha);
+
                     (*j)->render();
                 }
             }
