@@ -19,37 +19,58 @@
 //
 
 #include "opencsgConfig.h"
+#include "context.h"
 #include "offscreenBuffer.h"
 #include "frameBufferObject.h"
 #include "frameBufferObjectExt.h"
 #include "pBufferTexture.h"
 #include <GL/glew.h>
+#include <map>
 
 namespace OpenCSG {
 
     namespace OpenGL {
 
+        struct ContextData {
+            ContextData() : fARB(0), fEXT(0), pBuf(0) {}
+            FrameBufferObject* fARB;
+            FrameBufferObjectExt* fEXT;
+            PBufferTexture* pBuf;
+        };
+
+        static std::map<int, ContextData> gContextDataMap;
+
         OffscreenBuffer* getOffscreenBuffer(bool fbo) {
-            static FrameBufferObject* fARB = 0;
-            static FrameBufferObjectExt* fEXT = 0;
-            static PBufferTexture* p = 0;
-            
+            int context = getContext();
+            ContextData& contextData = gContextDataMap[context];
+
             if (fbo) {
                 if (GLEW_ARB_framebuffer_object) {
-                    if (!fARB)
-                        fARB = new FrameBufferObject;
-                    return fARB;
+                    if (!contextData.fARB)
+                        contextData.fARB = new FrameBufferObject;
+                    return contextData.fARB;
                 }
                 else {
-                    if (!fEXT)
-                        fEXT = new FrameBufferObjectExt;
-                    return fEXT;
+                    if (!contextData.fEXT)
+                        contextData.fEXT = new FrameBufferObjectExt;
+                    return contextData.fEXT;
                 }
             }
             else {
-                if (!p)
-                    p = new PBufferTexture;
-                return p;
+                if (!contextData.pBuf)
+                    contextData.pBuf = new PBufferTexture;
+                return contextData.pBuf;
+            }
+        }
+
+        void freeResources() {
+            int context = getContext();
+            std::map<int, ContextData>::iterator itr = gContextDataMap.find(context);
+            if (itr != gContextDataMap.end()) {
+                delete itr->second.fARB;
+                delete itr->second.fEXT;
+                delete itr->second.pBuf;
+                gContextDataMap.erase(itr);
             }
         }
 

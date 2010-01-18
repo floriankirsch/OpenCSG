@@ -172,6 +172,12 @@
 				RelativePath="..\src\channelManager.h">
 			</File>
 			<File
+				RelativePath="..\src\context.cpp">
+			</File>
+			<File
+				RelativePath="..\src\context.h">
+			</File>
+			<File
 				RelativePath="..\src\frameBufferObject.cpp">
 			</File>
 			<File

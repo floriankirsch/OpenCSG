@@ -1,3 +1,9 @@
+20.01.2010:
+    Added: context management to allow MDI applications to use OpenCSG
+        in each OpenGL window even without shared OpenGL contexts.
+        This just maps a integer context identier to a set of different
+        internal offscreen buffer objects for each context.
+
 16.01.2010
     Fixed: rendering error in SCS algorithm due to impresice
         float value provided to alpha test.

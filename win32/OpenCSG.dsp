@@ -111,6 +111,14 @@ SOURCE=..\src\channelManager.h
 # End Source File
 # Begin Source File
 
+SOURCE=..\src\context.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=..\src\context.h
+# End Source File
+# Begin Source File
+
 SOURCE=..\src\frameBufferObject.cpp
 # End Source File
 # Begin Source File

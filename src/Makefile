@@ -45,6 +45,7 @@ HEADERS = ../include/opencsg.h \
 		opencsgConfig.h \
 		area.h \
 		batch.h \
+		context.h \
 		channelManager.h \
 		frameBufferObject.h \
 		frameBufferObjectExt.h \
@@ -60,6 +61,7 @@ HEADERS = ../include/opencsg.h \
 		../RenderTexture/RenderTexture.h
 SOURCES = area.cpp \
 		batch.cpp \
+		context.cpp \
 		channelManager.cpp \
 		frameBufferObject.cpp \
 		frameBufferObjectExt.cpp \
@@ -78,6 +80,7 @@ SOURCES = area.cpp \
 		../RenderTexture/RenderTexture.cpp
 OBJECTS = area.o \
 		batch.o \
+		context.o \
 		channelManager.o \
 		frameBufferObject.o \
 		frameBufferObjectExt.o \
@@ -184,6 +187,10 @@ batch.o: batch.cpp opencsgConfig.h \
 		primitiveHelper.h \
 		area.h
 
+context.o: context.cpp opencsgConfig.h \
+		context.h \
+		offscreenBuffer.h
+
 channelManager.o: channelManager.cpp opencsgConfig.h \
 		channelManager.h \
 		offscreenBuffer.h \
@@ -203,6 +210,7 @@ occlusionQuery.o: occlusionQuery.cpp opencsgConfig.h \
 		occlusionQuery.h
 
 offscreenBuffer.o: offscreenBuffer.cpp opencsgConfig.h \
+		context.h \
 		offscreenBuffer.h \
 		frameBufferObject.h \
 		frameBufferObjectExt.h \
