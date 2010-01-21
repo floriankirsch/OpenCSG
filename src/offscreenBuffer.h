@@ -42,6 +42,9 @@ namespace OpenCSG {
                                     bool shareObjects=true, 
                                     bool copyContext=false) = 0;
 
+            /// checks whether Initialize has been called before or not
+            virtual bool IsInitialized() const = 0;
+
             /// Change the render texture format.
             virtual bool Reset() = 0;
             /// Change the size of the render texture. After this, Initialize

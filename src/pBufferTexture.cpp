@@ -62,6 +62,10 @@ namespace OpenCSG {
             return r->Initialize(width, height, shareObjects, copyContext);
         }
 
+        bool PBufferTexture::IsInitialized() const {
+            return r->IsInitialized();
+        }
+
         bool PBufferTexture::Reset() {
             return r->Reset(s);
         }

@@ -187,32 +187,27 @@ namespace OpenCSG {
         } else {
             gOffscreenBuffer = OpenGL::getOffscreenBuffer(false);
         }
-        if (   gOffscreenBuffer->GetWidth() != sizeX.getMax()
-            || gOffscreenBuffer->GetHeight() != sizeY.getMax()
-        ) {
-            // in particular, this detects newly created offscreen buffers,
-            // of which the width / height is -1
-            rebuild = true;
-        }
-/*
-        // tx == ty == 0 happens if the window is minimized, in this case don't touch a thing
-        } else if (tx != 0 && ty != 0) {
-            if (   gOffscreenBuffer->GetWidth() != sizeX.getMax()
-                || gOffscreenBuffer->GetHeight() != sizeY.getMax()
-            ) {
-                gOffscreenBuffer->Resize(sizeX.getMax(), sizeY.getMax());
-                rebuild = true;
-            }
-        }
-*/
 
-        if (rebuild) {
+        if (!gOffscreenBuffer->IsInitialized()) {
             if (!gOffscreenBuffer->Initialize(sizeX.getMax(), sizeY.getMax(), true, false)) {
                 assert(0);
             }
+            rebuild = true;
+        }
+        // tx == ty == 0 happens if the window is minimized, in this case don't touch a thing
+        else if (tx != 0 && ty != 0) {
+            if (   gOffscreenBuffer->GetWidth() != sizeX.getMax()
+                || gOffscreenBuffer->GetHeight() != sizeY.getMax()
+            ) {
+                if (!gOffscreenBuffer->Resize(sizeX.getMax(), sizeY.getMax())) {
+                    assert(0);
+                }
+                rebuild = true;
+            }
+        }
 
+        if (rebuild) {
             // assert(pbuffer_->HasStencil());
-
             gOffscreenBuffer->BeginCapture();
             defaults();
             glGetIntegerv(GL_STENCIL_BITS, &OpenGL::stencilBits);

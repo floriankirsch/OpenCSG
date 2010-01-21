@@ -728,7 +728,7 @@ bool RenderTexture::Resize(int iWidth, int iHeight)
         wglReleasePbufferDCARB( _hPBuffer, _hDC);
         wglDestroyPbufferARB( _hPBuffer );
         _hPBuffer = 0;
-        return true;
+        // [Florian] this is bogus; continue as in the Linux path! // return true;
     }
 #else
     if ( _hPBuffer )

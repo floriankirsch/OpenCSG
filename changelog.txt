@@ -1,3 +1,9 @@
+21.01.2010:
+    Changed: made offscreen buffer methods Initialize() / Resize()
+        more intuitive. Initialize needs to be called only once after
+        offscreen buffer construction; after Resize() calling Initialize()
+        is not required anymore.
+
 20.01.2010:
     Added: context management to allow MDI applications to use OpenCSG
         in each OpenGL window even without shared OpenGL contexts.

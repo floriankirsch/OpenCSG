@@ -42,10 +42,12 @@ namespace OpenCSG {
             /// buffer objects anyway.
             virtual bool Initialize(int width, int height, bool shareObjects=true, bool copyContext=false);
 
+            /// checks whether Initialize has been called before or not
+            virtual bool IsInitialized() const { return initialized; }
+
             /// Removes the frame buffer object OpenGL resources.
             virtual bool Reset();
-            /// Change the size of the frame buffer object. After this, Initialize
-            /// must be called again.
+            /// Change the size of the frame buffer object.
             virtual bool Resize(int width, int height);
 
             /// Begin drawing to the frame buffer object. (i.e. use as "output" texture)

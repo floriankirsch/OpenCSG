@@ -43,6 +43,9 @@ namespace OpenCSG {
             /// current active GL context.
             virtual bool Initialize(int width, int height, bool shareObjects=true, bool copyContext=false);
 
+            /// checks whether Initialize has been called before or not
+            virtual bool IsInitialized() const;
+
             /// Change the render texture format.
             virtual bool Reset();
             /// Change the size of the render texture.
@@ -75,7 +78,7 @@ namespace OpenCSG {
 
         protected:
             RenderTexture* r;
-            char*          s;
+            const char*    s;
         };
 
     } // namespace OpenGL

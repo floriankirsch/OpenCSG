@@ -114,14 +114,26 @@ namespace OpenCSG {
                 glDeleteFramebuffers(1, &framebufferID);
                 framebufferID = 0;
             }
+
+            this->width = -1;
+            this->height = -1;
+
+            initialized = false;
+
             return true;
         }
 
-        // ?
-        bool FrameBufferObject::Resize(int /* width */, int /* height */ )
+        // If new requested size differs, regenerate FBO texture objects
+        bool FrameBufferObject::Resize(int width, int height)
         {
+            if (   this->width == width
+                && this->height == height
+            ) {
+                return true;
+            }
+
             Reset();
-            return true;
+            return Initialize(width, height);
         }
 
         // Binds the created frame buffer texture such we can render into it.
