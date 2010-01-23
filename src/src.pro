@@ -1,6 +1,6 @@
 TEMPLATE	= lib
 TARGET		= opencsg
-VERSION     = 1.2.0
+VERSION     = 1.3.0
 DESTDIR     = ../lib
 
 CONFIG		+= opengl warn_on release
@@ -10,6 +10,7 @@ HEADERS		= ../include/opencsg.h \
 		  opencsgConfig.h \
 		  area.h \
 		  batch.h \
+		  context.h \
 		  channelManager.h \
 		  frameBufferObject.h \
 		  frameBufferObjectExt.h \
@@ -25,6 +26,7 @@ HEADERS		= ../include/opencsg.h \
 		  ../RenderTexture/RenderTexture.h
 SOURCES		= area.cpp \
 		  batch.cpp \
+		  context.cpp \
 		  channelManager.cpp \
 		  frameBufferObject.cpp	\
 		  frameBufferObjectExt.cpp \

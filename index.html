@@ -41,7 +41,7 @@
 
 <hr>
 
-<h3> <a href="news.html">Latest release: OpenCSG 1.2.0 (03.01.2010)</a></h3>
+<h3> <a href="news.html">Latest release: OpenCSG 1.3.0 (24.01.2010)</a></h3>
 
 <hr>
 
@@ -51,7 +51,7 @@
 OpenCSG is a library that does image-based CSG rendering using OpenGL. 
 OpenCSG is written in C++ and supports most modern graphics hardware using
 Microsoft Windows or the Linux operating system. 
-<a href="OpenCSG-1.2.0.tar.gz">OpenCSG-1.2.0</a> is the current version.
+<a href="OpenCSG-1.3.0.tar.gz">OpenCSG-1.3.0</a> is the current version.
 </p>
 
 <p>
@@ -257,6 +257,10 @@ namespace OpenCSG { <br>
 &nbsp; enum <b><a href="#optimization">Optimization</a></b> { <b>OptimizationDefault</b>, <b>OptimizationDefault</b>, <b>OptimizationOn</b>, <b>OptimizationOff</b> }; <br>
 <br>
 &nbsp; void <b><a href="#rendershape">render</a></b>(const std::vector&lt;Primitive*&gt;&amp; primitives); <br>
+<br>
+&nbsp; void <b><a href="#context">setContext</a></b>(int context); <br>
+&nbsp; int <b><a href="#context">getContext</a></b>(); <br>
+&nbsp; void <b><a href="#context">freeResources</a></b>(); <br>
 } <br>
 </code>
 </p>
@@ -376,6 +380,20 @@ otherwise they will not be correctly rendered. The gains you will get
 from this optimization is probably only small. 
 </p>
 
+<p>
+<a name="context"></a>
+OpenCSG creates, and reuses between different <code>render()</code> calls,
+various OpenGL resources such as PBuffers or frame buffer objects. This
+may be a problem in MDI applications with several OpenGL windows, of which
+the OpenGL contexts are not shared. In this case, OpenGL resources allocated
+in one OpenGL context cannot be reused with another context, so OpenCSG
+would produce rendering errors. To solve this, the OpenCSG context
+can be set to some unique integer identifier of the OpenGL window.
+OpenCSG then creates/uses OpenGL resources in the <code>render()</code>
+function per context. The function <code>freeResources()</code> frees
+OpenGL resources for the currently active OpenCSG context. 
+</p>
+
 <center><a href="http://www.opencsg.org/img/grid.jpg"><img src="img/grid.gif" border="0" alt="CSG grid"></a></center>
 
 <hr>
@@ -383,13 +401,14 @@ from this optimization is probably only small.
 <h3> <a name="download">Download</a> </h3>
 
 <p>
-Download <a href="http://www.opencsg.org/OpenCSG-1.2.0.tar.gz">OpenCSG-1.2.0.tar.gz</a>. The archive contains all required helper
+Download <a href="http://www.opencsg.org/OpenCSG-1.3.0.tar.gz">OpenCSG-1.3.0.tar.gz</a>. The archive contains all required helper
 libraries, i.e., also RenderTexture and GLEW. It comes with 
 makefiles for Linux and with project files for MSVC6, VS2003, and Dev-C++ 5.
 </p>
 
 <p>
 The older versions <br>
+&nbsp;&nbsp; <a href="http://www.opencsg.org/OpenCSG-1.2.0.tar.gz">OpenCSG-1.2.0</a>, <br>
 &nbsp;&nbsp; <a href="http://www.opencsg.org/OpenCSG-1.1.1.tar.gz">OpenCSG-1.1.1</a>, <br>
 &nbsp;&nbsp; <a href="http://www.opencsg.org/OpenCSG-1.1.0.tar.gz">OpenCSG-1.1.0</a>, <br>
 &nbsp;&nbsp; <a href="http://www.opencsg.org/OpenCSG-1.0.2.zip">OpenCSG-1.0.2</a>, <br>
@@ -580,7 +599,7 @@ their respective authors.
 <center><p>
 &copy; 2002-2010, Florian Kirsch, e-mail: <b>mail at opencsg dot org</b>, <br>
 2002-2005 Hasso-Plattner-Institute Potsdam.<br>
-Last change: 03.01.2010
+Last change: 24.01.2010
 </p></center>
 
 </body>

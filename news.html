@@ -29,6 +29,26 @@
 
 <hr>
 
+<h3>24.01.2010: OpenCSG 1.3.0 with support for MDI applications</h3>
+
+<p>
+<a href="http://www.opencsg.org/OpenCSG-1.3.0.tar.gz">OpenCSG 1.3.0</a>
+implements better support for applications having an multiple document
+interface and, therefore, use OpenCSG in different OpenGL windows. 
+If the contexts of these windows are not shared, older versions of
+OpenCSG render incorrectly, because internally allocated PBuffers
+resp. frame buffer objects, that are not reallocated for each frame, 
+are not valid in the different OpenGL contexts. 
+</p>
+
+<p>
+To solve this, new functions for setting/getting an OpenCSG context
+have been added. OpenGL resources are created and reused by the
+<b><code>render()</code></b> function per context. By setting a 
+different OpenCSG context for each OpenGL windows before using
+OpenCSG, CSG rendering is performed correctly. 
+</p>
+
 <h3>03.01.2010: OpenCSG 1.2.0 released</h3>
 
 <p>
@@ -242,7 +262,7 @@ have not changed.
 <center><p>
 &copy; 2002-2010, Florian Kirsch, e-mail: <b>mail at opencsg dot org</b>, <br>
 2002-2005 Hasso-Plattner-Institute Potsdam.<br>
-Last change: 03.01.2010
+Last change: 24.01.2010
 </p></center>
 
 </body>

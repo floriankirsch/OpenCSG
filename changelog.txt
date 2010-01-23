@@ -1,3 +1,6 @@
+24.01.2010
+    Release 1.2.0
+
 21.01.2010:
     Changed: made offscreen buffer methods Initialize() / Resize()
         more intuitive. Initialize needs to be called only once after
