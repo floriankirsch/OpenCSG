@@ -95,9 +95,6 @@ namespace OpenCSG {
 
     ChannelManager::ChannelManager() {
 
-        assert(!gInUse);      
-        gInUse = true;
-
         glPushAttrib(GL_ALL_ATTRIB_BITS);
         glColorMask(GL_FALSE, GL_FALSE, GL_FALSE, GL_FALSE);
         glDisable(GL_LIGHTING);
@@ -119,6 +116,14 @@ namespace OpenCSG {
             OpenGL::scissorPos[2] = OpenGL::canvasPos[2];
             OpenGL::scissorPos[3] = OpenGL::canvasPos[3];
         }
+    }
+
+    bool ChannelManager::init() {
+
+        assert(!gInUse);
+        if (gInUse)
+            return false;
+        gInUse = true;
 
         const int dx = OpenGL::canvasPos[2] - OpenGL::canvasPos[0];
         const int dy = OpenGL::canvasPos[3] - OpenGL::canvasPos[1];
@@ -179,16 +184,24 @@ namespace OpenCSG {
                 newOffscreenType = OpenCSG::FrameBufferObjectEXT;
             }
             else {
-                // This should gracefully exit without doing anything
-                newOffscreenType = OpenCSG::FrameBufferObjectARB;
+                // At least one set of the above OpenGL extensions is required
+                return false;
             }
         }
 
         gOffscreenBuffer = OpenGL::getOffscreenBuffer(newOffscreenType);
 
+        if (!gOffscreenBuffer) {
+            // Creating the offscreen buffer failed, maybe the OpenGL extension
+            // for the specific offscreen buffer type is not supported
+            return false;
+        }
+
         if (!gOffscreenBuffer->IsInitialized()) {
             if (!gOffscreenBuffer->Initialize(sizeX.getMax(), sizeY.getMax(), true, false)) {
-                assert(0);
+                // Initializing the offscreen buffer failed, maybe the OpenGL extension
+                // for the specific offscreen buffer type is not supported
+                return false;
             }
             rebuild = true;
         }
@@ -198,14 +211,17 @@ namespace OpenCSG {
                 || gOffscreenBuffer->GetHeight() != sizeY.getMax()
             ) {
                 if (!gOffscreenBuffer->Resize(sizeX.getMax(), sizeY.getMax())) {
-                    assert(0);
+                    // Resizing the offscreen buffer failed, maybe the OpenGL extension
+                    // for the specific offscreen buffer type is not supported. More 
+                    // likely this is a programming error in Resize(). 
+                    return false;
                 }
                 rebuild = true;
             }
         }
 
         if (rebuild) {
-            // assert(pbuffer_->HasStencil());
+            // assert(gOffscreenBuffer->HasStencil());
             gOffscreenBuffer->BeginCapture();
             defaults();
             glGetIntegerv(GL_STENCIL_BITS, &OpenGL::stencilBits);
@@ -220,6 +236,8 @@ namespace OpenCSG {
         mInOffscreenBuffer = false;
         mCurrentChannel = NoChannel;
         mOccupiedChannels = NoChannel;
+
+        return true;
     }
 
     ChannelManager::~ChannelManager() {

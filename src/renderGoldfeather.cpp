@@ -261,6 +261,11 @@ namespace OpenCSG {
     void renderGoldfeather(const std::vector<Primitive*>& primitives) 
     {
         channelMgr = new GoldfeatherChannelManager;
+        if (!channelMgr->init())
+        {
+            delete channelMgr;
+            return;
+        }
         scissor = new ScissorMemo;
 
         Batcher batches(primitives);
@@ -331,6 +336,11 @@ namespace OpenCSG {
     void renderOcclusionQueryGoldfeather(const std::vector<Primitive*>& primitives) 
     {
         channelMgr = new GoldfeatherChannelManager;
+        if (!channelMgr->init())
+        {
+            delete channelMgr;
+            return;
+        }
         scissor = new ScissorMemo;
 
         unsigned int layer = 0;
@@ -397,6 +407,11 @@ namespace OpenCSG {
     void renderDepthComplexitySamplingGoldfeather(const std::vector<Primitive*>& primitives) 
     {
         channelMgr = new GoldfeatherChannelManager;
+        if (!channelMgr->init())
+        {
+            delete channelMgr;
+            return;
+        }
         scissor = new ScissorMemo;
 
         scissor->setIntersected(primitives);

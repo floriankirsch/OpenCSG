@@ -44,11 +44,14 @@ namespace OpenCSG {
     public:
         /// An offscreen buffer is used to collect CSG results in its four
         /// color channels. These resources are managed in a ChannelManager
-        /// object. Since we use one offscreen buffer only, this class is
-        /// a singleton in practice (pointer to internal offscreen buffer 
-        /// object is static)
+        /// object. Since we use one offscreen buffer per OpenCSG context only,
+        /// this class is a singleton in practice
         ChannelManager();
         virtual ~ChannelManager();
+
+        /// initializes the ChannelManager object, i.e., creates the offscreen
+        /// buffer. Returns false on failure. 
+        bool init();
 
         /// returns a free channel, or NoChannel if nothings available
         Channel find() const;

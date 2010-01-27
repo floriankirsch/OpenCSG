@@ -23,24 +23,6 @@
 #include <cassert>
 #include <iostream>
 
-#define CHECK_FRAMEBUFFER_STATUS()                            \
-{                                                             \
-    GLenum status;                                            \
-    status = glCheckFramebufferStatusEXT(GL_FRAMEBUFFER_EXT); \
-    switch(status) {                                          \
-      case GL_FRAMEBUFFER_COMPLETE_EXT:                       \
-        /*std::cout << "framebuffer complete" << std::endl;*/ \
-        break;                                                \
-      case GL_FRAMEBUFFER_UNSUPPORTED_EXT:                    \
-        /*std::cout << "framebuffer unsupported" << std::endl;*/\
-        /* choose different formats */                        \
-        break;                                                \
-      default:                                                \
-        /* programming error; will fail on all hardware */    \
-        assert(0);                                            \
-    }                                                         \
-}
-
 namespace OpenCSG {
 
     namespace OpenGL {
@@ -66,8 +48,8 @@ namespace OpenCSG {
 
             bool haveFBO =    GLEW_EXT_framebuffer_object != 0 
                            && GLEW_EXT_packed_depth_stencil != 0;
-
-            assert(haveFBO);
+            if (!haveFBO)
+                return false;
 
             this->width = width;
             this->height = height;
@@ -88,9 +70,14 @@ namespace OpenCSG {
             glFramebufferRenderbufferEXT(GL_FRAMEBUFFER_EXT, GL_DEPTH_ATTACHMENT_EXT, GL_RENDERBUFFER_EXT, depthID);
             glFramebufferRenderbufferEXT(GL_FRAMEBUFFER_EXT, GL_STENCIL_ATTACHMENT_EXT, GL_RENDERBUFFER_EXT, depthID);
 
-            CHECK_FRAMEBUFFER_STATUS();
+            GLenum status;
+            status = glCheckFramebufferStatusEXT(GL_FRAMEBUFFER_EXT);
+            if (status == GL_FRAMEBUFFER_UNSUPPORTED_EXT) {
+                Reset();
+                return false;
+            }
 
-            glBindFramebufferEXT(GL_FRAMEBUFFER_EXT, 0);	
+            glBindFramebufferEXT(GL_FRAMEBUFFER_EXT, 0);
             glBindTexture(GL_TEXTURE_2D, 0);
 
             textureTarget = GL_TEXTURE_2D;
