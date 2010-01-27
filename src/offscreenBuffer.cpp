@@ -40,27 +40,27 @@ namespace OpenCSG {
 
         static std::map<int, ContextData> gContextDataMap;
 
-        OffscreenBuffer* getOffscreenBuffer(bool fbo) {
+        OffscreenBuffer* getOffscreenBuffer(OffscreenType type) {
             int context = getContext();
             ContextData& contextData = gContextDataMap[context];
 
-            if (fbo) {
-                if (GLEW_ARB_framebuffer_object) {
-                    if (!contextData.fARB)
-                        contextData.fARB = new FrameBufferObject;
-                    return contextData.fARB;
-                }
-                else {
-                    if (!contextData.fEXT)
-                        contextData.fEXT = new FrameBufferObjectExt;
-                    return contextData.fEXT;
-                }
+            if (type == OpenCSG::FrameBufferObjectARB) {
+                if (!contextData.fARB)
+                    contextData.fARB = new FrameBufferObject;
+                return contextData.fARB;
             }
-            else {
+            else if (type == OpenCSG::FrameBufferObjectEXT) {
+                if (!contextData.fEXT)
+                    contextData.fEXT = new FrameBufferObjectExt;
+                return contextData.fEXT;
+            }
+            else if (type == OpenCSG::PBuffer) {
                 if (!contextData.pBuf)
                     contextData.pBuf = new PBufferTexture;
                 return contextData.pBuf;
             }
+
+            return 0;
         }
 
         void freeResources() {

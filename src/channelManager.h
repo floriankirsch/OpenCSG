@@ -82,7 +82,6 @@ namespace OpenCSG {
     private:
 
         static OpenGL::OffscreenBuffer* gOffscreenBuffer;
-        static int gOffscreenType;
         static bool gInUse;
 
         bool mInOffscreenBuffer;

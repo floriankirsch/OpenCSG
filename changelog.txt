@@ -1,5 +1,10 @@
-24.01.2010
-    Release 1.2.0
+27.01.2010
+    Release 1.3.0
+
+27.01.2010
+    Added: Allow to chose explicitely between ARB and EXT frame buffer objects
+    Changed: In the automatic setting, ARB frame buffer objects have precedence
+        over pbuffers over EXT frame buffer objects now.
 
 21.01.2010:
     Changed: made offscreen buffer methods Initialize() / Resize()
@@ -10,11 +15,11 @@
 20.01.2010:
     Added: context management to allow MDI applications to use OpenCSG
         in each OpenGL window even without shared OpenGL contexts.
-        This just maps a integer context identier to a set of different
+        This just maps a integer context identifier to a set of different
         internal offscreen buffer objects for each context.
 
 16.01.2010
-    Fixed: rendering error in SCS algorithm due to impresice
+    Fixed: rendering error in SCS algorithm due to imprecise
         float value provided to alpha test.
 
 03.01.2010

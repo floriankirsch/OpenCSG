@@ -36,7 +36,6 @@
 namespace OpenCSG {
 
     OpenCSG::OpenGL::OffscreenBuffer* ChannelManager::gOffscreenBuffer = 0;
-                                  int ChannelManager::gOffscreenType = OpenCSG::AutomaticOffscreenType;
                                  bool ChannelManager::gInUse = false;
     
     namespace {
@@ -153,40 +152,39 @@ namespace OpenCSG {
         }
 
         bool rebuild = false;
-        int newOffscreenType = getOption(OffscreenSetting);
+        OffscreenType newOffscreenType = static_cast<OffscreenType>(getOption(OffscreenSetting));
 
-        gOffscreenType = newOffscreenType;
-        if (newOffscreenType == OpenCSG::AutomaticOffscreenType) {
+        if (   newOffscreenType == OpenCSG::AutomaticOffscreenType
+            || newOffscreenType == OpenCSG::FrameBufferObject
+        ) {
             if (GLEW_ARB_framebuffer_object) {
-                newOffscreenType = OpenCSG::FrameBufferObject;
-            }
-            else 
-            if (   GLEW_EXT_framebuffer_object
-                && GLEW_EXT_packed_depth_stencil
-            ) {
-                newOffscreenType = OpenCSG::FrameBufferObject;
+                newOffscreenType = OpenCSG::FrameBufferObjectARB;
             }
             else
+            if (newOffscreenType == OpenCSG::AutomaticOffscreenType
 #ifdef WIN32
-            if (   WGLEW_ARB_pbuffer
+                && WGLEW_ARB_pbuffer
                 && WGLEW_ARB_pixel_format
 #else
-            if (   GLXEW_SGIX_pbuffer
+                && GLXEW_SGIX_pbuffer
                 && GLXEW_SGIX_fbconfig
 #endif
             ) {
                 newOffscreenType = OpenCSG::PBuffer;
             }
+            else 
+            if (   GLEW_EXT_framebuffer_object
+                && GLEW_EXT_packed_depth_stencil
+            ) {
+                newOffscreenType = OpenCSG::FrameBufferObjectEXT;
+            }
             else {
                 // This should gracefully exit without doing anything
-                newOffscreenType = OpenCSG::FrameBufferObject;
+                newOffscreenType = OpenCSG::FrameBufferObjectARB;
             }
         }
-        if (newOffscreenType == FrameBufferObject) {
-            gOffscreenBuffer = OpenGL::getOffscreenBuffer(true);
-        } else {
-            gOffscreenBuffer = OpenGL::getOffscreenBuffer(false);
-        }
+
+        gOffscreenBuffer = OpenGL::getOffscreenBuffer(newOffscreenType);
 
         if (!gOffscreenBuffer->IsInitialized()) {
             if (!gOffscreenBuffer->Initialize(sizeX.getMax(), sizeY.getMax(), true, false)) {

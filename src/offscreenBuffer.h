@@ -24,6 +24,7 @@
 #define __OpenCSG__offscreen_buffer_h__
 
 #include "opencsgConfig.h"
+#include <opencsg.h>
 
 namespace OpenCSG {
 
@@ -79,7 +80,7 @@ namespace OpenCSG {
         /// Checks the OpenGL-extensions resp. the current settings
         /// and returns a concrete offscreen buffer, for the currently
         /// active context in OpenCSG.
-        OffscreenBuffer* getOffscreenBuffer(bool fbo);
+        OffscreenBuffer* getOffscreenBuffer(OffscreenType type);
 
         /// Frees all offscreen buffers allocated for the currently
         /// active context in OpenCSG.
