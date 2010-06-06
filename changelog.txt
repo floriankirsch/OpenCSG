@@ -1,3 +1,6 @@
+06.06.2010
+    License: Added special linking exception for CGAL.
+
 07.02.2010
     Release 1.3.0
 

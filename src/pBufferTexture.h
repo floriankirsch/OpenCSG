@@ -4,6 +4,8 @@
 // This library is free software; you can redistribute it and/or 
 // modify it under the terms of the GNU General Public License, 
 // Version 2, as published by the Free Software Foundation.
+// As a special exception, you have permission to link this library
+// with the CGAL library and distribute executables.
 //
 // This library is distributed in the hope that it will be useful, 
 // but WITHOUT ANY WARRANTY; without even the implied warranty of 
