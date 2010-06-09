@@ -31,6 +31,7 @@
 //                    Bill Baxter
 //                    Florian Kirsch
 //                    Andrew Wood
+// Deprecated Interface Removed: Florian Kirsch
 //
 // -----------------------------------------------------------------------------
 /**
@@ -237,39 +238,6 @@ public: // interface
     * http://www.sjbaker.org/steve/software/cute_code.html
     */ 
     static bool IsPowerOfTwo(int n) { return ((n&(n-1))==0); }
-
-
-    /////////////////////////////////////////////////////////////////////////
-    // This is the deprecated (old) interface.  It will likely be removed
-    // in a future version, so it is recommended that you transition to the 
-    // new mode-string-based interface.
-    RenderTexture(int width, int height,
-                   bool bIsTexture = true,
-                   bool bIsDepthTexture = false);
-    //
-    // Call this once before use.  Set bShare to true to share lists, 
-    // textures, and program objects between the render texture context 
-    // and the current active GL context. [deprecated]
-    bool Initialize(bool bShare              = true, 
-                    bool bDepth              = false, 
-                    bool bStencil            = false,
-                    bool bMipmap             = false, 
-                    bool bAnisoFilter        = false,
-                    unsigned int iRBits      = 8,
-                    unsigned int iGBits      = 8,
-                    unsigned int iBBits      = 8,
-                    unsigned int iABits      = 8,
-// Only Win32 has RT now, so only make it default there
-#ifdef _WIN32
-                    UpdateMode   updateMode = RT_RENDER_TO_TEXTURE
-#else
-                    UpdateMode   updateMode = RT_COPY_TO_TEXTURE
-#endif
-                    );
-    // !Change the render texture resolution. [deprecated]
-    bool Reset(int iWidth, int iHeight);
-    //
-    /////////////////////////////////////////////////////////////////////////
 
 
 protected: // methods
