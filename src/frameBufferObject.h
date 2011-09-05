@@ -85,6 +85,7 @@ namespace OpenCSG {
             unsigned int depthID;
 
             unsigned int framebufferID;
+            int          oldFramebufferID;
 
             bool         initialized;
         };

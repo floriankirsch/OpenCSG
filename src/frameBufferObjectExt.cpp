@@ -22,8 +22,6 @@
 
 #include "opencsgConfig.h"
 #include "frameBufferObjectExt.h"
-#include <cassert>
-#include <iostream>
 
 namespace OpenCSG {
 
@@ -36,6 +34,7 @@ namespace OpenCSG {
             textureID(0),
             depthID(0),
             framebufferID(0),
+            oldFramebufferID(0),
             initialized(false)
         {
         }
@@ -60,7 +59,8 @@ namespace OpenCSG {
             glGenRenderbuffersEXT(1, &depthID); 
             glGenTextures(1, &textureID);
 
-            glBindFramebufferEXT(GL_FRAMEBUFFER_EXT, framebufferID);	
+            glGetIntegerv(GL_FRAMEBUFFER_BINDING_EXT, &oldFramebufferID);
+            glBindFramebufferEXT(GL_FRAMEBUFFER_EXT, framebufferID);
             glBindTexture(GL_TEXTURE_2D, textureID);
             glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA8, width, height, 0, GL_RGBA, GL_INT, 0);
             glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR); 
@@ -79,7 +79,7 @@ namespace OpenCSG {
                 return false;
             }
 
-            glBindFramebufferEXT(GL_FRAMEBUFFER_EXT, 0);
+            glBindFramebufferEXT(GL_FRAMEBUFFER_EXT, oldFramebufferID);
             glBindTexture(GL_TEXTURE_2D, 0);
 
             textureTarget = GL_TEXTURE_2D;
@@ -136,7 +136,7 @@ namespace OpenCSG {
         // Unbinds frame buffer texture.
         bool FrameBufferObjectExt::EndCapture()
         {
-            glBindFramebufferEXT(GL_FRAMEBUFFER_EXT, 0);
+            glBindFramebufferEXT(GL_FRAMEBUFFER_EXT, oldFramebufferID);
             return true;
         }
 
