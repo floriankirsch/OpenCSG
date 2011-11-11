@@ -284,7 +284,7 @@ namespace OpenCSG {
             glEnable(GL_STENCIL_TEST);
             glEnable(GL_CULL_FACE);
 
-            OpenGL::OcclusionQuery* occlusionTest = OpenGL::getOcclusionQuery();
+            OpenGL::OcclusionQuery* occlusionTest = OpenGL::getOcclusionQuery(true);
 
             std::vector<unsigned int> fragmentcount(numberOfBatches, 0);
 

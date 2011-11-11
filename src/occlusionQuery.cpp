@@ -18,7 +18,7 @@
 // Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
 
 //
-// occlusionQueryAdapter.cpp
+// occlusionQuery.cpp
 //
 
 #include "opencsgConfig.h"
@@ -39,10 +39,12 @@ namespace OpenCSG {
             virtual unsigned int getQueryResult();
 
         private:
+            friend OcclusionQuery* getOcclusionQuery(bool exactNumberNeeded);
+            GLenum mQueryType;
             GLuint mQueryObject;
         };
 
-        OcclusionQueryARB::OcclusionQueryARB() {
+        OcclusionQueryARB::OcclusionQueryARB() : mQueryType(GL_SAMPLES_PASSED_ARB) {
             glGenQueriesARB(1, &mQueryObject);
         }
 
@@ -51,11 +53,11 @@ namespace OpenCSG {
         }
 
         void OcclusionQueryARB::beginQuery() {
-            glBeginQueryARB(GL_SAMPLES_PASSED_ARB, mQueryObject);
+            glBeginQueryARB(mQueryType, mQueryObject);
         }
 
         void OcclusionQueryARB::endQuery() {
-            glEndQueryARB(GL_SAMPLES_PASSED_ARB);
+            glEndQueryARB(mQueryType);
         }
 
         unsigned int OcclusionQueryARB::getQueryResult() {
@@ -103,9 +105,18 @@ namespace OpenCSG {
 
 
 
-        OcclusionQuery* getOcclusionQuery() {
+        OcclusionQuery* getOcclusionQuery(bool exactNumberNeeded) {
+
+            if (!exactNumberNeeded && GLEW_ARB_occlusion_query2) {
+                OcclusionQueryARB* occlusionQuery = new OcclusionQueryARB;
+                occlusionQuery->mQueryType = GL_ANY_SAMPLES_PASSED;
+                return occlusionQuery;
+            }
+
             if (GLEW_ARB_occlusion_query) {
-                return new OcclusionQueryARB;
+                OcclusionQueryARB* occlusionQuery = new OcclusionQueryARB;
+                occlusionQuery->mQueryType = GL_SAMPLES_PASSED_ARB;
+                return occlusionQuery;
             }
 
             if (GLEW_NV_occlusion_query) {

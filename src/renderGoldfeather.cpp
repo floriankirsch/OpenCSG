@@ -363,7 +363,7 @@ namespace OpenCSG {
             scissor->enableScissor();
 
             if (!occlusionTest) {
-                occlusionTest = OpenGL::getOcclusionQuery();
+                occlusionTest = OpenGL::getOcclusionQuery(false);
             }
 
             channelMgr->renderToChannel(true);
@@ -384,8 +384,8 @@ namespace OpenCSG {
 
             parityTestAndDiscard(primitives, primitives, true, OpenGL::stencilMax);
 
-            unsigned int fragmentCount = occlusionTest->getQueryResult();
-            if (fragmentCount == 0) {
+            unsigned int anyFragmentRendered = occlusionTest->getQueryResult();
+            if (!anyFragmentRendered) {
                 break;
             }
 

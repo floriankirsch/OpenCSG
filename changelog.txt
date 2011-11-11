@@ -1,3 +1,7 @@
+10.11.2011
+    Added: support for ARB_occlusion_query2 extension in the Goldfeather /
+        occlusion query case.
+
 05.09.2011
     Fixed: For frame buffer objects, switch back to prior FBO instead of
         disabling FBO (thanks to Marius Kintel for the bug report).
