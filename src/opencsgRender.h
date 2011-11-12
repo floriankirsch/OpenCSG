@@ -39,17 +39,11 @@ namespace OpenCSG {
                 Algorithm, 
                 DepthComplexityAlgorithm);
 
-    /// SCS algorithm (all variants). Implemented in renderSCS.cpp
+    /// SCS algorithm. Implemented in renderSCS.cpp
     void renderSCS(const std::vector<Primitive*>& primitives, DepthComplexityAlgorithm);
 
     /// Goldfeather algorithm. Implemented in renderGoldfeather.cpp
-    void renderGoldfeather(const std::vector<Primitive*>& primitives);
-
-    /// Goldfeather algorithm with occlusion queries. Implemented in renderGoldfeather.cpp
-    bool renderOcclusionQueryGoldfeather(const std::vector<Primitive*>& primitives);
-
-    /// Goldfeather algorithm with depth complexity sampling. Implemented in renderGoldfeather.cpp
-    void renderDepthComplexitySamplingGoldfeather(const std::vector<Primitive*>& primitives);
+    void renderGoldfeather(const std::vector<Primitive*>& primitives, DepthComplexityAlgorithm);
 
 } // namespace OpenCSG
 

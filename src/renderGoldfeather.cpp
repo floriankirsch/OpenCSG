@@ -262,12 +262,6 @@ namespace OpenCSG {
 
     void renderGoldfeather(const std::vector<Primitive*>& primitives) 
     {
-        channelMgr = new GoldfeatherChannelManager;
-        if (!channelMgr->init())
-        {
-            delete channelMgr;
-            return;
-        }
         scissor = new ScissorMemo;
 
         Batcher batches(primitives);
@@ -332,18 +326,10 @@ namespace OpenCSG {
         
         delete scissor;
         delete stencilMgr;
-        delete channelMgr;
     }
 
     bool renderOcclusionQueryGoldfeather(const std::vector<Primitive*>& primitives)
     {
-        channelMgr = new GoldfeatherChannelManager;
-        if (!channelMgr->init())
-        {
-            delete channelMgr;
-            // report success even though rendering failed - any other try will not change this
-            return true;
-        }
         scissor = new ScissorMemo;
 
         unsigned int layer = 0;
@@ -411,19 +397,12 @@ namespace OpenCSG {
 
         delete scissor;
         delete stencilMgr;
-        delete channelMgr;
 
         return retVal;
     }
 
     void renderDepthComplexitySamplingGoldfeather(const std::vector<Primitive*>& primitives) 
     {
-        channelMgr = new GoldfeatherChannelManager;
-        if (!channelMgr->init())
-        {
-            delete channelMgr;
-            return;
-        }
         scissor = new ScissorMemo;
 
         scissor->setIntersected(primitives);
@@ -469,6 +448,29 @@ namespace OpenCSG {
 
         delete scissor;
         delete stencilMgr;
+    }
+
+    void renderGoldfeather(const std::vector<Primitive*>& primitives, DepthComplexityAlgorithm algorithm)
+    {
+        channelMgr = new GoldfeatherChannelManager;
+        if (channelMgr->init())
+        {
+            switch (algorithm) {
+            case OcclusionQuery:
+                if (renderOcclusionQueryGoldfeather(primitives))
+                    break;  // success
+                            // else fall through (should not happen in practice due to the check for extensions of the caller)
+            case NoDepthComplexitySampling:
+                renderGoldfeather(primitives);
+                break;
+            case DepthComplexitySampling:
+                renderDepthComplexitySamplingGoldfeather(primitives);
+                break;
+            case DepthComplexityAlgorithmUnused:
+                break; // does not happen
+            }
+        }
+
         delete channelMgr;
     }
 

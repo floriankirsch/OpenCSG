@@ -81,20 +81,7 @@ namespace OpenCSG {
         ) {
             switch (algorithm) {
             case Goldfeather:
-                switch (depthComplexityAlgorithm) {
-                case OcclusionQuery:
-                    if (renderOcclusionQueryGoldfeather(primitives))
-                        break;  // success
-                                // else fall through (should not happen in practice due to the check before)
-                case NoDepthComplexitySampling: 
-                    renderGoldfeather(primitives);
-                    break;
-                case DepthComplexitySampling:
-                    renderDepthComplexitySamplingGoldfeather(primitives);
-                    break;
-                case DepthComplexityAlgorithmUnused:
-                    break; // does not happen               
-                }
+                renderGoldfeather(primitives, depthComplexityAlgorithm);
                 break;
     
             case SCS:
