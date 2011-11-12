@@ -272,19 +272,22 @@ namespace OpenCSG {
             glDisable(GL_STENCIL_TEST);
         }
 
-        void subtractPrimitivesWithOcclusionQueries(std::vector<Batch>::const_iterator begin, 
+        bool subtractPrimitivesWithOcclusionQueries(std::vector<Batch>::const_iterator begin,
                                                     std::vector<Batch>::const_iterator end) {
 
             const unsigned int numberOfBatches = end - begin;
             if (numberOfBatches == 0) {
-                return;
+                return true;
+            }
+
+            OpenGL::OcclusionQuery* occlusionTest = OpenGL::getOcclusionQuery(true);
+            if (!occlusionTest) {
+                return false;
             }
 
             glStencilMask(OpenGL::stencilMask);
             glEnable(GL_STENCIL_TEST);
             glEnable(GL_CULL_FACE);
-
-            OpenGL::OcclusionQuery* occlusionTest = OpenGL::getOcclusionQuery(true);
 
             std::vector<unsigned int> fragmentcount(numberOfBatches, 0);
 
@@ -355,6 +358,8 @@ namespace OpenCSG {
             delete occlusionTest;
 
             glDisable(GL_STENCIL_TEST);
+
+            return true;
         }
 
         void renderIntersectedBack(const std::vector<Primitive*>& primitives) {
@@ -440,11 +445,12 @@ namespace OpenCSG {
         renderIntersectedFront(intersected);
         scissor->enableDepthBounds();
         switch (algorithm) {
+        case OcclusionQuery:
+            if (subtractPrimitivesWithOcclusionQueries(subtractedBatches.begin(), subtractedBatches.end()))
+                break; // success
+                       // else fall through (should we just give up here?)
         case NoDepthComplexitySampling:
             subtractPrimitives(subtractedBatches.begin(), subtractedBatches.end(), subtractedBatches.size());
-            break;
-        case OcclusionQuery:
-            subtractPrimitivesWithOcclusionQueries(subtractedBatches.begin(), subtractedBatches.end());
             break;
         case DepthComplexitySampling:
             subtractPrimitives(subtractedBatches.begin(), subtractedBatches.end(), depthComplexity);

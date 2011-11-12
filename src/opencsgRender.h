@@ -46,7 +46,7 @@ namespace OpenCSG {
     void renderGoldfeather(const std::vector<Primitive*>& primitives);
 
     /// Goldfeather algorithm with occlusion queries. Implemented in renderGoldfeather.cpp
-    void renderOcclusionQueryGoldfeather(const std::vector<Primitive*>& primitives);
+    bool renderOcclusionQueryGoldfeather(const std::vector<Primitive*>& primitives);
 
     /// Goldfeather algorithm with depth complexity sampling. Implemented in renderGoldfeather.cpp
     void renderDepthComplexitySamplingGoldfeather(const std::vector<Primitive*>& primitives);

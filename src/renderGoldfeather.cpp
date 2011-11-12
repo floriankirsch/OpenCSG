@@ -335,13 +335,14 @@ namespace OpenCSG {
         delete channelMgr;
     }
 
-    void renderOcclusionQueryGoldfeather(const std::vector<Primitive*>& primitives) 
+    bool renderOcclusionQueryGoldfeather(const std::vector<Primitive*>& primitives)
     {
         channelMgr = new GoldfeatherChannelManager;
         if (!channelMgr->init())
         {
             delete channelMgr;
-            return;
+            // report success even though rendering failed - any other try will not change this
+            return true;
         }
         scissor = new ScissorMemo;
 
@@ -352,6 +353,8 @@ namespace OpenCSG {
         scissor->setCurrent(primitives);
 
         OpenGL::OcclusionQuery* occlusionTest = 0;
+
+        bool retVal = true;
 
         while (true) {
             if (channelMgr->request() == NoChannel) {
@@ -364,6 +367,10 @@ namespace OpenCSG {
 
             if (!occlusionTest) {
                 occlusionTest = OpenGL::getOcclusionQuery(false);
+                if (!occlusionTest) {
+                    retVal = false;
+                    break;
+                }
             }
 
             channelMgr->renderToChannel(true);
@@ -386,6 +393,7 @@ namespace OpenCSG {
 
             unsigned int anyFragmentRendered = occlusionTest->getQueryResult();
             if (!anyFragmentRendered) {
+                retVal = true;
                 break;
             }
 
@@ -404,6 +412,8 @@ namespace OpenCSG {
         delete scissor;
         delete stencilMgr;
         delete channelMgr;
+
+        return retVal;
     }
 
     void renderDepthComplexitySamplingGoldfeather(const std::vector<Primitive*>& primitives) 

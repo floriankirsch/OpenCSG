@@ -1,3 +1,6 @@
+11.11.2011
+    Fixed: perform 0-ptr checks if no occlusion query object can be created
+
 10.11.2011
     Added: support for ARB_occlusion_query2 extension in the Goldfeather /
         occlusion query case.
