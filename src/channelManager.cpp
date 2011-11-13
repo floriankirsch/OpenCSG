@@ -132,7 +132,7 @@ namespace OpenCSG {
 
         int tx = dx;
         int ty = dy;
-        if (!GLEW_NV_texture_rectangle) {
+        if (!GLEW_NV_texture_rectangle && !GLEW_ARB_texture_rectangle) {
             // blow up the texture to legal power-of-two size :-(
             tx = nextPow2(dx);
             ty = nextPow2(dy);
