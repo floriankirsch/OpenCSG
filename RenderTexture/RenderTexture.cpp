@@ -1269,7 +1269,7 @@ void RenderTexture::_ParseModeString(const char *modeString,
             _bIsTexture = true;
             
             if (   (kv.first == "texRECT")
-                && (GLEW_ARB_texture_rectangle || GLEW_NV_texture_rectangle)
+                && (GLEW_ARB_texture_rectangle || GLEW_EXT_texture_rectangle || GLEW_NV_texture_rectangle)
                 && (WGLEW_ATI_render_texture_rectangle || WGLEW_NV_render_texture_rectangle))
             {
                 _bRectangle = true;
@@ -1677,9 +1677,9 @@ bool RenderTexture::_VerifyExtensions()
         PrintExtensionError("WGL_ARB_render_texture");
         return false;
     }
-    if (_bRectangle && !(GLEW_ARB_texture_rectangle || GLEW_NV_texture_rectangle))
+    if (_bRectangle && !(GLEW_ARB_texture_rectangle || GLEW_EXT_texture_rectangle || GLEW_NV_texture_rectangle))
     {
-        PrintExtensionError("GLEW_ARB_texture_rectangle or GL_NV_texture_rectangle");
+        PrintExtensionError("GLEW_ARB_texture_rectangle or GLEW_EXT_texture_rectangle or GL_NV_texture_rectangle");
         return false;
     }
     if (_bFloat && !(GLEW_NV_float_buffer || WGLEW_ATI_pixel_format_float))
@@ -1751,8 +1751,8 @@ bool RenderTexture::_InitializeTextures()
     // Determine the appropriate texture formats and filtering modes.
     if (_bIsTexture || _bIsDepthTexture)
     {
-        if (_bRectangle && (GLEW_ARB_texture_rectangle || GLEW_NV_texture_rectangle))
-            _iTextureTarget = GL_TEXTURE_RECTANGLE_ARB; // same as GL_TEXTURE_RECTANGLE_NV
+        if (_bRectangle && (GLEW_ARB_texture_rectangle || GLEW_EXT_texture_rectangle || GLEW_NV_texture_rectangle))
+            _iTextureTarget = GL_TEXTURE_RECTANGLE_ARB;
         else
             _iTextureTarget = GL_TEXTURE_2D;
     }

@@ -102,7 +102,7 @@ namespace OpenCSG {
         glDisable(GL_LIGHTING);
         glDisable(GL_TEXTURE_1D);
         glDisable(GL_TEXTURE_2D);
-        if (GLEW_ARB_texture_rectangle || GLEW_NV_texture_rectangle)
+        if (GLEW_ARB_texture_rectangle || GLEW_EXT_texture_rectangle || GLEW_NV_texture_rectangle)
             glDisable(GL_TEXTURE_RECTANGLE_ARB);
         glDisable(GL_TEXTURE_3D); // OpenGL 1.2 - take this as given
         if (GL_ARB_texture_cube_map)
@@ -177,7 +177,7 @@ namespace OpenCSG {
 
         int tx = dx;
         int ty = dy;
-        if ((!GLEW_NV_texture_rectangle && !GLEW_ARB_texture_rectangle)
+        if ((!GLEW_ARB_texture_rectangle && !GLEW_EXT_texture_rectangle && !GLEW_NV_texture_rectangle)
             && ((newOffscreenType == OpenCSG::FrameBufferObjectARB || newOffscreenType == OpenCSG::FrameBufferObjectEXT)
                 && !GLEW_ARB_texture_non_power_of_two)
         ) {

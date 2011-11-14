@@ -61,7 +61,7 @@ namespace OpenCSG {
             glGetIntegerv(GL_FRAMEBUFFER_BINDING_EXT, &oldFramebufferID);
             glBindFramebuffer(GL_FRAMEBUFFER, framebufferID);
 
-            GLenum target = (GLEW_ARB_texture_rectangle || GLEW_NV_texture_rectangle)
+            GLenum target = (GLEW_ARB_texture_rectangle || GLEW_EXT_texture_rectangle || GLEW_NV_texture_rectangle)
                 ? GL_TEXTURE_RECTANGLE_ARB
                 : GL_TEXTURE_2D; // implicitely asks for GL_ARB_texture_non_power_of_two.
                                  // this should have been checked in channelManager.cpp
