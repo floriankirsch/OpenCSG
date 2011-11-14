@@ -102,6 +102,11 @@ namespace OpenCSG {
         glDisable(GL_LIGHTING);
         glDisable(GL_TEXTURE_1D);
         glDisable(GL_TEXTURE_2D);
+        if (GLEW_ARB_texture_rectangle || GLEW_NV_texture_rectangle)
+            glDisable(GL_TEXTURE_RECTANGLE_ARB);
+        glDisable(GL_TEXTURE_3D); // OpenGL 1.2 - take this as given
+        if (GL_ARB_texture_cube_map)
+            glDisable(GL_TEXTURE_CUBE_MAP_ARB);
         glDisable(GL_BLEND);
 
         glGetIntegerv(GL_FRONT_FACE, &FaceOrientation);
@@ -127,38 +132,6 @@ namespace OpenCSG {
             return false;
         gInUse = true;
 
-        const int dx = OpenGL::canvasPos[2] - OpenGL::canvasPos[0];
-        const int dy = OpenGL::canvasPos[3] - OpenGL::canvasPos[1];
-
-        int tx = dx;
-        int ty = dy;
-        if (!GLEW_NV_texture_rectangle && !GLEW_ARB_texture_rectangle) {
-            // blow up the texture to legal power-of-two size :-(
-            tx = nextPow2(dx);
-            ty = nextPow2(dy);
-        }
-
-        // The following implements a heuristic that makes the offscreen buffer
-        // smaller if the size of the buffer has been bigger than necessary
-        // in x- or y- direction for resizeOffscreenBufferLimit frames. 
-        //
-        // this permits to use OpenCSG for CSG rendering in different
-        // canvases with different sizes without permanent expensive
-        // resizing of the offscreen buffer for every frame.
-        //
-        // possible improvements: 
-        //   - allow the user to define the resizeOffscreenBufferLimit?
-        static const unsigned int resizeOffscreenBufferLimit = 64;
-
-        static MaximumMemorizer<resizeOffscreenBufferLimit> sizeX;
-        static MaximumMemorizer<resizeOffscreenBufferLimit> sizeY;
-        // tx == ty == 0 happens if the window is minimized, in this case don't touch a thing
-        if (tx != 0 && ty != 0) {
-            sizeX.newValue(tx);
-            sizeY.newValue(ty);
-        }
-
-        bool rebuild = false;
         OffscreenType newOffscreenType = static_cast<OffscreenType>(getOption(OffscreenSetting));
 
         if (   newOffscreenType == OpenCSG::AutomaticOffscreenType
@@ -198,6 +171,42 @@ namespace OpenCSG {
             // for the specific offscreen buffer type is not supported
             return false;
         }
+
+        const int dx = OpenGL::canvasPos[2] - OpenGL::canvasPos[0];
+        const int dy = OpenGL::canvasPos[3] - OpenGL::canvasPos[1];
+
+        int tx = dx;
+        int ty = dy;
+        if ((!GLEW_NV_texture_rectangle && !GLEW_ARB_texture_rectangle)
+            && ((newOffscreenType == OpenCSG::FrameBufferObjectARB || newOffscreenType == OpenCSG::FrameBufferObjectEXT)
+                && !GLEW_ARB_texture_non_power_of_two)
+        ) {
+            // blow up the texture to legal power-of-two size :-(
+            tx = nextPow2(dx);
+            ty = nextPow2(dy);
+        }
+
+        // The following implements a heuristic that makes the offscreen buffer
+        // smaller if the size of the buffer has been bigger than necessary
+        // in x- or y- direction for resizeOffscreenBufferLimit frames. 
+        //
+        // this permits to use OpenCSG for CSG rendering in different
+        // canvases with different sizes without permanent expensive
+        // resizing of the offscreen buffer for every frame.
+        //
+        // possible improvements: 
+        //   - allow the user to define the resizeOffscreenBufferLimit?
+        static const unsigned int resizeOffscreenBufferLimit = 64;
+
+        static MaximumMemorizer<resizeOffscreenBufferLimit> sizeX;
+        static MaximumMemorizer<resizeOffscreenBufferLimit> sizeY;
+        // tx == ty == 0 happens if the window is minimized, in this case don't touch a thing
+        if (tx != 0 && ty != 0) {
+            sizeX.newValue(tx);
+            sizeY.newValue(ty);
+        }
+
+        bool rebuild = false;
 
         if (!gOffscreenBuffer->IsInitialized()) {
             if (!gOffscreenBuffer->Initialize(sizeX.getMax(), sizeY.getMax(), true, false)) {

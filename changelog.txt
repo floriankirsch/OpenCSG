@@ -1,8 +1,17 @@
+14.11.2011
+    Added: Support ARB_texture_rectangle extension for FBO path. This extension
+        is used preferably instead of the former solution, that implicitely
+        required the ARB_texture_non_power_of_two extension without checking
+        for it.
+    Fixed: In case ARB_texture_rectangle is not available and also not
+        ARB_texture_non_power_of_two, the FBO is blown up to power-of-two,
+        as in the pbuffer case. 
+
 11.11.2011
-    Fixed: perform 0-ptr checks if no occlusion query object can be created
+    Fixed: Perform 0-ptr checks if no occlusion query object can be created
 
 10.11.2011
-    Added: support for ARB_occlusion_query2 extension in the Goldfeather /
+    Added: Support for ARB_occlusion_query2 extension in the Goldfeather /
         occlusion query case.
 
 05.09.2011

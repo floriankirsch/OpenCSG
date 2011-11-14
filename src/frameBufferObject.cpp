@@ -60,11 +60,17 @@ namespace OpenCSG {
 
             glGetIntegerv(GL_FRAMEBUFFER_BINDING_EXT, &oldFramebufferID);
             glBindFramebuffer(GL_FRAMEBUFFER, framebufferID);
-            glBindTexture(GL_TEXTURE_2D, textureID);
-            glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA8, width, height, 0, GL_RGBA, GL_INT, 0);
-            glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR); 
-            glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR); 
-            glFramebufferTexture2DEXT(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, textureID, 0);
+
+            GLenum target = (GLEW_ARB_texture_rectangle || GLEW_NV_texture_rectangle)
+                ? GL_TEXTURE_RECTANGLE_ARB
+                : GL_TEXTURE_2D; // implicitely asks for GL_ARB_texture_non_power_of_two.
+                                 // this should have been checked in channelManager.cpp
+
+            glBindTexture(target, textureID);
+            glTexImage2D(target, 0, GL_RGBA8, width, height, 0, GL_RGBA, GL_INT, 0);
+            glTexParameteri(target, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+            glTexParameteri(target, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+            glFramebufferTexture2DEXT(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, target, textureID, 0);
 
             glBindRenderbuffer(GL_RENDERBUFFER, depthID);
             glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH_STENCIL, width, height);
@@ -79,9 +85,9 @@ namespace OpenCSG {
             }
 
             glBindFramebuffer(GL_FRAMEBUFFER, oldFramebufferID);
-            glBindTexture(GL_TEXTURE_2D, 0);
+            glBindTexture(target, 0);
 
-            textureTarget = GL_TEXTURE_2D;
+            textureTarget = target;
 
             initialized = true;
 
@@ -142,7 +148,7 @@ namespace OpenCSG {
         // Sets the frame buffer texture as active texture object.
         void FrameBufferObject::Bind() const
         {
-            glBindTexture(GL_TEXTURE_2D, textureID);
+            glBindTexture(textureTarget, textureID);
         }
 
     } // namespace OpenGL
