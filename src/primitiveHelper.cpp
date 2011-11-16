@@ -95,24 +95,31 @@ namespace OpenCSG {
                 (*itr)->render();
             }
 
-            int dx = area.maxx - area.minx;
-            int dy = area.maxy - area.miny;
-
-            unsigned int size = (8+dx)*dy; // 8 needed due to possible alignment (?)
-            static std::vector<GLubyte> buf = std::vector<GLubyte>(size, 0);
-            if (buf.size() < size) {
-                buf = std::vector<GLubyte>(size, 0);
-            }
-
-            glReadPixels(area.minx, area.miny, dx, dy, GL_STENCIL_INDEX, GL_UNSIGNED_BYTE, &(buf[0]));
-
             glDisable(GL_CULL_FACE);
             glDisable(GL_STENCIL_TEST);
             glEnable(GL_DEPTH_TEST);
 
-            unsigned char m = *std::max_element(buf.begin(), buf.end());
+            int dx = area.maxx - area.minx;
+            int dy = area.maxy - area.miny;
+
+            unsigned int size = dx*dy;
+            GLubyte* buf = new GLubyte[dx*dy];
+
+            glPixelStorei(GL_PACK_SWAP_BYTES, GL_FALSE);
+            glPixelStorei(GL_PACK_ALIGNMENT, 1);
+            glPixelStorei(GL_PACK_ROW_LENGTH, 0);
+            glPixelStorei(GL_PACK_SKIP_ROWS, 0);
+            glPixelStorei(GL_PACK_SKIP_PIXELS, 0);
+
+            // This is pathologically slow on ATI HD4670 if not the complete viewport is read back.
+            // So better always read the complete viewport or make this configurable?
+            glReadPixels(area.minx, area.miny, dx, dy, GL_STENCIL_INDEX, GL_UNSIGNED_BYTE, buf);
+
+            unsigned char m = *std::max_element(buf, buf+size);
 
             unsigned int max = m;
+
+            delete[] buf;
 
             return max;
         }
