@@ -39,7 +39,11 @@
 * Implementation of class RenderTexture.  A multi-format render to 
 * texture wrapper.
 */
+#ifdef _MSC_VER
+#if _MSC_VER < 1300 // MSVC++ <= 6.0
 #pragma warning(disable:4786)
+#endif
+#endif
 
 #include "RenderTexture.h"
 #include <stdio.h>
@@ -96,8 +100,8 @@ RenderTexture::RenderTexture(const char *strMode)
     _pDisplay(NULL),
     _hGLContext(NULL),
     _hPBuffer(0),
-    _hPreviousContext(0),
     _hPreviousDrawable(0),
+    _hPreviousContext(0),
 #endif
     _iTextureTarget(GL_NONE),
     _iTextureID(0),
@@ -216,7 +220,7 @@ void _wglGetLastError()
 * @fn PrintExtensionError( char* strMsg, ... )
 * @brief Prints an error about missing OpenGL extensions.
 */ 
-void PrintExtensionError( char* strMsg, ... )
+void PrintExtensionError( const char* strMsg, ... )
 {
     fprintf(stderr, 
             "Error: RenderTexture requires the following unsupported "
@@ -403,10 +407,6 @@ bool RenderTexture::Initialize(int width, int height,
     GLXContext context = glXGetCurrentContext();
     int screen = DefaultScreen(_pDisplay);
     XVisualInfo *visInfo;
-    
-    int iFormat = 0;
-    int iNumFormats;
-    int attrib = 0;
     
     GLXFBConfigSGIX *fbConfigs;
     int nConfigs;
@@ -845,8 +845,6 @@ bool RenderTexture::EndCapture()
  */ 
 bool RenderTexture::BeginCapture(RenderTexture* current)
 {
-    bool bContextReset = false;
-    
     if (current == this) {
         return true; // no switch necessary
     }
@@ -1270,8 +1268,10 @@ void RenderTexture::_ParseModeString(const char *modeString,
             
             if (   (kv.first == "texRECT")
                 && (GLEW_ARB_texture_rectangle || GLEW_EXT_texture_rectangle || GLEW_NV_texture_rectangle)
-                && (WGLEW_ATI_render_texture_rectangle || WGLEW_NV_render_texture_rectangle))
-            {
+#ifdef _WIN32
+                && (WGLEW_ATI_render_texture_rectangle || WGLEW_NV_render_texture_rectangle)
+#endif
+            ) {
                 _bRectangle = true;
                 bBindRECT = true;
             }
