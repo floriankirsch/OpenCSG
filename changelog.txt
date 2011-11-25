@@ -1,3 +1,7 @@
+25.11.2011
+    Fixed: Quering width and heigth of a pbuffer under Linux / ATI / Gallium3D
+        driver always returned 0. The query should not be required, anyway.
+
 14.11.2011
     Added: Support ARB_texture_rectangle extension for FBO path. This extension
         is used preferably instead of the former solution, that implicitely

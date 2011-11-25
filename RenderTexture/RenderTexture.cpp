@@ -463,11 +463,13 @@ bool RenderTexture::Initialize(int width, int height,
             return false;
         }
     }
-    
-    glXQueryGLXPbufferSGIX(_pDisplay, _hPBuffer, GLX_WIDTH_SGIX, 
-                           (GLuint*)&_iWidth);
-    glXQueryGLXPbufferSGIX(_pDisplay, _hPBuffer, GLX_HEIGHT_SGIX, 
-                           (GLuint*)&_iHeight);
+
+    // [Florian] ATI returns 0 for this. There is no reason for width and
+    //           and height to differ anyway, so comment this out
+    //glXQueryGLXPbufferSGIX(_pDisplay, _hPBuffer, GLX_WIDTH_SGIX, 
+    //                       (GLuint*)&_iWidth);
+    //glXQueryGLXPbufferSGIX(_pDisplay, _hPBuffer, GLX_HEIGHT_SGIX, 
+    //                       (GLuint*)&_iHeight);
     
     _bInitialized = true;
     
