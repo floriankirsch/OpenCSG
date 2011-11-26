@@ -36,13 +36,13 @@
     Changed: In the automatic setting, ARB frame buffer objects have precedence
         over pbuffers over EXT frame buffer objects now.
 
-21.01.2010:
+21.01.2010
     Changed: made offscreen buffer methods Initialize() / Resize()
         more intuitive. Initialize needs to be called only once after
         offscreen buffer construction; after Resize() calling Initialize()
         is not required anymore.
 
-20.01.2010:
+20.01.2010
     Added: context management to allow MDI applications to use OpenCSG
         in each OpenGL window even without shared OpenGL contexts.
         This just maps a integer context identifier to a set of different
@@ -70,11 +70,11 @@
 19.07.2009
     Release 1.1.1
 
-19.07.2009:
+19.07.2009
     Fixed: bad performance behaviour of Batcher when called with 
         many primitives with standard bounding boxes. 
 
-07.02.2009:
+07.02.2009
     Fixed: removed -athlon-xp optimization in makefile, which was 
         not portable obviously, in particular for x64 platforms.
 
@@ -227,15 +227,15 @@
 02.05.2004
     Release 1.0.0
 
-22.04.2004:
+22.04.2004
     Changed: Makefiles on Linux are now derived from qmake. However,
         the provided Makefiles should work directly without using
         qmake, it is best to stick with them.
 
-22.04.2004: 
+22.04.2004 
     Changed: Compile a shared library on Linux now
 
-08.04.2004:
+08.04.2004
     Changed: When possible use GL_TEXTURE_RECTANGLE_NV texture format
         even if GL_TEXTURE_2D would work also. The former appears to be
         faster. 
@@ -261,28 +261,28 @@
 17.02.2004
     Added: Support for ARB_occlusion_query extension
 
-21.11.2003:
+21.11.2003
     Release 0.9.1
 
-21.11.2003:
+21.11.2003
     Fixed: std::max() std::min() issue with .net
 
-18.11.2003:
+18.11.2003
     Fixed: Bug with heuristic for resizing the pbuffer-resizing
         that occured for request for sizes of the form 512x1024
         -> 1024x512 -> 512x1024 -> ... (and similar series)
 
-06.11.2003: 
+06.11.2003 
     Added: Detection of GL_FRONT_FACE OpenGL setting. This means that
         CSG rendering is now also correct if this setting is the
         non-default clockwise setting.
 
-04.11.2003: 
+04.11.2003 
     Fixed: Stenciling was not disabled in SCS algorithm when 
         subtracting no shapes. This could lead to obscure rendering 
         errors when rendering the next CSG shape. 
 
-02.11.2003: 
+02.11.2003 
     Added: Heuristic that makes the pbuffer smaller 
         if the size of the pbuffer has been bigger than necessary in 
         x- or y- direction for a certain number of render-calles. 
@@ -293,6 +293,6 @@
 01.10.2003 
     Fixed: linux: removed accidental linking against tcl/tk  
 
-23.09.2003: 
+23.09.2003 
     Release 0.9
 
