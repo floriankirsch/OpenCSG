@@ -1,3 +1,8 @@
+26.11.2011
+    Fixed: rendering artifacts at the border of primitives under Linux / ATI /
+        Gallium3D that were caused by linear filtering of the FBO texture.
+        Nearest filtering is required.
+
 25.11.2011
     Fixed: Quering width and heigth of a pbuffer under Linux / ATI / Gallium3D
         driver always returned 0. The query should not be required, anyway.
@@ -9,10 +14,10 @@
         for it.
     Fixed: In case ARB_texture_rectangle is not available and also not
         ARB_texture_non_power_of_two, the FBO is blown up to power-of-two,
-        as in the pbuffer case. 
+        as in the pbuffer case.
 
 11.11.2011
-    Fixed: Perform 0-ptr checks if no occlusion query object can be created
+    Fixed: Perform 0-ptr checks if no occlusion query object can be created.
 
 10.11.2011
     Added: Support for ARB_occlusion_query2 extension in the Goldfeather /
