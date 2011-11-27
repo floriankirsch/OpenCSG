@@ -1,6 +1,6 @@
 TEMPLATE	= lib
 TARGET		= opencsg
-VERSION     = 1.3.1
+VERSION     = 1.3.2
 DESTDIR     = ../lib
 
 CONFIG		+= opengl warn_on release
