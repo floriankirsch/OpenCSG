@@ -87,4 +87,4 @@ namespace OpenCSG {
 
 } // namespace OpenCSG
 
-#endif // __OpenCSG__frame_buffer_object_h__
+#endif // __OpenCSG__pbuffer_texture_h__
