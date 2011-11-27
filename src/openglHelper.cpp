@@ -31,13 +31,13 @@ namespace OpenCSG {
 
         GLfloat projection[16];
         GLfloat modelview[16];
-        int canvasPos[4];
+        GLint canvasPos[4];
 
-        int stencilBits = 0;
+        GLint stencilBits = 0;
         int stencilMax = 0;
         int stencilMask = 0;
 
-        int scissorPos[4];
+        GLint scissorPos[4];
 
         void scissor(const PCArea& area) {
             const int dx = area.maxx - area.minx;

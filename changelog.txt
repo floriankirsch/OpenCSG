@@ -1,3 +1,6 @@
+27.11.2011
+    Added: MacOSX portibility fixes (thanks to Marius Kintel)
+
 26.11.2011
     Fixed: rendering artifacts at the border of primitives under Linux / ATI /
         Gallium3D that were caused by linear filtering of the FBO texture.

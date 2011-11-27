@@ -25,7 +25,7 @@
 #include <GL/glew.h>
 #ifdef _WIN32
 #include <GL/wglew.h>
-#else
+#elif !defined(__APPLE__)
 #include <GL/glxew.h>
 #endif
 
@@ -145,9 +145,11 @@ namespace OpenCSG {
 #ifdef WIN32
                 && WGLEW_ARB_pbuffer
                 && WGLEW_ARB_pixel_format
-#else
+#elif !defined(__APPLE__)
                 && GLXEW_SGIX_pbuffer
                 && GLXEW_SGIX_fbconfig
+#else
+                && false
 #endif
             ) {
                 newOffscreenType = OpenCSG::PBuffer;

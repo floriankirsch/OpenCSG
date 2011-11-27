@@ -61,7 +61,7 @@ namespace OpenCSG {
         }
 
         unsigned int OcclusionQueryARB::getQueryResult() {
-            unsigned int fragmentCount;
+            GLuint fragmentCount;
             glGetQueryObjectuivARB(mQueryObject, GL_QUERY_RESULT_ARB, &fragmentCount);
             return fragmentCount;
         }
@@ -98,7 +98,7 @@ namespace OpenCSG {
         }
 
         unsigned int OcclusionQueryNV::getQueryResult() {
-            unsigned int fragmentCount;
+            GLuint fragmentCount;
             glGetOcclusionQueryuivNV(mQueryObject, GL_PIXEL_COUNT_NV, &fragmentCount);
             return fragmentCount;
         }

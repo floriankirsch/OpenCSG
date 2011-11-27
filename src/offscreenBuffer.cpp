@@ -25,7 +25,9 @@
 #include "offscreenBuffer.h"
 #include "frameBufferObject.h"
 #include "frameBufferObjectExt.h"
+#ifndef __APPLE__
 #include "pBufferTexture.h"
+#endif
 #include <GL/glew.h>
 #include <map>
 
@@ -34,10 +36,16 @@ namespace OpenCSG {
     namespace OpenGL {
 
         struct ContextData {
-            ContextData() : fARB(0), fEXT(0), pBuf(0) {}
+            ContextData() : fARB(0), fEXT(0)
+#ifndef __APPLE__
+                          , pBuf(0)
+#endif
+          {}
             FrameBufferObject* fARB;
             FrameBufferObjectExt* fEXT;
+#ifndef __APPLE__
             PBufferTexture* pBuf;
+#endif
         };
 
         static std::map<int, ContextData> gContextDataMap;
@@ -56,11 +64,13 @@ namespace OpenCSG {
                     contextData.fEXT = new FrameBufferObjectExt;
                 return contextData.fEXT;
             }
+#ifndef __APPLE__
             else if (type == OpenCSG::PBuffer) {
                 if (!contextData.pBuf)
                     contextData.pBuf = new PBufferTexture;
                 return contextData.pBuf;
             }
+#endif
 
             return 0;
         }
@@ -71,7 +81,9 @@ namespace OpenCSG {
             if (itr != gContextDataMap.end()) {
                 delete itr->second.fARB;
                 delete itr->second.fEXT;
+#ifndef __APPLE__
                 delete itr->second.pBuf;
+#endif
                 gContextDataMap.erase(itr);
             }
         }
