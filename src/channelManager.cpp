@@ -155,6 +155,7 @@ namespace OpenCSG {
                 && GLXEW_SGIX_pbuffer
                 && GLXEW_SGIX_fbconfig
 #else
+                // actually, there is GL_APPLE_pixel_buffer for MacOSX >= 10.3
                 && false
 #endif
             ) {
@@ -179,9 +180,16 @@ namespace OpenCSG {
 
         int tx = dx;
         int ty = dy;
-        if ((!GLEW_ARB_texture_rectangle && !GLEW_EXT_texture_rectangle && !GLEW_NV_texture_rectangle)
-            && ((newOffscreenType == OpenCSG::FrameBufferObjectARB || newOffscreenType == OpenCSG::FrameBufferObjectEXT)
-                && !GLEW_ARB_texture_non_power_of_two)
+        // We don't need to enlarge the texture to the next largest power-of-two size if:
+        // - any of the texture rectangle extensions is supported
+        //   (texture rectangle is no problem for FBO; for pbuffers we fallback to copy-to-texture
+        //    if the required WGL-extensions for texture rectangle are missing - always on Linux)
+        // - Otherwise for FBO, if we have the GLEW_ARB_texture_non_power_of_two extension
+        // Negating this gives the following expression from hell:
+        if (   !GLEW_ARB_texture_rectangle
+            && !GLEW_EXT_texture_rectangle
+            && !GLEW_NV_texture_rectangle
+            && (newOffscreenType == OpenCSG::PBuffer || !GLEW_ARB_texture_non_power_of_two)
         ) {
             // blow up the texture to legal power-of-two size :-(
             tx = nextPow2(dx);
