@@ -1,3 +1,7 @@
+29.11.2011:
+    Changed: Favor EXT frame buffer object extension over pbuffers (due
+        to feedback from openscad users)
+
 28.11.2011
     Added: Version number to opencsg.h
 

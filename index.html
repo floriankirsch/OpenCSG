@@ -143,7 +143,7 @@ Library <a href="http://glew.sourceforge.net">GLEW</a>.
 </p>
 
 <p>
-OpenCSG is written in C++, uses namespaces and requires the STL. I do not expect major
+OpenCSG is written in C++, uses namespaces and requires the STL. There are no significant
 compiler incompatibilities under Windows. Workspaces for with MSVC6, 
 VC2003 .net and <a href="http://www.bloodshed.net/devcpp.html">Dev-C++ 5 beta</a> are provided. Under
 Linux, you should use gcc version 3 or newer. gcc-2.95.x will not work, since this compiler
@@ -363,7 +363,7 @@ for profiting from depth complexity.
 The offscreen type specifies what kind of offscreen buffer OpenCSG uses for
 internal CSG calculations. The default <code>AutomaticOffscreenType</code>
 preferably uses, if the required OpenGL extensions are available,
-<code>FrameBufferObjectARB</code>, then <code>PBuffer</code>, then <code>FrameBufferObjectEXT</code>.
+<code>FrameBufferObjectARB</code>, then <code>FrameBufferObjectEXT</code>, then <code>PBuffer</code>.
 The <code>FrameBufferObject</code> uses preferably <code>FrameBufferObjectARB</code>,
 then <code>FrameBufferObjectEXT</code>. These priorities are subject to change
 between different releases based on experiences with compatibility of OpenCSG

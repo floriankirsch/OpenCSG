@@ -141,6 +141,12 @@ namespace OpenCSG {
                 newOffscreenType = OpenCSG::FrameBufferObjectARB;
             }
             else
+            if (   GLEW_EXT_framebuffer_object
+                && GLEW_EXT_packed_depth_stencil
+            ) {
+                newOffscreenType = OpenCSG::FrameBufferObjectEXT;
+            }
+            else
             if (newOffscreenType == OpenCSG::AutomaticOffscreenType
 #ifdef WIN32
                 && WGLEW_ARB_pbuffer
@@ -153,12 +159,6 @@ namespace OpenCSG {
 #endif
             ) {
                 newOffscreenType = OpenCSG::PBuffer;
-            }
-            else 
-            if (   GLEW_EXT_framebuffer_object
-                && GLEW_EXT_packed_depth_stencil
-            ) {
-                newOffscreenType = OpenCSG::FrameBufferObjectEXT;
             }
             else {
                 // At least one set of the above OpenGL extensions is required

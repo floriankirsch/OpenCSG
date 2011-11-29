@@ -184,20 +184,20 @@ namespace OpenCSG {
     ///   - AutomaticOffscreenType: Chooses internally depending on available
     ///                  OpenGL extensions. If graphics hardware supports different
     ///                  extensions, with most precedence ARB frame buffer objects
-    ///                  are used, the PBuffers, then EXT frame buffer objects. 
+    ///                  are used, then EXT frame buffer objects, then PBuffers.
     ///   - FrameBufferObject: Uses frame buffer objects. This method does 
     ///                  not require context switches on the graphics hardware
     ///                  to change between offscreen and main frame buffer, so
     ///                  in theory this method should be faster. Both ARB and
     ///                  EXT frame buffer objects OpenGL extensions are supported
     ///                  internally; ARB frame buffer objects are used if both 
-    ///                  are supported by the graphics hardware. 
+    ///                  are supported by the graphics hardware.
     ///   - PBuffer: Uses PBuffers. This is the older offscreen type, which
     ///                  is likely to work with older graphics hardware and
     ///                  drivers.
     ///   - FrameBufferObjectARB: Forces ARB frame buffer objects to be used.
     ///   - FrameBufferObjectEXT: Forces EXT frame buffer objects to be used.
-    ///   - OffscreenTypeUnused: Invalid input. 
+    ///   - OffscreenTypeUnused: Invalid input.
     enum OffscreenType {
         AutomaticOffscreenType = 0,
         FrameBufferObject      = 1,
