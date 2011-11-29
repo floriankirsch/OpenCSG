@@ -41,7 +41,7 @@
 
 <hr>
 
-<h3> <a href="news.html">Latest release: OpenCSG 1.3.1 (09.06.2010)</a></h3>
+<h3> <a href="news.html">Latest release: OpenCSG 1.3.2 (29.11.2011)</a></h3>
 
 <hr>
 
@@ -51,7 +51,7 @@
 OpenCSG is a library that does image-based CSG rendering using OpenGL. 
 OpenCSG is written in C++ and supports most modern graphics hardware using
 Microsoft Windows or the Linux operating system. 
-<a href="http://www.opencsg.org/OpenCSG-1.3.1.tar.gz">OpenCSG-1.3.1</a> is the current version.
+<a href="http://www.opencsg.org/OpenCSG-1.3.2.tar.gz">OpenCSG-1.3.2</a> is the current version.
 </p>
 
 <p>
@@ -72,7 +72,7 @@ of the geometric boundary of a CSG shape. Such algorithms use
 frame-buffer settings of the graphics hardware, e.g., the depth and stencil
 buffer, to compose CSG shapes. <b>OpenCSG</b> implements a variety of 
 those algorithms, namely the <b>Goldfeather</b> algorithm and the <b>SCS</b> 
-algorithm, both of them in several variants.  
+algorithm, both of them in several variants.
 </p>
 
 <center><a href="http://www.opencsg.org/img/grid.jpg"><img src="img/grid.gif" border="0" alt="CSG grid"></a></center>
@@ -110,36 +110,35 @@ is.
 <h3> <a name="prerequisites">Prerequisites</a> </h3>
 
 <p>
-The OpenCSG library requires graphics hardware that either supports 
-the <b>PBuffer</b> or frame buffer objects in OpenGL. With PBuffers, 
-it is advantegeous if the related Render-to-Texture facility is also 
-supported. Actually, OpenCSG uses the 
-<a href="http://sourceforge.net/project/showfiles.php?group_id=104004&amp;package_id=115053">
-RenderTexture class</a> as PBuffer library.
-</p>
-
-<p>
-PBuffers have been widely supported since a long time now. NVidia supports them
-since the Riva TNT, and ATI at least since the Radeon series. Graphics
-hardware from other hardware vendors, however, likely do not support 
-PBuffers. Therefore, if you have obscure graphics hardware, you are
-probably out of luck and you cannot run programs using OpenCSG. With
-Linux, you have probably the option to use 
-<a href="http://www.mesa3d.org/"></a> supporting OpenGL software
-rendering and PBuffers at the same time.
+The OpenCSG library requires graphics hardware that either supports
+<b>frame buffer objects</b> or <b>PBuffers</b> in OpenGL.
 </p>
 
 <p>
 Frame buffer objects are a more recent extension for OpenGL. They are
-easier to develop for, and can nowadays (2010) be considered mature.
+easy to develop for, and can be nowadays considered mature.
 They are also part of OpenGL 3.0. Beginning with OpenCSG 1.2.0, they
-are used by default by OpenCSG. In older versions, PBuffers were the
-default.
+are used by default.
 </p>
 
 <p>
-For OpenGL-Extension checking, OpenCSG uses the OpenGL Extension Wrangler
-Library <a href="http://glew.sourceforge.net">GLEW</a>.
+In older versions, PBuffers were required to run OpenCSG.
+PBuffers have been widely supported since a long time now. NVidia supports them
+since the Riva TNT, and ATI at least since the Radeon series. Graphics
+hardware from other hardware vendors, however, likely do not support
+PBuffers. Therefore, if you have obscure graphics hardware that also does
+not support frame buffer objects, you are probably out of luck and you cannot
+run programs using OpenCSG. With Linux, you have the option to use 
+<a href="http://www.mesa3d.org/">Mesa 3D</a>, which implements OpenGL software
+rendering and provides a solid frame buffer object implementation.
+</p>
+
+<p>
+The PBuffer in OpenCSG is actually implemented via the (patched)
+<a href="http://sourceforge.net/project/showfiles.php?group_id=104004&amp;package_id=115053">
+RenderTexture class</a>. For OpenGL extension checking, OpenCSG uses the OpenGL Extension Wrangler
+Library <a href="http://glew.sourceforge.net">GLEW</a>. Both these libraries are included
+in the OpenCSG download.
 </p>
 
 <p>
@@ -147,7 +146,7 @@ OpenCSG is written in C++, uses namespaces and requires the STL. There are no si
 compiler incompatibilities under Windows. Workspaces for with MSVC6, 
 VC2003 .net and <a href="http://www.bloodshed.net/devcpp.html">Dev-C++ 5 beta</a> are provided. Under
 Linux, you should use gcc version 3 or newer. gcc-2.95.x will not work, since this compiler
-does not come with a std::map implementation, which is required internally. 
+does not come with a <code>std::map</code> implementation, which is required internally. 
 </p>
 
 <p>
@@ -160,8 +159,9 @@ queries, which are available since Radeon 9x00 (x>=5) and GeForce3
 
 <p>
 OpenCSG has been sucessfully run on Intel and AMD hardware using 
+GeForce 250 GTS
 Radeon HD 4670,
-GeForce 8x00, 
+GeForce 8x00,
 GeForceFX 6800,
 GeForceFX 5600,
 Radeon 9700,
@@ -354,8 +354,9 @@ for profiting from depth complexity.
   depth complexity without calculating it. This is especially useful for 
   the SCS algorithm where this strategy is applied at shape level, resulting in a 
   O(n*k') algorithm (where k' <= k), without significant constant overhead. 
-  This strategy requires hardware occlusion queries, i.E., the OpenGL extension 
-  <code>GL_ARB_occlusion_query</code> or <code>GL_NV_occlusion_query</code>.</li>
+  This strategy requires hardware occlusion queries, i.E., the OpenGL extensions
+  <code>GL_ARB_occlusion_query</code>, eventually <code>GL_ARB_occlusion_query2</code>,
+  or <code>GL_NV_occlusion_query</code>.</li>
 </ul>
 
 <p>
@@ -407,22 +408,23 @@ OpenGL resources for the currently active OpenCSG context.
 <h3> <a name="download">Download</a> </h3>
 
 <p>
-Download <a href="http://www.opencsg.org/OpenCSG-1.3.1.tar.gz">OpenCSG-1.3.1.tar.gz</a>. The archive contains all required helper
+Download <a href="http://www.opencsg.org/OpenCSG-1.3.2.tar.gz">OpenCSG-1.3.2.tar.gz</a>. The archive contains all required helper
 libraries, i.e., also RenderTexture and GLEW. It comes with 
 makefiles for Linux and with project files for MSVC6, VS2003, and Dev-C++ 5.
 </p>
 
 <p>
 The older versions <br>
-&nbsp;&nbsp; <a href="http://www.opencsg.org/OpenCSG-1.3.0.tar.gz">OpenCSG-1.3.0</a>, <br>
-&nbsp;&nbsp; <a href="http://www.opencsg.org/OpenCSG-1.2.0.tar.gz">OpenCSG-1.2.0</a>, <br>
-&nbsp;&nbsp; <a href="http://www.opencsg.org/OpenCSG-1.1.1.tar.gz">OpenCSG-1.1.1</a>, <br>
-&nbsp;&nbsp; <a href="http://www.opencsg.org/OpenCSG-1.1.0.tar.gz">OpenCSG-1.1.0</a>, <br>
-&nbsp;&nbsp; <a href="http://www.opencsg.org/OpenCSG-1.0.2.zip">OpenCSG-1.0.2</a>, <br>
-&nbsp;&nbsp; <a href="http://www.opencsg.org/OpenCSG-1.0.1.zip">OpenCSG-1.0.1</a>, <br>
-&nbsp;&nbsp; <a href="http://www.opencsg.org/OpenCSG-1.0.0.zip">OpenCSG-1.0.0</a>, <br>
-&nbsp;&nbsp; <a href="http://www.opencsg.org/OpenCSG-0.9.2.zip">OpenCSG-0.9.2</a>, <br>
-&nbsp;&nbsp; <a href="http://www.opencsg.org/OpenCSG-0.9.1.zip">OpenCSG-0.9.1</a> and <br>
+&nbsp;&nbsp; <a href="http://www.opencsg.org/OpenCSG-1.3.1.tar.gz">OpenCSG-1.3.1</a> <br>
+&nbsp;&nbsp; <a href="http://www.opencsg.org/OpenCSG-1.3.0.tar.gz">OpenCSG-1.3.0</a> <br>
+&nbsp;&nbsp; <a href="http://www.opencsg.org/OpenCSG-1.2.0.tar.gz">OpenCSG-1.2.0</a> <br>
+&nbsp;&nbsp; <a href="http://www.opencsg.org/OpenCSG-1.1.1.tar.gz">OpenCSG-1.1.1</a> <br>
+&nbsp;&nbsp; <a href="http://www.opencsg.org/OpenCSG-1.1.0.tar.gz">OpenCSG-1.1.0</a> <br>
+&nbsp;&nbsp; <a href="http://www.opencsg.org/OpenCSG-1.0.2.zip">OpenCSG-1.0.2</a> <br>
+&nbsp;&nbsp; <a href="http://www.opencsg.org/OpenCSG-1.0.1.zip">OpenCSG-1.0.1</a> <br>
+&nbsp;&nbsp; <a href="http://www.opencsg.org/OpenCSG-1.0.0.zip">OpenCSG-1.0.0</a> <br>
+&nbsp;&nbsp; <a href="http://www.opencsg.org/OpenCSG-0.9.2.zip">OpenCSG-0.9.2</a> <br>
+&nbsp;&nbsp; <a href="http://www.opencsg.org/OpenCSG-0.9.1.zip">OpenCSG-0.9.1</a> <br>
 &nbsp;&nbsp; <a href="http://www.opencsg.org/OpenCSG-0.9.zip">OpenCSG-0.9</a> <br>
 are still available for download. 
 </p>
@@ -440,6 +442,16 @@ Currently, I know of the following applications making use of OpenCSG:
 <table cellpadding="10" cellspacing="0" border="0" style="text-align: left;">
 <tbody>
 <tr>
+<td valign="top" style="text-align: center;"><a href="http://openscad.org/"><img src="img/openscad.png" alt="Icon for OpenSCAD" /></a></td>
+<td>
+	<a href="http://openscad.org/">OpenSCAD</a> is a software
+	for creating solid 3D CAD objects by means of a scripting language.
+	It supports interactive preview of the CSG geometry as well as
+	exporting the final geometry as 3D model. There are precompiled
+	binaries for Linux, Windows, and MacOS X. 
+</td>
+</tr>
+<tr>
 <td valign="top" style="text-align: center;"><a href="http://www.ayam3d.org"><img src="http://ayam.sourceforge.net/gp/ayam-splash-icon.jpg" alt="Ayam-Icon" /></a></td>
 <td>
 	<a href="http://www.ayam3d.org">Ayam</a> is a 3D modelling environment for the RenderMan interface, 
@@ -455,16 +467,6 @@ Currently, I know of the following applications making use of OpenCSG:
 	MS Windows allows to compose textured CSG shapes from a set of predefined primitives. The application
 	contains a very good online help that depicts nicely what CSG is about, and that furthermore
 	contains some tutorial how to create 1) a graphical widget and 2) a pipe.
-</td>
-</tr>
-<tr>
-<td valign="top" style="text-align: center;"><a href="http://openscad.org/"><img src="img/openscad.png" alt="Icon for OpenSCAD" /></a></td>
-<td>
-	<a href="http://openscad.org/">OpenSCAD</a> is a software
-	for creating solid 3D CAD objects by means of a scripting language.
-	It supports interactive preview of the CSG geometry as well as
-	exporting the final geometry as 3D model. There are precompiled
-	binaries for Linux, Windows, and MacOS X. 
 </td>
 </tr>
 </tbody>
@@ -539,6 +541,13 @@ about OpenCSG and about image-based CSG rendering have been written:
     to render the same geometry with primary colors. </p>
   </li>
   <li>
+    <p><b>Does OpenCSG require a stencil buffer?</b> </p>
+    <p>You must setup a stencil buffer in your application when rendering
+        concave primitives or when using <code>DepthComplexitySampling</code>.
+        Internally, the stencil buffer is always needed in OpenCSG
+        when rendering into the offscreen frame buffer object resp. PBuffer.</p>
+  </li>
+  <li>
     <p><b>Can OpenCSG calculate the geometry of a CSG expression?</b> </p>
     <p> No, unfortunately this is not possible using image-based CSG algorithms
         (at least not in a trivial way). If you require this, have a look
@@ -596,7 +605,7 @@ Note that OpenCSG comes with code that is not under copyright
 of the HPI or Florian Kirsch. These are <a href="http://glew.sourceforge.net/">GLEW</a>
 and <a href="http://sourceforge.net/project/showfiles.php?group_id=104004&amp;package_id=115053">
 RenderTexture</a>. These libraries are licensed under the terms of
-their respective authors. 
+their respective authors.
 </p>
 
 <center><a href="http://www.opencsg.org/img/grid.jpg"><img src="img/grid.gif" border="0" alt="CSG columns"></a></center>
@@ -604,9 +613,9 @@ their respective authors.
 <hr>
 
 <center><p>
-&copy; 2002-2010, Florian Kirsch, e-mail: <b>mail at opencsg dot org</b>, <br>
+&copy; 2002-2011, Florian Kirsch, e-mail: <b>mail at opencsg dot org</b>, <br>
 2002-2005 Hasso-Plattner-Institute Potsdam.<br>
-Last change: 09.06.2010
+Last change: 29.11.2011
 </p></center>
 
 </body>
