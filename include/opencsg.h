@@ -28,6 +28,11 @@
 
 #include <vector>
 
+/// OpenCSG version. The version number has been introduced with version 1.3.2.
+/// Format is Major|Minor|Patch, each of them being 4-bit wide.
+#define OPENCSG_VERSION 0x0132
+#define OPENCSG_VERSION_STRING "OpenCSG 1.3.2"
+
 namespace OpenCSG {
 
     enum Operation { Intersection, Subtraction };

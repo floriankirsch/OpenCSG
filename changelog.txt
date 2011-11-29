@@ -1,3 +1,6 @@
+28.11.2011
+    Added: Version number to opencsg.h
+
 27.11.2011
     Added: MacOSX portibility fixes (thanks to Marius Kintel)
 
