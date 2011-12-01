@@ -58,7 +58,7 @@ namespace OpenCSG {
             glGenRenderbuffers(1, &depthID); 
             glGenTextures(1, &textureID);
 
-            glGetIntegerv(GL_FRAMEBUFFER_BINDING_EXT, &oldFramebufferID);
+            glGetIntegerv(GL_FRAMEBUFFER_BINDING, &oldFramebufferID);
             glBindFramebuffer(GL_FRAMEBUFFER, framebufferID);
 
             GLenum target = (GLEW_ARB_texture_rectangle || GLEW_EXT_texture_rectangle || GLEW_NV_texture_rectangle)
@@ -70,7 +70,7 @@ namespace OpenCSG {
             glTexImage2D(target, 0, GL_RGBA8, width, height, 0, GL_RGBA, GL_INT, 0);
             glTexParameteri(target, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
             glTexParameteri(target, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
-            glFramebufferTexture2DEXT(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, target, textureID, 0);
+            glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, target, textureID, 0);
 
             glBindRenderbuffer(GL_RENDERBUFFER, depthID);
             glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH_STENCIL, width, height);
