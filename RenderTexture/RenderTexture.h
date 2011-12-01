@@ -43,6 +43,8 @@
 #ifndef __RENDERTEXTURE2_HPP__
 #define __RENDERTEXTURE2_HPP__
 
+#ifndef __APPLE__
+
 #include <GL/glew.h>
 #ifdef _WIN32
 #include <GL/wglew.h>
@@ -323,5 +325,7 @@ private:
     RenderTexture(const RenderTexture&);
     RenderTexture& operator=(const RenderTexture&);
 };
+
+#endif // __APPLE__
 
 #endif //__RENDERTEXTURE2_HPP__

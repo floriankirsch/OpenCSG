@@ -39,6 +39,9 @@
 * Implementation of class RenderTexture.  A multi-format render to 
 * texture wrapper.
 */
+
+#ifndef __APPLE__
+
 #ifdef _MSC_VER
 #if _MSC_VER < 1300 // MSVC++ <= 6.0
 #pragma warning(disable:4786)
@@ -2040,3 +2043,5 @@ bool RenderTexture::_MakeCurrent()
 
     return true;
 }
+
+#endif // __APPLE__

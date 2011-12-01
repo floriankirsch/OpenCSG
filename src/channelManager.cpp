@@ -148,6 +148,9 @@ namespace OpenCSG {
             }
             else
             if (newOffscreenType == OpenCSG::AutomaticOffscreenType
+#ifndef OPENCSG_HAVE_PBUFFER
+                && false
+#else
 #ifdef WIN32
                 && WGLEW_ARB_pbuffer
                 && WGLEW_ARB_pixel_format
@@ -155,9 +158,9 @@ namespace OpenCSG {
                 && GLXEW_SGIX_pbuffer
                 && GLXEW_SGIX_fbconfig
 #else
-                // actually, there is GL_APPLE_pixel_buffer for MacOSX >= 10.3
                 && false
 #endif
+#endif // OPENCSG_HAVE_PBUFFER
             ) {
                 newOffscreenType = OpenCSG::PBuffer;
             }

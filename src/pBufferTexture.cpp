@@ -21,6 +21,9 @@
 //
 
 #include "opencsgConfig.h"
+
+#ifdef OPENCSG_HAVE_PBUFFER
+
 #include "pBufferTexture.h"
 #include "RenderTexture/RenderTexture.h"
 #include <GL/glew.h>
@@ -112,3 +115,4 @@ namespace OpenCSG {
 
 } // namespace OpenCSG
 
+#endif // OPENCSG_HAVE_PBUFFER

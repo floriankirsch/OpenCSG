@@ -28,6 +28,8 @@
 #include "opencsgConfig.h"
 #include "offscreenBuffer.h"
 
+#ifdef OPENCSG_HAVE_PBUFFER
+
 class RenderTexture;
 
 namespace OpenCSG {
@@ -86,5 +88,7 @@ namespace OpenCSG {
     } // namespace OpenGL
 
 } // namespace OpenCSG
+
+#endif // OPENCSG_HAVE_PBUFFER
 
 #endif // __OpenCSG__pbuffer_texture_h__
