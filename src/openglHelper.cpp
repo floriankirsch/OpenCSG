@@ -54,12 +54,24 @@ namespace OpenCSG {
             glPushMatrix();
             glLoadIdentity();
 
-            glBegin(GL_TRIANGLE_STRIP);
-                glVertex2f(-1.0, -1.0);
-                glVertex2f( 1.0, -1.0);
-                glVertex2f(-1.0,  1.0);
-                glVertex2f( 1.0,  1.0);
-            glEnd();
+            const GLfloat v[8] = {
+                  -1.0, -1.0,
+                   1.0, -1.0,
+                  -1.0,  1.0,
+                   1.0,  1.0
+            };
+
+            GLboolean origVertexArrayState = glIsEnabled(GL_VERTEX_ARRAY);
+            if (!origVertexArrayState) {
+                glEnableClientState(GL_VERTEX_ARRAY);
+            }
+
+            glVertexPointer(2, GL_FLOAT, 0, v);
+            glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
+
+            if (!origVertexArrayState) {
+                glDisableClientState(GL_VERTEX_ARRAY);
+            }
 
             glMatrixMode(GL_PROJECTION);
             glPopMatrix();

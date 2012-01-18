@@ -105,17 +105,29 @@ namespace OpenCSG {
             glPushMatrix();
             glLoadIdentity();
 
+            GLboolean origVertexArrayState = glIsEnabled(GL_VERTEX_ARRAY);
+            if (!origVertexArrayState) {
+                glEnableClientState(GL_VERTEX_ARRAY);
+            }
+
             for (Batch::const_iterator j = batch.begin(); j != batch.end(); ++j) {
 
                 float fminx, fminy, fminz, fmaxx, fmaxy, fmaxz;
                 (*j)->getBoundingBox(fminx, fminy, fminz, fmaxx, fmaxy, fmaxz);
 
-                glBegin(GL_TRIANGLE_STRIP);
-                    glVertex2f(fminx, fminy);
-                    glVertex2f(fmaxx, fminy);
-                    glVertex2f(fminx, fmaxy);
-                    glVertex2f(fmaxx, fmaxy);
-                glEnd();
+                const GLfloat v[8] = {
+                    fminx, fminy,
+                    fmaxx, fminy,
+                    fminx, fmaxy,
+                    fmaxx, fmaxy
+                };
+
+                glVertexPointer(2, GL_FLOAT, 0, v);
+                glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
+            }
+
+            if (!origVertexArrayState) {
+                glDisableClientState(GL_VERTEX_ARRAY);
             }
 
             glMatrixMode(GL_PROJECTION);
