@@ -24,16 +24,19 @@
 //
 
 #include <GL/glew.h>
-#ifdef __APPLE__
-#include <GLUT/glut.h>
-#else
-#include <GL/glut.h>
-#endif
 #include <opencsg.h>
 #include "displaylistPrimitive.h"
 #include <iostream>
 #include <sstream>
 #include <string>
+
+// include glut.h after stdlib.h to avoid conflict in declaration
+// of exit() with Visual Studio 2010
+#ifdef __APPLE__
+#include <GLUT/glut.h>
+#else
+#include <GL/glut.h>
+#endif
 
 enum { 
     CSG_BASIC, CSG_WIDGET, CSG_GRID2D, CSG_GRID3D, CSG_CONCAVE,
