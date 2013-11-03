@@ -1,3 +1,8 @@
+03.11.2013
+    Fixed: potential security issue in format string of fprintf,
+        which caused errors when building with -Werror=format-security
+        (thanks to Christian M. Amsüss)
+
 02.10.2012
     Fixed: in opencsgexample, fixed glut.h / stdlib.h conflict in declaration
 	    of exit()

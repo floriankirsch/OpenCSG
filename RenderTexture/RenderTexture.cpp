@@ -237,8 +237,8 @@ void PrintExtensionError( const char* strMsg, ... )
     vsnprintf( strBuffer, 512, strMsg, args );
 #endif
     va_end(args);
-    
-    fprintf(stderr, strMsg);
+
+    fprintf(stderr, "%s", strMsg);
 }
 
 //---------------------------------------------------------------------------
