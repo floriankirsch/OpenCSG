@@ -1,3 +1,8 @@
+02.04.2014
+    Fixed: Linux XVisualInfo * code path to create a PBuffer context,
+        that would always crash.
+        (thanks to David Binderman)
+
 03.11.2013
     Fixed: potential security issue in format string of fprintf,
         which caused errors when building with -Werror=format-security

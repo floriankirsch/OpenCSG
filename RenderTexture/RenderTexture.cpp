@@ -409,7 +409,6 @@ bool RenderTexture::Initialize(int width, int height,
     _pDisplay = glXGetCurrentDisplay();
     GLXContext context = glXGetCurrentContext();
     int screen = DefaultScreen(_pDisplay);
-    XVisualInfo *visInfo;
     
     GLXFBConfigSGIX *fbConfigs;
     int nConfigs;
@@ -443,28 +442,44 @@ bool RenderTexture::Initialize(int width, int height,
                                                          GLX_RGBA_TYPE, 
                                                          _bShareObjects ? context : NULL, 
                                                          True);
-            break;
+            // [Florian] Try alternative way
+            if(!_hGLContext)
+            {
+                XVisualInfo * visInfo = glXGetVisualFromFBConfig(_pDisplay, fbConfigs[i]);
+
+                if (!visInfo)
+                {
+                    fprintf(stderr,
+                            "RenderTexture Error: glXGetVisualFromFBConfig() failed.\n");
+                }
+                else
+                {
+                    _hGLContext = glXCreateContext(_pDisplay, visInfo,
+                                                   _bShareObjects ? context : NULL, GL_TRUE);
+
+                    XFree(visInfo);
+                }
+            }
+
+            if (_hGLContext)
+            {
+                break;
+            }
         }
     }
     
     if (!_hPBuffer)
     {
-        fprintf(stderr, 
+        fprintf(stderr,
                 "RenderTexture Error: glXCreateGLXPbufferSGIX() failed.\n");
         return false;
     }
     
     if(!_hGLContext)
     {
-        // Try indirect
-        _hGLContext = glXCreateContext(_pDisplay, visInfo, 
-                                       _bShareObjects ? context : NULL, False);
-        if ( !_hGLContext )
-        {
-            fprintf(stderr, 
-                    "RenderTexture Error: glXCreateContext() failed.\n");
-            return false;
-        }
+        fprintf(stderr,
+                "RenderTexture Error: unable to create a context for PBuffer.\n");
+        return false;
     }
 
     // [Florian] ATI returns 0 for this. There is no reason for width and
@@ -968,6 +983,9 @@ bool RenderTexture::BindBuffer( int iBuffer )
             _bIsBufferBound = true;
             _iCurrentBoundBuffer = iBuffer;
         }
+#else
+        // Not implemented for linux. No need to warn though.
+        (void)iBuffer;
 #endif
     }    
     return true;
@@ -1434,8 +1452,12 @@ void RenderTexture::_ParseModeString(const char *modeString,
             pbAttribs.push_back(true);
         }
 
-#elif defined(DEBUG) || defined(_DEBUG)
+#else
+#if defined(DEBUG) || defined(_DEBUG)
         printf("RenderTexture Error: Render to Texture not supported\n");
+        // shut up the compiler about unused variable in this case
+#endif
+        (void)pbAttribs;
 #endif  
     }
 
@@ -1777,8 +1799,9 @@ bool RenderTexture::_InitializeTextures()
 
         if (RT_COPY_TO_TEXTURE == _eUpdateMode)
         {
-            GLuint iInternalFormat;
-            GLuint iFormat;
+            // [Florian] just initialize to shut up the compiler
+            GLuint iInternalFormat = GL_RGBA8;
+            GLuint iFormat = GL_RGBA;
 
             if (_bFloat)
             {                             
