@@ -1,5 +1,5 @@
 // OpenCSG - library for image-based CSG rendering for OpenGL
-// Copyright (C) 2002-2011, Florian Kirsch,
+// Copyright (C) 2002-2014, Florian Kirsch,
 // Hasso-Plattner-Institute at the University of Potsdam, Germany
 //
 // This library is free software; you can redistribute it and/or 
@@ -49,7 +49,7 @@ enum {
 std::vector<OpenCSG::Primitive*> primitives;
 
 bool               spin = true;
-float              rot = 0;
+float              rot = 0.0f;
 std::ostringstream fpsStream;
 
 void clearPrimitives() {
@@ -68,10 +68,10 @@ void solidCylinder(GLdouble radius, GLdouble height, GLint slices, GLint stacks)
     GLUquadricObj* qobj = gluNewQuadric();
 
     gluCylinder(qobj, radius, radius, height, slices, stacks);
-    glScalef(-1.0, 1.0, -1.0);
+    glScalef(-1.0f, 1.0f, -1.0f);
     gluDisk(qobj, 0.0, radius, slices, stacks);
-    glScalef(-1.0, 1.0, -1.0);
-    glTranslatef(0.0, 0.0, height);
+    glScalef(-1.0f, 1.0f, -1.0f);
+    glTranslatef(0.0f, 0.0f, static_cast<GLfloat>(height));
     gluDisk(qobj, 0.0, radius, slices, stacks);
 
     gluDeleteQuadric(qobj);    
@@ -84,7 +84,7 @@ void setBasicShape() {
     GLuint id1 = glGenLists(1);
     glNewList(id1, GL_COMPILE);
     glPushMatrix();
-    glTranslatef(-0.25, 0.0, 0.0);
+    glTranslatef(-0.25f, 0.0f, 0.0f);
     glutSolidSphere(1.0, 20, 20);
     glPopMatrix();
     glEndList();
@@ -92,7 +92,7 @@ void setBasicShape() {
     GLuint id2 = glGenLists(1);
     glNewList(id2, GL_COMPILE);
     glPushMatrix();
-    glTranslatef(0.25, 0.0, 0.0);
+    glTranslatef(0.25f, 0.0f, 0.0f);
     glutSolidSphere(1.0, 20, 20);
     glPopMatrix();
     glEndList();
@@ -100,8 +100,8 @@ void setBasicShape() {
     GLuint id3 = glGenLists(1);
     glNewList(id3, GL_COMPILE);
     glPushMatrix();
-    glTranslatef(0.0, 0.0, 0.5);
-    glScalef(0.5, 0.5, 2.0);
+    glTranslatef(0.0f, 0.0f, 0.5f);
+    glScalef(0.5f, 0.5f, 2.0f);
     glutSolidSphere(1.0, 20, 20);
     glPopMatrix();
     glEndList();
@@ -128,7 +128,7 @@ void setWidget() {
     GLuint id3 = glGenLists(1);
     glNewList(id3, GL_COMPILE);
     glPushMatrix();
-    glTranslatef(0.0, 0.0, -1.25);
+    glTranslatef(0.0f, 0.0f, -1.25f);
     solidCylinder(0.6, 2.5, 20, 20);
     glPopMatrix();
     glEndList();
@@ -136,8 +136,8 @@ void setWidget() {
     GLuint id4 = glGenLists(1);
     glNewList(id4, GL_COMPILE);
     glPushMatrix();
-    glRotatef(90, 0.0, 1.0, 0.0);
-    glTranslatef(0.0, 0.0, -1.25);
+    glRotatef(90.0f, 0.0f, 1.0f, 0.0f);
+    glTranslatef(0.0f, 0.0f, -1.25f);
     solidCylinder(0.6, 2.5, 20, 20);
     glPopMatrix();
     glEndList();
@@ -145,8 +145,8 @@ void setWidget() {
     GLuint id5 = glGenLists(1);
     glNewList(id5, GL_COMPILE);
     glPushMatrix();
-    glRotatef(90, 1.0, 0.0, 0.0);
-    glTranslatef(0.0, 0.0, -1.25);
+    glRotatef(90.0f, 1.0f, 0.0f, 0.0f);
+    glTranslatef(0.0f, 0.0f, -1.25f);
     solidCylinder(0.6, 2.5, 20, 20);
     glPopMatrix();
     glEndList();
@@ -178,7 +178,7 @@ void setGrid2D() {
             GLuint id = glGenLists(1);
             glNewList(id, GL_COMPILE);
             glPushMatrix();
-            glTranslatef(x*0.5, 0.0, z*0.5);
+            glTranslatef(x*0.5f, 0.0f, z*0.5f);
             glutSolidSphere(0.22, 15, 15);
             glPopMatrix();
             glEndList();
@@ -205,7 +205,7 @@ void setGrid3D() {
                 GLuint id = glGenLists(1);
                 glNewList(id, GL_COMPILE);
                 glPushMatrix();
-                glTranslatef(x, y, z);
+                glTranslatef(static_cast<GLfloat>(x), static_cast<GLfloat>(y), static_cast<GLfloat>(z));
                 glutSolidSphere(0.58, 20, 20);
                 glPopMatrix();
                 glEndList();
@@ -230,9 +230,9 @@ void setConcave() {
         GLuint id = glGenLists(1);
         glNewList(id, GL_COMPILE);
         glPushMatrix();
-        glRotatef(90, 0.0, 1.0, 0.0);
-        glRotatef(i*90 + 45, 1.0, 0.0, 0.0);
-        glTranslatef(0.0, 1.0, 0.0);
+        glRotatef(90.0f, 0.0f, 1.0f, 0.0f);
+        glRotatef(i*90.0f + 45.0f, 1.0f, 0.0f, 0.0f);
+        glTranslatef(0.0f, 1.0f, 0.0f);
         glutSolidTorus(0.3, 0.6, 15, 15);
         glPopMatrix();
         glEndList();
@@ -242,7 +242,7 @@ void setConcave() {
     GLuint id3 = glGenLists(1);
     glNewList(id3, GL_COMPILE);
     glPushMatrix();
-    glRotatef(90, 0.0, 1.0, 0.0);
+    glRotatef(90.0f, 0.0f, 1.0f, 0.0f);
     glTranslatef(0.0f, 0.0f, -1.65f);
     solidCylinder(0.3, 3.3, 20, 20);
     glPopMatrix();
@@ -266,8 +266,8 @@ void renderfps() {
     glMatrixMode(GL_PROJECTION);
     glPushMatrix();
     glLoadIdentity();
-    glColor3f(0.0, 0.0, 0.0);
-    glRasterPos2f(-1.0, -1.0);
+    glColor3f(0.0f, 0.0f, 0.0f);
+    glRasterPos2f(-1.0f, -1.0f);
     glDisable(GL_LIGHTING);
     std::string s = fpsStream.str();
     for (unsigned int i=0; i<s.size(); ++i) {
@@ -286,7 +286,7 @@ void display()
     gluLookAt(0.0, 2.0, 5.0,  /* eye is at (0,2,5) */
               0.0, 0.0, 0.0,  /* center is at (0,0,0) */
               0.0, 1.0, 0.0); /* up is in positive Y direction */
-    glRotatef(rot, 0.0, 1.0, 0.0);
+    glRotatef(rot, 0.0f, 1.0f, 0.0f);
 
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
     OpenCSG::render(primitives);
@@ -309,14 +309,15 @@ void idle() {
     last = msec;
     msec = glutGet(GLUT_ELAPSED_TIME);
     if (spin) {
-        rot += (msec-last)/10.0; 
-        while (rot >= 360) rot -= 360;
+        rot += (msec-last)/10.0f; 
+        while (rot >= 360.0f)
+			rot -= 360.0f;
     }
 
     static int fps = 0;
     if (last / 1000 != msec / 1000) {
         
-        float correctedFps = static_cast<float>(fps) * 1000.0 / static_cast<float>(msec - ancient);
+        float correctedFps = static_cast<float>(fps) * 1000.0f / static_cast<float>(msec - ancient);
         fpsStream.str("");
         fpsStream << "fps: " << correctedFps << std::ends;
 
@@ -387,9 +388,9 @@ void init()
     glClearColor(0.9f, 0.9f, 0.9f, 1.0f);
 
     // Enable two OpenGL lights
-    GLfloat light_diffuse[] = {1.0, 0.0, 0.0, 1.0};       // Red diffuse light
-    GLfloat light_position0[] = {-1.0, -1.0, -1.0, 0.0};  // Infinite light location
-    GLfloat light_position1[] = {1.0, 1.0, 1.0, 0.0};     // Infinite light location
+    GLfloat light_diffuse[]   = { 1.0f,  0.0f,  0.0f,  1.0f};  // Red diffuse light
+    GLfloat light_position0[] = {-1.0f, -1.0f, -1.0f,  0.0f};  // Infinite light location
+    GLfloat light_position1[] = { 1.0f,  1.0f,  1.0f,  0.0f};  // Infinite light location
 
     glLightfv(GL_LIGHT0, GL_DIFFUSE, light_diffuse);
     glLightfv(GL_LIGHT0, GL_POSITION, light_position0);

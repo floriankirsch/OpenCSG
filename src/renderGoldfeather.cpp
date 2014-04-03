@@ -52,7 +52,7 @@ namespace OpenCSG {
             setupProjectiveTexture();
 
             glEnable(GL_ALPHA_TEST);
-            glAlphaFunc(GL_GEQUAL, 0.5); // accuracy issue with GL_EQUAL 1.0 on FX5600
+            glAlphaFunc(GL_GEQUAL, 0.5f); // accuracy issue with GL_EQUAL 1.0 on FX5600
             glEnable(GL_DEPTH_TEST);
             glDepthFunc(GL_LESS);
             glDepthMask(GL_TRUE);

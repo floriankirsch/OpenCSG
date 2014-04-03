@@ -55,10 +55,10 @@ namespace OpenCSG {
             glLoadIdentity();
 
             const GLfloat v[8] = {
-                  -1.0, -1.0,
-                   1.0, -1.0,
-                  -1.0,  1.0,
-                   1.0,  1.0
+                  -1.0f, -1.0f,
+                   1.0f, -1.0f,
+                  -1.0f,  1.0f,
+                   1.0f,  1.0f
             };
 
             GLboolean origVertexArrayState = glIsEnabled(GL_VERTEX_ARRAY);

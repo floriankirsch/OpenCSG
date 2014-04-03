@@ -26,13 +26,13 @@ namespace OpenCSG {
     NDCVolume::operator PCArea() const {
         using OpenGL::canvasPos;
 
-        double widthPixels  = 0.5 * (canvasPos[2] - canvasPos[0]);
-        double heightPixels = 0.5 * (canvasPos[3] - canvasPos[1]);
+        float widthPixels  = 0.5f * (canvasPos[2] - canvasPos[0]);
+        float heightPixels = 0.5f * (canvasPos[3] - canvasPos[1]);
 
-        int iminx = static_cast<int>( (minx + 1.0) * widthPixels );
-        int imaxx = static_cast<int>( (maxx + 1.0) * widthPixels );
-        int iminy = static_cast<int>( (miny + 1.0) * heightPixels );
-        int imaxy = static_cast<int>( (maxy + 1.0) * heightPixels );  
+        int iminx = static_cast<int>( (minx + 1.0f) * widthPixels );
+        int imaxx = static_cast<int>( (maxx + 1.0f) * widthPixels );
+        int iminy = static_cast<int>( (miny + 1.0f) * heightPixels );
+        int imaxy = static_cast<int>( (maxy + 1.0f) * heightPixels );  
     
         return PCArea(iminx, iminy, imaxx, imaxy); 
     }

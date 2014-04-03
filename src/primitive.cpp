@@ -32,12 +32,12 @@ namespace OpenCSG {
     Primitive::Primitive(Operation o, unsigned int c) :
         mOperation(o),
         mConvexity(c),
-        mMinx(-1.0),
-        mMiny(-1.0),
-        mMinz(-1.0),
-        mMaxx(1.0),
-        mMaxy(1.0),
-        mMaxz(1.0) {
+        mMinx(-1.0f),
+        mMiny(-1.0f),
+        mMinz(-1.0f),
+        mMaxx(1.0f),
+        mMaxy(1.0f),
+        mMaxz(1.0f) {
     }
 
     Primitive::~Primitive() { }
