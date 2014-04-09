@@ -138,11 +138,6 @@
     <ClInclude Include="..\src\stencilManager.h" />
     <ClInclude Include="..\include\opencsg.h" />
   </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\glew\build\vc10\glew_static.vcxproj">
-      <Project>{664e6f0d-6784-4760-9565-d54f8eb1edf4}</Project>
-    </ProjectReference>
-  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>

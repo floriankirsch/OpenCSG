@@ -137,14 +137,6 @@
   <ItemGroup>
     <ClInclude Include="displaylistPrimitive.h" />
   </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\glew\build\vc10\glew_static.vcxproj">
-      <Project>{664e6f0d-6784-4760-9565-d54f8eb1edf4}</Project>
-    </ProjectReference>
-    <ProjectReference Include="..\win32\OpenCSG.vcxproj">
-      <Project>{62313c8a-72e8-2c0f-d93e-3e9773536507}</Project>
-    </ProjectReference>
-  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>
