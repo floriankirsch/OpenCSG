@@ -1,8 +1,11 @@
-Microsoft VC6 / VC 2003 .NET
-----------------------------
+Microsoft VC6 / VC 2003 .NET / VC 2010
+--------------------------------------
 
-Open OpenCSG.dsw / OpenCSG.sln
-Set OpenCSGexample as active project
+To run the example, you must install GLUT or FreeGLUT
+Open OpenCSG.dsw / OpenCSG.sln / OpenCSG_vc10.sln
+Set OpenCSGexample as active project. In this project, eventually
+  adjust include directories such that GL/glut.h is found, and
+  adjust library directories such that the glut library file is found.
 Compile and start example
 
 
