@@ -41,7 +41,7 @@
 
 <hr>
 
-<h3> <a href="news.html">Latest release: OpenCSG 1.3.2 (02.12.2011)</a></h3>
+<h3> <a href="news.html">Latest release: OpenCSG 1.3.3 (11.05.2014)</a></h3>
 
 <hr>
 
@@ -51,7 +51,7 @@
 OpenCSG is a library that does image-based CSG rendering using OpenGL. 
 OpenCSG is written in C++ and supports most modern graphics hardware using
 Microsoft Windows or the Linux operating system. 
-<a href="http://www.opencsg.org/OpenCSG-1.3.2.tar.gz">OpenCSG-1.3.2</a> is the current version.
+<a href="http://www.opencsg.org/OpenCSG-1.3.3.tar.gz">OpenCSG-1.3.3</a> is the current version.
 </p>
 
 <p>
@@ -96,11 +96,11 @@ OpenCSG represents a valuable addition for such applications.
 </p>
 
 <p>
-Overall, up to the present CSG rendering has been hardly used in interactive 
+Before OpenCSG, CSG rendering has been hardly used in interactive 
 applications, since the necessary algorithms are complicated and error-prone. 
-We hope that by providing a free library that is easy to use, fast, and 
-versatile, CSG rendering can be made more mainstream than it currently 
-is. 
+By providing a free library that is easy to use, fast, and portable,
+OpenCSG has helped making CSG rendering more mainstream than it was 
+in the past. 
 </p>
 
 <center><a href="http://www.opencsg.org/img/columns.jpg"><img src="img/columns.gif" border="0" alt="CSG columns"></a></center>
@@ -142,11 +142,10 @@ in the OpenCSG download.
 </p>
 
 <p>
-OpenCSG is written in C++, uses namespaces and requires the STL. There are no significant
-compiler incompatibilities under Windows. Workspaces for with MSVC6, 
-VC2003 .net and <a href="http://www.bloodshed.net/devcpp.html">Dev-C++ 5 beta</a> are provided. Under
-Linux, you should use gcc version 3 or newer. gcc-2.95.x will not work, since this compiler
-does not come with a <code>std::map</code> implementation, which is required internally. 
+OpenCSG is written in C++, uses namespaces and requires the STL. 
+It compiles with all reasonable C++ compiler such as gcc, Clang, or 
+Microsoft Visual Studio. Workspaces for MSVC6, VC2003, VC2010 and
+<a href="http://www.bloodshed.net/devcpp.html">Dev-C++ 5 beta</a> are provided. Under Linux, any gcc compiler starting from version 3.0 or newer will work.
 </p>
 
 <p>
@@ -158,7 +157,9 @@ queries, which are available since Radeon 9x00 (x>=5) and GeForce3
 </p>
 
 <p>
-OpenCSG has been sucessfully run on Intel and AMD hardware using 
+OpenCSG has been sucessfully run on Intel and AMD CPUs. Generally,
+NVidia and AMD graphics hardware is well supported, and some hardware
+where OpenCSG successfully runs includes
 GeForce 250 GTS
 Radeon HD 4670,
 GeForce 8x00,
@@ -172,9 +173,16 @@ and TNT2 graphcs hardware (on the latter, it crawls ...).
 
 <p>
 On a Radeon 9000, OpenCSG was once known to produce rendering errors
-in all but the standard Goldfeather rendering path. It is unclear whether
-this was possibly a driver issue. I have no experiences running OpenCSG
-on graphics hardware other than from NVidia or ATI/AMD.
+in all but the standard Goldfeather rendering path. It is unclear if
+this was possibly a driver issue.
+</p>
+
+<p>
+On graphics hardware from Intel, OpenCSG does not always work well.
+Generally, use the most recent graphics drivers, in particular for
+HD 3000 or HD 4000 hardware. Furthermore, the (non-default) Goldfeather
+rendering path generally appears to produce a more robust rendering result
+compared to the SCS rendering path.
 </p>
 
 <center><a href="http://www.opencsg.org/img/conc.jpg"><img src="img/conc.gif" border="0" alt="CSG convace shape"></a></center>
@@ -408,13 +416,15 @@ OpenGL resources for the currently active OpenCSG context.
 <h3> <a name="download">Download</a> </h3>
 
 <p>
-Download <a href="http://www.opencsg.org/OpenCSG-1.3.2.tar.gz">OpenCSG-1.3.2.tar.gz</a>. The archive contains all required helper
+Download <a href="http://www.opencsg.org/OpenCSG-1.3.3.tar.gz">OpenCSG-1.3.3.tar.gz</a>. The archive contains all required helper
 libraries, i.e., also RenderTexture and GLEW. It comes with 
-makefiles for Linux and with project files for MSVC6, VS2003, and Dev-C++ 5.
+makefiles for Linux and with project files for MSVC6, VC2003, VC2010, 
+and Dev-C++ 5.
 </p>
 
 <p>
 The older versions <br>
+&nbsp;&nbsp; <a href="http://www.opencsg.org/OpenCSG-1.3.2.tar.gz">OpenCSG-1.3.2</a> <br>
 &nbsp;&nbsp; <a href="http://www.opencsg.org/OpenCSG-1.3.1.tar.gz">OpenCSG-1.3.1</a> <br>
 &nbsp;&nbsp; <a href="http://www.opencsg.org/OpenCSG-1.3.0.tar.gz">OpenCSG-1.3.0</a> <br>
 &nbsp;&nbsp; <a href="http://www.opencsg.org/OpenCSG-1.2.0.tar.gz">OpenCSG-1.2.0</a> <br>
@@ -615,9 +625,9 @@ their respective authors.
 <hr>
 
 <center><p>
-&copy; 2002-2011, Florian Kirsch, e-mail: <b>mail at opencsg dot org</b>, <br>
+&copy; 2002-2014, Florian Kirsch, e-mail: <b>mail at opencsg dot org</b>, <br>
 2002-2005 Hasso-Plattner-Institute Potsdam.<br>
-Last change: 02.12.2011
+Last change: 11.05.2014
 </p></center>
 
 </body>
