@@ -33,7 +33,7 @@ namespace OpenCSG {
         mIintersection(NDCVolume(-1.0f, -1.0f, 0.0f, 1.0f, 1.0f, 1.0f)),
         mCurrent(NDCVolume(1.0f, 1.0f, 1.0f, -1.0f, -1.0f, 0.0f)),
         mArea(NDCVolume(-1.0f, -1.0f, 0.0f, 1.0f, 1.0f, 1.0f)),
-        mScissor(std::vector<NDCVolume>(Blue + 1)),
+        mScissor(std::vector<NDCVolume>(AllChannels + 1)),
         mUseDepthBoundsTest(false)
     {
         int optimizationSetting = getOption(DepthBoundsOptimization);

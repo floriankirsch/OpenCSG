@@ -327,17 +327,17 @@ namespace OpenCSG {
 
         if ((mOccupiedChannels & Alpha) != 0) {
             result.push_back(Alpha);
-        }        
+        }
         if ((mOccupiedChannels & Red) != 0) {
             result.push_back(Red);
-        }        
+        }
         if ((mOccupiedChannels & Green) != 0) {
             result.push_back(Green);
-        }        
+        }
         if ((mOccupiedChannels & Blue) != 0) {
             result.push_back(Blue);
         }
-     
+
         return result;
     }
 
@@ -362,12 +362,15 @@ namespace OpenCSG {
                     break;
                 case Blue:
                     glColorMask(GL_FALSE, GL_FALSE, GL_TRUE, GL_FALSE);
-                    break;        
+                    break;
                 case Green:
                     glColorMask(GL_FALSE, GL_TRUE, GL_FALSE, GL_FALSE);
-                    break;         
+                    break;
                 case Red:
                     glColorMask(GL_TRUE, GL_FALSE, GL_FALSE, GL_FALSE);
+                    break;
+                case AllChannels:
+                    glColorMask(GL_TRUE, GL_TRUE, GL_TRUE, GL_TRUE);
                     break;
                 }
             }
@@ -496,7 +499,7 @@ namespace OpenCSG {
 
     ChannelManagerForBatches::ChannelManagerForBatches() : 
         ChannelManager(), 
-        mPrimitives(std::vector<std::pair<std::vector<Primitive*>, int> >(Blue + 1)) {
+        mPrimitives(std::vector<std::pair<std::vector<Primitive*>, int> >(AllChannels + 1)) {
     }
 
     void ChannelManagerForBatches::store(Channel channel, const std::vector<Primitive*>& primitives, int layer) {
@@ -512,7 +515,7 @@ namespace OpenCSG {
     }
 
     void ChannelManagerForBatches::clear() {
-        mPrimitives = std::vector<std::pair<std::vector<Primitive*>, int> >(Blue + 1);
+        mPrimitives = std::vector<std::pair<std::vector<Primitive*>, int> >(AllChannels + 1);
     }
 
 } // namespace OpenCSG
