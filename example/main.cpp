@@ -39,7 +39,7 @@
 #endif
 
 enum { 
-    CSG_BASIC, CSG_WIDGET, CSG_GRID2D, CSG_GRID3D, CSG_CONCAVE,
+    CSG_BASIC, CSG_WIDGET, CSG_GRID2D, CSG_GRID3D, CSG_CUBERACK, CSG_CONCAVE,
 
     ALGO_AUTOMATIC, GF_STANDARD, GF_DC, GF_OQ, SCS_STANDARD, SCS_DC, SCS_OQ,
 
@@ -216,6 +216,36 @@ void setGrid3D() {
     }
 }
 
+void setCubeRack() {
+
+    clearPrimitives();
+
+    GLuint id1 = glGenLists(1);
+    glNewList(id1, GL_COMPILE);
+    glutSolidCube(2.0);
+    glEndList();
+
+    primitives.push_back(new OpenCSG::DisplayListPrimitive(id1, OpenCSG::Intersection, 1));
+
+    const int NBELEM = 6;
+
+    for (int x=-NBELEM/2; x<=NBELEM/2; ++x) {
+        for (int y=-NBELEM/2; y<=NBELEM/2; ++y) {
+            for (int z=-NBELEM/2; z<=NBELEM/2; ++z) {
+                GLuint id = glGenLists(1);
+                glNewList(id, GL_COMPILE);
+                glPushMatrix();
+                glTranslatef(float(x)/float(NBELEM), float(y)/float(NBELEM), float(z)/float(NBELEM));
+                glutSolidSphere(0.58, 20, 20);
+                glPopMatrix();
+                glEndList();
+
+                primitives.push_back(new OpenCSG::DisplayListPrimitive(id, OpenCSG::Subtraction, 1));
+            }
+        }
+    }
+}
+
 void setConcave() {
     
     clearPrimitives();
@@ -347,6 +377,7 @@ void menu(int value) {
     case CSG_WIDGET:     setWidget();        break;
     case CSG_GRID2D:     setGrid2D();        break;
     case CSG_GRID3D:     setGrid3D();        break;
+    case CSG_CUBERACK:   setCubeRack();      break;
     case CSG_CONCAVE:    setConcave();       break;
 
     case ALGO_AUTOMATIC: OpenCSG::setOption(OpenCSG::AlgorithmSetting, OpenCSG::Automatic);
@@ -428,11 +459,12 @@ int main(int argc, char **argv)
     }  
 
     int menuShape     = glutCreateMenu(menu);
-    glutAddMenuEntry("Simple",  CSG_BASIC);
-    glutAddMenuEntry("Widget",  CSG_WIDGET);
-    glutAddMenuEntry("2D-Grid", CSG_GRID2D);
-    glutAddMenuEntry("3D-Grid", CSG_GRID3D);
-    glutAddMenuEntry("Concave", CSG_CONCAVE);
+    glutAddMenuEntry("Simple",   CSG_BASIC);
+    glutAddMenuEntry("Widget",   CSG_WIDGET);
+    glutAddMenuEntry("2D-Grid",  CSG_GRID2D);
+    glutAddMenuEntry("3D-Grid",  CSG_GRID3D);
+    glutAddMenuEntry("Cuberack", CSG_CUBERACK);
+    glutAddMenuEntry("Concave",  CSG_CONCAVE);
     
     int menuAlgorithm = glutCreateMenu(menu);
     glutAddMenuEntry("Automatic", ALGO_AUTOMATIC);
