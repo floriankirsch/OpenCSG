@@ -137,7 +137,7 @@ namespace OpenCSG {
         };
 
         Channel SCSChannelManagerFragmentProgram::request() {
-            OpenCSG::Channel channel = ChannelManagerForBatches::request();
+            ChannelManagerForBatches::request();
             mCurrentChannel = AllChannels;
             mOccupiedChannels = mCurrentChannel;
             return mCurrentChannel;
@@ -150,7 +150,7 @@ namespace OpenCSG {
         // and color are equal. The alpha function for this then is
         // actually implemented as GL_LESS, 1/512. This is robust,
         // in contract to the GL_EQUAL in SCSChannelManagerAlphaOnly above.
-        static const char* mergeFragmentProgram =
+        static const char mergeFragmentProgram[] =
 "!!ARBfp1.0\n"
 "TEMP temp;\n"
 "ATTRIB tex0 = fragment.texcoord[0];\n"
@@ -171,7 +171,7 @@ namespace OpenCSG {
             {
                 glGenProgramsARB(1, &id);
                 glBindProgramARB(GL_FRAGMENT_PROGRAM_ARB, id);
-                glProgramStringARB(GL_FRAGMENT_PROGRAM_ARB, GL_PROGRAM_FORMAT_ASCII_ARB, strlen(mergeFragmentProgram), mergeFragmentProgram);
+                glProgramStringARB(GL_FRAGMENT_PROGRAM_ARB, GL_PROGRAM_FORMAT_ASCII_ARB, (sizeof(mergeFragmentProgram) / sizeof(mergeFragmentProgram[0])) - 1, mergeFragmentProgram);
 
                 // GLint errorPos;
                 // glGetIntegerv(GL_PROGRAM_ERROR_POSITION_ARB, &errorPos);
