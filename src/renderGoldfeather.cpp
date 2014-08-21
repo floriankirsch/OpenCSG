@@ -400,6 +400,14 @@ namespace OpenCSG {
             scissor->disableScissor();
 
             ++layer;
+
+            // There are more layers than the stencil buffer allows us to
+            // render. Return claiming success (which is cheating, since
+            // we were not really successful)
+            if (layer == OpenGL::stencilMax) {
+                retVal = true;
+                break;
+            }
         }
 
         delete occlusionTest;
