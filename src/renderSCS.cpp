@@ -143,25 +143,30 @@ namespace OpenCSG {
             return mCurrentChannel;
         }
 
-        // subtract color from texture value, takes the absolute value
-        // and adds all components into each channel of the result.
+        // Subtract color from texture value, takes the absolute value
+        // and adds all components into each channel of the result, scaled by 2.0f.
         // This way, all 32-bits of the color channel can be used
         // for an 'equal' alpha test, i.e, to check if value in texture
-        // and color are equal. The alpha function for this then is
-        // actually implemented as GL_LESS, 1/512. This is robust,
+        // and color are equal.
+
+        // Note that 1.0f/255.0f cannot be the result of the above computation.
+        // Either the result is 0 (if all components were equal, disregarding
+        // numerical errors), or larger/equal than 2.0f/255.0f. The alpha function
+        // then is actually set to  GL_LESS, 1.0f/255.0f. This is robust,
         // in contract to the GL_EQUAL in SCSChannelManagerAlphaOnly above.
+        // The scaling by 2.0f is required for NVidia hardware, which considers
+        // the alpha function GL_LESS, 0.5f/255.0f as GL_LESS, 0.0f for some reason.
         static const char mergeFragmentProgram[] =
 "!!ARBfp1.0\n"
 "TEMP temp;\n"
 "ATTRIB tex0 = fragment.texcoord[0];\n"
 "ATTRIB col0 = fragment.color;\n"
-"PARAM one = { 1.0, 1.0, 1.0, 1.0 };\n"
+"PARAM scaleByTwo = { 2.0, 2.0, 2.0, 2.0 };\n"
 "OUTPUT out = result.color;\n"
 "TXP temp, tex0, texture[0], RECT;\n"
 "SUB temp, temp, col0;\n"
 "ABS temp, temp;\n"
-"DP4 temp, temp, one;\n"
-"MOV out, temp;\n"
+"DP4 out, temp, scaleByTwo;\n"
 "END";
 
         void SCSChannelManagerFragmentProgram::merge() {
@@ -192,7 +197,7 @@ namespace OpenCSG {
             glDepthFunc(GL_LESS);
             glDepthMask(GL_TRUE);
 
-            glAlphaFunc(GL_LESS, 0.5f * (1.0f / 255.0f));
+            glAlphaFunc(GL_LESS, 1.0f / 255.0f);
 
             std::vector<Channel> channels;
             channels.push_back(AllChannels);
