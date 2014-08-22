@@ -27,6 +27,7 @@
 
 #include "opencsgConfig.h"
 #include <opencsg.h>
+#include <GL/glew.h>
 
 namespace OpenCSG {
 
@@ -36,6 +37,26 @@ namespace OpenCSG {
     int getContext();
     /// redeclared from opencsg.h
     void freeResources();
+
+    namespace OpenGL {
+
+        class OffscreenBuffer;
+
+        /// Checks the OpenGL-extensions resp. the current settings
+        /// and returns a concrete offscreen buffer, for the currently
+        /// active context in OpenCSG.
+        OffscreenBuffer* getOffscreenBuffer(OffscreenType type);
+
+        /// Given a constant(!) ARB fragment program string and its length,
+        /// returns a ARB fragment program object, for the currently
+        /// active context in OpenCSG.
+        GLuint getARBFragmentProgram(const char* prog, int len);
+
+        /// Frees all resources (offscreen buffers, fragment programs...)
+        /// allocated for the currently active context in OpenCSG.
+        void freeResources();
+
+    } // namespace OpenGL
 
 } // namespace OpenCSG
 

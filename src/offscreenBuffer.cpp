@@ -22,70 +22,7 @@
 
 #include "opencsgConfig.h"
 #include "context.h"
-#include "offscreenBuffer.h"
-#include "frameBufferObject.h"
-#include "frameBufferObjectExt.h"
-#include "pBufferTexture.h"
-#include <GL/glew.h>
-#include <map>
 
 namespace OpenCSG {
-
-    namespace OpenGL {
-
-        struct ContextData {
-            ContextData() : fARB(0), fEXT(0)
-#ifdef OPENCSG_HAVE_PBUFFER
-                          , pBuf(0)
-#endif
-          {}
-            FrameBufferObject* fARB;
-            FrameBufferObjectExt* fEXT;
-#ifdef OPENCSG_HAVE_PBUFFER
-            PBufferTexture* pBuf;
-#endif
-        };
-
-        static std::map<int, ContextData> gContextDataMap;
-
-        OffscreenBuffer* getOffscreenBuffer(OffscreenType type) {
-            int context = getContext();
-            ContextData& contextData = gContextDataMap[context];
-
-            if (type == OpenCSG::FrameBufferObjectARB) {
-                if (!contextData.fARB)
-                    contextData.fARB = new FrameBufferObject;
-                return contextData.fARB;
-            }
-            else if (type == OpenCSG::FrameBufferObjectEXT) {
-                if (!contextData.fEXT)
-                    contextData.fEXT = new FrameBufferObjectExt;
-                return contextData.fEXT;
-            }
-#ifdef OPENCSG_HAVE_PBUFFER
-            else if (type == OpenCSG::PBuffer) {
-                if (!contextData.pBuf)
-                    contextData.pBuf = new PBufferTexture;
-                return contextData.pBuf;
-            }
-#endif
-
-            return 0;
-        }
-
-        void freeResources() {
-            int context = getContext();
-            std::map<int, ContextData>::iterator itr = gContextDataMap.find(context);
-            if (itr != gContextDataMap.end()) {
-                delete itr->second.fARB;
-                delete itr->second.fEXT;
-#ifdef OPENCSG_HAVE_PBUFFER
-                delete itr->second.pBuf;
-#endif
-                gContextDataMap.erase(itr);
-            }
-        }
-
-    } // namespace OpenGL
 
 } // namespace OpenCSG

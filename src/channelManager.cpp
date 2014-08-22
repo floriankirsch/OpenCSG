@@ -30,6 +30,7 @@
 #endif
 
 #include "channelManager.h"
+#include "context.h"
 #include "offscreenBuffer.h"
 #include "openglHelper.h"
 #include "settings.h"

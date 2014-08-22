@@ -78,16 +78,6 @@ namespace OpenCSG {
             /// the rendering context of the caller or not.
             virtual bool haveSeparateContext() const = 0;
         };
-
-        /// Checks the OpenGL-extensions resp. the current settings
-        /// and returns a concrete offscreen buffer, for the currently
-        /// active context in OpenCSG.
-        OffscreenBuffer* getOffscreenBuffer(OffscreenType type);
-
-        /// Frees all offscreen buffers allocated for the currently
-        /// active context in OpenCSG.
-        void freeResources();
-
     } // namespace OpenGL
 
 } // namespace OpenCSG

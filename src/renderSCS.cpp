@@ -28,6 +28,7 @@
 #include "opencsgRender.h"
 #include "batch.h"
 #include "channelManager.h"
+#include "context.h"
 #include "occlusionQuery.h"
 #include "openglHelper.h"
 #include "primitiveHelper.h"
@@ -156,7 +157,7 @@ namespace OpenCSG {
         // in contract to the GL_EQUAL in SCSChannelManagerAlphaOnly above.
         // The scaling by 2.0f is required for NVidia hardware, which considers
         // the alpha function GL_LESS, 0.5f/255.0f as GL_LESS, 0.0f for some reason.
-        static const char mergeFragmentProgram[] =
+        static const char mergeFragmentProgramRect[] =
 "!!ARBfp1.0\n"
 "TEMP temp;\n"
 "ATTRIB tex0 = fragment.texcoord[0];\n"
@@ -171,22 +172,8 @@ namespace OpenCSG {
 
         void SCSChannelManagerFragmentProgram::merge() {
 
-            static GLuint id = 0;
-            if (id == 0)
-            {
-                glGenProgramsARB(1, &id);
-                glBindProgramARB(GL_FRAGMENT_PROGRAM_ARB, id);
-                glProgramStringARB(GL_FRAGMENT_PROGRAM_ARB, GL_PROGRAM_FORMAT_ASCII_ARB, (sizeof(mergeFragmentProgram) / sizeof(mergeFragmentProgram[0])) - 1, mergeFragmentProgram);
-
-                // GLint errorPos;
-                // glGetIntegerv(GL_PROGRAM_ERROR_POSITION_ARB, &errorPos);
-                // const char * error = (const char*)glGetString(GL_PROGRAM_ERROR_STRING_ARB);
-                // printf("");
-            }
-            else
-            {
-                glBindProgramARB(GL_FRAGMENT_PROGRAM_ARB, id);
-            }
+            GLuint id = OpenGL::getARBFragmentProgram(mergeFragmentProgramRect, (sizeof(mergeFragmentProgramRect) / sizeof(mergeFragmentProgramRect[0])) - 1);
+            glBindProgramARB(GL_FRAGMENT_PROGRAM_ARB, id);
             glEnable(GL_FRAGMENT_PROGRAM_ARB);
 
             setupProjectiveTexture();
