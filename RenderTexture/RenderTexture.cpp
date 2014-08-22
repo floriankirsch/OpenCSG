@@ -220,24 +220,14 @@ void _wglGetLastError()
 // Description	    : 
 //---------------------------------------------------------------------------
 /**
-* @fn PrintExtensionError( char* strMsg, ... )
+* @fn PrintExtensionError( char* strMsg )
 * @brief Prints an error about missing OpenGL extensions.
 */ 
-void PrintExtensionError( const char* strMsg, ... )
+void PrintExtensionError( const char* strMsg )
 {
-    fprintf(stderr, 
+    fprintf(stderr,
             "Error: RenderTexture requires the following unsupported "
             "OpenGL extensions: \n");
-    char strBuffer[512];
-    va_list args;
-    va_start(args, strMsg);
-#ifdef _WIN32
-    _vsnprintf( strBuffer, 512, strMsg, args );
-#else
-    vsnprintf( strBuffer, 512, strMsg, args );
-#endif
-    va_end(args);
-
     fprintf(stderr, "%s", strMsg);
 }
 
