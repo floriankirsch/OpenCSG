@@ -85,9 +85,9 @@ namespace OpenCSG {
         static void setupTexEnv(Channel channel);
 
     private:
-        static OpenGL::OffscreenBuffer* gOffscreenBuffer;
         static bool gInUse;
 
+        OpenGL::OffscreenBuffer* mOffscreenBuffer;
         bool mInOffscreenBuffer;
 
     protected:

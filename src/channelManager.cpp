@@ -38,9 +38,8 @@
 
 namespace OpenCSG {
 
-    OpenCSG::OpenGL::OffscreenBuffer* ChannelManager::gOffscreenBuffer = 0;
-                                 bool ChannelManager::gInUse = false;
-    
+    bool ChannelManager::gInUse = false;
+
     namespace {
 
         GLint FaceOrientation = GL_CCW;
@@ -96,8 +95,9 @@ namespace OpenCSG {
 
     } // unnamed namespace
 
-    ChannelManager::ChannelManager() {
-
+    ChannelManager::ChannelManager()
+      : mOffscreenBuffer(0)
+    {
         glPushAttrib(GL_ALL_ATTRIB_BITS);
         glColorMask(GL_FALSE, GL_FALSE, GL_FALSE, GL_FALSE);
         glDisable(GL_LIGHTING);
@@ -171,9 +171,9 @@ namespace OpenCSG {
             }
         }
 
-        gOffscreenBuffer = OpenGL::getOffscreenBuffer(newOffscreenType);
+        mOffscreenBuffer = OpenGL::getOffscreenBuffer(newOffscreenType);
 
-        if (!gOffscreenBuffer) {
+        if (!mOffscreenBuffer) {
             // Creating the offscreen buffer failed, maybe the OpenGL extension
             // for the specific offscreen buffer type is not supported
             return false;
@@ -222,8 +222,8 @@ namespace OpenCSG {
 
         bool rebuild = false;
 
-        if (!gOffscreenBuffer->IsInitialized()) {
-            if (!gOffscreenBuffer->Initialize(sizeX.getMax(), sizeY.getMax(), true, false)) {
+        if (!mOffscreenBuffer->IsInitialized()) {
+            if (!mOffscreenBuffer->Initialize(sizeX.getMax(), sizeY.getMax(), true, false)) {
                 // Initializing the offscreen buffer failed, maybe the OpenGL extension
                 // for the specific offscreen buffer type is not supported
                 return false;
@@ -232,10 +232,10 @@ namespace OpenCSG {
         }
         // tx == ty == 0 happens if the window is minimized, in this case don't touch a thing
         else if (tx != 0 && ty != 0) {
-            if (   gOffscreenBuffer->GetWidth() != sizeX.getMax()
-                || gOffscreenBuffer->GetHeight() != sizeY.getMax()
+            if (   mOffscreenBuffer->GetWidth() != sizeX.getMax()
+                || mOffscreenBuffer->GetHeight() != sizeY.getMax()
             ) {
-                if (!gOffscreenBuffer->Resize(sizeX.getMax(), sizeY.getMax())) {
+                if (!mOffscreenBuffer->Resize(sizeX.getMax(), sizeY.getMax())) {
                     // Resizing the offscreen buffer failed, maybe the OpenGL extension
                     // for the specific offscreen buffer type is not supported. More 
                     // likely this is a programming error in Resize(). 
@@ -247,13 +247,13 @@ namespace OpenCSG {
 
         if (rebuild) {
             // assert(gOffscreenBuffer->HasStencil());
-            gOffscreenBuffer->BeginCapture();
+            mOffscreenBuffer->BeginCapture();
             defaults();
             glGetIntegerv(GL_STENCIL_BITS, &OpenGL::stencilBits);
             OpenGL::stencilMax = 1 << OpenGL::stencilBits;
             OpenGL::stencilMask = OpenGL::stencilMax - 1;
-            gOffscreenBuffer->EndCapture();
-            gOffscreenBuffer->Bind();
+            mOffscreenBuffer->EndCapture();
+            mOffscreenBuffer->Bind();
             glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
             glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
         }
@@ -293,8 +293,8 @@ namespace OpenCSG {
 
     Channel ChannelManager::request() {
         if (!mInOffscreenBuffer) {
-            gOffscreenBuffer->BeginCapture();
-            if (gOffscreenBuffer->haveSeparateContext()) {
+            mOffscreenBuffer->BeginCapture();
+            if (mOffscreenBuffer->haveSeparateContext()) {
                 glFrontFace(FaceOrientation);
             }
 
@@ -304,7 +304,7 @@ namespace OpenCSG {
             mOccupiedChannels = NoChannel;
         }
 
-        if (gOffscreenBuffer->haveSeparateContext()) {
+        if (mOffscreenBuffer->haveSeparateContext()) {
             glViewport(OpenGL::canvasPos[0], OpenGL::canvasPos[1], OpenGL::canvasPos[2], OpenGL::canvasPos[3]);
             glMatrixMode(GL_PROJECTION);
             glLoadMatrixf(OpenGL::projection);
@@ -344,7 +344,7 @@ namespace OpenCSG {
 
     void ChannelManager::free() {
         if (mInOffscreenBuffer) {
-            gOffscreenBuffer->EndCapture();
+            mOffscreenBuffer->EndCapture();
             mInOffscreenBuffer = false;
         }
 
@@ -387,8 +387,8 @@ namespace OpenCSG {
         static float rplane[4] = { 0.0f, 0.0f, 1.0f, 0.0f };
         static float qplane[4] = { 0.0f, 0.0f, 0.0f, 1.0f };
 
-        gOffscreenBuffer->Bind();
-        gOffscreenBuffer->EnableTextureTarget();
+        mOffscreenBuffer->Bind();
+        mOffscreenBuffer->EnableTextureTarget();
 
         glTexGeni(GL_S, GL_TEXTURE_GEN_MODE, GL_EYE_LINEAR);
         glTexGeni(GL_T, GL_TEXTURE_GEN_MODE, GL_EYE_LINEAR);
@@ -420,11 +420,11 @@ namespace OpenCSG {
         // Therefore we do not check for the extension, but simply for the texture format
         // Update (08.04.2004): Fixed the flaw, but kept checking the texture format.
         // Actually that seems safer, since it should work always
-        if (gOffscreenBuffer->GetTextureTarget() == GL_TEXTURE_2D) {
+        if (mOffscreenBuffer->GetTextureTarget() == GL_TEXTURE_2D) {
             // with ordinary pow-of-two texture coordinates are between 0 and 1
             // but we must assure only the used part of the texture is taken.
-            factorX /= static_cast<float>(gOffscreenBuffer->GetWidth());
-            factorY /= static_cast<float>(gOffscreenBuffer->GetHeight());
+            factorX /= static_cast<float>(mOffscreenBuffer->GetWidth());
+            factorY /= static_cast<float>(mOffscreenBuffer->GetHeight());
         }
 
         float   texCorrect[16] = { factorX, 0.0f, 0.0f, 0.0f, 
@@ -445,7 +445,7 @@ namespace OpenCSG {
     }
 
     void ChannelManager::resetProjectiveTexture() {
-        if (!gOffscreenBuffer->haveSeparateContext()) {
+        if (!mOffscreenBuffer->haveSeparateContext()) {
             glDisable(GL_TEXTURE_GEN_S);
             glDisable(GL_TEXTURE_GEN_T);
             glDisable(GL_TEXTURE_GEN_R);
@@ -456,7 +456,7 @@ namespace OpenCSG {
         glPopMatrix();
         glMatrixMode(GL_MODELVIEW);
 
-        gOffscreenBuffer->DisableTextureTarget();
+        mOffscreenBuffer->DisableTextureTarget();
     }
 
     void ChannelManager::setupTexEnv(Channel channel) {
