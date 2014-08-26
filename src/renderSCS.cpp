@@ -170,9 +170,24 @@ namespace OpenCSG {
 "DP4 out, temp, scaleByTwo;\n"
 "END";
 
-        void SCSChannelManagerFragmentProgram::merge() {
-
-            GLuint id = OpenGL::getARBFragmentProgram(mergeFragmentProgramRect, (sizeof(mergeFragmentProgramRect) / sizeof(mergeFragmentProgramRect[0])) - 1);
+        static const char mergeFragmentProgram2D[] =
+"!!ARBfp1.0\n"
+"TEMP temp;\n"
+"ATTRIB tex0 = fragment.texcoord[0];\n"
+"ATTRIB col0 = fragment.color;\n"
+"PARAM scaleByTwo = { 2.0, 2.0, 2.0, 2.0 };\n"
+"OUTPUT out = result.color;\n"
+"TXP temp, tex0, texture[0], 2D;\n"
+"SUB temp, temp, col0;\n"
+"ABS temp, temp;\n"
+"DP4 out, temp, scaleByTwo;\n"
+"END";
+        void SCSChannelManagerFragmentProgram::merge()
+        {
+            GLuint id =
+                 isRectangularTexture()
+                   ? OpenGL::getARBFragmentProgram(mergeFragmentProgramRect, (sizeof(mergeFragmentProgramRect) / sizeof(mergeFragmentProgramRect[0])) - 1)
+                   : OpenGL::getARBFragmentProgram(mergeFragmentProgram2D, (sizeof(mergeFragmentProgram2D) / sizeof(mergeFragmentProgram2D[0])) - 1);
             glBindProgramARB(GL_FRAGMENT_PROGRAM_ARB, id);
             glEnable(GL_FRAGMENT_PROGRAM_ARB);
 

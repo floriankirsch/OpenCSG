@@ -420,7 +420,7 @@ namespace OpenCSG {
         // Therefore we do not check for the extension, but simply for the texture format
         // Update (08.04.2004): Fixed the flaw, but kept checking the texture format.
         // Actually that seems safer, since it should work always
-        if (mOffscreenBuffer->GetTextureTarget() == GL_TEXTURE_2D) {
+        if (!isRectangularTexture()) {
             // with ordinary pow-of-two texture coordinates are between 0 and 1
             // but we must assure only the used part of the texture is taken.
             factorX /= static_cast<float>(mOffscreenBuffer->GetWidth());
@@ -494,6 +494,10 @@ namespace OpenCSG {
         }
     }
 
+    bool ChannelManager::isRectangularTexture() const
+    {
+        return mOffscreenBuffer->GetTextureTarget() != GL_TEXTURE_2D;
+    }
 
 
 
