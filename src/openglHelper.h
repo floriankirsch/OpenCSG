@@ -43,9 +43,9 @@ namespace OpenCSG {
 
         extern int stencilBits;
             // number of stencil bits in the pbuffer
-        extern int stencilMax;
+        extern unsigned int stencilMax;
             // the number where the stencil value would "wrap around" to zero
-        extern int stencilMask;
+        extern unsigned int stencilMask;
             // stencilMax - 1
 
         extern int scissorPos[4];

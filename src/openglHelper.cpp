@@ -34,8 +34,8 @@ namespace OpenCSG {
         GLint canvasPos[4];
 
         GLint stencilBits = 0;
-        int stencilMax = 0;
-        int stencilMask = 0;
+        unsigned int stencilMax = 0;
+        unsigned int stencilMask = 0;
 
         GLint scissorPos[4];
 

@@ -342,7 +342,7 @@ namespace OpenCSG {
             glEnable(GL_STENCIL_TEST);
             glEnable(GL_CULL_FACE);
 
-            int stencilref = 0;
+            unsigned int stencilref = 0;
             int sense = 1;
             unsigned int changes = 0;
             std::vector<Batch>::const_iterator i = begin;
@@ -425,7 +425,7 @@ namespace OpenCSG {
 
             std::vector<unsigned int> fragmentcount(numberOfBatches, 0);
 
-            int stencilref = 0;
+            unsigned int stencilref = 0;
             std::vector<Batch>::const_iterator i = begin;
             unsigned int shapesWithoutUpdate = 0;    
             unsigned int shapeCount = 0;
