@@ -9,7 +9,7 @@ CppCompiler=-D__GNUWIN32__ -W -Wall -DWIN32 -DNDEBUG -D_WINDOWS -DGLEW_STATIC_@@
 Includes=include;glew/include;.
 Linker=-lopengl32_@@_-lglu32_@@_-lglut32_@@_
 Libs=
-UnitCount=43
+UnitCount=42
 Folders="Header Files","Source Files","Source Files/glew","Source Files/OpenCSG","Source Files/OpenCSGexample","Source Files/RenderTexture"
 ObjFiles=
 PrivateResource=
@@ -387,27 +387,7 @@ Priority=1000
 OverrideBuildCmd=0
 BuildCmd=
 
-[Unit35]
-FileName=src\offscreenBuffer.cpp
-CompileCpp=1
-Folder=Source Files/OpenCSG
-Compile=1
-Link=1
-Priority=1000
-OverrideBuildCmd=0
-BuildCmd=
-
 [Unit36]
-FileName=src\offscreenBuffer.h
-CompileCpp=1
-Folder=Source Files/OpenCSG
-Compile=1
-Link=1
-Priority=1000
-OverrideBuildCmd=0
-BuildCmd=
-
-[Unit37]
 FileName=src\pBufferTexture.cpp
 CompileCpp=1
 Folder=Source Files/OpenCSG
@@ -417,7 +397,7 @@ Priority=1000
 OverrideBuildCmd=0
 BuildCmd=
 
-[Unit38]
+[Unit37]
 FileName=src\pBufferTexture.h
 CompileCpp=1
 Folder=Source Files/OpenCSG
@@ -427,7 +407,7 @@ Priority=1000
 OverrideBuildCmd=0
 BuildCmd=
 
-[Unit39]
+[Unit38]
 FileName=src\settings.cpp
 CompileCpp=1
 Folder=Source Files/OpenCSG
@@ -437,7 +417,7 @@ Priority=1000
 OverrideBuildCmd=0
 BuildCmd=
 
-[Unit40]
+[Unit39]
 FileName=src\frameBufferObjectExt.cpp
 CompileCpp=1
 Folder=Source Files/OpenCSG
@@ -447,7 +427,7 @@ Priority=1000
 OverrideBuildCmd=0
 BuildCmd=
 
-[Unit41]
+[Unit40]
 FileName=src\frameBufferObjectExt.h
 CompileCpp=1
 Folder=Source Files/OpenCSG
@@ -457,8 +437,18 @@ Priority=1000
 OverrideBuildCmd=0
 BuildCmd=
 
-[Unit42]
+[Unit41]
 FileName=src\context.h
+CompileCpp=1
+Folder=Source Files/OpenCSG
+Compile=1
+Link=1
+Priority=1000
+OverrideBuildCmd=0
+BuildCmd=
+
+[Unit42]
+FileName=src\context.cpp
 CompileCpp=1
 Folder=Source Files/OpenCSG
 Compile=1
@@ -469,6 +459,16 @@ BuildCmd=
 
 [Unit43]
 FileName=src\context.cpp
+CompileCpp=1
+Folder=Source Files/OpenCSG
+Compile=1
+Link=1
+Priority=1000
+OverrideBuildCmd=0
+BuildCmd=
+
+[Unit35]
+FileName=src\offscreenBuffer.h
 CompileCpp=1
 Folder=Source Files/OpenCSG
 Compile=1

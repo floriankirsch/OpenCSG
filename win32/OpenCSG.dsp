@@ -143,10 +143,6 @@ SOURCE=..\src\occlusionQuery.h
 # End Source File
 # Begin Source File
 
-SOURCE=..\src\offscreenBuffer.cpp
-# End Source File
-# Begin Source File
-
 SOURCE=..\src\offscreenBuffer.h
 # End Source File
 # Begin Source File

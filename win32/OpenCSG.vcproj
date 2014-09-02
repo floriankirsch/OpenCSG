@@ -162,9 +162,6 @@
 				RelativePath="..\src\occlusionQuery.h">
 			</File>
 			<File
-				RelativePath="..\src\offscreenBuffer.cpp">
-			</File>
-			<File
 				RelativePath="..\src\offscreenBuffer.h">
 			</File>
 			<File

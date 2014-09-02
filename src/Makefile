@@ -66,7 +66,6 @@ SOURCES = area.cpp \
 		frameBufferObject.cpp \
 		frameBufferObjectExt.cpp \
 		occlusionQuery.cpp \
-		offscreenBuffer.cpp \
 		opencsgRender.cpp \
 		openglHelper.cpp \
 		pBufferTexture.cpp \
@@ -85,7 +84,6 @@ OBJECTS = area.o \
 		frameBufferObject.o \
 		frameBufferObjectExt.o \
 		occlusionQuery.o \
-		offscreenBuffer.o \
 		opencsgRender.o \
 		openglHelper.o \
 		pBufferTexture.o \
@@ -208,13 +206,6 @@ frameBufferObjectExt.o: frameBufferObjectExt.cpp opencsgConfig.h \
 
 occlusionQuery.o: occlusionQuery.cpp opencsgConfig.h \
 		occlusionQuery.h
-
-offscreenBuffer.o: offscreenBuffer.cpp opencsgConfig.h \
-		context.h \
-		offscreenBuffer.h \
-		frameBufferObject.h \
-		frameBufferObjectExt.h \
-		pBufferTexture.h
 
 opencsgRender.o: opencsgRender.cpp opencsgConfig.h \
 		opencsgRender.h \

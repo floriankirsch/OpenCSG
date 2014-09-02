@@ -104,7 +104,6 @@
     <ClCompile Include="..\src\frameBufferObject.cpp" />
     <ClCompile Include="..\src\frameBufferObjectExt.cpp" />
     <ClCompile Include="..\src\occlusionQuery.cpp" />
-    <ClCompile Include="..\src\offscreenBuffer.cpp" />
     <ClCompile Include="..\src\opencsgRender.cpp" />
     <ClCompile Include="..\src\openglHelper.cpp" />
     <ClCompile Include="..\src\pBufferTexture.cpp" />

@@ -31,7 +31,6 @@ SOURCES		= area.cpp \
 		  frameBufferObject.cpp	\
 		  frameBufferObjectExt.cpp \
 		  occlusionQuery.cpp \
-		  offscreenBuffer.cpp \
 		  opencsgRender.cpp \
 		  openglHelper.cpp \
 		  pBufferTexture.cpp \
