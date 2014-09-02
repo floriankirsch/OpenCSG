@@ -1,3 +1,8 @@
+21.08.2014
+    Fixed: In the layered Goldfeather algorithms, do not hang forever
+        if the maximum stencil width has been reached, i.e., if the
+        depth complexity is larger than 255
+
 17.08.2014
     Added: 32-bit Id-buffer for SCS algorithm, which requires the
         ARB_fragment_program extension. This allows the SCS algorithm
