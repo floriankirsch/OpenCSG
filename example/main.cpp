@@ -227,20 +227,27 @@ void setCubeRack() {
 
     primitives.push_back(new OpenCSG::DisplayListPrimitive(id1, OpenCSG::Intersection, 1));
 
-    const int NBELEM = 6;
+    // mx*x / my*y / mz*z loop all numbers in [-3, 3] in the following order:
+    // 3, -3, 2, -2, 1, -1, 0. Compared to the trivial ordering, this makes
+    // the CSG rendering less depending on the camera orientation.
+    for (int x=3; x>=0; --x) {
+        for (int y=3; y>=0; --y) {
+            for (int z=3; z>=0; --z) {
+                for (int mx=-1; mx<=1 && mx<=x; mx+=2) {
+                    for (int my=-1; my<=1 && my<=y; my+=2) {
+                        for (int mz=-1; mz<=1 && mz<=z; mz+=2) {
+                            GLuint id = glGenLists(1);
+                            glNewList(id, GL_COMPILE);
+                            glPushMatrix();
+                            glTranslatef(float(x*mx)/6.0f, float(y*my)/6.0f, float(z*mz)/6.0f);
+                            glutSolidSphere(0.58, 20, 20);
+                            glPopMatrix();
+                            glEndList();
 
-    for (int x=-NBELEM/2; x<=NBELEM/2; ++x) {
-        for (int y=-NBELEM/2; y<=NBELEM/2; ++y) {
-            for (int z=-NBELEM/2; z<=NBELEM/2; ++z) {
-                GLuint id = glGenLists(1);
-                glNewList(id, GL_COMPILE);
-                glPushMatrix();
-                glTranslatef(float(x)/float(NBELEM), float(y)/float(NBELEM), float(z)/float(NBELEM));
-                glutSolidSphere(0.58, 20, 20);
-                glPopMatrix();
-                glEndList();
-
-                primitives.push_back(new OpenCSG::DisplayListPrimitive(id, OpenCSG::Subtraction, 1));
+                            primitives.push_back(new OpenCSG::DisplayListPrimitive(id, OpenCSG::Subtraction, 1));
+                        }
+                    }
+                }
             }
         }
     }

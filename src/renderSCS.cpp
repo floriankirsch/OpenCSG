@@ -62,6 +62,7 @@ namespace OpenCSG {
             return dta;
         }
 
+        // Stores Ids in the alpha buffer only -> only 255 primitives are possible
         class SCSChannelManagerAlphaOnly : public ChannelManagerForBatches {
         public:
             virtual void merge();
@@ -131,6 +132,8 @@ namespace OpenCSG {
             clear();
         }
 
+        // Stores Ids in the all components of the color buffer
+        // -> in theory, 2^32-1 primitives are possible
         class SCSChannelManagerFragmentProgram : public ChannelManagerForBatches {
         public:
             virtual Channel request();
