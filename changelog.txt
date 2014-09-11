@@ -1,3 +1,9 @@
+11.09.2014
+    Fixed: Do not write into the color buffer during primitive visibility
+        transfer. This bug made it impossible to use alpha blending
+        on the final CSG geometry, because the geometry was already
+        shaded by OpenCSG.
+
 21.08.2014
     Fixed: In the layered Goldfeather algorithms, do not hang forever
         if the maximum stencil width has been reached, i.e., if the

@@ -56,6 +56,7 @@ namespace OpenCSG {
             glEnable(GL_DEPTH_TEST);
             glDepthFunc(GL_LESS);
             glDepthMask(GL_TRUE);
+            glColorMask(GL_FALSE, GL_FALSE, GL_FALSE, GL_FALSE);
 
             std::vector<Channel> channels = occupied();
             for (std::vector<Channel>::const_iterator c = channels.begin(); c!=channels.end(); ++c) {
