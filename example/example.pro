@@ -1,10 +1,17 @@
-TEMPLATE	= app
-TARGET		= opencsgexample
+TEMPLATE = app
+TARGET = opencsgexample
 
-CONFIG	 	+= opengl warn_on release
-INCLUDEPATH += ../glew/include ../include
+CONFIG += opengl warn_on release
+CONFIG -= qt
+INCLUDEPATH += ../include
+LIBS += -L../lib -lopencsg -lGLEW
+macx {
+  INCLUDEPATH += /opt/local/include
+  LIBS += -framework GLUT -L/opt/local/lib
+}
+else {
+  LIBS += -lGLU -lglut
+}
 
-LIBS        += -L../lib -lopencsg -lglut -L../glew/lib -lGLEW
-
-HEADERS		= displaylistPrimitive.h
-SOURCES		= displaylistPrimitive.cpp main.cpp
+HEADERS = displaylistPrimitive.h
+SOURCES	= displaylistPrimitive.cpp main.cpp

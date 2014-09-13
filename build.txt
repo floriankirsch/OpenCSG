@@ -1,7 +1,9 @@
 Microsoft VC6 / VC 2003 .NET / VC 2010
 --------------------------------------
 
-To run the example, you must install GLUT or FreeGLUT
+The Visual Studio solutions automatically build GLEW, the opencsg
+lib, and the example. To build and run the example, you must install
+GLUT or FreeGLUT first.
 Open OpenCSG.dsw / OpenCSG.sln / OpenCSG_vc10.sln
 Set OpenCSGexample as active project. In this project, eventually
   adjust include directories such that GL/glut.h is found, and
@@ -12,13 +14,17 @@ Compile and start example
 Linux
 -----
 
-1) Just type 'make'. Maybe you must adjust the Makefiles in
+1) As prerequisites, you must install OpenGL development packages,
+   GLEW, and, for the example, glut. The GLEW version provided with
+   OpenCSG is not used automatically for building, but you can
+   install GLEW from there if you like.
+2) Just type 'make'. Maybe you must adjust the Makefiles in
    the src/ and the example/ directory for sucessful compilation.
-2) The OpenCSG library will have been build in lib/, GLEW in glew/lib/,
-   and the example "opencsgexample" will reside in the src/ directory. 
-   To run the opencsg example, you must ensure that the GLEW and the 
-   OpenCSG libs are in your LD_LIBRARY_PATH (e.G., one way to do this 
-   is to copy them to /usr/local/lib and running "ldconfig -v"). 
+3) The OpenCSG library will have been build in lib/, and the example
+   "opencsgexample" will reside in the src/ directory. To run the
+   opencsg example, you must ensure that libopencsg.so lib is in your
+   LD_LIBRARY_PATH (e.G., one way to do this is to copy it to /usr/local/lib
+   and running "ldconfig -v").
    Currently there is no automatic way for this.
 
 

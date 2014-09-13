@@ -1,10 +1,15 @@
-TEMPLATE	= lib
-TARGET		= opencsg
-VERSION     = 1.4.0
-DESTDIR     = ../lib
+TEMPLATE = lib
+TARGET = opencsg
+VERSION = 1.4.0
 
-CONFIG		+= opengl warn_on release
-INCLUDEPATH += ../include ../glew/include ../
+CONFIG += opengl warn_on release
+INCLUDEPATH += ../include ../
+CONFIG -= qt
+LIBS += -lGLEW
+
+DESTDIR = ../lib
+INSTALLS += target
+target.path = $$DESTDIR
 
 HEADERS		= ../include/opencsg.h \
 		  opencsgConfig.h \

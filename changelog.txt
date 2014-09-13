@@ -1,3 +1,7 @@
+13.09.2014
+    Changed: On Linux and Mac, ignore the OpenCSG-provided GLEW and
+        build link with the system provided GLEW instead.
+
 11.09.2014
     Fixed: Do not write into the color buffer during primitive visibility
         transfer. This bug made it impossible to use alpha blending
