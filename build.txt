@@ -24,8 +24,9 @@ Linux
    "opencsgexample" will reside in the src/ directory. To run the
    opencsg example, you must ensure that libopencsg.so lib is in your
    LD_LIBRARY_PATH (e.G., one way to do this is to copy it to /usr/local/lib
-   and running "ldconfig -v").
-   Currently there is no automatic way for this.
+   and running "ldconfig -v"). 'make install' is an automatic way to
+   copy the build and the example into /usr/local (requires write access
+   to /usr/local)
 
 
 Dev-C++ 5

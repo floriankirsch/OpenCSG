@@ -8,8 +8,11 @@ CONFIG -= qt
 LIBS += -lGLEW
 
 DESTDIR = ../lib
-INSTALLS += target
-target.path = $$DESTDIR
+INSTALLDIR = /usr/local
+headers.files = ../include/opencsg.h
+headers.path = $$INSTALLDIR/include
+target.path = /usr/local/lib
+INSTALLS += target headers
 
 HEADERS		= ../include/opencsg.h \
 		  opencsgConfig.h \
