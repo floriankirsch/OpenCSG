@@ -23,6 +23,9 @@
 // example for a primitive which renders itself using a display list
 //
 
+#ifndef __OpenCSG__displaylistprimitive_h__
+#define __OpenCSG__displaylistprimitive_h__
+
 #include <opencsg.h>
 
 namespace OpenCSG {
@@ -49,3 +52,4 @@ namespace OpenCSG {
 
 } // namespace OpenCSG
 
+#endif
