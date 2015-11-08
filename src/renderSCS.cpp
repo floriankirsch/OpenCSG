@@ -33,6 +33,8 @@
 #include "openglHelper.h"
 #include "primitiveHelper.h"
 #include "scissorMemo.h"
+
+#include <algorithm>
 #include <map>
 
 namespace OpenCSG {

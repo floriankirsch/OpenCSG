@@ -27,6 +27,8 @@
 #include "openglHelper.h"
 #include "scissorMemo.h"
 
+#include <algorithm>
+
 namespace OpenCSG {
 
     ScissorMemo::ScissorMemo() : 
