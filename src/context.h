@@ -47,6 +47,11 @@ namespace OpenCSG {
         /// active context in OpenCSG.
         OffscreenBuffer* getOffscreenBuffer(OffscreenType type);
 
+        /// Given a constant(!) ARB vertex program string and its length,
+        /// returns a ARB vertex program object, for the currently
+        /// active context in OpenCSG.
+        GLuint getARBVertexProgram(const char* prog, int len);
+
         /// Given a constant(!) ARB fragment program string and its length,
         /// returns a ARB fragment program object, for the currently
         /// active context in OpenCSG.

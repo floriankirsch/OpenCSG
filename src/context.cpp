@@ -91,7 +91,7 @@ namespace OpenCSG {
             return 0;
         }
 
-        GLuint getARBFragmentProgram(const char* prog, int len)
+        GLuint getARBProgram(GLenum target, const char* prog, int len)
         {
             int context = getContext();
             ContextData& contextData = gContextDataMap[context];
@@ -101,18 +101,28 @@ namespace OpenCSG {
             {
                 GLuint id;
                 glGenProgramsARB(1, &id);
-                glBindProgramARB(GL_FRAGMENT_PROGRAM_ARB, id);
-                glProgramStringARB(GL_FRAGMENT_PROGRAM_ARB, GL_PROGRAM_FORMAT_ASCII_ARB, len, prog);
+                glBindProgramARB(target, id);
+                glProgramStringARB(target, GL_PROGRAM_FORMAT_ASCII_ARB, len, prog);
 
-                // GLint errorPos;
-                // glGetIntegerv(GL_PROGRAM_ERROR_POSITION_ARB, &errorPos);
-                // const char * error = (const char*)glGetString(GL_PROGRAM_ERROR_STRING_ARB);
-                // printf("");
+                GLint errorPos;
+                glGetIntegerv(GL_PROGRAM_ERROR_POSITION_ARB, &errorPos);
+                const char * error = (const char*)glGetString(GL_PROGRAM_ERROR_STRING_ARB);
+                printf("%s", error);
 
                 it = contextData.idFP.insert(std::pair<const char*, GLuint>(prog, id)).first;
             }
 
             return it->second;
+        }
+
+        GLuint getARBVertexProgram(const char* prog, int len)
+        {
+            return getARBProgram(GL_VERTEX_PROGRAM_ARB, prog, len);
+        }
+
+        GLuint getARBFragmentProgram(const char* prog, int len)
+        {
+            return getARBProgram(GL_FRAGMENT_PROGRAM_ARB, prog, len);
         }
 
         void freeResources()

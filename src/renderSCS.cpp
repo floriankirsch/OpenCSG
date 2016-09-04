@@ -150,6 +150,32 @@ namespace OpenCSG {
             return mCurrentChannel;
         }
 
+        static const char mergeVertexProgram[] =
+"!!ARBvp1.0\n"
+//"OPTION ARB_position_invariant;\n"
+"ATTRIB  pos = vertex.position;\n"
+"ATTRIB  col = vertex.color;\n"
+"OUTPUT  outPos = result.position;\n"
+"OUTPUT  outCol = result.color;\n"
+"OUTPUT  outTex0 = result.texcoord[0];\n"
+"PARAM   mat[4] = { state.matrix.mvp };\n"
+"PARAM   texmat[4] = { state.matrix.texture[0] };\n"
+"TEMP    mvpPos;\n"
+"TEMP    tex;\n"
+"DP4     mvpPos.x, mat[0], pos;\n"
+"DP4     mvpPos.y, mat[1], pos;\n"
+"DP4     mvpPos.z, mat[2], pos;\n"
+"DP4     mvpPos.w, mat[3], pos;\n"
+"MOV     outPos, mvpPos;\n"
+"DP4     tex.x, texmat[0], pos;\n"
+"DP4     tex.y, texmat[1], pos;\n"
+"DP4     tex.z, texmat[2], pos;\n"
+"DP4     tex.w, texmat[3], pos;\n"
+"MOV     outTex0, tex;\n"
+"MOV     outCol, col;\n"
+"END";
+
+
         // Subtract color from texture value, takes the absolute value
         // and adds all components into each channel of the result, scaled by 2.0f.
         // This way, all 32-bits of the color channel can be used
@@ -190,11 +216,15 @@ namespace OpenCSG {
 "END";
         void SCSChannelManagerFragmentProgram::merge()
         {
-            GLuint id =
+            GLuint vId = OpenGL::getARBVertexProgram(mergeVertexProgram, (sizeof(mergeVertexProgram) / sizeof(mergeVertexProgram[0])) - 1);
+            glBindProgramARB(GL_VERTEX_PROGRAM_ARB, vId);
+            glEnable(GL_VERTEX_PROGRAM_ARB);
+
+            GLuint fId =
                  isRectangularTexture()
                    ? OpenGL::getARBFragmentProgram(mergeFragmentProgramRect, (sizeof(mergeFragmentProgramRect) / sizeof(mergeFragmentProgramRect[0])) - 1)
                    : OpenGL::getARBFragmentProgram(mergeFragmentProgram2D, (sizeof(mergeFragmentProgram2D) / sizeof(mergeFragmentProgram2D[0])) - 1);
-            glBindProgramARB(GL_FRAGMENT_PROGRAM_ARB, id);
+            glBindProgramARB(GL_FRAGMENT_PROGRAM_ARB, fId);
             glEnable(GL_FRAGMENT_PROGRAM_ARB);
 
             setupProjectiveTexture();
@@ -227,10 +257,11 @@ namespace OpenCSG {
 
             scissor->disableScissor();
 
-            glDisable(GL_FRAGMENT_PROGRAM_ARB);
             glDisable(GL_ALPHA_TEST);
             glDisable(GL_CULL_FACE);
             glDepthFunc(GL_LEQUAL);
+            glDisable(GL_FRAGMENT_PROGRAM_ARB);
+            glDisable(GL_VERTEX_PROGRAM_ARB);
 
             resetProjectiveTexture();
 
