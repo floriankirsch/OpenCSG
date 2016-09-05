@@ -104,10 +104,10 @@ namespace OpenCSG {
                 glBindProgramARB(target, id);
                 glProgramStringARB(target, GL_PROGRAM_FORMAT_ASCII_ARB, len, prog);
 
-                GLint errorPos;
-                glGetIntegerv(GL_PROGRAM_ERROR_POSITION_ARB, &errorPos);
-                const char * error = (const char*)glGetString(GL_PROGRAM_ERROR_STRING_ARB);
-                printf("%s", error);
+                // GLint errorPos;
+                // glGetIntegerv(GL_PROGRAM_ERROR_POSITION_ARB, &errorPos);
+                // const char * error = (const char*)glGetString(GL_PROGRAM_ERROR_STRING_ARB);
+                // printf("%s", error);
 
                 it = contextData.idFP.insert(std::pair<const char*, GLuint>(prog, id)).first;
             }

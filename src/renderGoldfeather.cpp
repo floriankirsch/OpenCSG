@@ -49,7 +49,8 @@ namespace OpenCSG {
 
         void GoldfeatherChannelManager::merge() {
 
-            setupProjectiveTexture();
+            bool isFixedFunction = true;
+            setupProjectiveTexture(isFixedFunction);
 
             glEnable(GL_ALPHA_TEST);
             glAlphaFunc(GL_GEQUAL, 0.5f); // accuracy issue with GL_EQUAL 1.0 on FX5600
@@ -91,7 +92,7 @@ namespace OpenCSG {
 
             scissor->disableScissor();
 
-            resetProjectiveTexture();
+            resetProjectiveTexture(isFixedFunction);
 
             clear();
         }
