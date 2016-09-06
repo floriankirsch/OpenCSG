@@ -382,10 +382,10 @@ namespace OpenCSG {
 
     void ChannelManager::setupProjectiveTexture(bool fixedFunction)
     {
-        static float splane[4] = { 1.0f, 0.0f, 0.0f, 0.0f };
-        static float tplane[4] = { 0.0f, 1.0f, 0.0f, 0.0f };
-        static float rplane[4] = { 0.0f, 0.0f, 1.0f, 0.0f };
-        static float qplane[4] = { 0.0f, 0.0f, 0.0f, 1.0f };
+        static const float splane[4] = { 1.0f, 0.0f, 0.0f, 0.0f };
+        static const float tplane[4] = { 0.0f, 1.0f, 0.0f, 0.0f };
+        static const float rplane[4] = { 0.0f, 0.0f, 1.0f, 0.0f };
+        static const float qplane[4] = { 0.0f, 0.0f, 0.0f, 1.0f };
 
         mOffscreenBuffer->Bind();
         mOffscreenBuffer->EnableTextureTarget();
@@ -430,21 +430,23 @@ namespace OpenCSG {
             factorY /= static_cast<float>(mOffscreenBuffer->GetHeight());
         }
 
-        float   texCorrect[16] = { factorX, 0.0f, 0.0f, 0.0f, 
-                                   0.0f, factorY, 0.0f, 0.0f, 
+        float   texCorrect[16] = { factorX, 0.0f, 0.0f, 0.0f,
+                                   0.0f, factorY, 0.0f, 0.0f,
                                    0.0f,    0.0f, 1.0f, 0.0f,
                                    0.0f,    0.0f, 0.0f, 1.0f };
-        
-        static float p2ndc[16] = { 0.5f, 0.0f, 0.0f, 0.0f, 
-                                   0.0f, 0.5f, 0.0f, 0.0f, 
-                                   0.0f, 0.0f, 0.5f, 0.0f, 
-                                   0.5f, 0.5f, 0.5f, 1.0f };
+
+        static const float p2ndc[16] = { 0.5f, 0.0f, 0.0f, 0.0f,
+                                         0.0f, 0.5f, 0.0f, 0.0f,
+                                         0.0f, 0.0f, 0.5f, 0.0f,
+                                         0.5f, 0.5f, 0.5f, 1.0f };
         glPushMatrix();
         glLoadMatrixf(texCorrect);
         glMultMatrixf(p2ndc);
-        glMultMatrixf(OpenGL::projection);
         if (fixedFunction)
+        {
+            glMultMatrixf(OpenGL::projection);
             glMultMatrixf(OpenGL::modelview);
+        }
         glMatrixMode(GL_MODELVIEW);
     }
 
