@@ -1,3 +1,12 @@
+05.09.2016:
+    Fixed: 32-bit Id-buffer for SCS algorithm on Intel hardware,
+        by using ARB_vertex_program instead of the fixed function
+        pipeline to setup texture coordinate generation. The latter
+        apperently triggered a driver bug in the Intel OpenGL driver.
+
+15.09.2014
+    Release 1.4.0
+
 13.09.2014
     Changed: On Linux and Mac, ignore the OpenCSG-provided GLEW and
         build link with the system provided GLEW instead.
