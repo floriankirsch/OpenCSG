@@ -41,7 +41,7 @@
 
 <hr>
 
-<h3> <a href="news.html">Latest release: OpenCSG 1.4.0 (15-Sep-2014)</a></h3>
+<h3> <a href="news.html">Latest release: OpenCSG 1.4.1 (11-Sep-2016)</a></h3>
 
 <hr>
 
@@ -51,7 +51,7 @@
 OpenCSG is a library that does image-based CSG rendering using OpenGL. 
 OpenCSG is written in C++ and supports most modern graphics hardware using
 Microsoft Windows or the Linux operating system. 
-<a href="http://www.opencsg.org/OpenCSG-1.4.0.tar.gz">OpenCSG-1.4.0</a> is the current version.
+<a href="http://www.opencsg.org/OpenCSG-1.4.1.tar.gz">OpenCSG-1.4.1</a> is the current version.
 </p>
 
 <p>
@@ -149,25 +149,20 @@ Microsoft Visual Studio. Workspaces for MSVC6, VC2003, VC2010 and
 </p>
 
 <p>
-To run OpenCSG well, you should have graphics hardware with lots of fill
-rate. NVidia graphics hardware since GeForce and ATI Radeon qualify. 
-The <code>OpenCSG::OcclusionQuery</code> option obviously requires occlusion
-queries, which are available since Radeon 9x00 (x>=5) and GeForce3
-(beware that the GeForce4MX counts as GeForce2!).
-</p>
-
-<p>
 OpenCSG has been sucessfully run on Intel and AMD CPUs. Generally,
-NVidia and AMD graphics hardware is well supported, and some hardware
-where OpenCSG successfully runs includes
-GeForce 250 GTS
-Radeon HD 4670,
-GeForce 8x00,
-GeForceFX 6800,
-GeForceFX 5600,
-Radeon 9700,
-GeForce3,
-GeForce4MX,
+NVidia and AMD graphics hardware is well supported, and hardware
+where OpenCSG successfully has been run includes the<br />
+&nbsp;GeForce GTX 960<br />
+&nbsp;Intel Iris Graphics 5100<br />
+&nbsp;GeForce 250 GTS<br />
+&nbsp;Radeon HD 4670<br />
+&nbsp;Radeon HD 3750 mobile<br />
+&nbsp;GeForce 8x00<br />
+&nbsp;GeForceFX 6800<br />
+&nbsp;GeForceFX 5600<br />
+&nbsp;Radeon 9700<br />
+&nbsp;GeForce3<br />
+&nbsp;GeForce4MX<br />
 and TNT2 graphcs hardware (on the latter, it crawls ...).
 </p>
 
@@ -178,10 +173,12 @@ this was possibly a driver issue.
 </p>
 
 <p>
-On graphics hardware from Intel, OpenCSG does not always work well.
-Generally, use the most recent graphics drivers, in particular for
-HD 3000 or HD 4000 hardware. Furthermore, the (non-default) Goldfeather
-rendering path generally appears to produce a more robust rendering result
+On graphics hardware from Intel, OpenCSG did not work so well in the past.
+Recent OpenCSG versions contain fixes and workarounds for some bugs
+reported for Intel hardware. It still remains to be seen if all known issues
+are fixed now. Generally, use the most recent graphics drivers, in particular
+for HD 3000 or HD 4000 hardware. Furthermore, the (non-default) Goldfeather
+rendering path generally appears to produce more robust rendering results
 compared to the SCS rendering path.
 </p>
 
@@ -416,14 +413,15 @@ OpenGL resources for the currently active OpenCSG context.
 <h3> <a name="download">Download</a> </h3>
 
 <p>
-Download <a href="http://www.opencsg.org/OpenCSG-1.4.0.tar.gz">OpenCSG-1.4.0.tar.gz</a>. The archive contains all required helper
-libraries, i.e., also RenderTexture and GLEW. It comes with 
-makefiles for Linux and with project files for MSVC6, VC2003, VC2010, 
+Download <a href="http://www.opencsg.org/OpenCSG-1.4.1.tar.gz">OpenCSG-1.4.1.tar.gz</a>.
+The archive contains all required helper libraries, i.e., also RenderTexture and GLEW.
+It comes with makefiles for Linux and with project files for MSVC6, VC2003, VC2010, 
 and Dev-C++ 5.
 </p>
 
 <p>
 The older versions <br>
+&nbsp;&nbsp; <a href="http://www.opencsg.org/OpenCSG-1.4.0.tar.gz">OpenCSG-1.4.0</a> <br>
 &nbsp;&nbsp; <a href="http://www.opencsg.org/OpenCSG-1.3.3.tar.gz">OpenCSG-1.3.3</a> <br>
 &nbsp;&nbsp; <a href="http://www.opencsg.org/OpenCSG-1.3.2.tar.gz">OpenCSG-1.3.2</a> <br>
 &nbsp;&nbsp; <a href="http://www.opencsg.org/OpenCSG-1.3.1.tar.gz">OpenCSG-1.3.1</a> <br>
@@ -637,9 +635,9 @@ their respective authors.
 <hr>
 
 <center><p>
-&copy; 2002-2014, Florian Kirsch, e-mail: <b>mail at opencsg dot org</b>, <br>
+&copy; 2002-2016, Florian Kirsch, e-mail: <b>mail at opencsg dot org</b>, <br>
 2002-2005 Hasso-Plattner-Institute Potsdam.<br>
-Last change: 15-Sep-2014
+Last change: 11-Sep-2016
 </p></center>
 
 </body>

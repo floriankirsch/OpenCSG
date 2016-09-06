@@ -29,6 +29,17 @@
 
 <hr>
 
+<h3>11-Sep-2016: OpenCSG 1.4.1 released</h3>
+
+<p>
+On Intel graphics hardware, the new rendering path in the SCS algorithm
+in OpenCSG 1.4.0 entirely failed to work. This was apparently due to an
+incompatibility of the fragment program with the fixed function pipeline
+used at the vertex stage. <a href="http://www.opencsg.org/OpenCSG-1.4.1.tar.gz">OpenCSG 1.4.1</a>
+implements a workaround: a vertex program is now used instead. I hope that
+the rendering bugs on Intel graphics hardware are now really a thing of the past.
+</p>
+
 <h3>15-Sep-2014: OpenCSG 1.4.0 released</h3>
 
 <p>
@@ -307,9 +318,9 @@ have not changed.
 <hr>
 
 <center><p>
-&copy; 2002-2014, Florian Kirsch, e-mail: <b>mail at opencsg dot org</b>, <br>
+&copy; 2002-2016, Florian Kirsch, e-mail: <b>mail at opencsg dot org</b>, <br>
 2002-2005 Hasso-Plattner-Institute Potsdam.<br>
-Last change: 15-Sep-2014
+Last change: 11-Sep-2016
 </p></center>
 
 </body>
