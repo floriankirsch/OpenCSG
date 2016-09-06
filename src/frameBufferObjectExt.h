@@ -1,5 +1,5 @@
 // OpenCSG - library for image-based CSG rendering for OpenGL
-// Copyright (C) 2010-2014, Florian Kirsch
+// Copyright (C) 2010-2016, Florian Kirsch
 //
 // This library is free software; you can redistribute it and/or 
 // modify it under the terms of the GNU General Public License, 
