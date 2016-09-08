@@ -10,7 +10,7 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "OpenCSGexample", "example\O
 		{934506C1-ABD2-4D13-B1FF-35BB2985A60F} = {934506C1-ABD2-4D13-B1FF-35BB2985A60F}
 	EndProjectSection
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "glew_static", "glew\build\vc6\glew_static.vcproj", "{9E7140BE-2064-45BD-9492-0EF5BCD28B8E}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "glew_static", "glew\build\vc7\glew_static.vcproj", "{9E7140BE-2064-45BD-9492-0EF5BCD28B8E}"
 	ProjectSection(ProjectDependencies) = postProject
 	EndProjectSection
 EndProject
