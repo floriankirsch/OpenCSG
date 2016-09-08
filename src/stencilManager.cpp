@@ -178,7 +178,7 @@ namespace OpenCSG {
         StencilManager* getStencilManager(const PCArea& area) {
 #ifdef _WIN32
             /*
-            // uncomment for possibility of saving the stencilo buffer under windows
+            // uncomment for possibility of saving the stencil buffer under windows
             if (WGLEW_ARB_buffer_region) {
                 return new StencilManagerARBBufferRegionW32(area);
             }
