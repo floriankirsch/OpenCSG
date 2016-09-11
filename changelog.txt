@@ -1,3 +1,6 @@
+11.09.2016
+    Release 1.4.1
+
 05.09.2016:
     Fixed: 32-bit Id-buffer for SCS algorithm on Intel hardware,
         by using ARB_vertex_program instead of the fixed function
