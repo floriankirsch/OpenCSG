@@ -1,3 +1,9 @@
+22.09.2016
+    Fixed: For frame buffer objects, switch back to the correct prior
+        FBO, instead of the FBO that was active when the OpenCSG FBO
+        was initialized. This fixes issues with using OpenCSG with the
+        QOpenGLWidget from Qt.
+
 11.09.2016
     Release 1.4.1
 

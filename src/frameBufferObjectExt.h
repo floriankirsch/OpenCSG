@@ -52,6 +52,8 @@ namespace OpenCSG {
             /// Change the size of the frame buffer object.
             virtual bool Resize(int width, int height);
 
+            virtual void Prepare();
+
             /// Begin drawing to the frame buffer object. (i.e. use as "output" texture)
             virtual bool BeginCapture();
             /// End drawing to the frame buffer object.

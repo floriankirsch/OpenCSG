@@ -132,6 +132,11 @@ namespace OpenCSG {
             return Initialize(width, height);
         }
 
+        void FrameBufferObjectExt::Prepare()
+        {
+            glGetIntegerv(GL_FRAMEBUFFER_BINDING_EXT, &oldFramebufferID);
+        }
+
         // Binds the created frame buffer texture such we can render into it.
         bool FrameBufferObjectExt::BeginCapture()
         {

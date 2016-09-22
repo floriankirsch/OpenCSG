@@ -221,7 +221,8 @@ namespace OpenCSG {
 
         bool rebuild = false;
 
-        if (!mOffscreenBuffer->IsInitialized()) {
+        if (!mOffscreenBuffer->IsInitialized())
+        {
             if (!mOffscreenBuffer->Initialize(sizeX.getMax(), sizeY.getMax(), true, false)) {
                 // Initializing the offscreen buffer failed, maybe the OpenGL extension
                 // for the specific offscreen buffer type is not supported
@@ -230,18 +231,22 @@ namespace OpenCSG {
             rebuild = true;
         }
         // tx == ty == 0 happens if the window is minimized, in this case don't touch a thing
-        else if (tx != 0 && ty != 0) {
-            if (   mOffscreenBuffer->GetWidth() != sizeX.getMax()
-                || mOffscreenBuffer->GetHeight() != sizeY.getMax()
-            ) {
-                if (!mOffscreenBuffer->Resize(sizeX.getMax(), sizeY.getMax())) {
-                    // Resizing the offscreen buffer failed, maybe the OpenGL extension
-                    // for the specific offscreen buffer type is not supported. More 
-                    // likely this is a programming error in Resize(). 
-                    return false;
-                }
-                rebuild = true;
+        else if (tx != 0 && ty != 0 &&
+                    (   mOffscreenBuffer->GetWidth() != sizeX.getMax()
+                     || mOffscreenBuffer->GetHeight() != sizeY.getMax()
+                )   )
+        {
+            if (!mOffscreenBuffer->Resize(sizeX.getMax(), sizeY.getMax())) {
+                // Resizing the offscreen buffer failed, maybe the OpenGL extension
+                // for the specific offscreen buffer type is not supported. More
+                // likely this is a programming error in Resize().
+                return false;
             }
+            rebuild = true;
+        }
+        else
+        {
+            mOffscreenBuffer->Prepare();
         }
 
         if (rebuild) {

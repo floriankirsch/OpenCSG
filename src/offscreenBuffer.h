@@ -54,6 +54,8 @@ namespace OpenCSG {
             /// must be called again.
             virtual bool Resize(int width, int height) = 0;
 
+            virtual void Prepare() = 0;
+
             /// Begin drawing to the texture. (i.e. use as "output" texture)
             virtual bool BeginCapture() = 0;
             /// End drawing to the texture.

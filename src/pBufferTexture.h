@@ -55,6 +55,8 @@ namespace OpenCSG {
             /// Change the size of the render texture.
             virtual bool Resize(int width, int height);
 
+            virtual void Prepare();
+
             /// Begin drawing to the texture. (i.e. use as "output" texture)
             virtual bool BeginCapture();
             /// End drawing to the texture.

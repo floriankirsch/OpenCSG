@@ -79,6 +79,9 @@ namespace OpenCSG {
             return r->Resize(width, height);
         }
 
+        void PBufferTexture::Prepare() {
+        }
+
         bool PBufferTexture::BeginCapture() {
             return r->BeginCapture();
         }
