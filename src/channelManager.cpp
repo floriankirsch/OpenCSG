@@ -114,7 +114,7 @@ namespace OpenCSG {
 
         GLint faceOrientation;
         glGetIntegerv(GL_FRONT_FACE, &faceOrientation);
-        mFaceOrientation = static_cast<GLenum>(mFaceOrientation);
+        mFaceOrientation = static_cast<GLenum>(faceOrientation);
 
         glGetFloatv(GL_MODELVIEW_MATRIX, OpenGL::modelview);
         glGetFloatv(GL_PROJECTION_MATRIX, OpenGL::projection);
