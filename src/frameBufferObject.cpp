@@ -43,10 +43,20 @@ namespace OpenCSG {
             Reset();
         }
 
+        bool FrameBufferObject::ReadCurrent()
+        {
+            bool haveFBO = GLEW_ARB_framebuffer_object != 0;
+
+            if (haveFBO)
+                glGetIntegerv(GL_FRAMEBUFFER_BINDING, &oldFramebufferID);
+
+            return haveFBO;
+        }
+
         // Creates frame buffer texture and combined depth/stencil render buffer.
         // shareObjects and copyContext do not make sense here, context remains the same.
-        bool FrameBufferObject::Initialize(int width, int height, bool /* shareObjects */, bool /* copyContext */ ) {
-
+        bool FrameBufferObject::Initialize(int width, int height, bool /* shareObjects */, bool /* copyContext */ )
+        {
             bool haveFBO = GLEW_ARB_framebuffer_object != 0;
             if (!haveFBO)
                 return false;
@@ -58,7 +68,6 @@ namespace OpenCSG {
             glGenRenderbuffers(1, &depthID); 
             glGenTextures(1, &textureID);
 
-            glGetIntegerv(GL_FRAMEBUFFER_BINDING, &oldFramebufferID);
             glBindFramebuffer(GL_FRAMEBUFFER, framebufferID);
 
             GLenum target = (GLEW_ARB_texture_rectangle || GLEW_EXT_texture_rectangle || GLEW_NV_texture_rectangle)
@@ -129,11 +138,6 @@ namespace OpenCSG {
 
             Reset();
             return Initialize(width, height);
-        }
-
-        void FrameBufferObject::Prepare()
-        {
-            glGetIntegerv(GL_FRAMEBUFFER_BINDING, &oldFramebufferID);
         }
 
         // Binds the created frame buffer texture such we can render into it.

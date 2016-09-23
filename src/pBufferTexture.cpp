@@ -63,6 +63,10 @@ namespace OpenCSG {
             delete r;
         }
 
+        bool PBufferTexture::ReadCurrent() {
+            return true;
+        }
+
         bool PBufferTexture::Initialize(int width, int height, bool shareObjects, bool copyContext) {
             return r->Initialize(width, height, shareObjects, copyContext);
         }
@@ -77,9 +81,6 @@ namespace OpenCSG {
 
         bool PBufferTexture::Resize(int width, int height) {
             return r->Resize(width, height);
-        }
-
-        void PBufferTexture::Prepare() {
         }
 
         bool PBufferTexture::BeginCapture() {

@@ -39,6 +39,9 @@ namespace OpenCSG {
             FrameBufferObjectExt();
             virtual ~FrameBufferObjectExt();
 
+            /// Reads the currently bound FBO.
+            virtual bool ReadCurrent();
+
             /// Call this once before use. shareObjects and copyContext are
             /// ignored, since there are no separate contexts for frame
             /// buffer objects anyway.
@@ -51,8 +54,6 @@ namespace OpenCSG {
             virtual bool Reset();
             /// Change the size of the frame buffer object.
             virtual bool Resize(int width, int height);
-
-            virtual void Prepare();
 
             /// Begin drawing to the frame buffer object. (i.e. use as "output" texture)
             virtual bool BeginCapture();

@@ -42,6 +42,9 @@ namespace OpenCSG {
             PBufferTexture();
             virtual ~PBufferTexture();
 
+            /// Nothing to do here.
+            virtual bool ReadCurrent();
+
             /// Call this once before use.  Set bShare to true to share lists, textures, 
             /// and program objects between the render texture context and the 
             /// current active GL context.
@@ -54,8 +57,6 @@ namespace OpenCSG {
             virtual bool Reset();
             /// Change the size of the render texture.
             virtual bool Resize(int width, int height);
-
-            virtual void Prepare();
 
             /// Begin drawing to the texture. (i.e. use as "output" texture)
             virtual bool BeginCapture();

@@ -172,9 +172,15 @@ namespace OpenCSG {
 
         mOffscreenBuffer = OpenGL::getOffscreenBuffer(newOffscreenType);
 
-        if (!mOffscreenBuffer) {
+        if (!mOffscreenBuffer)
+        {
             // Creating the offscreen buffer failed, maybe the OpenGL extension
             // for the specific offscreen buffer type is not supported
+            return false;
+        }
+
+        if (!mOffscreenBuffer->ReadCurrent())
+        {
             return false;
         }
 
@@ -243,10 +249,6 @@ namespace OpenCSG {
                 return false;
             }
             rebuild = true;
-        }
-        else
-        {
-            mOffscreenBuffer->Prepare();
         }
 
         if (rebuild) {

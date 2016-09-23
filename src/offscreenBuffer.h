@@ -38,7 +38,12 @@ namespace OpenCSG {
 
             virtual ~OffscreenBuffer() {};
 
-            /// Call this once before use.  Set bShare to true to share lists, textures, 
+            /// Reads the current settings, such as the currently bound FBO.
+            /// This should be called before every use of the offscreen buffer
+            /// even if Initialize() or Resize() do not need to be called.
+            virtual bool ReadCurrent() = 0;
+
+            /// Call this once before use. Set bShare to true to share lists, textures,
             /// and program objects between the render texture context and the 
             /// current active GL context.
             virtual bool Initialize(int width, int height, 
@@ -53,8 +58,6 @@ namespace OpenCSG {
             /// Change the size of the render texture. After this, Initialize
             /// must be called again.
             virtual bool Resize(int width, int height) = 0;
-
-            virtual void Prepare() = 0;
 
             /// Begin drawing to the texture. (i.e. use as "output" texture)
             virtual bool BeginCapture() = 0;
