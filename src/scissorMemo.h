@@ -35,7 +35,7 @@ namespace OpenCSG {
 
     class ScissorMemo {
     public:
-        /// convinience class for handling scissoring. All areas
+        /// convenience class for handling scissoring. All areas
         /// are given in normal device coordinates [-1, 1] x [-1, 1].
         ScissorMemo();
         

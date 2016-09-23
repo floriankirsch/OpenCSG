@@ -27,6 +27,7 @@
 #define __OpenCSG__channel_manager_h__
 
 #include "opencsgConfig.h"
+#include <GL/glew.h>
 #include <utility>
 #include <vector>
 
@@ -92,6 +93,7 @@ namespace OpenCSG {
 
         OpenGL::OffscreenBuffer* mOffscreenBuffer;
         bool mInOffscreenBuffer;
+        GLenum mFaceOrientation;
 
     protected:
         Channel mCurrentChannel;

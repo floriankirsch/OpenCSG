@@ -22,6 +22,8 @@
 //
 
 #include "opencsgConfig.h"
+#include "channelManager.h"
+
 #include <GL/glew.h>
 #ifdef _WIN32
 #include <GL/wglew.h>
@@ -29,7 +31,6 @@
 #include <GL/glxew.h>
 #endif
 
-#include "channelManager.h"
 #include "context.h"
 #include "offscreenBuffer.h"
 #include "openglHelper.h"
@@ -41,8 +42,6 @@ namespace OpenCSG {
     bool ChannelManager::gInUse = false;
 
     namespace {
-
-        GLint FaceOrientation = GL_CCW;
 
         int nextPow2(int value) {
             if(value <= 0) { return 0; }
@@ -97,6 +96,10 @@ namespace OpenCSG {
 
     ChannelManager::ChannelManager()
       : mOffscreenBuffer(0)
+      , mInOffscreenBuffer(false)
+      , mFaceOrientation(GL_CCW)
+      , mCurrentChannel(NoChannel)
+      , mOccupiedChannels(NoChannel)
     {
         glPushAttrib(GL_ALL_ATTRIB_BITS);
         glDisable(GL_LIGHTING);
@@ -109,7 +112,9 @@ namespace OpenCSG {
             glDisable(GL_TEXTURE_CUBE_MAP_ARB);
         glDisable(GL_BLEND);
 
-        glGetIntegerv(GL_FRONT_FACE, &FaceOrientation);
+        GLint faceOrientation;
+        glGetIntegerv(GL_FRONT_FACE, &faceOrientation);
+        mFaceOrientation = static_cast<GLenum>(mFaceOrientation);
 
         glGetFloatv(GL_MODELVIEW_MATRIX, OpenGL::modelview);
         glGetFloatv(GL_PROJECTION_MATRIX, OpenGL::projection);
@@ -301,7 +306,7 @@ namespace OpenCSG {
         if (!mInOffscreenBuffer) {
             mOffscreenBuffer->BeginCapture();
             if (mOffscreenBuffer->haveSeparateContext()) {
-                glFrontFace(FaceOrientation);
+                glFrontFace(mFaceOrientation);
             }
 
             mInOffscreenBuffer = true;
