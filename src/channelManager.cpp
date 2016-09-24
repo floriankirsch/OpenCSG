@@ -108,7 +108,7 @@ namespace OpenCSG {
         if (GLEW_ARB_texture_rectangle || GLEW_EXT_texture_rectangle || GLEW_NV_texture_rectangle)
             glDisable(GL_TEXTURE_RECTANGLE_ARB);
         glDisable(GL_TEXTURE_3D); // OpenGL 1.2 - take this as given
-        if (GL_ARB_texture_cube_map)
+        if (GLEW_ARB_texture_cube_map)
             glDisable(GL_TEXTURE_CUBE_MAP_ARB);
         glDisable(GL_BLEND);
 
