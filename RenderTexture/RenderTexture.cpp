@@ -198,19 +198,21 @@ void _wglGetLastError()
         // no error
         break;
     default:
-        LPVOID lpMsgBuf;
-        FormatMessage(FORMAT_MESSAGE_ALLOCATE_BUFFER | 
-            FORMAT_MESSAGE_FROM_SYSTEM | 
-            FORMAT_MESSAGE_IGNORE_INSERTS,
-            NULL,
-            err,
-            MAKELANGID(LANG_NEUTRAL, SUBLANG_DEFAULT), // Default language
-            (LPTSTR) &lpMsgBuf,
-            0,
-            NULL);
-        
-        fprintf(stderr, "RenderTexture Win32 Error %d: %s\n", err, lpMsgBuf);
-        LocalFree( lpMsgBuf );
+        // [Florian] changed lpMsgBuf type from LPVOID to avoid warning in fprintf
+        LPTSTR lpMsgBuf = 0;
+        if (FormatMessage(FORMAT_MESSAGE_ALLOCATE_BUFFER | FORMAT_MESSAGE_FROM_SYSTEM | FORMAT_MESSAGE_IGNORE_INSERTS,
+                NULL,
+                err,
+                MAKELANGID(LANG_NEUTRAL, SUBLANG_DEFAULT), // Default language
+                (LPTSTR) &lpMsgBuf,
+                0,
+                NULL
+           ) && lpMsgBuf != 0)
+        {
+            fprintf(stderr, "RenderTexture Win32 Error %d: %s\n", err, lpMsgBuf);
+            LocalFree(lpMsgBuf);
+        }
+        // [/Florian]
         break;
     }
     SetLastError(0);
