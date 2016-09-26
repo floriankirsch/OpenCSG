@@ -29,6 +29,17 @@
 
 <hr>
 
+<h3>29-Sep-2016: OpenCSG 1.4.2 released</h3>
+
+<a href="http://www.opencsg.org/OpenCSG-1.4.2.tar.gz">OpenCSG 1.4.2</a> fixes
+an issue when the calling application renders into different frame buffer
+objects subsequently and uses OpenCSG. In this case, when called for the second
+time with the second FBO active, OpenCSG did not restore that FBO, but the first
+FBO that was active for a previous call of OpenCSG. This caused, for example,
+issues in applications rendering into a QOpenGLWidget with Qt 5, such as
+OpenSCAD. When resizing the OpenGL window, the problem occured, and the OpenGL
+window was not rendered at all anymore.
+
 <h3>11-Sep-2016: OpenCSG 1.4.1 released</h3>
 
 <p>
@@ -320,7 +331,7 @@ have not changed.
 <center><p>
 &copy; 2002-2016, Florian Kirsch, e-mail: <b>mail at opencsg dot org</b>, <br>
 2002-2005 Hasso-Plattner-Institute Potsdam.<br>
-Last change: 11-Sep-2016
+Last change: 29-Sep-2016
 </p></center>
 
 </body>
