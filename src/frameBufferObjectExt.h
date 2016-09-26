@@ -91,6 +91,11 @@ namespace OpenCSG {
             int          oldFramebufferID;
 
             bool         initialized;
+
+        private:
+            FrameBufferObjectExt(const FrameBufferObjectExt&);
+            FrameBufferObjectExt& operator=(const FrameBufferObjectExt&);
+
         };
 
     } // namespace OpenGL

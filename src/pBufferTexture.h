@@ -86,6 +86,11 @@ namespace OpenCSG {
         protected:
             RenderTexture* r;
             const char*    s;
+
+        private:
+            PBufferTexture(const PBufferTexture&);
+            PBufferTexture& operator=(const PBufferTexture&);
+
         };
 
     } // namespace OpenGL

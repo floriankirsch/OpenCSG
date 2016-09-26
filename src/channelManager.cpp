@@ -70,7 +70,7 @@ namespace OpenCSG {
             int mSecondMax;
             int mCounter;
         public:
-            MaximumMemorizer() : mMax(0), mSecondMax(-1) { }
+            MaximumMemorizer() : mMax(0), mSecondMax(-1), mCounter(0) { }
             void newValue(int v) {
                 if (v>=mMax) {
                     mMax = v;

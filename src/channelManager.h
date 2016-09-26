@@ -89,6 +89,9 @@ namespace OpenCSG {
         bool isRectangularTexture() const;
 
     private:
+        ChannelManager(const ChannelManager&);
+        ChannelManager& operator=(const ChannelManager&);
+
         static bool gInUse;
 
         OpenGL::OffscreenBuffer* mOffscreenBuffer;
