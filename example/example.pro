@@ -6,7 +6,9 @@ CONFIG -= qt
 INCLUDEPATH += ../include
 LIBS += -L../lib -lopencsg -lGLEW
 
-INSTALLDIR = /usr/local
+isEmpty(INSTALLDIR) {
+  INSTALLDIR = /usr/local
+}
 INSTALLS += target
 target.path = $$INSTALLDIR/bin
 
