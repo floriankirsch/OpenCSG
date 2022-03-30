@@ -33,8 +33,12 @@
 // of exit() with Visual Studio 2010
 #ifdef __APPLE__
 #include <GLUT/glut.h>
+#elif  _WIN32
+// glut include under windows, assuming that freeglut binary has been
+// directly put into the opencsg main directory
+#include <../freeglut/include/GL/glut.h>
 #else
-#include <../freeglut/GL/glut.h>
+#include <GL/glut.h>
 #endif
 
 enum { 
