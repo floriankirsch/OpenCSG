@@ -1,3 +1,6 @@
+30.03.2022
+    Resolved a couple of 64-bit warnings while testing Visual Studio 2019
+
 29.09.2016
     Release 1.4.2
 

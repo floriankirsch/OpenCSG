@@ -299,7 +299,7 @@ namespace OpenCSG {
 
         void renderIntersectedFront(const std::vector<Primitive*>& primitives) {
 
-            const int numberOfPrimitives = primitives.size();
+            const size_t numberOfPrimitives = primitives.size();
 
             glDepthMask(GL_TRUE);
 
@@ -352,7 +352,7 @@ namespace OpenCSG {
             // where #back faces behind furthest front face != #intersected shapes
             // ->reset fragment
             channelMgr->renderToChannel(true);
-            glStencilFunc(GL_NOTEQUAL, numberOfPrimitives, OpenGL::stencilMask);
+            glStencilFunc(GL_NOTEQUAL, static_cast<GLint>(numberOfPrimitives), OpenGL::stencilMask);
             glDepthFunc(GL_ALWAYS);
             glDepthRange(0.0, 0.0);
             glDepthMask(GL_TRUE);
@@ -446,7 +446,7 @@ namespace OpenCSG {
         bool subtractPrimitivesWithOcclusionQueries(std::vector<Batch>::const_iterator begin,
                                                     std::vector<Batch>::const_iterator end) {
 
-            const unsigned int numberOfBatches = end - begin;
+            const size_t numberOfBatches = end - begin;
             if (numberOfBatches == 0) {
                 return true;
             }
@@ -598,7 +598,7 @@ namespace OpenCSG {
             glClear(GL_STENCIL_BUFFER_BIT);
             depthComplexity = 
                 (std::min)(OpenGL::calcMaxDepthComplexity(subtracted, scissor->getCurrentArea()), 
-                         subtractedBatches.size());
+                           static_cast<unsigned int>(subtractedBatches.size()));
         }
 
         channelMgr->request();
@@ -622,7 +622,7 @@ namespace OpenCSG {
                 break; // success
                        // else fall through (should we just give up here?)
         case NoDepthComplexitySampling:
-            subtractPrimitives(subtractedBatches.begin(), subtractedBatches.end(), subtractedBatches.size());
+            subtractPrimitives(subtractedBatches.begin(), subtractedBatches.end(), static_cast<unsigned int>(subtractedBatches.size()));
             break;
         case DepthComplexitySampling:
             subtractPrimitives(subtractedBatches.begin(), subtractedBatches.end(), depthComplexity);
