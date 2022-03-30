@@ -1,14 +1,27 @@
-Microsoft VC6 / VC 2003 .NET / VC 2010
---------------------------------------
+Microsoft Visual Studio 2019
+----------------------------
 
-The Visual Studio solutions automatically build GLEW, the opencsg
-lib, and the example. To build and run the example, you must install
-GLUT or FreeGLUT first.
-Open OpenCSG.dsw / OpenCSG.sln / OpenCSG_vc10.sln
-Set OpenCSGexample as active project. In this project, eventually
-  adjust include directories such that GL/glut.h is found, and
-  adjust library directories such that the glut library file is found.
-Compile and start example
+The Visual Studio solution OpenCSG_vc2019.sln assumes that freeglut
+is put in a freeglut/ subdirecty in the OpenCSG installation directory.
+This works, for example, with the freeglut 3.0.0 MSVC package available
+from https://www.transmissionzero.co.uk/software/freeglut-devel
+
+The Visual Studio solutions automatically builds GLEW, the opencsg
+lib, and the example. The solution allows to create both 64- and 32-bit
+builds. To run the example, you must copy the freeglut.dll
+into the directory example/Release/ or example/Debug/ where the
+opencsgexample.exe has been built. Be sure to pick the correct
+64- or 32-bit version of the dll.
+
+
+Microsoft Visual Studio 6
+-------------------------
+
+The Visual Studio 6 solution OpenCSG.sln assumes that the original
+GLUT for Windows is setup as described in
+https://user.xmission.com/~nate/glut.html
+
+The solution automatically builds GLEW, the opencsg lib, and the example.
 
 
 Linux
