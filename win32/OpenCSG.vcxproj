@@ -204,7 +204,6 @@
     <ClCompile Include="..\src\stencilManager.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\glew\include\GL\wglew.h" />
     <ClInclude Include="..\src\area.h" />
     <ClInclude Include="..\src\batch.h" />
     <ClInclude Include="..\src\channelManager.h" />
