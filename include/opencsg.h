@@ -228,7 +228,6 @@ namespace OpenCSG {
         OptimizationUnused    = 4
     };
 
-
     /// Setting the context is required for applications rendering with
     /// OpenCSG in different OpenGL windows with OpenGL contexts that
     /// are not shared. This is needed for internal OpenGL resources,
@@ -249,19 +248,6 @@ namespace OpenCSG {
     /// Releases the OpenGL resources allocated by OpenCSG for the current
     /// context. 
     void freeResources();
-
-
-    /// Alternate render() function provided for compatibility with older
-    /// versions of OpenCSG (version 1.1.1 and before). The function performs
-    /// CSG rendering as the render() function described above. Additionally,
-    /// the Algorithm parameter must and the DepthComplexityAlgorithm parameter
-    /// can be provided. They supercede the options set by setOption().
-    /// This function is considered obsolete. New software should use the
-    /// render() function above and set the Options for rendering in separate
-    /// setOption() calls. 
-    void render(const std::vector<Primitive*>& primitives, 
-                Algorithm, 
-                DepthComplexityAlgorithm = NoDepthComplexitySampling);
 
 } // namespace OpenCSG
 

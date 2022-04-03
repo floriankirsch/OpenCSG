@@ -31,13 +31,6 @@
 
 namespace OpenCSG {
 
-    /// redeclared from opencsg.h
-    /// implemented in opencsgRender.cpp
-    /// dispatches to the real rendering functions below
-    void render(const std::vector<Primitive*>& primitives, 
-                Algorithm, 
-                DepthComplexityAlgorithm);
-
     /// SCS algorithm. Implemented in renderSCS.cpp
     void renderSCS(const std::vector<Primitive*>& primitives, DepthComplexityAlgorithm);
 

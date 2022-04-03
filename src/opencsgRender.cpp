@@ -101,16 +101,4 @@ namespace OpenCSG {
         renderDispatch(primitives, algorithm, depthComplexityAlgorithm);
     }
 
-    void render(const std::vector<Primitive*>& primitives, 
-                Algorithm algorithm, 
-                DepthComplexityAlgorithm depthComplexityAlgorithm)
-    {
-        if (algorithm == AlgorithmUnused) {
-            render(primitives);
-        }
-        else {
-            renderDispatch(primitives, algorithm, depthComplexityAlgorithm);
-        }
-    }
-
 } // namespace OpenCSG
