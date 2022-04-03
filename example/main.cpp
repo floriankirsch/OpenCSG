@@ -35,7 +35,9 @@
 #include <GLUT/glut.h>
 #elif  _WIN32
 // glut include under windows, assuming that freeglut binary has been
-// directly put into the opencsg main directory
+// directly put into the opencsg main directory (e.g., try to use the
+// freeglut 3.0.0 MSVC Package that is available from
+// https://www.transmissionzero.co.uk/software/freeglut-devel)
 #include <../freeglut/include/GL/glut.h>
 #else
 #include <GL/glut.h>
