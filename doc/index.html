@@ -41,7 +41,7 @@
 
 <hr>
 
-<h3> <a href="news.html">Latest release: OpenCSG 1.4.2 (29-Sep-2016)</a></h3>
+<h3> <a href="news.html">Latest release: OpenCSG 1.5.0 (07-Apr-2022)</a></h3>
 
 <hr>
 
@@ -51,7 +51,7 @@
 OpenCSG is a library that does image-based CSG rendering using OpenGL.
 OpenCSG is written in C++ and supports most modern graphics hardware using
 Microsoft Windows or the Linux operating system. 
-<a href="http://www.opencsg.org/OpenCSG-1.4.2.tar.gz">OpenCSG-1.4.2</a> is the current version.
+<a href="http://www.opencsg.org/OpenCSG-1.5.0.tar.gz">OpenCSG-1.5.0</a> is the current version.
 </p>
 
 <p>
@@ -60,7 +60,7 @@ and denotes an approach to model complex 3D-shapes using simpler ones. I.e.,
 two shapes can be combined by taking the union of them, by intersecting
 them, or by subtracting one shape of the other. The
 most basic shapes, which are not result of such a CSG operation,
-are called <b> primitives</b>. Primitives must be <b>solid</b>, i.e.,
+are called <b>primitives</b>. Primitives must be <b>solid</b>, i.e.,
 they must have a clearly defined interior and exterior. By construction,
 a CSG shape is also solid then. 
 </p>
@@ -110,8 +110,10 @@ in the past.
 <h3> <a name="prerequisites">Prerequisites</a> </h3>
 
 <p>
-The OpenCSG library requires graphics hardware that either supports
-<b>frame buffer objects</b> or <b>PBuffers</b> in OpenGL.
+The OpenCSG library requires OpenGL and graphics hardware that runs
+OpenGL well. Note that OpenGL ES is currently not supported. The OpenGL
+implementation must either provide <b>frame buffer objects</b> or
+<b>PBuffers</b>.
 </p>
 
 <p>
@@ -125,7 +127,7 @@ are used by default.
 In older versions, PBuffers were required to run OpenCSG.
 PBuffers have been widely supported since a long time now. NVidia supports them
 since the Riva TNT, and ATI at least since the Radeon series. Graphics
-hardware from other hardware vendors, however, likely do not support
+hardware from other hardware vendors, however, likely does not support
 PBuffers. Therefore, if you have obscure graphics hardware that also does
 not support frame buffer objects, you are probably out of luck and you cannot
 run programs using OpenCSG. With Linux, you have the option to use 
@@ -143,27 +145,17 @@ in the OpenCSG download.
 
 <p>
 OpenCSG is written in C++, uses namespaces and requires the STL. 
-It compiles with all reasonable C++ compiler such as gcc, Clang, or 
-Microsoft Visual Studio. Workspaces for MSVC6, VC2003, VC2010 and
-<a href="http://www.bloodshed.net/devcpp.html">Dev-C++ 5 beta</a> are provided. Under Linux, any gcc compiler starting from version 3.0 or newer will work.
+It compiles with all reasonable C++ compilers such as gcc, Clang, or 
+Microsoft Visual Studio. Workspaces for Visual Studio 2019, Visual C++ 6.
+and <a href="http://www.bloodshed.net/devcpp.html">Dev-C++ 5 beta</a> are
+provided. Under Linux, any gcc compiler starting from version 3.0 or newer will work.
 </p>
 
 <p>
 OpenCSG has been sucessfully run on Intel and AMD CPUs. Generally,
 NVidia and AMD graphics hardware is well supported, and hardware
-where OpenCSG successfully has been run includes the<br />
-&nbsp;GeForce GTX 960<br />
-&nbsp;Intel Iris Graphics 5100<br />
-&nbsp;GeForce 250 GTS<br />
-&nbsp;Radeon HD 4670<br />
-&nbsp;Radeon HD 3750 mobile<br />
-&nbsp;GeForce 8x00<br />
-&nbsp;GeForceFX 6800<br />
-&nbsp;GeForceFX 5600<br />
-&nbsp;Radeon 9700<br />
-&nbsp;GeForce3<br />
-&nbsp;GeForce4MX<br />
-and TNT2 graphcs hardware (on the latter, it crawls ...).
+where OpenCSG successfully has been run on includes everything
+starting from the TNT2 (but admittedly, on the latter, it crawls ...).
 </p>
 
 <p>
@@ -313,15 +305,13 @@ strategy.
 
 <p>
 <a name="options"></a>
-Using the functions <b><code>setOption() / getOption</code></b> you can control
-and ask for certain settings used when rendering a CSG expression. These
-functions were introduced with version 1.1.0 of OpenCSG. You can specify the 
+Using the functions <b><code>setOption() / getOption()</code></b> you can control
+and ask for certain settings used when rendering a CSG expression. You can
+specify the 
 <a href="#algorithm"> Algorithm</a>, the method of 
 <a href="#depthalgorithm">depth
 complexity usage</a> and the <a href="#offscreentype">type of offscreen
-buffer</a>. There is an obsolete variant of the <b><code>render()</code></b>
-function that takes these two options as additional arguments, temporarily
-overriding the currently set options.
+buffer</a>.
 </p>
 
 <p>
@@ -413,10 +403,10 @@ OpenGL resources for the currently active OpenCSG context.
 <h3> <a name="download">Download</a> </h3>
 
 <p>
-Download <a href="http://www.opencsg.org/OpenCSG-1.4.2.tar.gz">OpenCSG-1.4.2.tar.gz</a>.
+Download <a href="http://www.opencsg.org/OpenCSG-1.5.0.tar.gz">OpenCSG-1.5.0.tar.gz</a>.
 The archive contains all required helper libraries, i.e., also RenderTexture and GLEW.
-It comes with makefiles for Linux and with project files for MSVC6, VC2003, VC2010, 
-and Dev-C++ 5.
+It comes with makefiles for Linux and with project files for Visual Studio 2019,
+Visual C++ 6, and Dev-C++ 5.
 </p>
 
 <p>
@@ -430,6 +420,7 @@ soon, that can be used under the GPL version 2 or newer.
 
 <p>
 The older versions <br>
+&nbsp;&nbsp; <a href="http://www.opencsg.org/OpenCSG-1.4.2.tar.gz">OpenCSG-1.4.2</a> <br>
 &nbsp;&nbsp; <a href="http://www.opencsg.org/OpenCSG-1.4.1.tar.gz">OpenCSG-1.4.1</a> <br>
 &nbsp;&nbsp; <a href="http://www.opencsg.org/OpenCSG-1.4.0.tar.gz">OpenCSG-1.4.0</a> <br>
 &nbsp;&nbsp; <a href="http://www.opencsg.org/OpenCSG-1.3.3.tar.gz">OpenCSG-1.3.3</a> <br>
@@ -609,11 +600,13 @@ at the University of Potsdam (HPI), Germany.
 </p>
 
 <p>
-You can license OpenCSG by terms of the <a href="http://www.gnu.org/copyleft/gpl.html">
-GNU GPL</a>, version 2 or later. This means that you may release applications or libraries
+Since version 1.5.0, you can license OpenCSG by terms of the
+<a href="http://www.gnu.org/copyleft/gpl.html">GNU GPL</a>,
+version 2 or later. This means that you may release applications or libraries
 that use (parts of) OpenCSG 
 (a) only if you release the complete source code of your application or library
-and (b) only if you release it under the GPL license.
+and (b) only if you release it under the GPL license. Versions before 1.5.0
+could be licensed under the GPL version 2 only.
 </p>
 
 <p>
@@ -631,7 +624,7 @@ their respective authors.
 <center><p>
 &copy; 2002-2022, Florian Kirsch, e-mail: <b>mail at opencsg dot org</b>, <br>
 2002-2005 Hasso-Plattner-Institute Potsdam.<br>
-Last change: 28-Mar-2022
+Last change: 07-Apr-2022
 </p></center>
 
 </body>
