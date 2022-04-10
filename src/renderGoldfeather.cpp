@@ -480,7 +480,9 @@ namespace OpenCSG {
             case OcclusionQuery:
                 if (renderOcclusionQueryGoldfeather(primitives))
                     break;  // success
-                            // else fall through (should not happen in practice due to the check for extensions of the caller)
+                // coming here should not happen in practice due to the check
+                // for extensions performed by the caller. Anyway, if it happens,
+                // fall through
             case NoDepthComplexitySampling:
                 renderGoldfeather(primitives);
                 break;

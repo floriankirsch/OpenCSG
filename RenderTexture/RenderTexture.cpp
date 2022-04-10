@@ -1059,7 +1059,7 @@ void RenderTexture::_ParseModeString(const char *modeString,
     if (!modeString || strcmp(modeString, "") == 0)
         return;
 
-	_iNumComponents = 0;
+    _iNumComponents = 0;
 #ifdef _WIN32
     _eUpdateMode = RT_RENDER_TO_TEXTURE;
 #else

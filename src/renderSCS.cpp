@@ -620,7 +620,8 @@ namespace OpenCSG {
         case OcclusionQuery:
             if (subtractPrimitivesWithOcclusionQueries(subtractedBatches.begin(), subtractedBatches.end()))
                 break; // success
-                       // else fall through (should we just give up here?)
+            // Maybe we just should give up here?
+            // fall through
         case NoDepthComplexitySampling:
             subtractPrimitives(subtractedBatches.begin(), subtractedBatches.end(), static_cast<unsigned int>(subtractedBatches.size()));
             break;
