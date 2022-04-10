@@ -8,7 +8,7 @@
   <meta name="KeyWords" content="OpenCSG, CSG, image-based, image-based CSG, rendering, SCS, Goldfeather, OpenGL">
 
   <title>OpenCSG - News</title>
-  <link rel="shortcut icon" href="http://www.opencsg.org/favicon.ico" type="image/ico">
+  <link rel="shortcut icon" href="https://www.opencsg.org/favicon.ico" type="image/ico">
 </head>
 
 <body style="font-family: verdana,arial,sans-serif; background-color: white;">
@@ -32,7 +32,7 @@
 <h3>10-Apr-2022: OpenCSG 1.5.0 released</h3>
 
 <p>
-The release <a href="http://www.opencsg.org/OpenCSG-1.5.0.tar.gz">OpenCSG 1.5.0</a>
+The release <a href="https://www.opencsg.org/OpenCSG-1.5.0.tar.gz">OpenCSG 1.5.0</a>
 provides the promised license change to the GPL version 2
 <strong>or newer</strong>.
 </p>
@@ -49,7 +49,7 @@ has been removed. All rendering options must now be set via the
 <p>
 
 I was recently informed by one of the maintainers of
-<a href="http://openscad.org/">OpenSCAD</a> that the current license
+<a href="https://openscad.org/">OpenSCAD</a> that the current license
 (GPL version 2 only) of OpenCSG poses a problem for OpenSCAD, which links
 against some other libraries that are licensed under GPL version 3 only.
 In order to solve this issue, I plan to release a new version of OpenCSG
@@ -65,7 +65,7 @@ I've uploaded the OpenCSG git repository to <a href="https://github.com/floriank
 <h3>29-Sep-2016: OpenCSG 1.4.2 released</h3>
 
 <p>
-<a href="http://www.opencsg.org/OpenCSG-1.4.2.tar.gz">OpenCSG 1.4.2</a> fixes
+<a href="https://www.opencsg.org/OpenCSG-1.4.2.tar.gz">OpenCSG 1.4.2</a> fixes
 an issue when the calling application renders into different frame buffer
 objects subsequently and uses OpenCSG. In this case, when called for the second
 time with the second FBO active, OpenCSG did not restore that FBO, but the first
@@ -81,7 +81,7 @@ window was not rendered at all anymore.
 On Intel graphics hardware, the new rendering path in the SCS algorithm
 in OpenCSG 1.4.0 entirely failed to work. This was apparently due to an
 incompatibility of the fragment program with the fixed function pipeline
-used at the vertex stage. <a href="http://www.opencsg.org/OpenCSG-1.4.1.tar.gz">OpenCSG 1.4.1</a>
+used at the vertex stage. <a href="https://www.opencsg.org/OpenCSG-1.4.1.tar.gz">OpenCSG 1.4.1</a>
 implements a workaround: a vertex program is now used instead. I hope that
 the rendering bugs on Intel graphics hardware are now really a thing of the past.
 </p>
@@ -89,7 +89,7 @@ the rendering bugs on Intel graphics hardware are now really a thing of the past
 <h3>15-Sep-2014: OpenCSG 1.4.0 released</h3>
 
 <p>
-<a href="http://www.opencsg.org/OpenCSG-1.4.0.tar.gz">OpenCSG 1.4.0</a>
+<a href="https://www.opencsg.org/OpenCSG-1.4.0.tar.gz">OpenCSG 1.4.0</a>
 contains a bug fix for rendering CSG expressions with more than 255 primitives.
 For the layered Goldfeather algorithm, this number of primitives could cause an
 endless loop before. In the case of the SCS algorithm, there were rendering
@@ -109,7 +109,7 @@ be solved with the new version.
 <h3>11-May-2014: OpenCSG 1.3.3 released</h3>
 
 <p>
-<a href="http://www.opencsg.org/OpenCSG-1.3.3.tar.gz">OpenCSG 1.3.3</a>
+<a href="https://www.opencsg.org/OpenCSG-1.3.3.tar.gz">OpenCSG 1.3.3</a>
 is a maintenance release, providing minor portability improvements and
 bug fixes. In particular, OpenCSG should now compile out-of-the-box on
 Linux x64 systems.
@@ -118,7 +118,7 @@ Linux x64 systems.
 <h3>02-Dec-2011: OpenCSG 1.3.2 released</h3>
 
 <p>
-<a href="http://www.opencsg.org/OpenCSG-1.3.2.tar.gz">OpenCSG 1.3.2</a>
+<a href="https://www.opencsg.org/OpenCSG-1.3.2.tar.gz">OpenCSG 1.3.2</a>
 is a maintenance release. It contains fixes for a number of errors
 when setting up frame buffer objects or PBuffers with unusual combinations
 of available OpenGL extensions. Furthermore, the calling application may
@@ -131,7 +131,7 @@ for MacOS X.
 <h3>09-Jun-2010: OpenCSG 1.3.1 released</h3>
 
 <p>
-<a href="http://www.opencsg.org/OpenCSG-1.3.1.tar.gz">OpenCSG 1.3.1</a>
+<a href="https://www.opencsg.org/OpenCSG-1.3.1.tar.gz">OpenCSG 1.3.1</a>
 was mainly released for a slight change of the license: The GPL license
 contains a special linking exception for the
 <a href="http://www.cgal.org">CGAL library</a> now. This means that
@@ -148,7 +148,7 @@ in this release.
 <h3>07-Feb-2010: OpenCSG 1.3.0 with support for MDI applications</h3>
 
 <p>
-<a href="http://www.opencsg.org/OpenCSG-1.3.0.tar.gz">OpenCSG 1.3.0</a>
+<a href="https://www.opencsg.org/OpenCSG-1.3.0.tar.gz">OpenCSG 1.3.0</a>
 implements better support for applications having an multiple document
 interface and, therefore, use OpenCSG in different OpenGL windows.
 If the contexts of these windows are not shared, older versions of
@@ -168,7 +168,7 @@ OpenCSG, CSG rendering is performed correctly.
 <h3>03-Jan-2010: OpenCSG 1.2.0 released</h3>
 
 <p>
-<a href="http://www.opencsg.org/OpenCSG-1.2.0.tar.gz">OpenCSG 1.2.0</a>
+<a href="https://www.opencsg.org/OpenCSG-1.2.0.tar.gz">OpenCSG 1.2.0</a>
 contains fixes for CSG rendering using the frame buffer object extension.
 In particular, it adds support for the ARB variant of this extension
 (before, only the EXT variant was supported). 
@@ -196,7 +196,7 @@ set using the <b><code>setOption()</code></b> interface.
 <h3>19-Jul-2009: OpenCSG 1.1.1 released</h3>
 
 <p>
-<a href="http://www.opencsg.org/OpenCSG-1.1.1.tar.gz">OpenCSG 1.1.1</a>
+<a href="https://www.opencsg.org/OpenCSG-1.1.1.tar.gz">OpenCSG 1.1.1</a>
 is a maintenance release. Issues in the makefiles for Linux
 and portability problems for 64-bit Linux have been resolved. Additionally,
 a performance problem was fixed in the case of lots of CSG primitives
@@ -209,7 +209,7 @@ wasted time, because the batches are trivial anyways.
 <h3>03-Dec-2006: OpenCSG 1.1.0 with Frame Buffer Object Support</h3>
 
 <p>
-The most significant addition in <a href="http://www.opencsg.org/OpenCSG-1.1.0.tar.gz">OpenCSG-1.1.0</a> is the support of OpenGL frame buffer objects. This
+The most significant addition in <a href="https://www.opencsg.org/OpenCSG-1.1.0.tar.gz">OpenCSG-1.1.0</a> is the support of OpenGL frame buffer objects. This
 change also led to the option setter and getter functions to control this
 and all other rendering options. Additionally several bugs have been fixed,
 for example in the heuristics that choses the offscreen buffer size and
@@ -243,7 +243,7 @@ its use.
 <h3>04-Dec-2004: OpenCSG version 1.0.2 released</h3>
 
 <p>
-<a href="http://www.opencsg.org/OpenCSG-1.0.2.zip">OpenCSG-1.0.2</a> provides a workspace
+<a href="https://www.opencsg.org/OpenCSG-1.0.2.zip">OpenCSG-1.0.2</a> provides a workspace
 for the free, gcc-based <a href="http://www.bloodshed.net/devcpp.html">Dev-C++ 5</a>
 compiler for Windows. Additionally it fixes two bugs, one in the
 RenderTexture library, and one bug in the heuristic for choosing
@@ -254,7 +254,7 @@ a non-optimal rendering algorithm was used.
 <h3>27-Sep-2004: OpenCSG version 1.0.1 released</h3>
 
 <p>
-<a href="http://www.opencsg.org/OpenCSG-1.0.1.zip">
+<a href="https://www.opencsg.org/OpenCSG-1.0.1.zip">
 OpenCSG-1.0.1</a> contains the following changes:
 </p>
 <p>
@@ -284,7 +284,7 @@ I have also updated some sections on the web and added a short FAQ section.
 <h3>02-May-2004: OpenCSG version 1.0.0 released</h3>
 
 <p>
-<a href="http://www.opencsg.org/OpenCSG-1.0.0.zip">
+<a href="https://www.opencsg.org/OpenCSG-1.0.0.zip">
 OpenCSG-1.0.0</a> contains lots of improvements and additions:
 </p>
 <ul>
@@ -308,7 +308,7 @@ The interface of OpenCSG has remained unchanged.
 <h3>02-Mar-2004: OpenCSG version 0.9.2 released</h3>
 
 <p>
-<a href="http://www.opencsg.org/OpenCSG-0.9.2.zip">
+<a href="https://www.opencsg.org/OpenCSG-0.9.2.zip">
 OpenCSG-0.9.2</a> brings some improvements compared to former versions.
 First, for occlusion queries the newer OpenGL-extension GL_ARB_occlusion_query
 is now supported along with the former GL_NV_occlusion_query extension.
@@ -333,7 +333,7 @@ rendering.
 </p>
 
 <p>
-You can download my <a href="http://www.opencsg.org/data/csg_wscg2004_talk.pdf">talk</a> already; 
+You can download my <a href="https://www.opencsg.org/data/csg_wscg2004_talk.pdf">talk</a> already; 
 The <a href="http://wscg.zcu.cz/wscg2004/Papers_2004_Full/M11.pdf">paper</a> will be available online as soon as
 it is published online by the WSCG.
 </p>
@@ -341,7 +341,7 @@ it is published online by the WSCG.
 <h3>22-Nov-2003: OpenCSG version 0.9.1 released</h3>
 
 <p>
-<a href="http://www.opencsg.org/OpenCSG-0.9.1.zip">
+<a href="https://www.opencsg.org/OpenCSG-0.9.1.zip">
 OpenCSG-0.9.1</a> contains a number of improvements and bug fixes.
 New features include the ability to work also with the non-standard 
 clockwise front-face setting and performance improvements in the case
@@ -358,7 +358,7 @@ have not changed.
 <h3>30-Sep-2003: OpenCSG version 0.9 initial release</h3>
 
 <p>
-<a href="http://www.opencsg.org/OpenCSG-0.9.zip">OpenCSG-0.9</a>.
+<a href="https://www.opencsg.org/OpenCSG-0.9.zip">OpenCSG-0.9</a>.
 </p>
 
 <hr>
