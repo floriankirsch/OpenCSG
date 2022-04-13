@@ -44,7 +44,7 @@ namespace OpenCSG {
 
         FullscreenPrimitive fullscreen;
 
-        const size_t numberOfPrimitives = primitives.size();
+        const std::size_t numberOfPrimitives = primitives.size();
         mBatches.reserve(numberOfPrimitives);
 
         std::vector<Batch> batchCandidates;
@@ -118,7 +118,7 @@ namespace OpenCSG {
         return mBatches.end();
     }
 
-    size_t Batcher::size() const {
+    std::size_t Batcher::size() const {
         return mBatches.size();
     }
 

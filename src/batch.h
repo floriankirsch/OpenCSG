@@ -28,6 +28,7 @@
 
 #include "opencsgConfig.h"
 #include <vector>
+#include <cstddef>
 
 namespace OpenCSG {
 
@@ -46,7 +47,7 @@ namespace OpenCSG {
         /// returns end of batches
         std::vector<Batch>::const_iterator end() const;
         /// return number of batches
-        size_t size() const;
+        std::size_t size() const;
 
     private:
         std::vector<Batch> mBatches;

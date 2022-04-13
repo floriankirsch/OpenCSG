@@ -299,7 +299,7 @@ namespace OpenCSG {
 
         void renderIntersectedFront(const std::vector<Primitive*>& primitives) {
 
-            const size_t numberOfPrimitives = primitives.size();
+            const std::size_t numberOfPrimitives = primitives.size();
 
             glDepthMask(GL_TRUE);
 
@@ -446,7 +446,7 @@ namespace OpenCSG {
         bool subtractPrimitivesWithOcclusionQueries(std::vector<Batch>::const_iterator begin,
                                                     std::vector<Batch>::const_iterator end) {
 
-            const size_t numberOfBatches = end - begin;
+            const std::size_t numberOfBatches = end - begin;
             if (numberOfBatches == 0) {
                 return true;
             }
