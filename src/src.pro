@@ -1,6 +1,6 @@
 TEMPLATE = lib
 TARGET = opencsg
-VERSION = 1.5.0
+VERSION = 1.5.1
 
 isEmpty(INSTALLDIR) {
   INSTALLDIR = /usr/local

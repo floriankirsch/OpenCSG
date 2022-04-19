@@ -1,3 +1,9 @@
+XX.04.2022
+    Release 1.5.1
+
+13.04.2022
+    GCC 11/12 compile fixes
+
 10.04.2022
     Release 1.5.0 (license changed from GPLv2 to GPLv2 or newer)
 
