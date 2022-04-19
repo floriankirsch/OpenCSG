@@ -81,6 +81,8 @@
            return comp(a, b) ? b : a;
         }
 
+        typedef ::size_t size_t;  // MSVC6 lacks std::size_t
+
     } // namespace std
 
 #endif // _MSC_VER < 1300, i.e., VS <= 6.0
