@@ -43,12 +43,14 @@
 #ifndef __RENDERTEXTURE2_HPP__
 #define __RENDERTEXTURE2_HPP__
 
-#ifndef __APPLE__
+#include "../src/opencsgConfig.h"
+
+#ifdef OPENCSG_HAVE_PBUFFER
 
 #include <GL/glew.h>
 #ifdef _WIN32
 #include <GL/wglew.h>
-#else
+#elif !defined(__APPLE__)
 #include <GL/glxew.h>
 #endif
 
@@ -326,6 +328,6 @@ private:
     RenderTexture& operator=(const RenderTexture&);
 };
 
-#endif // __APPLE__
+#endif // OPENCSG_HAVE_PBUFFER
 
 #endif //__RENDERTEXTURE2_HPP__

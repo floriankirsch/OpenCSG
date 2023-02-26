@@ -24,10 +24,13 @@
 #include "channelManager.h"
 
 #include <GL/glew.h>
+
+#ifdef OPENCSG_HAVE_PBUFFER
 #ifdef _WIN32
 #include <GL/wglew.h>
 #elif !defined(__APPLE__)
 #include <GL/glxew.h>
+#endif
 #endif
 
 #include "context.h"

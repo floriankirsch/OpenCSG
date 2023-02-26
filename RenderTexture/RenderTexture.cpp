@@ -40,7 +40,9 @@
 * texture wrapper.
 */
 
-#ifndef __APPLE__
+#include "../src/opencsgConfig.h"
+
+#ifdef OPENCSG_HAVE_PBUFFER
 
 #ifdef _MSC_VER
 #if _MSC_VER < 1300 // MSVC++ <= 6.0
@@ -2081,4 +2083,4 @@ bool RenderTexture::_MakeCurrent()
     return true;
 }
 
-#endif // __APPLE__
+#endif // OPENCSG_HAVE_PBUFFER
