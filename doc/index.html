@@ -112,8 +112,7 @@ in the past.
 <p>
 The OpenCSG library requires OpenGL and graphics hardware that runs
 OpenGL well. Note that OpenGL ES is currently not supported. The OpenGL
-implementation must either provide <b>frame buffer objects</b> or
-<b>PBuffers</b>.
+implementation must provide <b>frame buffer objects</b>.
 </p>
 
 <p>
@@ -124,21 +123,13 @@ are used by default.
 </p>
 
 <p>
-In older versions, PBuffers were required to run OpenCSG.
-PBuffers have been widely supported since a long time now. NVidia supports them
-since the Riva TNT, and ATI at least since the Radeon series. Graphics
-hardware from other hardware vendors, however, likely does not support
-PBuffers. Therefore, if you have obscure graphics hardware that also does
-not support frame buffer objects, you are probably out of luck and you cannot
-run programs using OpenCSG. With Linux, you have the option to use 
-<a href="http://www.mesa3d.org/">Mesa 3D</a>, which implements OpenGL software
-rendering and provides a solid frame buffer object implementation.
+In older versions, PBuffers were required to run OpenCSG. PBuffers
+are probably deprecated nowadays, and since OpenCSG version 1.6.0,
+they are no longer supported.
 </p>
 
 <p>
-The PBuffer in OpenCSG is actually implemented via the (patched)
-<a href="http://sourceforge.net/project/showfiles.php?group_id=104004&amp;package_id=115053">
-RenderTexture class</a>. For OpenGL extension checking, OpenCSG uses the OpenGL Extension Wrangler
+For OpenGL extension checking, OpenCSG uses the OpenGL Extension Wrangler
 Library <a href="http://glew.sourceforge.net">GLEW</a>. Both these libraries are included
 in the OpenCSG download.
 </p>
@@ -385,7 +376,7 @@ from this optimization is probably only small.
 <p>
 <a name="context"></a>
 OpenCSG creates, and reuses between different <code>render()</code> calls,
-various OpenGL resources such as PBuffers or frame buffer objects. This
+various OpenGL resources such as frame buffer objects. This
 may be a problem in MDI applications with several OpenGL windows, of which
 the OpenGL contexts are not shared. In this case, OpenGL resources allocated
 in one OpenGL context cannot be reused with another context, so OpenCSG

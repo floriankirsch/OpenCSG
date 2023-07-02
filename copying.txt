@@ -7,8 +7,7 @@ doc/license/gpl-2.0.txt
 doc/license/gpl-3.0.txt
 
 Note that OpenCSG comes with code that is not copyrighted by me,
-i.e., GLEW (http://glew.sourceforge.net), and RenderTexture by
-Mark J. Harris (http://www.markmark.net/misc/rendertexture.html).
+in particular GLEW (http://glew.sourceforge.net)
 These libraries are licensed under the terms of their respective authors. 
 
-2022, Florian Kirsch
+2023, Florian Kirsch

@@ -23,13 +23,6 @@
 #include "opencsgConfig.h"
 #include "channelManager.h"
 
-#include <GL/glew.h>
-#ifdef _WIN32
-#include <GL/wglew.h>
-#elif !defined(__APPLE__)
-#include <GL/glxew.h>
-#endif
-
 #include "context.h"
 #include "offscreenBuffer.h"
 #include "openglHelper.h"
@@ -96,7 +89,6 @@ namespace OpenCSG {
     ChannelManager::ChannelManager()
       : mOffscreenBuffer(0)
       , mInOffscreenBuffer(false)
-      , mFaceOrientation(GL_CCW)
       , mCurrentChannel(NoChannel)
       , mOccupiedChannels(NoChannel)
     {
@@ -110,10 +102,6 @@ namespace OpenCSG {
         if (GLEW_ARB_texture_cube_map)
             glDisable(GL_TEXTURE_CUBE_MAP_ARB);
         glDisable(GL_BLEND);
-
-        GLint faceOrientation;
-        glGetIntegerv(GL_FRONT_FACE, &faceOrientation);
-        mFaceOrientation = static_cast<GLenum>(faceOrientation);
 
         glGetFloatv(GL_MODELVIEW_MATRIX, OpenGL::modelview);
         glGetFloatv(GL_PROJECTION_MATRIX, OpenGL::projection);
@@ -150,24 +138,6 @@ namespace OpenCSG {
             ) {
                 newOffscreenType = OpenCSG::FrameBufferObjectEXT;
             }
-            else
-            if (newOffscreenType == OpenCSG::AutomaticOffscreenType
-#ifndef OPENCSG_HAVE_PBUFFER
-                && false
-#else
-#ifdef WIN32
-                && WGLEW_ARB_pbuffer
-                && WGLEW_ARB_pixel_format
-#elif !defined(__APPLE__)
-                && GLXEW_SGIX_pbuffer
-                && GLXEW_SGIX_fbconfig
-#else
-                && false
-#endif
-#endif // OPENCSG_HAVE_PBUFFER
-            ) {
-                newOffscreenType = OpenCSG::PBuffer;
-            }
             else {
                 // At least one set of the above OpenGL extensions is required
                 return false;
@@ -195,14 +165,12 @@ namespace OpenCSG {
         int ty = dy;
         // We don't need to enlarge the texture to the next largest power-of-two size if:
         // - any of the texture rectangle extensions is supported
-        //   (texture rectangle is no problem for FBO; for pbuffers we fallback to copy-to-texture
-        //    if the required WGL-extensions for texture rectangle are missing - always on Linux)
-        // - Otherwise for FBO, if we have the GLEW_ARB_texture_non_power_of_two extension
+        // - or if the GLEW_ARB_texture_non_power_of_two extension is supported
         // Negating this gives the following expression from hell:
         if (   !GLEW_ARB_texture_rectangle
             && !GLEW_EXT_texture_rectangle
             && !GLEW_NV_texture_rectangle
-            && (newOffscreenType == OpenCSG::PBuffer || !GLEW_ARB_texture_non_power_of_two)
+            && !GLEW_ARB_texture_non_power_of_two
         ) {
             // blow up the texture to legal power-of-two size :-(
             tx = nextPow2(dx);
@@ -304,22 +272,11 @@ namespace OpenCSG {
     Channel ChannelManager::request() {
         if (!mInOffscreenBuffer) {
             mOffscreenBuffer->BeginCapture();
-            if (mOffscreenBuffer->haveSeparateContext()) {
-                glFrontFace(mFaceOrientation);
-            }
 
             mInOffscreenBuffer = true;
 
             mCurrentChannel = NoChannel;
             mOccupiedChannels = NoChannel;
-        }
-
-        if (mOffscreenBuffer->haveSeparateContext()) {
-            glViewport(OpenGL::canvasPos[0], OpenGL::canvasPos[1], OpenGL::canvasPos[2], OpenGL::canvasPos[3]);
-            glMatrixMode(GL_PROJECTION);
-            glLoadMatrixf(OpenGL::projection);
-            glMatrixMode(GL_MODELVIEW);
-            glLoadMatrixf(OpenGL::modelview);
         }
 
         mCurrentChannel = find();
@@ -427,13 +384,8 @@ namespace OpenCSG {
         float factorX = static_cast<float>(dx);
         float factorY = static_cast<float>(dy);
 
-        // RenderTexture has a slight flaw: if you request a power-of-two texture
-        // by coincidence even though you expected a NPOT texture, you will not
-        // automatically notice that. That's for a bug that only happened at
-        // 512x512 canvas resolution. 
-        // Therefore we do not check for the extension, but simply for the texture format
-        // Update (08.04.2004): Fixed the flaw, but kept checking the texture format.
-        // Actually that seems safer, since it should work always
+        // Do not check for the non-power-of-two extension, but simply for
+        // the texture format. This seems safer, since it should work always.
         if (!isRectangularTexture()) {
             // with ordinary pow-of-two texture coordinates are between 0 and 1
             // but we must assure only the used part of the texture is taken.
@@ -463,7 +415,7 @@ namespace OpenCSG {
 
     void ChannelManager::resetProjectiveTexture(bool fixedFunction)
     {
-        if (fixedFunction && !mOffscreenBuffer->haveSeparateContext())
+        if (fixedFunction)
         {
             glDisable(GL_TEXTURE_GEN_S);
             glDisable(GL_TEXTURE_GEN_T);

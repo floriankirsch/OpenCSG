@@ -1,3 +1,7 @@
+28.08.2023
+    Removed PBuffer support (always use FBOs instead)
+
+
 20.04.2022
     Release 1.5.1
 

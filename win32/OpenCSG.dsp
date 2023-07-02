@@ -167,14 +167,6 @@ SOURCE=..\src\openglHelper.h
 # End Source File
 # Begin Source File
 
-SOURCE=..\src\pBufferTexture.cpp
-# End Source File
-# Begin Source File
-
-SOURCE=..\src\pBufferTexture.h
-# End Source File
-# Begin Source File
-
 SOURCE=..\src\primitive.cpp
 # End Source File
 # Begin Source File
@@ -192,14 +184,6 @@ SOURCE=..\src\renderGoldfeather.cpp
 # Begin Source File
 
 SOURCE=..\src\renderSCS.cpp
-# End Source File
-# Begin Source File
-
-SOURCE=..\RenderTexture\RenderTexture.cpp
-# End Source File
-# Begin Source File
-
-SOURCE=..\RenderTexture\RenderTexture.h
 # End Source File
 # Begin Source File
 

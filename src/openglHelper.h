@@ -41,7 +41,7 @@ namespace OpenCSG {
             // copy of the viewport size during CSG computation
 
         extern int stencilBits;
-            // number of stencil bits in the pbuffer
+            // number of stencil bits in the offscreen buffer
         extern unsigned int stencilMax;
             // the number where the stencil value would "wrap around" to zero
         extern unsigned int stencilMask;

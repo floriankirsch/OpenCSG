@@ -29,12 +29,10 @@ HEADERS		= ../include/opencsg.h \
 		  offscreenBuffer.h \
 		  opencsgRender.h \
 		  openglHelper.h \
-		  pBufferTexture.h \
 		  primitiveHelper.h \
 		  scissorMemo.h \
 		  settings.h \
-		  stencilManager.h \
-		  ../RenderTexture/RenderTexture.h
+		  stencilManager.h
 SOURCES		= area.cpp \
 		  batch.cpp \
 		  context.cpp \
@@ -44,12 +42,10 @@ SOURCES		= area.cpp \
 		  occlusionQuery.cpp \
 		  opencsgRender.cpp \
 		  openglHelper.cpp \
-		  pBufferTexture.cpp \
 		  primitive.cpp \
 		  primitiveHelper.cpp \
 		  renderGoldfeather.cpp \
 		  renderSCS.cpp \
 		  scissorMemo.cpp \
 		  settings.cpp \
-		  stencilManager.cpp \
-		  ../RenderTexture/RenderTexture.cpp
+		  stencilManager.cpp

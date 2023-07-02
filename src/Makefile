@@ -52,15 +52,13 @@ SOURCES       = area.cpp \
 		occlusionQuery.cpp \
 		opencsgRender.cpp \
 		openglHelper.cpp \
-		pBufferTexture.cpp \
 		primitive.cpp \
 		primitiveHelper.cpp \
 		renderGoldfeather.cpp \
 		renderSCS.cpp \
 		scissorMemo.cpp \
 		settings.cpp \
-		stencilManager.cpp \
-		../RenderTexture/RenderTexture.cpp 
+		stencilManager.cpp
 OBJECTS       = area.o \
 		batch.o \
 		context.o \
@@ -70,15 +68,13 @@ OBJECTS       = area.o \
 		occlusionQuery.o \
 		opencsgRender.o \
 		openglHelper.o \
-		pBufferTexture.o \
 		primitive.o \
 		primitiveHelper.o \
 		renderGoldfeather.o \
 		renderSCS.o \
 		scissorMemo.o \
 		settings.o \
-		stencilManager.o \
-		RenderTexture.o
+		stencilManager.o
 DIST          = src.pro
 QMAKE_TARGET  = opencsg
 DESTDIR       = ../lib/
@@ -186,8 +182,7 @@ context.o: context.cpp opencsgConfig.h \
 		context.h \
 		offscreenBuffer.h \
 		frameBufferObject.h \
-		frameBufferObjectExt.h \
-		pBufferTexture.h
+		frameBufferObjectExt.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o context.o context.cpp
 
 channelManager.o: channelManager.cpp opencsgConfig.h \
@@ -224,11 +219,6 @@ openglHelper.o: openglHelper.cpp opencsgConfig.h \
 		openglHelper.h \
 		area.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o openglHelper.o openglHelper.cpp
-
-pBufferTexture.o: pBufferTexture.cpp opencsgConfig.h \
-		pBufferTexture.h \
-		offscreenBuffer.h
-	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o pBufferTexture.o pBufferTexture.cpp
 
 primitive.o: primitive.cpp opencsgConfig.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o primitive.o primitive.cpp
@@ -278,9 +268,6 @@ stencilManager.o: stencilManager.cpp opencsgConfig.h \
 		openglHelper.h \
 		stencilManager.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o stencilManager.o stencilManager.cpp
-
-RenderTexture.o: ../RenderTexture/RenderTexture.cpp ../RenderTexture/RenderTexture.h
-	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o RenderTexture.o ../RenderTexture/RenderTexture.cpp
 
 ####### Install
 

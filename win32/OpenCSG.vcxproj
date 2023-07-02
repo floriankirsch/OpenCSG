@@ -193,12 +193,10 @@
     <ClCompile Include="..\src\occlusionQuery.cpp" />
     <ClCompile Include="..\src\opencsgRender.cpp" />
     <ClCompile Include="..\src\openglHelper.cpp" />
-    <ClCompile Include="..\src\pBufferTexture.cpp" />
     <ClCompile Include="..\src\primitive.cpp" />
     <ClCompile Include="..\src\primitiveHelper.cpp" />
     <ClCompile Include="..\src\renderGoldfeather.cpp" />
     <ClCompile Include="..\src\renderSCS.cpp" />
-    <ClCompile Include="..\RenderTexture\RenderTexture.cpp" />
     <ClCompile Include="..\src\scissorMemo.cpp" />
     <ClCompile Include="..\src\settings.cpp" />
     <ClCompile Include="..\src\stencilManager.cpp" />
@@ -215,9 +213,7 @@
     <ClInclude Include="..\src\opencsgConfig.h" />
     <ClInclude Include="..\src\opencsgRender.h" />
     <ClInclude Include="..\src\openglHelper.h" />
-    <ClInclude Include="..\src\pBufferTexture.h" />
     <ClInclude Include="..\src\primitiveHelper.h" />
-    <ClInclude Include="..\RenderTexture\RenderTexture.h" />
     <ClInclude Include="..\src\scissorMemo.h" />
     <ClInclude Include="..\src\settings.h" />
     <ClInclude Include="..\src\stencilManager.h" />

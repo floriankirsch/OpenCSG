@@ -95,7 +95,6 @@ namespace OpenCSG {
 
         OpenGL::OffscreenBuffer* mOffscreenBuffer;
         bool mInOffscreenBuffer;
-        GLenum mFaceOrientation;
 
     protected:
         Channel mCurrentChannel;

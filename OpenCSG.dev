@@ -10,7 +10,7 @@ Includes=include;glew/include;.
 Linker=-lopengl32_@@_-lglu32_@@_-lglut32_@@_
 Libs=
 UnitCount=42
-Folders="Header Files","Source Files","Source Files/glew","Source Files/OpenCSG","Source Files/OpenCSGexample","Source Files/RenderTexture"
+Folders="Header Files","Source Files","Source Files/glew","Source Files/OpenCSG","Source Files/OpenCSGexample"
 ObjFiles=
 PrivateResource=
 ResourceIncludes=
@@ -199,26 +199,6 @@ Priority=1000
 OverrideBuildCmd=0
 BuildCmd=
 
-[Unit18]
-FileName=RenderTexture\RenderTexture.cpp
-Folder=Source Files/RenderTexture
-Compile=1
-CompileCpp=1
-Link=1
-Priority=1000
-OverrideBuildCmd=0
-BuildCmd=
-
-[Unit19]
-FileName=RenderTexture\RenderTexture.h
-Folder=Source Files/RenderTexture
-Compile=1
-CompileCpp=1
-Link=1
-Priority=1000
-OverrideBuildCmd=0
-BuildCmd=
-
 [Unit20]
 FileName=src\scissorMemo.cpp
 Folder=Source Files/OpenCSG
@@ -379,26 +359,6 @@ BuildCmd=
 
 [Unit34]
 FileName=src\frameBufferObject.h
-CompileCpp=1
-Folder=Source Files/OpenCSG
-Compile=1
-Link=1
-Priority=1000
-OverrideBuildCmd=0
-BuildCmd=
-
-[Unit36]
-FileName=src\pBufferTexture.cpp
-CompileCpp=1
-Folder=Source Files/OpenCSG
-Compile=1
-Link=1
-Priority=1000
-OverrideBuildCmd=0
-BuildCmd=
-
-[Unit37]
-FileName=src\pBufferTexture.h
 CompileCpp=1
 Folder=Source Files/OpenCSG
 Compile=1

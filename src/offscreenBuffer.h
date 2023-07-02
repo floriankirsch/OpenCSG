@@ -77,10 +77,6 @@ namespace OpenCSG {
             virtual int GetWidth() const = 0;
             /// Returns the width of the offscreen buffer.
             virtual int GetHeight() const = 0;
-
-            /// Returns whether the offscreen buffer has a rendering context different from
-            /// the rendering context of the caller or not.
-            virtual bool haveSeparateContext() const = 0;
         };
     } // namespace OpenGL
 
