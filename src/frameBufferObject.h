@@ -63,12 +63,10 @@ namespace OpenCSG {
             virtual void Bind() const;
 
             /// Enables the texture target appropriate for this frame buffer object.
-            virtual void EnableTextureTarget() const { if (initialized) glEnable(textureTarget); }
+            virtual void EnableTextureTarget() const { if (initialized) glEnable(GL_TEXTURE_2D); }
             /// Disables the texture target appropriate for this frame buffer object.
-            virtual void DisableTextureTarget() const { if (initialized) glDisable(textureTarget); }
+            virtual void DisableTextureTarget() const { if (initialized) glDisable(GL_TEXTURE_2D); }
 
-            /// Returns the texture target this texture is bound to.
-            virtual unsigned int GetTextureTarget() const { return textureTarget; }
             /// Returns the width of the frame buffer object.
             virtual int GetWidth() const  { return width;  } 
             /// Returns the width of the frame buffer object.
@@ -82,7 +80,6 @@ namespace OpenCSG {
             int          height;    // height of the frame buffer object
 
             /// Texture stuff
-            GLenum       textureTarget;
             unsigned int textureID;
             unsigned int depthID;
 

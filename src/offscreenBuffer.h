@@ -71,8 +71,6 @@ namespace OpenCSG {
             /// Disables the texture target appropriate for this render texture.
             virtual void DisableTextureTarget() const = 0;
 
-            /// Returns the texture target this texture is bound to.
-            virtual unsigned int GetTextureTarget() const = 0;
             /// Returns the width of the offscreen buffer.
             virtual int GetWidth() const = 0;
             /// Returns the width of the offscreen buffer.
