@@ -1,7 +1,7 @@
-Microsoft Visual Studio 2019
+Microsoft Visual Studio 2022
 ----------------------------
 
-The Visual Studio solution OpenCSG_vc2019.sln assumes that freeglut
+The Visual Studio solution OpenCSG_vc2022.sln assumes that freeglut
 is put in a freeglut/ subdirecty in the OpenCSG installation directory.
 This works, for example, with the freeglut 3.0.0 MSVC package available
 from https://www.transmissionzero.co.uk/software/freeglut-devel
