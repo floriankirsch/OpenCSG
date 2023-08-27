@@ -84,9 +84,6 @@ namespace OpenCSG {
         /// moved into alpha, to allow alpha testing of the channel.
         static void setupTexEnv(Channel channel);
 
-    protected:
-        bool isRectangularTexture() const;
-
     private:
         ChannelManager(const ChannelManager&);
         ChannelManager& operator=(const ChannelManager&);

@@ -24,8 +24,7 @@
 #include "offscreenBuffer.h"
 #include "frameBufferObject.h"
 #include "frameBufferObjectExt.h"
-#include "pBufferTexture.h"
-#include <GL/glew.h>
+#include "openglHelper.h"
 #include <map>
 
 namespace OpenCSG {
@@ -51,15 +50,9 @@ namespace OpenCSG {
 
         struct ContextData {
             ContextData() : fARB(0), fEXT(0)
-#ifdef OPENCSG_HAVE_PBUFFER
-                          , pBuf(0)
-#endif
           {}
             FrameBufferObject* fARB;
             FrameBufferObjectExt* fEXT;
-#ifdef OPENCSG_HAVE_PBUFFER
-            PBufferTexture* pBuf;
-#endif
             std::map<const char*, GLuint> idFP;
         };
 
@@ -79,14 +72,6 @@ namespace OpenCSG {
                     contextData.fEXT = new FrameBufferObjectExt;
                 return contextData.fEXT;
             }
-#ifdef OPENCSG_HAVE_PBUFFER
-            else if (type == OpenCSG::PBuffer) {
-                if (!contextData.pBuf)
-                    contextData.pBuf = new PBufferTexture;
-                return contextData.pBuf;
-            }
-#endif
-
             return 0;
         }
 
@@ -132,9 +117,6 @@ namespace OpenCSG {
             {
                 delete itr->second.fARB;
                 delete itr->second.fEXT;
-#ifdef OPENCSG_HAVE_PBUFFER
-                delete itr->second.pBuf;
-#endif
                 std::map<const char*, GLuint> & idFP = itr->second.idFP;
                 for (std::map<const char*, GLuint>::iterator it = idFP.begin(); it != idFP.end(); ++it)
                 {

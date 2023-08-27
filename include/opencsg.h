@@ -183,7 +183,7 @@ namespace OpenCSG {
     ///   - AutomaticOffscreenType: Chooses internally depending on available
     ///                  OpenGL extensions. If graphics hardware supports different
     ///                  extensions, with most precedence ARB frame buffer objects
-    ///                  are used, then EXT frame buffer objects, then PBuffers.
+    ///                  are used, then EXT frame buffer objects.
     ///   - FrameBufferObject: Uses frame buffer objects. This method does 
     ///                  not require context switches on the graphics hardware
     ///                  to change between offscreen and main frame buffer, so
@@ -191,16 +191,12 @@ namespace OpenCSG {
     ///                  EXT frame buffer objects OpenGL extensions are supported
     ///                  internally; ARB frame buffer objects are used if both 
     ///                  are supported by the graphics hardware.
-    ///   - PBuffer: Uses PBuffers. This is the older offscreen type, which
-    ///                  is likely to work with older graphics hardware and
-    ///                  drivers.
     ///   - FrameBufferObjectARB: Forces ARB frame buffer objects to be used.
     ///   - FrameBufferObjectEXT: Forces EXT frame buffer objects to be used.
     ///   - OffscreenTypeUnused: Invalid input.
     enum OffscreenType {
         AutomaticOffscreenType = 0,
         FrameBufferObject      = 1,
-        PBuffer                = 2,
         FrameBufferObjectARB   = 3,
         FrameBufferObjectEXT   = 4,
         OffscreenTypeUnused    = 5
@@ -231,7 +227,7 @@ namespace OpenCSG {
     /// Setting the context is required for applications rendering with
     /// OpenCSG in different OpenGL windows with OpenGL contexts that
     /// are not shared. This is needed for internal OpenGL resources,
-    /// such as PBuffers or frame buffer objects, which are created in
+    /// such as frame buffer objects, which are created in
     /// in the render() method and recycled when render() is called again.
     /// The resources are only valid in the OpenGL context they have
     /// been created (and in contexts shared with this context).
