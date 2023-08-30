@@ -219,26 +219,6 @@ Priority=1000
 OverrideBuildCmd=0
 BuildCmd=
 
-[Unit22]
-FileName=src\stencilManager.cpp
-Folder=Source Files/OpenCSG
-Compile=1
-CompileCpp=1
-Link=1
-Priority=1000
-OverrideBuildCmd=0
-BuildCmd=
-
-[Unit23]
-FileName=src\stencilManager.h
-Folder=Source Files/OpenCSG
-Compile=1
-CompileCpp=1
-Link=1
-Priority=1000
-OverrideBuildCmd=0
-BuildCmd=
-
 [Unit24]
 FileName=include\opencsg.h
 Folder=Header Files

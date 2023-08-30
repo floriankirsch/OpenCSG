@@ -57,8 +57,7 @@ SOURCES       = area.cpp \
 		renderGoldfeather.cpp \
 		renderSCS.cpp \
 		scissorMemo.cpp \
-		settings.cpp \
-		stencilManager.cpp
+		settings.cpp
 OBJECTS       = area.o \
 		batch.o \
 		context.o \
@@ -73,8 +72,7 @@ OBJECTS       = area.o \
 		renderGoldfeather.o \
 		renderSCS.o \
 		scissorMemo.o \
-		settings.o \
-		stencilManager.o
+		settings.o
 DIST          = src.pro
 QMAKE_TARGET  = opencsg
 DESTDIR       = ../lib/
@@ -237,8 +235,7 @@ renderGoldfeather.o: renderGoldfeather.cpp opencsgConfig.h \
 		openglHelper.h \
 		area.h \
 		primitiveHelper.h \
-		scissorMemo.h \
-		stencilManager.h
+		scissorMemo.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o renderGoldfeather.o renderGoldfeather.cpp
 
 renderSCS.o: renderSCS.cpp opencsgConfig.h \
@@ -262,12 +259,6 @@ scissorMemo.o: scissorMemo.cpp opencsgConfig.h \
 
 settings.o: settings.cpp opencsgConfig.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o settings.o settings.cpp
-
-stencilManager.o: stencilManager.cpp opencsgConfig.h \
-		area.h \
-		openglHelper.h \
-		stencilManager.h
-	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o stencilManager.o stencilManager.cpp
 
 ####### Install
 

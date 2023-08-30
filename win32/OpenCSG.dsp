@@ -203,13 +203,6 @@ SOURCE=..\src\settings.h
 # End Source File
 # Begin Source File
 
-SOURCE=..\src\stencilManager.cpp
-# End Source File
-# Begin Source File
-
-SOURCE=..\src\stencilManager.h
-# End Source File
-# End Group
 # Begin Group "Header Files"
 
 # PROP Default_Filter "h;hpp;hxx;hm;inl"

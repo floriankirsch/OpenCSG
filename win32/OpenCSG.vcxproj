@@ -199,7 +199,6 @@
     <ClCompile Include="..\src\renderSCS.cpp" />
     <ClCompile Include="..\src\scissorMemo.cpp" />
     <ClCompile Include="..\src\settings.cpp" />
-    <ClCompile Include="..\src\stencilManager.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\src\area.h" />
@@ -216,7 +215,6 @@
     <ClInclude Include="..\src\primitiveHelper.h" />
     <ClInclude Include="..\src\scissorMemo.h" />
     <ClInclude Include="..\src\settings.h" />
-    <ClInclude Include="..\src\stencilManager.h" />
     <ClInclude Include="..\include\opencsg.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

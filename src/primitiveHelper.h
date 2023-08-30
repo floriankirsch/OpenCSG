@@ -60,7 +60,7 @@ namespace OpenCSG {
         /// stencil buffer. The rendering layers are not ordered from 
         /// front to back, so the ordering of the array matters! 
         /// Expects a clean stencil buffer, and does not clear the stencil
-        /// buffer afterwards. 
+        /// buffer afterwards.
         void renderLayer(unsigned int layer, const std::vector<Primitive*>& primitives);
 
 

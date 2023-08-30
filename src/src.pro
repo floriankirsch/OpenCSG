@@ -31,8 +31,7 @@ HEADERS		= ../include/opencsg.h \
 		  openglHelper.h \
 		  primitiveHelper.h \
 		  scissorMemo.h \
-		  settings.h \
-		  stencilManager.h
+		  settings.h
 SOURCES		= area.cpp \
 		  batch.cpp \
 		  context.cpp \
@@ -47,5 +46,4 @@ SOURCES		= area.cpp \
 		  renderGoldfeather.cpp \
 		  renderSCS.cpp \
 		  scissorMemo.cpp \
-		  settings.cpp \
-		  stencilManager.cpp
+		  settings.cpp
