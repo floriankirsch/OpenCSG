@@ -1,1 +1,1 @@
-OpenCSG-1.5.1
+OpenCSG-1.6.0
