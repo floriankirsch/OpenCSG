@@ -49,14 +49,26 @@ namespace OpenCSG {
     namespace OpenGL {
 
         struct ContextData {
-            ContextData() : fARB(0), fEXT(0)
-          {}
+            ContextData() : haveOpenGLFunctions(false), fARB(0), fEXT(0)
+            {}
+            bool haveOpenGLFunctions;
             FrameBufferObject* fARB;
             FrameBufferObjectExt* fEXT;
             std::map<const char*, GLuint> idFP;
         };
 
         static std::map<int, ContextData> gContextDataMap;
+
+        void ensureFunctionPointers()
+        {
+            int context = getContext();
+            ContextData& contextData = gContextDataMap[context];
+            if (contextData.haveOpenGLFunctions)
+                return;
+
+            initExtensionLibrary();
+            contextData.haveOpenGLFunctions = true;
+        }
 
         OffscreenBuffer* getOffscreenBuffer(OffscreenType type) {
             int context = getContext();

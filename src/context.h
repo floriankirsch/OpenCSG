@@ -41,6 +41,11 @@ namespace OpenCSG {
 
         class OffscreenBuffer;
 
+        /// Retrieves the OpenGL function pointers, including the
+        /// functions pointers of OpenGL extensions, from the
+        /// OpenGL extension library (such as GLEW or glad).
+        void ensureFunctionPointers();
+
         /// Checks the OpenGL-extensions resp. the current settings
         /// and returns a concrete offscreen buffer, for the currently
         /// active context in OpenCSG.

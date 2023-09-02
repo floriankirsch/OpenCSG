@@ -22,7 +22,7 @@
 
 #include "opencsgConfig.h"
 #include <opencsg.h>
-#include "openglExt.h"
+#include "context.h"
 #include "opencsgRender.h"
 #include "primitiveHelper.h"
 #include "settings.h"
@@ -96,6 +96,8 @@ namespace OpenCSG {
 
     void render(const std::vector<Primitive*>& primitives)
     {
+        OpenGL::ensureFunctionPointers();
+
         Algorithm algorithm = (Algorithm)getOption(AlgorithmSetting);
         DepthComplexityAlgorithm depthComplexityAlgorithm = (DepthComplexityAlgorithm)getOption(DepthComplexitySetting);
 
