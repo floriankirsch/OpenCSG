@@ -77,6 +77,8 @@ namespace OpenCSG {
                     // shapes of interest: we need to determine the appropriate layer of 
                     // the shapes, using stencil counting
                     glClearStencil(0);
+                    glStencilMask(OpenGL::stencilMask);
+                    glClear(GL_STENCIL_BUFFER_BIT);
                     OpenGL::renderLayer(getLayer(*c), primitives);
                     glDisable(GL_STENCIL_TEST);
                 }
