@@ -30,9 +30,6 @@
 
 namespace OpenCSG {
 
-    /// Initializes the set of options. No need to call this from outside,
-    /// because invoked from setOptioni() and getOptioni() when they are first called.
-    void initOptions();
     /// redeclared from opencsg.h
     void setOption(OptionType option, int newSetting);
     /// redeclared from opencsg.h
