@@ -9,7 +9,7 @@ isEmpty(INSTALLDIR) {
 CONFIG += opengl warn_on release
 INCLUDEPATH += ../include ../ $$INSTALLDIR/include
 CONFIG -= qt
-LIBS += -L$$INSTALLDIR/lib -lGLEW
+LIBS += -L$$INSTALLDIR/lib
 
 DESTDIR = ../lib
 headers.files = ../include/opencsg.h
@@ -18,6 +18,8 @@ target.path = $$INSTALLDIR/lib
 INSTALLS += target headers
 
 HEADERS		= ../include/opencsg.h \
+		  glad/include/glad/glad.h \
+		  glad/include/KHR/khrplatform.h \
 		  opencsgConfig.h \
 		  area.h \
 		  batch.h \
@@ -33,7 +35,8 @@ HEADERS		= ../include/opencsg.h \
 		  primitiveHelper.h \
 		  scissorMemo.h \
 		  settings.h
-SOURCES		= area.cpp \
+SOURCES		= glad/src/glad.cpp \
+		  area.cpp \
 		  batch.cpp \
 		  context.cpp \
 		  channelManager.cpp \

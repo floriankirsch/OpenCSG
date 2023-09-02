@@ -40,10 +40,20 @@ inline void initExtensionLibrary()
 
 #else
 
+// The khronos includes several system includes.
+// Those must not be put into the OpenCSG namespace.
+
+#include "glad/include/KHR/khrplatform.h"
+
 namespace OpenCSG {
 
     // Keep the global namespace clean. Maybe should be even moved into the
-    // sub-namespace OpenGL
+    // sub-namespace OpenGL.
+
+    // Unfortunately, this requires some manual editing of the
+    // generated glad files: glad.cpp must include glad.h as well
+    // while the OpenCSG namespace is open. Furthermore, the
+    // C name mangling for the glad symbols must be disabled.
 
     #include "glad/include/glad/glad.h"
 

@@ -60,10 +60,6 @@
 #define GLAPIENTRY APIENTRY
 #endif
 
-#ifdef __cplusplus
-extern "C" {
-#endif
-
 struct gladGLversionStruct {
     int major;
     int minor;
@@ -5695,10 +5691,6 @@ GLAPI int GLAD_GL_NV_packed_depth_stencil;
 #ifndef GL_NV_texture_rectangle
 #define GL_NV_texture_rectangle 1
 GLAPI int GLAD_GL_NV_texture_rectangle;
-#endif
-
-#ifdef __cplusplus
-}
 #endif
 
 #endif

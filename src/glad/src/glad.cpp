@@ -39,7 +39,12 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+
+namespace OpenCSG { 
+
 #include "../include/glad/glad.h"
+
+}
 
 static void* get_proc(const char *namez);
 
@@ -161,6 +166,8 @@ void* get_proc(const char *namez) {
 
     return result;
 }
+
+namespace OpenCSG {
 
 int gladLoadGL(void) {
     int status = 0;
@@ -2824,4 +2831,6 @@ int gladLoadGLLoader(GLADloadproc load) {
 	load_GL_NV_occlusion_query(load);
 	return GLVersion.major != 0 || GLVersion.minor != 0;
 }
+
+} // namespace OpenCSG
 
