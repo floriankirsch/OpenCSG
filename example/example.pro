@@ -4,7 +4,7 @@ TARGET = opencsgexample
 CONFIG += opengl warn_on release
 CONFIG -= qt
 INCLUDEPATH += ../include
-LIBS += -L../lib -lopencsg -lGLEW
+LIBS += -L../lib -lopencsg
 
 isEmpty(INSTALLDIR) {
   INSTALLDIR = /usr/local
@@ -20,5 +20,5 @@ else {
   LIBS += -lGLU -lglut
 }
 
-HEADERS = displaylistPrimitive.h
+HEADERS = displaylistPrimitive.h includeGl.h
 SOURCES	= displaylistPrimitive.cpp main.cpp
