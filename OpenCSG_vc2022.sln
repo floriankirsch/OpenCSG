@@ -3,17 +3,11 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 VisualStudioVersion = 17.5.318.41597
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "OpenCSG", "win32\OpenCSG.vcxproj", "{BB6A8C4D-37B1-81CB-862A-BDDA0906D298}"
-	ProjectSection(ProjectDependencies) = postProject
-		{664E6F0D-6784-4760-9565-D54F8EB1EDF4} = {664E6F0D-6784-4760-9565-D54F8EB1EDF4}
-	EndProjectSection
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "OpenCSGexample", "example\OpenCSGexample.vcxproj", "{9E8633EF-69FE-BF99-A40F-B540D039FBFC}"
 	ProjectSection(ProjectDependencies) = postProject
-		{664E6F0D-6784-4760-9565-D54F8EB1EDF4} = {664E6F0D-6784-4760-9565-D54F8EB1EDF4}
 		{BB6A8C4D-37B1-81CB-862A-BDDA0906D298} = {BB6A8C4D-37B1-81CB-862A-BDDA0906D298}
 	EndProjectSection
-EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "glew_static", "glew\build\vc10\glew_static.vcxproj", "{664E6F0D-6784-4760-9565-D54F8EB1EDF4}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -39,14 +33,6 @@ Global
 		{9E8633EF-69FE-BF99-A40F-B540D039FBFC}.Release|Win32.Build.0 = Release|Win32
 		{9E8633EF-69FE-BF99-A40F-B540D039FBFC}.Release|x64.ActiveCfg = Release|x64
 		{9E8633EF-69FE-BF99-A40F-B540D039FBFC}.Release|x64.Build.0 = Release|x64
-		{664E6F0D-6784-4760-9565-D54F8EB1EDF4}.Debug|Win32.ActiveCfg = Debug|Win32
-		{664E6F0D-6784-4760-9565-D54F8EB1EDF4}.Debug|Win32.Build.0 = Debug|Win32
-		{664E6F0D-6784-4760-9565-D54F8EB1EDF4}.Debug|x64.ActiveCfg = Debug|x64
-		{664E6F0D-6784-4760-9565-D54F8EB1EDF4}.Debug|x64.Build.0 = Debug|x64
-		{664E6F0D-6784-4760-9565-D54F8EB1EDF4}.Release|Win32.ActiveCfg = Release|Win32
-		{664E6F0D-6784-4760-9565-D54F8EB1EDF4}.Release|Win32.Build.0 = Release|Win32
-		{664E6F0D-6784-4760-9565-D54F8EB1EDF4}.Release|x64.ActiveCfg = Release|x64
-		{664E6F0D-6784-4760-9565-D54F8EB1EDF4}.Release|x64.Build.0 = Release|x64
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

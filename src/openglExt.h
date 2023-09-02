@@ -25,7 +25,11 @@
 #ifndef __OpenCSG__opengl_ext_h__
 #define __OpenCSG__opengl_ext_h__
 
-#if 0 // OpenGL extension checking via GLEW
+#if 0 // OpenGL extension checking via GLEW. This is
+      // what was used up to OpenCSG 1.5.1 (without
+      // this funny #define, of course). GLEW has its
+      // problems. On Linux, it often links against
+      // GLX which may be not available on Wayland systems.
 
 #include <GL/glew.h>
 
@@ -38,7 +42,11 @@ inline void initExtensionLibrary()
     // application.
 }
 
-#else
+#else // OpenGL extension checking with glad.
+      // To avoid conflicts with other software
+      // that maybe as well use glad, the generated
+      // sources of glad are hacked here, such that
+      // all symbols end up in the OpenCSG namespace.
 
 // The khronos includes several system includes.
 // Those must not be put into the OpenCSG namespace.
