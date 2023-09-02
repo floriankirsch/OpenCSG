@@ -96,10 +96,12 @@ namespace OpenCSG {
         glDisable(GL_LIGHTING);
         glDisable(GL_TEXTURE_1D);
         glDisable(GL_TEXTURE_2D);
-        if (GLEW_ARB_texture_rectangle || GLEW_EXT_texture_rectangle || GLEW_NV_texture_rectangle)
+        if (   OPENCSG_HAS_EXT(ARB_texture_rectangle)
+            || OPENCSG_HAS_EXT(EXT_texture_rectangle)
+            || OPENCSG_HAS_EXT(NV_texture_rectangle))
             glDisable(GL_TEXTURE_RECTANGLE_ARB);
         glDisable(GL_TEXTURE_3D); // OpenGL 1.2 - take this as given
-        if (GLEW_ARB_texture_cube_map)
+        if (OPENCSG_HAS_EXT(ARB_texture_cube_map))
             glDisable(GL_TEXTURE_CUBE_MAP_ARB);
         glDisable(GL_BLEND);
 
@@ -129,12 +131,12 @@ namespace OpenCSG {
         if (   newOffscreenType == OpenCSG::AutomaticOffscreenType
             || newOffscreenType == OpenCSG::FrameBufferObject
         ) {
-            if (GLEW_ARB_framebuffer_object) {
+            if (OPENCSG_HAS_EXT(ARB_framebuffer_object)) {
                 newOffscreenType = OpenCSG::FrameBufferObjectARB;
             }
             else
-            if (   GLEW_EXT_framebuffer_object
-                && GLEW_EXT_packed_depth_stencil
+            if (   OPENCSG_HAS_EXT(EXT_framebuffer_object)
+                && OPENCSG_HAS_EXT(EXT_packed_depth_stencil)
             ) {
                 newOffscreenType = OpenCSG::FrameBufferObjectEXT;
             }
@@ -165,12 +167,12 @@ namespace OpenCSG {
         int ty = dy;
         // We don't need to enlarge the texture to the next largest power-of-two size if:
         // - any of the texture rectangle extensions is supported
-        // - or if the GLEW_ARB_texture_non_power_of_two extension is supported
+        // - or if the ARB_texture_non_power_of_two extension is supported
         // Negating this gives the following expression from hell:
-        if (   !GLEW_ARB_texture_rectangle
-            && !GLEW_EXT_texture_rectangle
-            && !GLEW_NV_texture_rectangle
-            && !GLEW_ARB_texture_non_power_of_two
+        if (   !OPENCSG_HAS_EXT(ARB_texture_rectangle)
+            && !OPENCSG_HAS_EXT(EXT_texture_rectangle)
+            && !OPENCSG_HAS_EXT(NV_texture_rectangle)
+            && !OPENCSG_HAS_EXT(ARB_texture_non_power_of_two)
         ) {
             // blow up the texture to legal power-of-two size :-(
             tx = nextPow2(dx);
@@ -256,7 +258,7 @@ namespace OpenCSG {
         // find free channel
         if ((mOccupiedChannels & Alpha) == 0) {
             channel = Alpha;
-        }  else if (GLEW_ARB_texture_env_dot3) {
+        }  else if (OPENCSG_HAS_EXT(ARB_texture_env_dot3)) {
             if ((mOccupiedChannels & Red) == 0)   {
                 channel = Red;
             } else if ((mOccupiedChannels & Green) == 0) {
@@ -436,7 +438,7 @@ namespace OpenCSG {
             glTexEnvi(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_REPLACE);
         } else {
             // replicate color into alpha
-            if (GLEW_ARB_texture_env_dot3) {
+            if (OPENCSG_HAS_EXT(ARB_texture_env_dot3)) {
                 switch (channel) {
                 case Red: 
                     glColor3f(1.0f, 0.5f, 0.5f); 

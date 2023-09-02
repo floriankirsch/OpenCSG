@@ -21,7 +21,7 @@
 //
 
 #include "opencsgConfig.h"
-#include <GL/glew.h>
+#include "openglExt.h"
 #include "openglHelper.h"
 
 namespace OpenCSG {

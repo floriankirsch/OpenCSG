@@ -27,6 +27,7 @@ HEADERS		= ../include/opencsg.h \
 		  frameBufferObjectExt.h \
 		  occlusionQuery.h \
 		  offscreenBuffer.h \
+		  openglExt.h \
 		  opencsgRender.h \
 		  openglHelper.h \
 		  primitiveHelper.h \

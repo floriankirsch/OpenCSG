@@ -26,7 +26,7 @@
 #define __OpenCSG__opengl_helper_h__
 
 #include "opencsgConfig.h"
-#include <GL/glew.h>
+#include "openglExt.h"
 #include "area.h"
 
 namespace OpenCSG {

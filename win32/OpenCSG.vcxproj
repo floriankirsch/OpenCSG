@@ -211,6 +211,7 @@
     <ClInclude Include="..\src\offscreenBuffer.h" />
     <ClInclude Include="..\src\opencsgConfig.h" />
     <ClInclude Include="..\src\opencsgRender.h" />
+    <ClInclude Include="..\src\openglExt.h" />
     <ClInclude Include="..\src\openglHelper.h" />
     <ClInclude Include="..\src\primitiveHelper.h" />
     <ClInclude Include="..\src\scissorMemo.h" />

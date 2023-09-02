@@ -22,7 +22,7 @@
 
 #include "opencsgConfig.h"
 #include <opencsg.h>
-#include <GL/glew.h>
+#include "openglExt.h"
 #include "openglHelper.h"
 #include "scissorMemo.h"
 
@@ -44,7 +44,7 @@ namespace OpenCSG {
                  || optimizationSetting == OptimizationOff)
             mUseDepthBoundsTest = false;
         else if (optimizationSetting == OptimizationOn)
-            mUseDepthBoundsTest = (GLEW_EXT_depth_bounds_test != 0);
+            mUseDepthBoundsTest = (OPENCSG_HAS_EXT(EXT_depth_bounds_test) != 0);
     }
 
     void ScissorMemo::store(Channel ch) {

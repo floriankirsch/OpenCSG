@@ -22,7 +22,7 @@
 
 #include "opencsgConfig.h"
 #include <opencsg.h>
-#include <GL/glew.h>
+#include "openglExt.h"
 #include "opencsgRender.h"
 #include "primitiveHelper.h"
 #include "settings.h"
@@ -32,7 +32,8 @@ namespace OpenCSG {
     namespace {
 
         bool haveHardwareOcclusionQueries() {
-            return GLEW_ARB_occlusion_query || GLEW_NV_occlusion_query;
+            return OPENCSG_HAS_EXT(ARB_occlusion_query)
+                || OPENCSG_HAS_EXT(NV_occlusion_query);
         }
 
         Algorithm chooseAlgorithm(const std::vector<Primitive*>& primitives) {

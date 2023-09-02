@@ -26,7 +26,7 @@
 
 #include "opencsgConfig.h"
 #include "offscreenBuffer.h"
-#include <GL/glew.h>
+#include "openglExt.h"
 
 namespace OpenCSG {
 

@@ -270,7 +270,9 @@ namespace OpenCSG {
 
         ChannelManagerForBatches* getChannelManager() {
 
-            if (GLEW_ARB_vertex_program && GLEW_ARB_fragment_program) {
+            if (   OPENCSG_HAS_EXT(ARB_vertex_program)
+                && OPENCSG_HAS_EXT(ARB_fragment_program)
+            ) {
                 return new SCSChannelManagerFragmentProgram;
             }
 

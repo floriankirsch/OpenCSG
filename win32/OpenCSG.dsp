@@ -159,6 +159,10 @@ SOURCE=..\src\opencsgRender.h
 # End Source File
 # Begin Source File
 
+SOURCE=..\src\openglExt.h
+# End Source File
+# Begin Source File
+
 SOURCE=..\src\openglHelper.cpp
 # End Source File
 # Begin Source File

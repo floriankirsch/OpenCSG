@@ -21,7 +21,7 @@
 //
 
 #include "opencsgConfig.h"
-#include <GL/glew.h>
+#include "openglExt.h"
 #include "occlusionQuery.h"
 
 namespace OpenCSG {
@@ -106,19 +106,19 @@ namespace OpenCSG {
 
         OcclusionQuery* getOcclusionQuery(bool exactNumberNeeded) {
 
-            if (!exactNumberNeeded && GLEW_ARB_occlusion_query2) {
+            if (!exactNumberNeeded && OPENCSG_HAS_EXT(ARB_occlusion_query2)) {
                 OcclusionQueryARB* occlusionQuery = new OcclusionQueryARB;
                 occlusionQuery->mQueryType = GL_ANY_SAMPLES_PASSED;
                 return occlusionQuery;
             }
 
-            if (GLEW_ARB_occlusion_query) {
+            if (OPENCSG_HAS_EXT(ARB_occlusion_query)) {
                 OcclusionQueryARB* occlusionQuery = new OcclusionQueryARB;
                 occlusionQuery->mQueryType = GL_SAMPLES_PASSED_ARB;
                 return occlusionQuery;
             }
 
-            if (GLEW_NV_occlusion_query) {
+            if (OPENCSG_HAS_EXT(NV_occlusion_query)) {
                 return new OcclusionQueryNV;
             }
 

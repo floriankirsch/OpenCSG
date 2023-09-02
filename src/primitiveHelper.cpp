@@ -22,7 +22,7 @@
 
 #include "opencsgConfig.h"
 #include <opencsg.h>
-#include <GL/glew.h>
+#include "openglExt.h"
 #include "openglHelper.h"
 #include "primitiveHelper.h"
 #include <algorithm>

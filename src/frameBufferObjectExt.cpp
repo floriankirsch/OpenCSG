@@ -44,8 +44,8 @@ namespace OpenCSG {
 
         bool FrameBufferObjectExt::ReadCurrent()
         {
-            bool haveFBO = GLEW_EXT_framebuffer_object != 0
-                        && GLEW_EXT_packed_depth_stencil != 0;
+            bool haveFBO =    OPENCSG_HAS_EXT(EXT_framebuffer_object) != 0
+                           && OPENCSG_HAS_EXT(EXT_packed_depth_stencil) != 0;
 
             if (haveFBO)
                 glGetIntegerv(GL_FRAMEBUFFER_BINDING_EXT, &oldFramebufferID);
@@ -57,8 +57,8 @@ namespace OpenCSG {
         // shareObjects and copyContext do not make sense here, context remains the same.
         bool FrameBufferObjectExt::Initialize(int width, int height, bool /* shareObjects */, bool /* copyContext */ )
         {
-            bool haveFBO =    GLEW_EXT_framebuffer_object != 0 
-                           && GLEW_EXT_packed_depth_stencil != 0;
+            bool haveFBO =    OPENCSG_HAS_EXT(EXT_framebuffer_object) != 0
+                           && OPENCSG_HAS_EXT(EXT_packed_depth_stencil) != 0;
             if (!haveFBO)
                 return false;
 
@@ -71,7 +71,9 @@ namespace OpenCSG {
 
             glBindFramebufferEXT(GL_FRAMEBUFFER_EXT, framebufferID);
 
-            GLenum target = (GLEW_ARB_texture_rectangle || GLEW_EXT_texture_rectangle || GLEW_NV_texture_rectangle)
+            GLenum target =   (OPENCSG_HAS_EXT(ARB_texture_rectangle)
+                            || OPENCSG_HAS_EXT(EXT_texture_rectangle)
+                            || OPENCSG_HAS_EXT(NV_texture_rectangle))
                 ? GL_TEXTURE_RECTANGLE_ARB
                 : GL_TEXTURE_2D; // implicitely asks for GL_ARB_texture_non_power_of_two.
                                  // this should have been checked in channelManager.cpp
