@@ -22,7 +22,6 @@
 // simple example program for OpenCSG using Glut
 //
 
-#include <GL/glew.h>
 #include <opencsg.h>
 #include "displaylistPrimitive.h"
 #include <iostream>
@@ -31,17 +30,7 @@
 
 // include glut.h after stdlib.h to avoid conflict in declaration
 // of exit() with Visual Studio 2010
-#ifdef __APPLE__
-#include <GLUT/glut.h>
-#elif  _WIN32
-// glut include under windows, assuming that freeglut binary has been
-// directly put into the opencsg main directory (e.g., try to use the
-// freeglut 3.0.0 MSVC Package that is available from
-// https://www.transmissionzero.co.uk/software/freeglut-devel)
-#include <../freeglut/include/GL/glut.h>
-#else
-#include <GL/glut.h>
-#endif
+#include "includeGl.h"
 
 enum { 
     CSG_BASIC, CSG_WIDGET, CSG_GRID2D, CSG_GRID3D, CSG_CUBERACK, CSG_CONCAVE,
@@ -453,13 +442,6 @@ int main(int argc, char **argv)
     glutInitWindowSize(512, 512);
     glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGB | GLUT_DEPTH | GLUT_STENCIL);
     glutCreateWindow("OpenCSG example application");
-
-    int err = glewInit();
-    if (GLEW_OK != err) {
-        // problem: glewInit failed, something is seriously wrong
-        std::cerr << "GLEW Error: " << glewGetErrorString(err) << std::endl;
-        return 1;
-    }  
 
     int menuShape     = glutCreateMenu(menu);
     glutAddMenuEntry("Simple",   CSG_BASIC);

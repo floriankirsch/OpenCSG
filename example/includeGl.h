@@ -17,33 +17,27 @@
 // 51 Franklin Street, Fifth Floor, Boston, MA 02110 - 1301 USA.
 
 //
-// displaylistPrimitive.h 
+// includeGl.h
 //
-// example for a primitive which renders itself using a display list
+// Includes glut.h. Note that this implicitely also includes GL/gl.h
+// This is because the example program no longer depend on GLEW
+// anymore and does not include glew.h. But including GL/gl.h
+// directly tends to be non-portable.
 //
 
-#include "displaylistPrimitive.h"
+#ifndef __OpenCSG__include_gl_h__
+#define __OpenCSG__include_gl_h__
 
-#include "includeGl.h"
+#ifdef __APPLE__
+#include <GLUT/glut.h>
+#elif  _WIN32
+// glut include under windows, assuming that freeglut binary has been
+// directly put into the opencsg main directory (e.g., try to use the
+// freeglut 3.0.0 MSVC Package that is available from
+// https://www.transmissionzero.co.uk/software/freeglut-devel)
+#include <../freeglut/include/GL/glut.h>
+#else
+#include <GL/glut.h>
+#endif
 
-namespace OpenCSG {
-
-    DisplayListPrimitive::DisplayListPrimitive(unsigned int i, Operation o, unsigned int c)
-        : Primitive(o, c)
-    {
-        mDisplayListId = i;
-    }
-
-    void DisplayListPrimitive::setDisplayListId(unsigned int i) {
-        mDisplayListId = i;
-    }
-
-    unsigned int DisplayListPrimitive::getDisplayListId() const {
-        return mDisplayListId;
-    }
-
-    void DisplayListPrimitive::render() {
-        glCallList(mDisplayListId);
-    }
-
-}
+#endif
