@@ -190,7 +190,7 @@
     <ClCompile Include="..\src\context.cpp" />
     <ClCompile Include="..\src\frameBufferObject.cpp" />
     <ClCompile Include="..\src\frameBufferObjectExt.cpp" />
-    <ClCompile Include="..\src\glad\src\glad.cpp" />
+    <ClCompile Include="..\src\glad\src\gl.cpp" />
     <ClCompile Include="..\src\occlusionQuery.cpp" />
     <ClCompile Include="..\src\opencsgRender.cpp" />
     <ClCompile Include="..\src\openglHelper.cpp" />
@@ -208,7 +208,7 @@
     <ClInclude Include="..\src\context.h" />
     <ClInclude Include="..\src\frameBufferObject.h" />
     <ClInclude Include="..\src\frameBufferObjectExt.h" />
-    <ClInclude Include="..\src\glad\include\glad\glad.h" />
+    <ClInclude Include="..\src\glad\include\glad\gl.h" />
     <ClInclude Include="..\src\glad\include\KHR\khrplatform.h" />
     <ClInclude Include="..\src\occlusionQuery.h" />
     <ClInclude Include="..\src\offscreenBuffer.h" />
