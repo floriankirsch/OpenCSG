@@ -51,7 +51,7 @@ OBJECTS_DIR   = ./
 
 ####### Files
 
-SOURCES       = glad/src/glad.cpp \
+SOURCES       = glad/src/gl.cpp \
 		area.cpp \
 		batch.cpp \
 		context.cpp \
@@ -67,7 +67,7 @@ SOURCES       = glad/src/glad.cpp \
 		renderSCS.cpp \
 		scissorMemo.cpp \
 		settings.cpp 
-OBJECTS       = glad.o \
+OBJECTS       = gl.o \
 		area.o \
 		batch.o \
 		context.o \
@@ -154,7 +154,7 @@ DIST          = /usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/spec_pre.prf \
 		/usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/yacc.prf \
 		/usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/lex.prf \
 		src.pro ../include/opencsg.h \
-		glad/include/glad/glad.h \
+		glad/include/glad/gl.h \
 		glad/include/KHR/khrplatform.h \
 		opencsgConfig.h \
 		area.h \
@@ -170,7 +170,7 @@ DIST          = /usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/spec_pre.prf \
 		openglHelper.h \
 		primitiveHelper.h \
 		scissorMemo.h \
-		settings.h glad/src/glad.cpp \
+		settings.h glad/src/gl.cpp \
 		area.cpp \
 		batch.cpp \
 		context.cpp \
@@ -402,16 +402,16 @@ compiler_clean:
 
 ####### Compile
 
-glad.o: glad/src/glad.cpp glad/include/glad/glad.h \
+gl.o: glad/src/gl.cpp glad/include/glad/gl.h \
 		glad/include/KHR/khrplatform.h
-	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o glad.o glad/src/glad.cpp
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o gl.o glad/src/gl.cpp
 
 area.o: area.cpp opencsgConfig.h \
 		area.h \
 		openglHelper.h \
 		openglExt.h \
 		glad/include/KHR/khrplatform.h \
-		glad/include/glad/glad.h
+		glad/include/glad/gl.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o area.o area.cpp
 
 batch.o: batch.cpp opencsgConfig.h \
@@ -426,7 +426,7 @@ context.o: context.cpp opencsgConfig.h \
 		../include/opencsg.h \
 		openglExt.h \
 		glad/include/KHR/khrplatform.h \
-		glad/include/glad/glad.h \
+		glad/include/glad/gl.h \
 		offscreenBuffer.h \
 		frameBufferObject.h \
 		frameBufferObjectExt.h \
@@ -438,7 +438,7 @@ channelManager.o: channelManager.cpp opencsgConfig.h \
 		channelManager.h \
 		openglExt.h \
 		glad/include/KHR/khrplatform.h \
-		glad/include/glad/glad.h \
+		glad/include/glad/gl.h \
 		context.h \
 		../include/opencsg.h \
 		offscreenBuffer.h \
@@ -453,7 +453,7 @@ frameBufferObject.o: frameBufferObject.cpp opencsgConfig.h \
 		../include/opencsg.h \
 		openglExt.h \
 		glad/include/KHR/khrplatform.h \
-		glad/include/glad/glad.h
+		glad/include/glad/gl.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o frameBufferObject.o frameBufferObject.cpp
 
 frameBufferObjectExt.o: frameBufferObjectExt.cpp opencsgConfig.h \
@@ -462,13 +462,13 @@ frameBufferObjectExt.o: frameBufferObjectExt.cpp opencsgConfig.h \
 		../include/opencsg.h \
 		openglExt.h \
 		glad/include/KHR/khrplatform.h \
-		glad/include/glad/glad.h
+		glad/include/glad/gl.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o frameBufferObjectExt.o frameBufferObjectExt.cpp
 
 occlusionQuery.o: occlusionQuery.cpp opencsgConfig.h \
 		openglExt.h \
 		glad/include/KHR/khrplatform.h \
-		glad/include/glad/glad.h \
+		glad/include/glad/gl.h \
 		occlusionQuery.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o occlusionQuery.o occlusionQuery.cpp
 
@@ -477,7 +477,7 @@ opencsgRender.o: opencsgRender.cpp opencsgConfig.h \
 		context.h \
 		openglExt.h \
 		glad/include/KHR/khrplatform.h \
-		glad/include/glad/glad.h \
+		glad/include/glad/gl.h \
 		opencsgRender.h \
 		primitiveHelper.h \
 		area.h \
@@ -487,7 +487,7 @@ opencsgRender.o: opencsgRender.cpp opencsgConfig.h \
 openglHelper.o: openglHelper.cpp opencsgConfig.h \
 		openglExt.h \
 		glad/include/KHR/khrplatform.h \
-		glad/include/glad/glad.h \
+		glad/include/glad/gl.h \
 		openglHelper.h \
 		area.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o openglHelper.o openglHelper.cpp
@@ -500,7 +500,7 @@ primitiveHelper.o: primitiveHelper.cpp opencsgConfig.h \
 		../include/opencsg.h \
 		openglExt.h \
 		glad/include/KHR/khrplatform.h \
-		glad/include/glad/glad.h \
+		glad/include/glad/gl.h \
 		openglHelper.h \
 		area.h \
 		primitiveHelper.h
@@ -513,7 +513,7 @@ renderGoldfeather.o: renderGoldfeather.cpp opencsgConfig.h \
 		channelManager.h \
 		openglExt.h \
 		glad/include/KHR/khrplatform.h \
-		glad/include/glad/glad.h \
+		glad/include/glad/gl.h \
 		occlusionQuery.h \
 		openglHelper.h \
 		area.h \
@@ -528,7 +528,7 @@ renderSCS.o: renderSCS.cpp opencsgConfig.h \
 		channelManager.h \
 		openglExt.h \
 		glad/include/KHR/khrplatform.h \
-		glad/include/glad/glad.h \
+		glad/include/glad/gl.h \
 		context.h \
 		occlusionQuery.h \
 		openglHelper.h \
@@ -541,7 +541,7 @@ scissorMemo.o: scissorMemo.cpp opencsgConfig.h \
 		../include/opencsg.h \
 		openglExt.h \
 		glad/include/KHR/khrplatform.h \
-		glad/include/glad/glad.h \
+		glad/include/glad/gl.h \
 		openglHelper.h \
 		area.h \
 		scissorMemo.h \

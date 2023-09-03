@@ -18,7 +18,7 @@ target.path = $$INSTALLDIR/lib
 INSTALLS += target headers
 
 HEADERS		= ../include/opencsg.h \
-		  glad/include/glad/glad.h \
+		  glad/include/glad/gl.h \
 		  glad/include/KHR/khrplatform.h \
 		  opencsgConfig.h \
 		  area.h \
@@ -35,7 +35,7 @@ HEADERS		= ../include/opencsg.h \
 		  primitiveHelper.h \
 		  scissorMemo.h \
 		  settings.h
-SOURCES		= glad/src/glad.cpp \
+SOURCES		= glad/src/gl.cpp \
 		  area.cpp \
 		  batch.cpp \
 		  context.cpp \
