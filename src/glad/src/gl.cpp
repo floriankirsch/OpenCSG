@@ -42,6 +42,7 @@ int GLAD_GL_EXT_framebuffer_object = 0;
 int GLAD_GL_EXT_packed_depth_stencil = 0;
 int GLAD_GL_EXT_texture_cube_map = 0;
 int GLAD_GL_EXT_texture_env_dot3 = 0;
+int GLAD_GL_EXT_texture_rectangle = 0;
 int GLAD_GL_NV_fill_rectangle = 0;
 int GLAD_GL_NV_occlusion_query = 0;
 int GLAD_GL_NV_packed_depth_stencil = 0;
@@ -1553,6 +1554,7 @@ static int glad_gl_find_extensions_gl( int version) {
     GLAD_GL_EXT_packed_depth_stencil = glad_gl_has_extension(version, exts, num_exts_i, exts_i, "GL_EXT_packed_depth_stencil");
     GLAD_GL_EXT_texture_cube_map = glad_gl_has_extension(version, exts, num_exts_i, exts_i, "GL_EXT_texture_cube_map");
     GLAD_GL_EXT_texture_env_dot3 = glad_gl_has_extension(version, exts, num_exts_i, exts_i, "GL_EXT_texture_env_dot3");
+    GLAD_GL_EXT_texture_rectangle = glad_gl_has_extension(version, exts, num_exts_i, exts_i, "GL_EXT_texture_rectangle");
     GLAD_GL_NV_fill_rectangle = glad_gl_has_extension(version, exts, num_exts_i, exts_i, "GL_NV_fill_rectangle");
     GLAD_GL_NV_occlusion_query = glad_gl_has_extension(version, exts, num_exts_i, exts_i, "GL_NV_occlusion_query");
     GLAD_GL_NV_packed_depth_stencil = glad_gl_has_extension(version, exts, num_exts_i, exts_i, "GL_NV_packed_depth_stencil");

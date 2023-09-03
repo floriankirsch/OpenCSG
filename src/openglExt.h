@@ -66,7 +66,6 @@ namespace OpenCSG {
     #include "glad/include/glad/gl.h"
 
     #define OPENCSG_HAS_EXT(name) GLAD_GL_ ## name
-    #define GLAD_GL_EXT_texture_rectangle 0 // missing in glad?
 
     inline void initExtensionLibrary()
     {

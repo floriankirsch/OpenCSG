@@ -1403,6 +1403,8 @@ GLAD_API_CALL int GLAD_GL_EXT_packed_depth_stencil;
 GLAD_API_CALL int GLAD_GL_EXT_texture_cube_map;
 #define GL_EXT_texture_env_dot3 1
 GLAD_API_CALL int GLAD_GL_EXT_texture_env_dot3;
+#define GL_EXT_texture_rectangle 1
+GLAD_API_CALL int GLAD_GL_EXT_texture_rectangle;
 #define GL_NV_fill_rectangle 1
 GLAD_API_CALL int GLAD_GL_NV_fill_rectangle;
 #define GL_NV_occlusion_query 1
