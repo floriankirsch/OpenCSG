@@ -49,9 +49,8 @@ namespace OpenCSG {
     namespace OpenGL {
 
         struct ContextData {
-            ContextData() : haveOpenGLFunctions(false), fARB(0), fEXT(0)
+            ContextData() : fARB(0), fEXT(0)
             {}
-            bool haveOpenGLFunctions;
             FrameBufferObject* fARB;
             FrameBufferObjectExt* fEXT;
             std::map<const char*, GLuint> idFP;
@@ -61,13 +60,17 @@ namespace OpenCSG {
 
         void ensureFunctionPointers()
         {
-            int context = getContext();
-            ContextData& contextData = gContextDataMap[context];
-            if (contextData.haveOpenGLFunctions)
-                return;
-
-            initExtensionLibrary();
-            contextData.haveOpenGLFunctions = true;
+            // In theory (and probably under Windows only), OpenGL function
+            // pointers could be context specific. I.e., after changing to
+            // a different context, it may be required to update the function
+            // pointers again, or, to store them per context in the first place.
+            // When changing from GLEW to glad, it turned out that this had
+            // never been correctly considered. So I decided to ignore this
+            // potential problem until I get concrete complaints.
+            static bool sHaveOpenGLFunctions = false;
+            if (!sHaveOpenGLFunctions)
+                initExtensionLibrary();
+            sHaveOpenGLFunctions = true;
         }
 
         OffscreenBuffer* getOffscreenBuffer(OffscreenType type) {
