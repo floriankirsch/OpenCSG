@@ -166,13 +166,13 @@ namespace OpenCSG {
         int tx = dx;
         int ty = dy;
         // We don't need to enlarge the texture to the next largest power-of-two size if:
-        // - any of the texture rectangle extensions is supported
-        // - or if the ARB_texture_non_power_of_two extension is supported
+        // - the ARB_texture_non_power_of_two extension is supported
+        // - or any of the texture rectangle extensions is supported
         // Negating this gives the following expression from hell:
-        if (   !OPENCSG_HAS_EXT(ARB_texture_rectangle)
+        if (   !OPENCSG_HAS_EXT(ARB_texture_non_power_of_two)
+            && !OPENCSG_HAS_EXT(ARB_texture_rectangle)
             && !OPENCSG_HAS_EXT(EXT_texture_rectangle)
             && !OPENCSG_HAS_EXT(NV_texture_rectangle)
-            && !OPENCSG_HAS_EXT(ARB_texture_non_power_of_two)
         ) {
             // blow up the texture to legal power-of-two size :-(
             tx = nextPow2(dx);

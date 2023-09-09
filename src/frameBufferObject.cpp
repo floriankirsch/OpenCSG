@@ -30,6 +30,7 @@ namespace OpenCSG {
         FrameBufferObject::FrameBufferObject()
           : width(-1),
             height(-1),
+            textureTarget(GL_TEXTURE_2D),
             textureID(0),
             depthID(0),
             framebufferID(0),
@@ -67,12 +68,12 @@ namespace OpenCSG {
 
             glBindFramebuffer(GL_FRAMEBUFFER, framebufferID);
 
-            GLenum target =   (OPENCSG_HAS_EXT(ARB_texture_rectangle)
-                            || OPENCSG_HAS_EXT(EXT_texture_rectangle)
-                            || OPENCSG_HAS_EXT(NV_texture_rectangle))
-                ? GL_TEXTURE_RECTANGLE_ARB
-                : GL_TEXTURE_2D; // implicitely asks for GL_ARB_texture_non_power_of_two.
-                                 // this should have been checked in channelManager.cpp
+            GLenum target = GL_TEXTURE_2D;
+            if (   !OPENCSG_HAS_EXT(ARB_texture_non_power_of_two)
+                && (   OPENCSG_HAS_EXT(ARB_texture_rectangle)
+                    || OPENCSG_HAS_EXT(EXT_texture_rectangle)
+                    || OPENCSG_HAS_EXT(NV_texture_rectangle)))
+                target = GL_TEXTURE_RECTANGLE_ARB;
 
             glBindTexture(target, textureID);
             glTexImage2D(target, 0, GL_RGBA8, width, height, 0, GL_RGBA, GL_INT, 0);
