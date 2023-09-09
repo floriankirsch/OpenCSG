@@ -1,24 +1,24 @@
 # Microsoft Developer Studio Project File - Name="OpenCSG" - Package Owner=<4>
 # Microsoft Developer Studio Generated Build File, Format Version 6.00
-# ** NICHT BEARBEITEN **
+# ** DO NOT EDIT **
 
 # TARGTYPE "Win32 (x86) Static Library" 0x0104
 
 CFG=OpenCSG - Win32 Debug
-!MESSAGE Dies ist kein gültiges Makefile. Zum Erstellen dieses Projekts mit NMAKE
-!MESSAGE verwenden Sie den Befehl "Makefile exportieren" und führen Sie den Befehl
+!MESSAGE This is not a valid makefile. To build this project using NMAKE,
+!MESSAGE use the Export Makefile command and run
 !MESSAGE 
 !MESSAGE NMAKE /f "OpenCSG.mak".
 !MESSAGE 
-!MESSAGE Sie können beim Ausführen von NMAKE eine Konfiguration angeben
-!MESSAGE durch Definieren des Makros CFG in der Befehlszeile. Zum Beispiel:
+!MESSAGE You can specify a configuration when running NMAKE
+!MESSAGE by defining the macro CFG on the command line. For example:
 !MESSAGE 
 !MESSAGE NMAKE /f "OpenCSG.mak" CFG="OpenCSG - Win32 Debug"
 !MESSAGE 
-!MESSAGE Für die Konfiguration stehen zur Auswahl:
+!MESSAGE Possible choices for configuration are:
 !MESSAGE 
-!MESSAGE "OpenCSG - Win32 Release" (basierend auf  "Win32 (x86) Static Library")
-!MESSAGE "OpenCSG - Win32 Debug" (basierend auf  "Win32 (x86) Static Library")
+!MESSAGE "OpenCSG - Win32 Release" (based on "Win32 (x86) Static Library")
+!MESSAGE "OpenCSG - Win32 Debug" (based on "Win32 (x86) Static Library")
 !MESSAGE 
 
 # Begin Project
@@ -41,7 +41,7 @@ RSC=rc.exe
 # PROP Intermediate_Dir "Release"
 # PROP Target_Dir ""
 # ADD BASE CPP /nologo /W3 /GX /O2 /D "WIN32" /D "NDEBUG" /D "_WINDOWS" /YX /FD /c
-# ADD CPP /nologo /W3 /GX /O2 /I ".." /I "../include" /I "../glew/include" /D "WIN32" /D "NDEBUG" /D "_WINDOWS" /D "GLEW_STATIC" /FD /c
+# ADD CPP /nologo /W3 /GX /O2 /I ".." /I "../include" /D "WIN32" /D "NDEBUG" /D "_WINDOWS" /FD /c
 # SUBTRACT CPP /YX /Yc /Yu
 # ADD BASE RSC /l 0x407 /d "NDEBUG"
 # ADD RSC /l 0x407 /d "NDEBUG"
@@ -65,7 +65,7 @@ LIB32=link.exe -lib
 # PROP Intermediate_Dir "Debug"
 # PROP Target_Dir ""
 # ADD BASE CPP /nologo /W3 /Gm /GX /ZI /Od /D "WIN32" /D "_DEBUG" /D "_WINDOWS" /YX /FD /GZ /c
-# ADD CPP /nologo /W3 /Gm /GX /ZI /Od /I ".." /I "../include" /I "../glew/include" /D "WIN32" /D "_DEBUG" /D "_WINDOWS" /D "GLEW_STATIC" /FD /GZ /c
+# ADD CPP /nologo /W3 /Gm /GX /ZI /Od /I ".." /I "../include" /D "WIN32" /D "_DEBUG" /D "_WINDOWS" /FD /GZ /c
 # SUBTRACT CPP /YX /Yc /Yu
 # ADD BASE RSC /l 0x407 /d "_DEBUG"
 # ADD RSC /l 0x407 /d "_DEBUG"
@@ -132,6 +132,18 @@ SOURCE=..\src\frameBufferObjectExt.cpp
 # Begin Source File
 
 SOURCE=..\src\frameBufferObjectExt.h
+# End Source File
+# Begin Source File
+
+SOURCE=..\src\glad\src\gl.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=..\src\glad\include\glad\gl.h
+# End Source File
+# Begin Source File
+
+SOURCE=..\src\glad\include\KHR\khrplatform.h
 # End Source File
 # Begin Source File
 
@@ -205,8 +217,7 @@ SOURCE=..\src\settings.cpp
 
 SOURCE=..\src\settings.h
 # End Source File
-# Begin Source File
-
+# End Group
 # Begin Group "Header Files"
 
 # PROP Default_Filter "h;hpp;hxx;hm;inl"
