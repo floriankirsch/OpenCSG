@@ -14,4 +14,4 @@ settings of the graphics hardware, e.g., the depth and stencil buffer, to compos
 OpenCSG implements a variety of those algorithms, namely the Goldfeather algorithm and the SCS algorithm,
 both of them in several variants.
  
-See the <a href="http://www.opencsg.org">OpenCSG homepage</a> for a more information.
+See the <a href="http://www.opencsg.org">OpenCSG homepage</a> for more information.
