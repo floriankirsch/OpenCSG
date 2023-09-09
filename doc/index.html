@@ -129,40 +129,28 @@ they are no longer supported.
 </p>
 
 <p>
-For OpenGL extension checking, OpenCSG uses the OpenGL Extension Wrangler
-Library <a href="http://glew.sourceforge.net">GLEW</a>. Both these libraries are included
-in the OpenCSG download.
-</p>
-
-<p>
 OpenCSG is written in C++, uses namespaces and requires the STL. 
 It compiles with all reasonable C++ compilers such as gcc, Clang, or 
-Microsoft Visual Studio. Workspaces for Visual Studio 2019, Visual C++ 6.
-and <a href="http://www.bloodshed.net/devcpp.html">Dev-C++ 5 beta</a> are
-provided. Under Linux, any gcc compiler starting from version 3.0 or newer will work.
+Microsoft Visual Studio. Workspaces for Visual Studio 2022, Visual C++ 6.
+and <a href="http://www.bloodshed.net/devcpp.html">Dev-C++ 5.11</a> are
+provided. Under Linux, any gcc compiler starting from version 3.0 will work.
 </p>
 
 <p>
 OpenCSG has been sucessfully run on Intel and AMD CPUs. Generally,
 NVidia and AMD graphics hardware is well supported, and hardware
 where OpenCSG successfully has been run on includes everything
-starting from the TNT2 (but admittedly, on the latter, it crawls ...).
-</p>
-
+that has been produced in the last 15 years.
 <p>
-On a Radeon 9000, OpenCSG was once known to produce rendering errors
-in all but the standard Goldfeather rendering path. It is unclear if
-this was possibly a driver issue.
+ 
 </p>
-
-<p>
 On graphics hardware from Intel, OpenCSG did not work so well in the past.
 Recent OpenCSG versions contain fixes and workarounds for some bugs
-reported for Intel hardware. It still remains to be seen if all known issues
-are fixed now. Generally, use the most recent graphics drivers, in particular
-for HD 3000 or HD 4000 hardware. Furthermore, the (non-default) Goldfeather
-rendering path generally appears to produce more robust rendering results
-compared to the SCS rendering path.
+reported for Intel hardware. It seems that most issues have been
+fixed now. Still, generally, use the most recent graphics drivers,
+in particular for older HD 3000 or HD 4000 hardware. Also, the
+(non-default) Goldfeather rendering path generally appears to produce
+more robust rendering results compared to the SCS rendering path.
 </p>
 
 <center><a href="https://www.opencsg.org/img/conc.jpg"><img src="img/conc.gif" border="0" alt="CSG convace shape"></a></center>
@@ -241,7 +229,7 @@ namespace OpenCSG { <br>
 <br>
 &nbsp; enum <b><a href="#algorithm">Algorithm</a></b> { <b>Automatic</b>, <b>Goldfeather</b>, <b>SCS</b> }; <br>
 &nbsp; enum <b><a href="#depthalgorithm">DepthComplexityAlgorithm</a></b> { <b>NoDepthComplexitySampling</b>, <b>OcclusionQuery</b>, <b>DepthComplexitySampling</b> }; <br>
-&nbsp; enum <b><a href="#offscreentype">OffscreenType</a></b> { <b>AutomaticOffscreenType</b>, <b>FrameBufferObject</b>, <b>PBuffer</b>, <b>FrameBufferObjectARB</b>, <b>FrameBufferObjectEXT</b> }; <br>
+&nbsp; enum <b><a href="#offscreentype">OffscreenType</a></b> { <b>AutomaticOffscreenType</b>, <b>FrameBufferObject</b>, <b>FrameBufferObjectARB</b>, <b>FrameBufferObjectEXT</b> }; <br>
 &nbsp; enum <b><a href="#optimization">Optimization</a></b> { <b>OptimizationDefault</b>, <b>OptimizationDefault</b>, <b>OptimizationOn</b>, <b>OptimizationOff</b> }; <br>
 <br>
 &nbsp; void <b><a href="#rendershape">render</a></b>(const std::vector&lt;Primitive*&gt;&amp; primitives); <br>
@@ -348,18 +336,13 @@ for profiting from depth complexity.
 <p>
 <a name="offscreentype"></a>
 The offscreen type specifies what kind of offscreen buffer OpenCSG uses for
-internal CSG calculations. The default <code>AutomaticOffscreenType</code>
-preferably uses, if the required OpenGL extensions are available,
-<code>FrameBufferObjectARB</code>, then <code>FrameBufferObjectEXT</code>, then <code>PBuffer</code>.
-The <code>FrameBufferObject</code> uses preferably <code>FrameBufferObjectARB</code>,
-then <code>FrameBufferObjectEXT</code>. These priorities are subject to change
-between different releases based on experiences with compatibility of OpenCSG
-with different extensions and graphics hardware. The remaining settings <code>PBuffer</code>,
-<code>FrameBufferObjectARB</code>, and <code>FrameBufferObjectEXT</code> directly map
-to the usage of the corresponding OpenGL extension. Overall, using
-frame buffer objects is potentially faster, because they do not impose
-a separate rendering context for the offscreen buffer and hence require
-no context switching. In typical scenarios, there is no difference though.
+internal CSG calculations. This setting is kind of obsolete with the removal
+of the <code>PBuffer</code> option, that was removed in version 1.6.0.
+The default <code>AutomaticOffscreenType</code>, and also the setting
+<code>FrameBufferObject</code> preferably use, if the required OpenGL extensions
+are available, <code>FrameBufferObjectARB</code>, then <code>FrameBufferObjectEXT</code>.
+The remaining settings <code>FrameBufferObjectARB</code>, and <code>FrameBufferObjectEXT</code>
+directly map to the usage of the corresponding OpenGL extension.
 </p>
 
 <p>
@@ -395,14 +378,19 @@ OpenGL resources for the currently active OpenCSG context.
 
 <p>
 Download <a href="https://www.opencsg.org/OpenCSG-1.5.1.tar.gz">OpenCSG-1.5.1.tar.gz</a>.
-The archive contains all required helper libraries, i.e., also RenderTexture and GLEW.
-It comes with makefiles for Linux and with project files for Visual Studio 2019,
+The archive has no dependencies that must be provided externally. The only library
+that OpenCSG depends on, and which it comes with, is <a href="https://gen.glad.sh">Glad</a>.
+Glad is used to load OpenGL function pointers and for OpenGL extension checking. 
+Note that other helper libraries, i.e., RenderTexture and GLEW, are no longer part
+of OpenCSG since version 1.6.0.
+OpenCSG comes with makefiles for Linux and with project files for Visual Studio 2019,
 Visual C++ 6, and Dev-C++ 5. It is released with GPL version 2 or newer.
 </p>
 
 <p>
-Older versions were GPL version 2 only. They are still available for download:<br>
+Older versions are still available for download:<br>
 &nbsp;&nbsp; <a href="https://www.opencsg.org/OpenCSG-1.5.0.tar.gz">OpenCSG-1.5.0</a> <br>
+OpenCSG version 1.4.2 and before were GPL version 2 only.<br> 
 &nbsp;&nbsp; <a href="https://www.opencsg.org/OpenCSG-1.4.2.tar.gz">OpenCSG-1.4.2</a> <br>
 &nbsp;&nbsp; <a href="https://www.opencsg.org/OpenCSG-1.4.1.tar.gz">OpenCSG-1.4.1</a> <br>
 &nbsp;&nbsp; <a href="https://www.opencsg.org/OpenCSG-1.4.0.tar.gz">OpenCSG-1.4.0</a> <br>
@@ -422,7 +410,7 @@ Older versions were GPL version 2 only. They are still available for download:<b
 </p>
 
 <p>
-Development snapshots may be pulled from <a href="https://github.com/floriankirsch/OpenCSG">github</a>. These do not include GLEW.
+Development snapshots may be pulled from <a href="https://github.com/floriankirsch/OpenCSG">github</a>.
 </p>
 
 <center><a href="https://www.opencsg.org/img/columns.jpg"><img src="img/columns.gif" border="0" alt="CSG columns"></a></center>
@@ -550,7 +538,7 @@ about OpenCSG and about image-based CSG rendering have been written:
     <p>You must setup a stencil buffer in your application when rendering
         concave primitives or when using <code>DepthComplexitySampling</code>.
         Internally, the stencil buffer is always needed in OpenCSG
-        when rendering into the offscreen frame buffer object resp. PBuffer.</p>
+        when rendering into the offscreen frame buffer object.</p>
   </li>
   <li>
     <p><b>Can OpenCSG calculate the geometry of a CSG expression?</b> </p>
@@ -592,11 +580,10 @@ could be licensed under the GPL version 2 only.
 </p>
 
 <p>
-Note that OpenCSG comes with code that is not under copyright
-of the HPI or Florian Kirsch. These are <a href="http://glew.sourceforge.net/">GLEW</a>
-and <a href="http://sourceforge.net/project/showfiles.php?group_id=104004&amp;package_id=115053">
-RenderTexture</a>. These libraries are licensed under the terms of
-their respective authors.
+Note that OpenCSG comes with code that is not under copyright of the HPI
+or Florian Kirsch. This is the code generated from <a href="https://gen.glad.sh">Glad</a>.
+This code is licensed under the terms described in the generated source files,
+and at <a href="https://github.com/Dav1dde/glad#License">the Glad github repository</a>.
 </p>
 
 <center><a href="https://www.opencsg.org/img/grid.jpg"><img src="img/grid.gif" border="0" alt="CSG columns"></a></center>
@@ -604,9 +591,9 @@ their respective authors.
 <hr>
 
 <center><p>
-&copy; 2002-2022, Florian Kirsch, e-mail: <b>mail at opencsg dot org</b>, <br>
+&copy; 2002-2023, Florian Kirsch, e-mail: <b>mail at opencsg dot org</b>, <br>
 2002-2005 Hasso-Plattner-Institute Potsdam.<br>
-Last change: 20-Apr-2022
+Last change: 09-Sep-2023
 </p></center>
 
 </body>
