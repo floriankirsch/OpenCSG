@@ -42,12 +42,9 @@ namespace OpenCSG {
             /// even if Initialize() or Resize() do not need to be called.
             virtual bool ReadCurrent() = 0;
 
-            /// Call this once before use. Set bShare to true to share lists, textures,
-            /// and program objects between the render texture context and the 
-            /// current active GL context.
-            virtual bool Initialize(int width, int height, 
-                                    bool shareObjects=true, 
-                                    bool copyContext=false) = 0;
+            /// Call this once before use, to initialize the offscreen buffer
+            /// with the intended width and height.
+            virtual bool Initialize(int width, int height) = 0;
 
             /// checks whether Initialize has been called before or not
             virtual bool IsInitialized() const = 0;

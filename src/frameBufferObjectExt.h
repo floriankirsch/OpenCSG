@@ -41,10 +41,9 @@ namespace OpenCSG {
             /// Reads the currently bound FBO.
             virtual bool ReadCurrent();
 
-            /// Call this once before use. shareObjects and copyContext are
-            /// ignored, since there are no separate contexts for frame
-            /// buffer objects anyway.
-            virtual bool Initialize(int width, int height, bool shareObjects=true, bool copyContext=false);
+            /// Initializes the frame buffer object with the intended width and height.
+            /// The frame buffer object is created with RGBA and combined depth/stencil buffer.
+            virtual bool Initialize(int width, int height);
 
             /// checks whether Initialize has been called before or not
             virtual bool IsInitialized() const { return initialized; }

@@ -203,7 +203,7 @@ namespace OpenCSG {
 
         if (!mOffscreenBuffer->IsInitialized())
         {
-            if (!mOffscreenBuffer->Initialize(sizeX.getMax(), sizeY.getMax(), true, false)) {
+            if (!mOffscreenBuffer->Initialize(sizeX.getMax(), sizeY.getMax())) {
                 // Initializing the offscreen buffer failed, maybe the OpenGL extension
                 // for the specific offscreen buffer type is not supported
                 return false;

@@ -53,9 +53,7 @@ namespace OpenCSG {
             return haveFBO;
         }
 
-        // Creates frame buffer texture and combined depth/stencil render buffer.
-        // shareObjects and copyContext do not make sense here, context remains the same.
-        bool FrameBufferObjectExt::Initialize(int width, int height, bool /* shareObjects */, bool /* copyContext */ )
+        bool FrameBufferObjectExt::Initialize(int width, int height)
         {
             bool haveFBO =    OPENCSG_HAS_EXT(EXT_framebuffer_object) != 0
                            && OPENCSG_HAS_EXT(EXT_packed_depth_stencil) != 0;
