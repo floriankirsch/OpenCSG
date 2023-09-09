@@ -21,16 +21,14 @@ The Visual Studio 6 solution OpenCSG.sln assumes that the original
 GLUT for Windows is setup as described in
 https://user.xmission.com/~nate/glut.html
 
-The solution automatically builds GLEW, the opencsg lib, and the example.
+The solution automatically builds the opencsg lib, and the example.
 
 
 Linux
 -----
 
 1) As prerequisites, you must install OpenGL development packages,
-   GLEW, and, for the example, glut. The GLEW version provided with
-   OpenCSG is not used automatically for building, but you can
-   install GLEW from there if you like.
+   and, for the example application, glut.
 2) Just type 'make'. Maybe you must adjust the Makefiles in
    the src/ and the example/ directory for sucessful compilation.
 3) The OpenCSG library will have been build in lib/, and the example
@@ -42,8 +40,13 @@ Linux
    to /usr/local)
 
 
-Dev-C++ 5
----------
+Dev-C++ 5.11
+------------
 
+As prerequisite, get the freeglut 3.0.0 MinGW Package from
+https://www.transmissionzero.co.uk/software/freeglut-devel/
+and put it under freeglut into the opencsg directory.
 Open OpenCSG.dev
-Compile and Run
+Compile
+Ensure that freeglut.dll is in the same directory as the
+generated OpenCSG.exe, and start OpenCSG.exe.

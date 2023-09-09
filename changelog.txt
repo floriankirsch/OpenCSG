@@ -1,3 +1,6 @@
+09.09.2023
+    Changed: Favor ARB_texture_non_power_of_two over (ARB_)texture_rectangle
+
 02.09.2023
     Changed: For OpenGL extension checking, replaces GLEW by glad.
         This should improve portability on Linux, because this

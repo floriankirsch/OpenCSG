@@ -1,16 +1,16 @@
 [Project]
 FileName=OpenCSG.dev
 Name=OpenCSG
-Ver=1
+Ver=2
 IsCpp=1
 Type=0
-Compiler=-D__GNUWIN32__ -W -Wall -DWIN32 -DNDEBUG -D_WINDOWS -DGLEW_STATIC_@@_
-CppCompiler=-D__GNUWIN32__ -W -Wall -DWIN32 -DNDEBUG -D_WINDOWS -DGLEW_STATIC_@@_
+Compiler=-D__GNUWIN32__ -W -Wall -DWIN32 -DNDEBUG -D_WINDOWS_@@_
+CppCompiler=-D__GNUWIN32__ -W -Wall -DWIN32 -DNDEBUG -D_WINDOWS_@@_
 Includes=include;glew/include;.
-Linker=-lopengl32_@@_-lglu32_@@_-lglut32_@@_
-Libs=
-UnitCount=42
-Folders="Header Files","Source Files","Source Files/glew","Source Files/OpenCSG","Source Files/OpenCSGexample"
+Linker=-lopengl32_@@_-lglu32_@@_-lfreeglut_@@_
+Libs=freeglut\lib
+UnitCount=38
+Folders="Header Files","Source Files","Source Files/OpenCSG","Source Files/OpenCSGexample"
 ObjFiles=
 PrivateResource=
 ResourceIncludes=
@@ -24,10 +24,12 @@ HostApplication=
 CommandLine=
 IncludeVersionInfo=0
 SupportXPThemes=0
-CompilerSet=0
-CompilerSettings=0000000000000000000000
+CompilerSet=3
+CompilerSettings=0000000100000000000000000
 UseCustomMakefile=0
 CustomMakefile=
+LogOutput=
+LogOutputEnabled=0
 
 [Unit1]
 FileName=src\area.cpp
@@ -200,26 +202,6 @@ OverrideBuildCmd=0
 BuildCmd=
 
 [Unit20]
-FileName=src\scissorMemo.cpp
-Folder=Source Files/OpenCSG
-Compile=1
-CompileCpp=1
-Link=1
-Priority=1000
-OverrideBuildCmd=0
-BuildCmd=
-
-[Unit21]
-FileName=src\scissorMemo.h
-Folder=Source Files/OpenCSG
-Compile=1
-CompileCpp=1
-Link=1
-Priority=1000
-OverrideBuildCmd=0
-BuildCmd=
-
-[Unit23]
 FileName=src\openglExt.h
 Folder=Source Files/OpenCSG
 Compile=1
@@ -229,7 +211,7 @@ Priority=1000
 OverrideBuildCmd=0
 BuildCmd=
 
-[Unit24]
+[Unit21]
 FileName=include\opencsg.h
 Folder=Header Files
 Compile=1
@@ -239,9 +221,29 @@ Priority=1000
 OverrideBuildCmd=0
 BuildCmd=
 
-[Unit25]
-FileName=example\main.cpp
+[Unit23]
+FileName=example\displaylistPrimitive.h
 Folder=Source Files/OpenCSGexample
+Compile=1
+CompileCpp=1
+Link=1
+Priority=1000
+OverrideBuildCmd=0
+BuildCmd=
+
+[Unit24]
+FileName=example\displaylistPrimitive.cpp
+Folder=Source Files/OpenCSGexample
+Compile=1
+CompileCpp=1
+Link=1
+Priority=1000
+OverrideBuildCmd=0
+BuildCmd=
+
+[Unit25]
+FileName=src\opencsgConfig.h
+Folder=Source Files/OpenCSG
 Compile=1
 CompileCpp=1
 Link=1
@@ -250,9 +252,9 @@ OverrideBuildCmd=0
 BuildCmd=
 
 [Unit26]
-FileName=example\displaylistPrimitive.h
+FileName=src\settings.h
 CompileCpp=1
-Folder=Source Files/OpenCSGexample
+Folder=Source Files/OpenCSG
 Compile=1
 Link=1
 Priority=1000
@@ -260,9 +262,9 @@ OverrideBuildCmd=0
 BuildCmd=
 
 [Unit27]
-FileName=example\displaylistPrimitive.cpp
+FileName=src\frameBufferObject.cpp
 CompileCpp=1
-Folder=Source Files/OpenCSGexample
+Folder=Source Files/OpenCSG
 Compile=1
 Link=1
 Priority=1000
@@ -270,9 +272,9 @@ OverrideBuildCmd=0
 BuildCmd=
 
 [Unit28]
-FileName=glew\src\glew.c
+FileName=src\frameBufferObject.h
 CompileCpp=1
-Folder=Source Files/glew
+Folder=Source Files/OpenCSG
 Compile=1
 Link=1
 Priority=1000
@@ -280,9 +282,9 @@ OverrideBuildCmd=0
 BuildCmd=
 
 [Unit29]
-FileName=glew\include\GL\wglew.h
+FileName=src\offscreenBuffer.h
 CompileCpp=1
-Folder=Source Files/glew
+Folder=Source Files/OpenCSG
 Compile=1
 Link=1
 Priority=1000
@@ -290,9 +292,9 @@ OverrideBuildCmd=0
 BuildCmd=
 
 [Unit30]
-FileName=glew\include\GL\glew.h
+FileName=src\settings.cpp
 CompileCpp=1
-Folder=Source Files/glew
+Folder=Source Files/OpenCSG
 Compile=1
 Link=1
 Priority=1000
@@ -300,7 +302,7 @@ OverrideBuildCmd=0
 BuildCmd=
 
 [Unit31]
-FileName=src\opencsgConfig.h
+FileName=src\frameBufferObjectExt.cpp
 CompileCpp=1
 Folder=Source Files/OpenCSG
 Compile=1
@@ -317,7 +319,7 @@ Build=1
 LanguageID=1033
 CharsetID=1252
 CompanyName=
-FileVersion=0.1
+FileVersion=0.1.1.1
 FileDescription=Developed using the Dev-C++ IDE
 InternalName=
 LegalCopyright=
@@ -326,9 +328,10 @@ OriginalFilename=OpenCSG.exe
 ProductName=OpenCSG
 ProductVersion=0.1
 AutoIncBuildNr=0
+SyncProduct=0
 
 [Unit32]
-FileName=src\settings.h
+FileName=src\frameBufferObjectExt.h
 CompileCpp=1
 Folder=Source Files/OpenCSG
 Compile=1
@@ -338,7 +341,7 @@ OverrideBuildCmd=0
 BuildCmd=
 
 [Unit33]
-FileName=src\frameBufferObject.cpp
+FileName=src\context.h
 CompileCpp=1
 Folder=Source Files/OpenCSG
 Compile=1
@@ -348,7 +351,7 @@ OverrideBuildCmd=0
 BuildCmd=
 
 [Unit34]
-FileName=src\frameBufferObject.h
+FileName=src\context.cpp
 CompileCpp=1
 Folder=Source Files/OpenCSG
 Compile=1
@@ -358,9 +361,9 @@ OverrideBuildCmd=0
 BuildCmd=
 
 [Unit38]
-FileName=src\settings.cpp
+FileName=src\glad\include\KHR\khrplatform.h
 CompileCpp=1
-Folder=Source Files/OpenCSG
+Folder=Source Files
 Compile=1
 Link=1
 Priority=1000
@@ -418,7 +421,57 @@ OverrideBuildCmd=0
 BuildCmd=
 
 [Unit35]
-FileName=src\offscreenBuffer.h
+FileName=example\includeGl.h
+CompileCpp=1
+Folder=Source Files/OpenCSGexample
+Compile=1
+Link=1
+Priority=1000
+OverrideBuildCmd=0
+BuildCmd=
+
+[Unit18]
+FileName=src\scissorMemo.cpp
+CompileCpp=1
+Folder=Source Files/OpenCSG
+Compile=1
+Link=1
+Priority=1000
+OverrideBuildCmd=0
+BuildCmd=
+
+[Unit19]
+FileName=src\scissorMemo.h
+CompileCpp=1
+Folder=Source Files/OpenCSG
+Compile=1
+Link=1
+Priority=1000
+OverrideBuildCmd=0
+BuildCmd=
+
+[Unit22]
+FileName=example\main.cpp
+CompileCpp=1
+Folder=Source Files/OpenCSGexample
+Compile=1
+Link=1
+Priority=1000
+OverrideBuildCmd=0
+BuildCmd=
+
+[Unit36]
+FileName=src\glad\src\gl.cpp
+CompileCpp=1
+Folder=Source Files/OpenCSG
+Compile=1
+Link=1
+Priority=1000
+OverrideBuildCmd=0
+BuildCmd=
+
+[Unit37]
+FileName=src\glad\include\glad\gl.h
 CompileCpp=1
 Folder=Source Files/OpenCSG
 Compile=1
