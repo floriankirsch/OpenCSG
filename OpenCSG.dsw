@@ -3,7 +3,7 @@ Microsoft Developer Studio Workspace File, Format Version 6.00
 
 ###############################################################################
 
-Project: "OpenCSG"=.\win32\OpenCSG.dsp - Package Owner=<4>
+Project: "OpenCSG"=".\win32\OpenCSG.dsp" - Package Owner=<4>
 
 Package=<5>
 {{{
@@ -11,14 +11,11 @@ Package=<5>
 
 Package=<4>
 {{{
-    Begin Project Dependency
-    Project_Dep_Name glew_static
-    End Project Dependency
 }}}
 
 ###############################################################################
 
-Project: "OpenCSGexample"=.\example\OpenCSGexample.dsp - Package Owner=<4>
+Project: "OpenCSGexample"=".\example\OpenCSGexample.dsp" - Package Owner=<4>
 
 Package=<5>
 {{{
@@ -26,9 +23,6 @@ Package=<5>
 
 Package=<4>
 {{{
-    Begin Project Dependency
-    Project_Dep_Name glew_static
-    End Project Dependency
     Begin Project Dependency
     Project_Dep_Name OpenCSG
     End Project Dependency
