@@ -1,3 +1,6 @@
+15.09.2023
+    Release 1.6.0
+
 09.09.2023
     Changed: Favor ARB_texture_non_power_of_two over (ARB_)texture_rectangle
 
