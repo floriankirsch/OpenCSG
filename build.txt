@@ -27,10 +27,9 @@ The solution automatically builds the opencsg lib, and the example.
 Linux
 -----
 
-1) As prerequisites, you must install OpenGL development packages,
+1) As prerequisites, you must install CMake, OpenGL development packages,
    and, for the example application, glut.
-2) Just type 'make'. Maybe you must adjust the Makefiles in
-   the src/ and the example/ directory for sucessful compilation.
+2) Type 'cmake .' and then 'make'.
 3) The OpenCSG library will have been build in lib/, and the example
    "opencsgexample" will reside in the src/ directory. To run the
    opencsg example, you must ensure that libopencsg.so lib is in your
