@@ -37,7 +37,9 @@ enum {
 
     ALGO_AUTOMATIC, GF_STANDARD, GF_DC, GF_OQ, SCS_STANDARD, SCS_DC, SCS_OQ,
 
-    CAM_OUTSIDE, CAM_INSIDE
+    CAM_OUTSIDE, CAM_INSIDE,
+
+    PARITY_ZFAIL, PARITY_ZPASS
 };
 
 std::vector<OpenCSG::Primitive*> primitives;
@@ -416,6 +418,11 @@ void menu(int value) {
     case CAM_OUTSIDE:    inside = false; break;
     case CAM_INSIDE:     inside = true; break;
 
+    case PARITY_ZFAIL:   OpenCSG::setOption(OpenCSG::ParityZPassOptimization, OpenCSG::OptimizationDefault);
+                         break;
+    case PARITY_ZPASS:   OpenCSG::setOption(OpenCSG::ParityZPassOptimization, OpenCSG::OptimizationOn);
+                         break;
+
     default: break;
     }
     display();
@@ -480,10 +487,15 @@ int main(int argc, char **argv)
     glutAddMenuEntry("Camera outside", CAM_OUTSIDE);
     glutAddMenuEntry("Camera inside", CAM_INSIDE);
 
+    int menuSettings = glutCreateMenu(menu);
+    glutAddMenuEntry("Parity with z-fail", PARITY_ZFAIL);
+    glutAddMenuEntry("Parity with z-pass", PARITY_ZPASS);
+
     glutCreateMenu(menu);
     glutAddSubMenu("CSG Shapes", menuShape);
     glutAddSubMenu("CSG Algorithms", menuAlgorithm);
     glutAddSubMenu("Camera", menuCamera);
+    glutAddSubMenu("Settings", menuSettings);
 
     // connect to right mouse button
     glutAttachMenu(GLUT_RIGHT_BUTTON);

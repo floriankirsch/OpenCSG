@@ -119,7 +119,8 @@ namespace OpenCSG {
         DepthComplexitySetting  = 1,
         OffscreenSetting        = 2,
         DepthBoundsOptimization = 3,
-        OptionTypeUnused        = 4
+        ParityZPassOptimization = 4,
+        OptionTypeUnused        = 5
     };
 
     /// Sets an OpenCSG option.
@@ -204,6 +205,18 @@ namespace OpenCSG {
     ///     this optimization is turned off! When you turn it on, you must 
     ///     provide correct bounding boxes for all primitives, in particular
     ///     along the z-axis.
+    ///   - ParityZPassOptimization: This setting only applies to the Goldfeather
+    ///     algorithm, and by default it is disabled. The parity value denotes
+    ///     the number of surfaces in front of a surface for that visibility
+    ///     is about to be determined. The textbook approach to determine the
+    ///     parity is to really render surfaces in front (z-pass). This has the
+    ///     drawback, though, that if the camera is inside of the CSG model,
+    ///     some surfaces could be clipped by the view frustum, resulting that
+    ///     rendering is not correct. The alternative, default approach is to
+    ///     render surfaces behind (z-fail). With that, clipping of the surfaces
+    ///     is much less likely to happen and easy to avoid. So this is the more
+    ///     robust setting. The downside is that, rendering might be slightly
+    ///     slower - this needs to be assessed and confirmed.
     /// Each optimization can be independently set
     ///   - OptimizationDefault     to its default value (depending of the kind
     ///                             of optimization)

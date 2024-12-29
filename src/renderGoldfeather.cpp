@@ -136,6 +136,16 @@ namespace OpenCSG {
             glPopMatrix();
         }
 
+        GLenum getParityDepthFunc()
+        {
+            int optimizationSetting = getOption(ParityZPassOptimization);
+            if (optimizationSetting == OptimizationOn ||
+                optimizationSetting == OptimizationForceOn)
+                return GL_LEQUAL;
+            else
+                return GL_GREATER;
+        }
+
         void discardFragments(const Batch& batch, int parity, int mask) {
             glDepthFunc(GL_ALWAYS);
             glDepthMask(GL_TRUE);
@@ -150,7 +160,7 @@ namespace OpenCSG {
 
             glDepthRange(0.0, 1.0);
             glDepthMask(GL_FALSE);
-            glDepthFunc(GL_LEQUAL);
+            glDepthFunc(getParityDepthFunc());
         }
 
         void discardFragments(int parity, int mask) {
@@ -167,7 +177,7 @@ namespace OpenCSG {
 
             glDepthRange(0.0, 1.0);
             glDepthMask(GL_FALSE);
-            glDepthFunc(GL_LEQUAL);
+            glDepthFunc(getParityDepthFunc());
         }
 
         void parityTestAndDiscard(
@@ -177,7 +187,7 @@ namespace OpenCSG {
                 unsigned int stencilMax) {
 
             glDepthMask(GL_FALSE);
-            glDepthFunc(GL_LEQUAL);
+            glDepthFunc(getParityDepthFunc());
 
             glEnable(GL_STENCIL_TEST);
 
