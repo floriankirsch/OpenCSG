@@ -35,12 +35,15 @@
 enum { 
     CSG_BASIC, CSG_WIDGET, CSG_GRID2D, CSG_GRID3D, CSG_CUBERACK, CSG_CONCAVE,
 
-    ALGO_AUTOMATIC, GF_STANDARD, GF_DC, GF_OQ, SCS_STANDARD, SCS_DC, SCS_OQ
+    ALGO_AUTOMATIC, GF_STANDARD, GF_DC, GF_OQ, SCS_STANDARD, SCS_DC, SCS_OQ,
+
+    CAM_OUTSIDE, CAM_INSIDE
 };
 
 std::vector<OpenCSG::Primitive*> primitives;
 
 bool               spin = true;
+bool               inside = false;
 float              rot = 0.0f;
 std::ostringstream fpsStream;
 
@@ -312,9 +315,19 @@ void display()
 {
     glMatrixMode(GL_MODELVIEW);
     glLoadIdentity();
-    gluLookAt(0.0, 2.0, 5.0,  /* eye is at (0,2,5) */
-              0.0, 0.0, 0.0,  /* center is at (0,0,0) */
-              0.0, 1.0, 0.0); /* up is in positive Y direction */
+
+    if (inside)
+    {
+       gluLookAt(0.0, 0.25, 0.0,  /* eye is slightly above (0,0,0) */
+                 1.0,-0.25, 0.0,  /* looking to the right and a bit down */
+                 0.0, 1.0, 0.0);  /* up is in positive Y direction */
+    }
+    else
+    {
+        gluLookAt(0.0, 2.0, 5.0,  /* eye is at (0,2,5) */
+                  0.0, 0.0, 0.0,  /* center is at (0,0,0) */
+                  0.0, 1.0, 0.0); /* up is in positive Y direction */
+    }
     glRotatef(rot, 0.0f, 1.0f, 0.0f);
 
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
@@ -400,6 +413,9 @@ void menu(int value) {
                          OpenCSG::setOption(OpenCSG::DepthComplexitySetting, OpenCSG::OcclusionQuery);
                          break;
 
+    case CAM_OUTSIDE:    inside = false; break;
+    case CAM_INSIDE:     inside = true; break;
+
     default: break;
     }
     display();
@@ -429,7 +445,7 @@ void init()
 
     // Setup the view of the CSG shape
     glMatrixMode(GL_PROJECTION);
-    gluPerspective(40.0, 1.0, 1.0, 10.0);
+    gluPerspective(40.0, 1.0, 0.2, 10.0);
     glMatrixMode(GL_MODELVIEW);
 
     // starting CSG shape
@@ -453,16 +469,21 @@ int main(int argc, char **argv)
     
     int menuAlgorithm = glutCreateMenu(menu);
     glutAddMenuEntry("Automatic", ALGO_AUTOMATIC);
-    glutAddMenuEntry("Goldfeather standard",GF_STANDARD);
+    glutAddMenuEntry("Goldfeather standard", GF_STANDARD);
     glutAddMenuEntry("Goldfeather depth complexity sampling", GF_DC);
     glutAddMenuEntry("Goldfeather occlusion query", GF_OQ);
     glutAddMenuEntry("SCS standard", SCS_STANDARD);
     glutAddMenuEntry("SCS depth complexity sampling", SCS_DC);
     glutAddMenuEntry("SCS occlusion query", SCS_OQ);
 
+    int menuCamera = glutCreateMenu(menu);
+    glutAddMenuEntry("Camera outside", CAM_OUTSIDE);
+    glutAddMenuEntry("Camera inside", CAM_INSIDE);
+
     glutCreateMenu(menu);
     glutAddSubMenu("CSG Shapes", menuShape);
     glutAddSubMenu("CSG Algorithms", menuAlgorithm);
+    glutAddSubMenu("Camera", menuCamera);
 
     // connect to right mouse button
     glutAttachMenu(GLUT_RIGHT_BUTTON);
