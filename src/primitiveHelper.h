@@ -17,7 +17,7 @@
 // 51 Franklin Street, Fifth Floor, Boston, MA 02110 - 1301 USA.
 
 //
-// primitiveHelper.h 
+// primitiveHelper.h
 //
 // trivial Primitive-related stuff
 //
@@ -62,7 +62,6 @@ namespace OpenCSG {
         /// Expects a clean stencil buffer, and does not clear the stencil
         /// buffer afterwards.
         void renderLayer(unsigned int layer, const std::vector<Primitive*>& primitives);
-
 
     } // namespace OpenGL
 

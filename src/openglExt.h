@@ -17,7 +17,7 @@
 // 51 Franklin Street, Fifth Floor, Boston, MA 02110 - 1301 USA.
 
 //
-// openglExt.h 
+// openglExt.h
 //
 // wrap libraries for extension checking, to ease switching between
 //

@@ -217,8 +217,8 @@ namespace OpenCSG {
                             }
                         }
                     }
-                    if (!needParityTest) continue;
-
+                    if (!needParityTest)
+                        continue;
                 }
 
                 // we only need one bit in the stencil buffer for each parity test.
@@ -254,10 +254,10 @@ namespace OpenCSG {
                 if ((*itr)->getOperation() == Intersection) {
                     allParityTestValues += parityValue;
                 }
-        
+
                 parityValue <<= 1;
-            }     
-    
+            }
+
             // discard fragments marked invisible the last parity tests (and clear the stencil buffer)
             if (parityValue != 1) { // that would mean no parity test had occured at all
                 if (layered) {

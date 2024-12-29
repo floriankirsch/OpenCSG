@@ -486,8 +486,8 @@ namespace OpenCSG {
 
     const std::vector<Primitive*> ChannelManagerForBatches::getPrimitives(Channel channel) const {
         return mPrimitives[channel].first;
-    }    
-    
+    }
+
     int ChannelManagerForBatches::getLayer(Channel channel) const {
         return mPrimitives[channel].second;
     }

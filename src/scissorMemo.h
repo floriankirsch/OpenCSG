@@ -17,7 +17,7 @@
 // 51 Franklin Street, Fifth Floor, Boston, MA 02110 - 1301 USA.
 
 //
-// scissorMemo.h 
+// scissorMemo.h
 //
 // handles scissor calculations
 //
@@ -37,7 +37,7 @@ namespace OpenCSG {
         /// convenience class for handling scissoring. All areas
         /// are given in normal device coordinates [-1, 1] x [-1, 1].
         ScissorMemo();
-        
+
         /// for each channel, the currently set area can be stored
         void store(Channel);
         /// restores the area for the channel
@@ -84,5 +84,3 @@ namespace OpenCSG {
 } // namespace OpenCSG
 
 #endif // __OpenCSG__scissor_memo_h__
-
-

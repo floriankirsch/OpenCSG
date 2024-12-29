@@ -17,7 +17,7 @@
 // 51 Franklin Street, Fifth Floor, Boston, MA 02110 - 1301 USA.
 
 //
-// area.h 
+// area.h
 //
 // area structs
 //
@@ -32,15 +32,15 @@ namespace OpenCSG {
     /// area in pixel coordinates
     struct PCArea {
         PCArea(
-            int minxx = 0, 
-            int minyy = 0, 
-            int maxxx = 0, 
+            int minxx = 0,
+            int minyy = 0,
+            int maxxx = 0,
             int maxyy = 0
-        ) : 
-            minx(minxx), 
-            miny(minyy), 
-            maxx(maxxx), 
-            maxy(maxyy) 
+        ) :
+            minx(minxx),
+            miny(minyy),
+            maxx(maxxx),
+            maxy(maxyy)
         { }
 
         int minx, miny, maxx, maxy;
@@ -49,18 +49,18 @@ namespace OpenCSG {
     /// 3d volume in normal device coordinates
     struct NDCVolume {
         NDCVolume(
-            float minxx = 0.0f, 
-            float minyy = 0.0f, 
-            float minzz = 0.0f, 
-            float maxxx = 0.0f, 
+            float minxx = 0.0f,
+            float minyy = 0.0f,
+            float minzz = 0.0f,
+            float maxxx = 0.0f,
             float maxyy = 0.0f,
             float maxzz = 0.0f
         ) : 
-            minx(minxx), 
-            miny(minyy), 
-            minz(minzz), 
-            maxx(maxxx), 
-            maxy(maxyy),  
+            minx(minxx),
+            miny(minyy),
+            minz(minzz),
+            maxx(maxxx),
+            maxy(maxyy),
             maxz(maxzz)
         { } 
 

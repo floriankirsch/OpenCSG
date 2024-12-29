@@ -83,11 +83,11 @@ namespace OpenCSG {
             case Goldfeather:
                 renderGoldfeather(primitives, depthComplexityAlgorithm);
                 break;
-    
+
             case SCS:
                 renderSCS(primitives, depthComplexityAlgorithm);
                 break;
-            
+
             default:
                 break;
             }

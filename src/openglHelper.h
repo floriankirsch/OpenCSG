@@ -17,7 +17,7 @@
 // 51 Franklin Street, Fifth Floor, Boston, MA 02110 - 1301 USA.
 
 //
-// openglHelper.h 
+// openglHelper.h
 //
 // trivial OpenGL stuff
 //
@@ -33,28 +33,28 @@ namespace OpenCSG {
 
     namespace OpenGL {
 
+        // copy of the projection matrix during CSG computation
         extern GLfloat projection[16];
-            // copy of the projection matrix during CSG computation
+        // copy of the modelview matrix during CSG computation
         extern GLfloat modelview[16];
-            // copy of the modelview matrix during CSG computation
+        // copy of the viewport size during CSG computation
         extern int canvasPos[4];
-            // copy of the viewport size during CSG computation
 
+        // number of stencil bits in the offscreen buffer
         extern int stencilBits;
-            // number of stencil bits in the offscreen buffer
+        // the number where the stencil value would "wrap around" to zero
         extern unsigned int stencilMax;
-            // the number where the stencil value would "wrap around" to zero
+        // stencilMax - 1
         extern unsigned int stencilMask;
-            // stencilMax - 1
 
+        // copy of the scissor settings for CSG computation
         extern int scissorPos[4];
-            // copy of the scissor settings for CSG computation
 
+        // enables scissoring into area (given in pixel coordinates)
         void scissor(const PCArea& area);
-            // enables scissoring into area (given in pixel coordinates) 
 
+        // renders a full screen quad
         void drawQuad();
-            // renders a full screen quad
 
     } // namespace OpenGL
 

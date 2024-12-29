@@ -17,7 +17,7 @@
 // 51 Franklin Street, Fifth Floor, Boston, MA 02110 - 1301 USA.
 
 //
-// batch.h 
+// batch.h
 //
 // object space optimization: If possible, several primitives are treated 
 // as a single batch

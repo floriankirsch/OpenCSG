@@ -17,7 +17,7 @@
 // 51 Franklin Street, Fifth Floor, Boston, MA 02110 - 1301 USA.
 
 //
-// opencsgConfig.h 
+// opencsgConfig.h
 //
 // compiler specific settings for OpenCSG
 //
@@ -45,7 +45,7 @@
 #if _MSC_VER < 1300 // MSVC++ <= 6.0
     // MSVC does not have std::min and std::max unless using .NET. (>=7.0) 
     // for VC 6.0, we define those function templates in namespace std.
-    // (actually copied from boost). 
+    // (actually copied from boost).
     // min / max macros in windows.h additionally circumvent a correct
     // use of std::min. To circumvent this macro expansion, in OpenCSG
     // all occurencies of std::min and std::max are put into brackets.

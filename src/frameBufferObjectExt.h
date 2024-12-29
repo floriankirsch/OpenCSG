@@ -16,7 +16,7 @@
 // 51 Franklin Street, Fifth Floor, Boston, MA 02110 - 1301 USA.
 
 //
-// frameBufferObjectExt.h 
+// frameBufferObjectExt.h
 //
 // frame buffer object class implementing the offscreen buffer interface
 //

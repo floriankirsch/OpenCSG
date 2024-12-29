@@ -369,7 +369,7 @@ namespace OpenCSG {
             glDisable(GL_STENCIL_TEST);
         }
 
-        void subtractPrimitives(std::vector<Batch>::const_iterator begin, 
+        void subtractPrimitives(std::vector<Batch>::const_iterator begin,
                                 std::vector<Batch>::const_iterator end,
                                 const unsigned int iterations) {
 
@@ -631,7 +631,7 @@ namespace OpenCSG {
             subtractPrimitives(subtractedBatches.begin(), subtractedBatches.end(), depthComplexity);
             break;
         case DepthComplexityAlgorithmUnused:
-            break; // does not happen when invoked correctly           
+            break; // does not happen when invoked correctly
         }
         scissor->disableDepthBounds();
         renderIntersectedBack(intersected);

@@ -31,8 +31,8 @@ namespace OpenCSG {
         int iminx = static_cast<int>( (minx + 1.0f) * widthPixels );
         int imaxx = static_cast<int>( (maxx + 1.0f) * widthPixels );
         int iminy = static_cast<int>( (miny + 1.0f) * heightPixels );
-        int imaxy = static_cast<int>( (maxy + 1.0f) * heightPixels );  
-    
+        int imaxy = static_cast<int>( (maxy + 1.0f) * heightPixels );
+
         return PCArea(iminx, iminy, imaxx, imaxy); 
     }
 

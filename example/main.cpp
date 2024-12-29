@@ -54,7 +54,7 @@ void clearPrimitives() {
         glDeleteLists(1, p->getDisplayListId());
         delete p;
     }
-    
+
     primitives.clear();
 }
 
@@ -107,7 +107,7 @@ void setBasicShape() {
 }
 
 void setWidget() {
-    
+
     clearPrimitives();
 
     GLuint id1 = glGenLists(1);
@@ -154,7 +154,7 @@ void setWidget() {
 }
 
 void setGrid2D() {
-    
+
     clearPrimitives();
 
     GLuint id1 = glGenLists(1);
@@ -184,7 +184,7 @@ void setGrid2D() {
 }
 
 void setGrid3D() {
-    
+
     clearPrimitives();
 
     GLuint id1 = glGenLists(1);
@@ -249,7 +249,7 @@ void setCubeRack() {
 }
 
 void setConcave() {
-    
+
     clearPrimitives();
 
     GLuint id1 = glGenLists(1);
@@ -347,18 +347,18 @@ void idle() {
 
     static int ancient = 0;
     static int last = 0;
-    static int msec = 0;        
+    static int msec = 0;
     last = msec;
     msec = glutGet(GLUT_ELAPSED_TIME);
     if (spin) {
-        rot += (msec-last)/10.0f; 
+        rot += (msec-last)/10.0f;
         while (rot >= 360.0f)
-			rot -= 360.0f;
+            rot -= 360.0f;
     }
 
     static int fps = 0;
     if (last / 1000 != msec / 1000) {
-        
+
         float correctedFps = static_cast<float>(fps) * 1000.0f / static_cast<float>(msec - ancient);
         fpsStream.str("");
         fpsStream << "fps: " << correctedFps << std::ends;
@@ -374,9 +374,9 @@ void idle() {
 
 void key(unsigned char k, int, int) {
     switch (k) {
-    case ' ': 
-        spin = !spin; 
-        break;    
+    case ' ':
+        spin = !spin;
+        break;
     default:
         break;
     }
@@ -433,7 +433,7 @@ void init()
 
     glLightfv(GL_LIGHT0, GL_DIFFUSE, light_diffuse);
     glLightfv(GL_LIGHT0, GL_POSITION, light_position0);
-    glEnable(GL_LIGHT0);  
+    glEnable(GL_LIGHT0);
     glLightfv(GL_LIGHT1, GL_DIFFUSE, light_diffuse);
     glLightfv(GL_LIGHT1, GL_POSITION, light_position1);
     glEnable(GL_LIGHT1);
@@ -466,7 +466,7 @@ int main(int argc, char **argv)
     glutAddMenuEntry("3D-Grid",  CSG_GRID3D);
     glutAddMenuEntry("Cuberack", CSG_CUBERACK);
     glutAddMenuEntry("Concave",  CSG_CONCAVE);
-    
+
     int menuAlgorithm = glutCreateMenu(menu);
     glutAddMenuEntry("Automatic", ALGO_AUTOMATIC);
     glutAddMenuEntry("Goldfeather standard", GF_STANDARD);
@@ -497,4 +497,3 @@ int main(int argc, char **argv)
 
     return 0;
 }
-

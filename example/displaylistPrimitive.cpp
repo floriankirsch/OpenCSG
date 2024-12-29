@@ -17,7 +17,7 @@
 // 51 Franklin Street, Fifth Floor, Boston, MA 02110 - 1301 USA.
 
 //
-// displaylistPrimitive.h 
+// displaylistPrimitive.h
 //
 // example for a primitive which renders itself using a display list
 //
