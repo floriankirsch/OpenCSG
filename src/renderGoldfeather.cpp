@@ -331,7 +331,11 @@ namespace OpenCSG {
                     glClear(GL_STENCIL_BUFFER_BIT);
                 }
 
-                scissor->enableDepthBoundsBack();
+                GLenum depthFunc = getParityDepthFunc();
+                if (depthFunc == GL_GREATER)
+                    scissor->enableDepthBoundsFront();
+                else if(depthFunc == GL_LEQUAL)
+                    scissor->enableDepthBoundsBack();
 
                 parityTestAndDiscard(*itr, primitives, false, OpenGL::stencilMask);
 

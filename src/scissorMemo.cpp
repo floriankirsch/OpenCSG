@@ -77,6 +77,13 @@ namespace OpenCSG {
         glEnable(GL_DEPTH_BOUNDS_TEST_EXT);
     }
 
+    void ScissorMemo::enableDepthBoundsFront() const {
+        if (!mUseDepthBoundsTest)
+            return;
+        glDepthBoundsEXT(mCurrent.minz, 1.0);
+        glEnable(GL_DEPTH_BOUNDS_TEST_EXT);
+    }
+
     void ScissorMemo::disableDepthBounds() const {
         if (!mUseDepthBoundsTest)
             return;

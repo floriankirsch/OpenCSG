@@ -52,6 +52,8 @@ namespace OpenCSG {
         void enableDepthBounds() const;
         /// enables depth bounds test of back of current volume (if supported by graphics hardware)
         void enableDepthBoundsBack() const;
+        /// enables depth bounds test of front of current volume (if supported by graphics hardware)
+        void enableDepthBoundsFront() const;
         /// disables depth bounds test of volume (if supported by graphics hardware)
         void disableDepthBounds() const;
 
