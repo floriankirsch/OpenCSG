@@ -74,7 +74,7 @@ namespace OpenCSG {
                         (*j)->render();
                     }
                 } else {
-                    // shapes of interest: we need to determine the appropriate layer of 
+                    // shapes of interest: we need to determine the appropriate layer of
                     // the shapes, using stencil counting
                     glClearStencil(0);
                     glStencilMask(OpenGL::stencilMask);
@@ -215,7 +215,10 @@ namespace OpenCSG {
             // for all shapes of the intersection, we conduct the parity test.
             // for fragments for which it fails, we mark them as not visible
             // (parity testing means to check whether the number of surfaces in front
-            // of the current z-buffer is even or uneven)
+            // of the current z-buffer is even or uneven. As all shapes are closed,
+            // this is equivalent to check the number of surfaces behind the current
+            // z-buffer. This is what we effectively do by default, because
+            // that approach is more robust)
             for (std::vector<Primitive*>::const_iterator itr = primitives.begin(); itr != primitives.end(); ++itr ) {
                 if (!layered) {
 
@@ -235,7 +238,7 @@ namespace OpenCSG {
                     }
 
                     // for substracted shapes that don't touch the shapes of interest,
-                    // the parity test would always fail. thus, they are omited here. 
+                    // the parity test would always fail. thus, they are omited here.
                     bool needParityTest = ((*itr)->getOperation() == Intersection);
                     if (!needParityTest) {
                         for (Batch::const_iterator k = shapesOfInterest.begin(); k != shapesOfInterest.end(); ++k) {
@@ -259,7 +262,8 @@ namespace OpenCSG {
                     allParityTestValues = 0;
                 }
 
-                // parity test: count surfaces in front of shapes of interest
+                // parity test: count surfaces behind (or, depending on setting, in front)
+                // of shapes of interest, i.e., the current z-buffer.
                 channelMgr->renderToChannel(false);
                 glStencilFunc(GL_ALWAYS, 0, parityValue);
                 glStencilMask(parityValue);
@@ -274,7 +278,6 @@ namespace OpenCSG {
                 //   if #(surfaces) is uneven (stencilValue == parityValue):
                 //      if intersecting shapes      -> shapes intersect, first shape is visible, don't change depth
                 //      if subtracting second shape -> front surface of first shape is subtracted, not visible. set depth to max
-                //if (!(*i)->complement_) {
                 if ((*itr)->getOperation() == Intersection) {
                     allParityTestValues += parityValue;
                 }

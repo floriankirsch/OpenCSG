@@ -54,7 +54,7 @@ namespace OpenCSG {
         /// The convexity is the maximum number of front faces of the
         /// primitive at a single position. For example, the convexity
         /// of a sphere is 1, and of a torus is 2. Actually the convexity
-        /// is only used in the Goldfeather algorithm. For this algorithm, 
+        /// is only used in the Goldfeather algorithm. For this algorithm,
         /// a convexity too low may result in rendering errors, a convexity
         /// too high will reduce rendering performance.
         void setConvexity(unsigned int);
@@ -133,14 +133,17 @@ namespace OpenCSG {
 
     /// The Algorithm specifies the method used for CSG rendering:
     ///   - Goldfeather: This algorithm handles convex and concave primitives.
-    ///   - SCS        : This algorithm handles only convex primitives
+    ///                  It handles the case that the camera is inside of
+    ///                  the CSG model better.
+    ///   - SCS        : This algorithm handles only convex primitives.
+    ///                  It is usually faster than Goldfeather.
     ///   - Automatic  : This setting currently choses Goldfeather if the
     ///                  primitive vector contains concave primitives, else it
     ///                  choses SCS. Also sets the DepthComplexityAlgorithm
     ///                  (NoDepthComplexitySampling for arrays with few
     ///                  primitives, else OcclusionQuery or at the last resort
     ///                  DepthComplexitySampling). This setting is the default.
-    ///   - AlgorithmUnused : For use with setOption, this value is invalid. 
+    ///   - AlgorithmUnused: For use with setOption, this value is invalid.
     ///                  As parameter of the obsolete render() function, specifies
     ///                  to read all OpenCSG settings from the settings set with
     ///                  setOption() and not from the parameter list of render(),

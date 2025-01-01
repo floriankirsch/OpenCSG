@@ -1,3 +1,11 @@
+31.12.2024
+    Fixed: Improve behavior when the camera is inside of the CSG model,
+        when the Goldfeather algorithm is used. The parity test now is
+        computed by using a z-fail depth function, instead of z-pass.
+        This is equivalent, but more robust, because for geometry
+        behind the current z-buffer, depth-frustum culling usually
+        does not happen.
+
 15.09.2023
     Release 1.6.0
 
