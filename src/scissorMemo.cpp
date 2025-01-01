@@ -31,7 +31,7 @@
 namespace OpenCSG {
 
     ScissorMemo::ScissorMemo() : 
-        mIintersection(NDCVolume(-1.0f, -1.0f, 0.0f, 1.0f, 1.0f, 1.0f)),
+        mIntersection(NDCVolume(-1.0f, -1.0f, 0.0f, 1.0f, 1.0f, 1.0f)),
         mCurrent(NDCVolume(1.0f, 1.0f, 1.0f, -1.0f, -1.0f, 0.0f)),
         mArea(NDCVolume(-1.0f, -1.0f, 0.0f, 1.0f, 1.0f, 1.0f)),
         mScissor(std::vector<NDCVolume>(AllChannels + 1)),
@@ -97,12 +97,12 @@ namespace OpenCSG {
 
     void ScissorMemo::setIntersected(const std::vector<Primitive*>& primitives) {
 
-        float& minx = mIintersection.minx;
-        float& miny = mIintersection.miny;
-        float& minz = mIintersection.minz;
-        float& maxx = mIintersection.maxx;
-        float& maxy = mIintersection.maxy;
-        float& maxz = mIintersection.maxz;
+        float& minx = mIntersection.minx;
+        float& miny = mIntersection.miny;
+        float& minz = mIntersection.minz;
+        float& maxx = mIntersection.maxx;
+        float& maxy = mIntersection.maxy;
+        float& maxz = mIntersection.maxz;
 
         // dont let intersected area exceed scissor region set by the application (outside OpenCSG)
         const int dx = OpenGL::canvasPos[2] - OpenGL::canvasPos[0];
@@ -149,7 +149,7 @@ namespace OpenCSG {
     }
 
     const NDCVolume& ScissorMemo::getIntersectedArea() const {
-        return mIintersection;
+        return mIntersection;
     }
 
     const NDCVolume& ScissorMemo::getCurrentArea() const {
@@ -198,12 +198,12 @@ namespace OpenCSG {
     }
 
     void ScissorMemo::calculateArea() {
-        mArea.minx = (std::max)(mCurrent.minx, mIintersection.minx);
-        mArea.miny = (std::max)(mCurrent.miny, mIintersection.miny);
-        mArea.minz = (std::max)(mCurrent.minz, mIintersection.minz);
-        mArea.maxx = (std::min)(mCurrent.maxx, mIintersection.maxx);
-        mArea.maxy = (std::min)(mCurrent.maxy, mIintersection.maxy);
-        mArea.maxz = (std::min)(mCurrent.maxz, mIintersection.maxz);
+        mArea.minx = (std::max)(mCurrent.minx, mIntersection.minx);
+        mArea.miny = (std::max)(mCurrent.miny, mIntersection.miny);
+        mArea.minz = (std::max)(mCurrent.minz, mIntersection.minz);
+        mArea.maxx = (std::min)(mCurrent.maxx, mIntersection.maxx);
+        mArea.maxy = (std::min)(mCurrent.maxy, mIntersection.maxy);
+        mArea.maxz = (std::min)(mCurrent.maxz, mIntersection.maxz);
     }
 
 } // namespace OpenCSG

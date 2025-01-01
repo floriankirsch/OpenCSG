@@ -77,7 +77,7 @@ namespace OpenCSG {
         void calculateArea();
 
     private:
-        NDCVolume mIintersection;
+        NDCVolume mIntersection;
         NDCVolume mCurrent;
         NDCVolume mArea;
         std::vector<NDCVolume> mScissor;
