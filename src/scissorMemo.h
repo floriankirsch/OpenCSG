@@ -48,6 +48,8 @@ namespace OpenCSG {
         /// disables scissoring
         void disableScissor() const;
 
+        /// checks if the depth bounds test is enabled
+        bool isDepthBoundsTestEnabled() const;
         /// enables depth bounds test of volume (if supported by graphics hardware)
         void enableDepthBounds() const;
         /// enables depth bounds test of back of current volume (if supported by graphics hardware)

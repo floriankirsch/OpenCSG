@@ -63,6 +63,11 @@ namespace OpenCSG {
         glDisable(GL_SCISSOR_TEST);
     }
 
+    bool ScissorMemo::isDepthBoundsTestEnabled() const
+    {
+        return mUseDepthBoundsTest;
+    }
+
     void ScissorMemo::enableDepthBounds() const {
         if (!mUseDepthBoundsTest)
             return;
