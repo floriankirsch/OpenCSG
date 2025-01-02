@@ -1,3 +1,9 @@
+01.01.2025:
+    Fixed: The depth bounds test optimization in the Goldfeather algorithm
+        was buggy, when using the old z-less parity test. It was incorrectly
+        also applied when discarding fragments, i.e., when writing depth
+        values 1.0 for the discarded fragments.
+
 31.12.2024
     Fixed: Improve behavior when the camera is inside of the CSG model,
         when the Goldfeather algorithm is used. The parity test now is
