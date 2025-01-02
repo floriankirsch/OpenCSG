@@ -138,9 +138,8 @@ namespace OpenCSG {
 
         GLenum getParityDepthFunc()
         {
-            int optimizationSetting = getOption(ParityZPassOptimization);
-            if (optimizationSetting == OptimizationOn ||
-                optimizationSetting == OptimizationForceOn)
+            int setting = getOption(ParityZPassSetting);
+            if (setting == OptimizationOn || setting == OptimizationForceOn)
                 return GL_LEQUAL;
             else
                 return GL_GREATER;

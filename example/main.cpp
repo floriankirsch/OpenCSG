@@ -418,9 +418,9 @@ void menu(int value) {
     case CAM_OUTSIDE:    inside = false; break;
     case CAM_INSIDE:     inside = true; break;
 
-    case PARITY_ZFAIL:   OpenCSG::setOption(OpenCSG::ParityZPassOptimization, OpenCSG::OptimizationDefault);
+    case PARITY_ZFAIL:   OpenCSG::setOption(OpenCSG::ParityZPassSetting, OpenCSG::OptimizationDefault);
                          break;
-    case PARITY_ZPASS:   OpenCSG::setOption(OpenCSG::ParityZPassOptimization, OpenCSG::OptimizationOn);
+    case PARITY_ZPASS:   OpenCSG::setOption(OpenCSG::ParityZPassSetting, OpenCSG::OptimizationOn);
                          break;
 
     default: break;

@@ -119,7 +119,7 @@ namespace OpenCSG {
         DepthComplexitySetting  = 1,
         OffscreenSetting        = 2,
         DepthBoundsOptimization = 3,
-        ParityZPassOptimization = 4,
+        ParityZPassSetting      = 4,
         OptionTypeUnused        = 5
     };
 
@@ -205,10 +205,10 @@ namespace OpenCSG {
     /// enabled or not. This can be set for the following kinds of optimizations:
     ///   - DepthBoundsOptimization: Improves rendering performance by using 
     ///     the depth bounds check found on some graphics hardware. By default,
-    ///     this optimization is turned off! When you turn it on, you must 
+    ///     this optimization is turned off! When you turn it on, you must
     ///     provide correct bounding boxes for all primitives, in particular
     ///     along the z-axis.
-    ///   - ParityZPassOptimization: This setting only applies to the Goldfeather
+    ///   - ParityZPassSetting: This setting only applies to the Goldfeather
     ///     algorithm, and by default it is disabled. The parity value denotes
     ///     the number of surfaces in front of a surface for that visibility
     ///     is about to be determined. The textbook approach to determine the
@@ -218,8 +218,9 @@ namespace OpenCSG {
     ///     rendering is not correct. The alternative, default approach is to
     ///     render surfaces behind (z-fail). With that, clipping of the surfaces
     ///     is much less likely to happen and easy to avoid. So this is the more
-    ///     robust setting. The downside is that, rendering might be slightly
-    ///     slower - this needs to be assessed and confirmed.
+    ///     robust setting. The performance of the settings is usually similar.
+    ///     If your camera is outside of the CSG model, you may enable the
+    ///     z-pass setting to check if it works better for you.
     /// Each optimization can be independently set
     ///   - OptimizationDefault     to its default value (depending of the kind
     ///                             of optimization)
