@@ -222,6 +222,7 @@ namespace OpenCSG { <br>
 &nbsp;&nbsp; <b><a href="#depthalgorithm">DepthComplexitySetting</a></b>, <br>
 &nbsp;&nbsp; <b><a href="#offscreentype">OffscreenSetting</a></b>, <br>
 &nbsp;&nbsp; <b><a href="#depthboundsoptimization">DepthBoundsOptimization</a></b>, <br>
+&nbsp;&nbsp; <b><a href="#parityzpasssetting">ParityZPassSetting</a></b>, <br>
 &nbsp; }; <br>
 <br>
 &nbsp; void <b><a href="#options">setOption</a></b>(OptionType option, int newSetting);<br>
@@ -230,7 +231,7 @@ namespace OpenCSG { <br>
 &nbsp; enum <b><a href="#algorithm">Algorithm</a></b> { <b>Automatic</b>, <b>Goldfeather</b>, <b>SCS</b> }; <br>
 &nbsp; enum <b><a href="#depthalgorithm">DepthComplexityAlgorithm</a></b> { <b>NoDepthComplexitySampling</b>, <b>OcclusionQuery</b>, <b>DepthComplexitySampling</b> }; <br>
 &nbsp; enum <b><a href="#offscreentype">OffscreenType</a></b> { <b>AutomaticOffscreenType</b>, <b>FrameBufferObject</b>, <b>FrameBufferObjectARB</b>, <b>FrameBufferObjectEXT</b> }; <br>
-&nbsp; enum <b><a href="#optimization">Optimization</a></b> { <b>OptimizationDefault</b>, <b>OptimizationDefault</b>, <b>OptimizationOn</b>, <b>OptimizationOff</b> }; <br>
+&nbsp; enum <b><a href="#optimization">Optimization</a></b> { <b>OptimizationDefault</b>, <b>OptimizationForceOn</b>, <b>OptimizationOn</b>, <b>OptimizationOff</b> }; <br>
 <br>
 &nbsp; void <b><a href="#rendershape">render</a></b>(const std::vector&lt;Primitive*&gt;&amp; primitives); <br>
 <br>
@@ -354,6 +355,26 @@ primitive. This optimization is, by default, turned off. If you enable
 it, ensure that the z-ranges of the bounding boxes are large enough,
 otherwise they will not be correctly rendered. The gains you will get
 from this optimization is probably only small. 
+</p>
+
+<p>
+<a name="parityzpasssetting"></a>
+The <code>ParityZPassSetting</code> setting is a configuration setting
+for the Goldfeather algorithm. It affects
+the way that the parity value for a surface is calculated, which is the
+the number of surfaces in front of the candidate surface in question. The textbook
+approach to determine the parity is to really render surfaces in front
+(z-pass). This has the drawback, though, that if the camera is inside
+of the CSG model, some surfaces could be clipped by the view frustum,
+resulting that rendering is incorrect. The alternative approach is to
+render surfaces behind (z-fail). With that, incorrect clipping of the
+surfaces is much less likely to happen and easy to avoid. So this is
+the more robust setting. Since 1.7.0, z-fail is implemented in OpenCSG
+and done by default. The performance of the two settings is usually
+similar. If your camera is outside of the CSG model, you may enable the
+z-pass setting to check if it works better for you. The z-pass setting
+is also a chicken bit in case the new z-fail setting shows unexpected
+problems.  
 </p>
 
 <p>
@@ -547,6 +568,12 @@ about OpenCSG and about image-based CSG rendering have been written:
         (at least not in a trivial way). If you require this, have a look
         at other libraries such as the
         <a href="http://gts.sourceforge.net">GTS library</a>. </p>
+  </li>
+  <li>
+    <p><b>My camera is inside of the CSG model, and rendering is not correct. What can I do?</b> </p>
+    <p>Since version 1.7.0, if the camera is inside of subtracted primitives, the Goldfeather
+       algorithm can handle this case correctly. You must ensure that the back sides of the subtracted
+       primitives are not clipped by the view frustum. The SCS algorithm cannot be used in this case.</p>
   </li>
   <li>
     <p><b>What are the dependencies of the example program?</b> </p>
