@@ -311,7 +311,7 @@ namespace OpenCSG {
                 glDepthFunc(GL_GREATER);
                 glCullFace(GL_BACK);
                 glEnable(GL_CULL_FACE);
-                RenderData* primitiveData = getRenderData(primitives[0]);
+                RenderData * primitiveData = getRenderData(primitives[0]);
                 GLubyte * id = primitiveData->bufferId.vec();
                 glColor4ubv(id);
                 primitives[0]->render();
@@ -330,7 +330,7 @@ namespace OpenCSG {
 
             {
                 for (std::vector<Primitive*>::const_iterator i = primitives.begin(); i != primitives.end(); ++i) {
-                    RenderData* primitiveData = getRenderData(*i);
+                    RenderData * primitiveData = getRenderData(*i);
                     GLubyte * id = primitiveData->bufferId.vec();
                     glColor4ubv(id);
                     (*i)->render();
@@ -400,7 +400,7 @@ namespace OpenCSG {
                 glStencilOp(GL_KEEP, GL_KEEP, GL_REPLACE);
                 glCullFace(GL_BACK);
 
-                { 
+                {
                     for (Batch::const_iterator j = i->begin(); j != i->end(); ++j) {
                         (*j)->render();
                     }
@@ -416,7 +416,7 @@ namespace OpenCSG {
 
                 {
                     for (Batch::const_iterator j = i->begin(); j != i->end(); ++j) {
-                        RenderData* primitiveData = getRenderData(*j);
+                        RenderData * primitiveData = getRenderData(*j);
                         GLubyte * id = primitiveData->bufferId.vec();
                         glColor4ubv(id);
                         (*j)->render();
@@ -424,7 +424,7 @@ namespace OpenCSG {
                 }
 
                 if (sense == 1) {
-                    ++i; 
+                    ++i;
                     if (i == end) {
                         sense = 0;
                         --i; if (i == begin) break; // only one subtracted shape
@@ -466,9 +466,9 @@ namespace OpenCSG {
 
             unsigned int stencilref = 0;
             std::vector<Batch>::const_iterator i = begin;
-            unsigned int shapesWithoutUpdate = 0;    
+            unsigned int shapesWithoutUpdate = 0;
             unsigned int shapeCount = 0;
-            int idx=0;
+            int idx = 0;
 
             do {
                 // create a distinct reference value
@@ -486,7 +486,7 @@ namespace OpenCSG {
                 glCullFace(GL_BACK);
 
                 occlusionTest->beginQuery();
-                { 
+                {
                     for (Batch::const_iterator j = i->begin(); j != i->end(); ++j) {
                         (*j)->render();
                     }
@@ -504,7 +504,7 @@ namespace OpenCSG {
 
                 {
                     for (Batch::const_iterator j = i->begin(); j != i->end(); ++j) {
-                        RenderData* primitiveData = getRenderData(*j);
+                        RenderData * primitiveData = getRenderData(*j);
                         GLubyte * id = primitiveData->bufferId.vec();
                         glColor4ubv(id);
                         (*j)->render();
@@ -523,7 +523,7 @@ namespace OpenCSG {
                     i = begin;
                     idx = 0;
                 }
-    
+
                 ++shapeCount;
                 if (shapeCount >= (numberOfBatches) * (numberOfBatches) - (numberOfBatches) + 1) break;
 
@@ -539,7 +539,7 @@ namespace OpenCSG {
         void renderIntersectedBack(const std::vector<Primitive*>& primitives) {
             // where a back face of intersected shape is in front of any subtracted shape
             // mask fragment as invisible. Updating depth values is not necessary, so when
-            // having IDs, this is kind of simple. 
+            // having IDs, this is kind of simple.
             channelMgr->renderToChannel(true);
             glEnable(GL_CULL_FACE);
             glCullFace(GL_FRONT);
@@ -598,8 +598,8 @@ namespace OpenCSG {
         if (algorithm == DepthComplexitySampling) {
             scissor->enableScissor();
             glClear(GL_STENCIL_BUFFER_BIT);
-            depthComplexity = 
-                (std::min)(OpenGL::calcMaxDepthComplexity(subtracted, scissor->getCurrentArea()), 
+            depthComplexity =
+                (std::min)(OpenGL::calcMaxDepthComplexity(subtracted, scissor->getCurrentArea()),
                            static_cast<unsigned int>(subtractedBatches.size()));
         }
 
