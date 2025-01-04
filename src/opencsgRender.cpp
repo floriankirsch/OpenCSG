@@ -76,9 +76,7 @@ namespace OpenCSG {
             depthComplexityAlgorithm = DepthComplexitySampling;
         }
 
-        if (   algorithm != Automatic
-            && depthComplexityAlgorithm != DepthComplexityAlgorithmUnused
-        ) {
+        if (algorithm != Automatic) {
             switch (algorithm) {
             case Goldfeather:
                 renderGoldfeather(primitives, depthComplexityAlgorithm);

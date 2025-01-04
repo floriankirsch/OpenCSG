@@ -504,8 +504,6 @@ namespace OpenCSG {
             case DepthComplexitySampling:
                 renderDepthComplexitySamplingGoldfeather(primitives);
                 break;
-            case DepthComplexityAlgorithmUnused:
-                break; // does not happen
             }
         }
 

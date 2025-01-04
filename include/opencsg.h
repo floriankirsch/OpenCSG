@@ -143,17 +143,10 @@ namespace OpenCSG {
     ///                  (NoDepthComplexitySampling for arrays with few
     ///                  primitives, else OcclusionQuery or at the last resort
     ///                  DepthComplexitySampling). This setting is the default.
-    ///   - AlgorithmUnused: For use with setOption, this value is invalid.
-    ///                  As parameter of the obsolete render() function, specifies
-    ///                  to read all OpenCSG settings from the settings set with
-    ///                  setOption() and not from the parameter list of render(),
-    ///                  i.e., rendering is done as in the render() function taking
-    ///                  only one parameter. 
     enum Algorithm {
         Automatic        = 0,
         Goldfeather      = 1,
-        SCS              = 2,
-        AlgorithmUnused  = 3
+        SCS              = 2
     };
 
     /// The DepthComplexityAlgorithm specifies the strategy for profiting
@@ -173,13 +166,11 @@ namespace OpenCSG {
     ///                  O(n*k') algorithm (where k' <= k), without significant
     ///                  constant overhead. This strategy requires hardware 
     ///                  occlusion queries (i.E., the OpenGL-extension 
-    ///                  GL_ARB_occlusion_query or GL_NV_occlusion_query)
-    ///   - DepthComplexityAlgorithmUnused: Invalid input. 
+    ///                  GL_ARB_occlusion_query or GL_NV_occlusion_query).
     enum DepthComplexityAlgorithm {
         NoDepthComplexitySampling      = 0,
         OcclusionQuery                 = 1,
-        DepthComplexitySampling        = 2,
-        DepthComplexityAlgorithmUnused = 3
+        DepthComplexitySampling        = 2
     };
 
     /// The OffscreenType sets the type of offscreen buffer which is used for
@@ -192,13 +183,11 @@ namespace OpenCSG {
     ///   - PBuffer (2): Not supported anymore
     ///   - FrameBufferObjectARB: Forces ARB frame buffer objects to be used.
     ///   - FrameBufferObjectEXT: Forces EXT frame buffer objects to be used.
-    ///   - OffscreenTypeUnused: Invalid input.
     enum OffscreenType {
         AutomaticOffscreenType = 0,
         FrameBufferObject      = 1,
         FrameBufferObjectARB   = 3,
-        FrameBufferObjectEXT   = 4,
-        OffscreenTypeUnused    = 5
+        FrameBufferObjectEXT   = 4
     };
 
     /// The Optimization flags set whether a specific kind of rendering per-
@@ -246,13 +235,11 @@ namespace OpenCSG {
     ///   - OptimizationForceOn     on (does not check OpenGL extensions)
     ///   - OptimizationOn          on if required OpenGL extensions are supported,
     ///   - OptimizationOff         off
-    ///   - OptimizationUnused      Invalid input
     enum Optimization {
         OptimizationDefault   = 0,
         OptimizationForceOn   = 1,
         OptimizationOn        = 2,
-        OptimizationOff       = 3,
-        OptimizationUnused    = 4
+        OptimizationOff       = 3
     };
 
     /// Setting the context is required for applications rendering with

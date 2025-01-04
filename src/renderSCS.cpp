@@ -668,8 +668,6 @@ namespace OpenCSG {
         case DepthComplexitySampling:
             subtractPrimitives(subtractedBatches.begin(), subtractedBatches.end(), depthComplexity);
             break;
-        case DepthComplexityAlgorithmUnused:
-            break; // does not happen when invoked correctly
         }
         scissor->disableDepthBounds();
         renderIntersectedBack(intersected);
