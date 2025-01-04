@@ -37,9 +37,7 @@ enum {
 
     ALGO_AUTOMATIC, GF_STANDARD, GF_DC, GF_OQ, SCS_STANDARD, SCS_DC, SCS_OQ,
 
-    CAM_OUTSIDE, CAM_INSIDE,
-
-    PARITY_ZFAIL, PARITY_ZPASS
+    CAM_OUTSIDE_PERF, CAM_OUTSIDE_NOPERF, CAM_INSIDE
 };
 
 std::vector<OpenCSG::Primitive*> primitives;
@@ -414,13 +412,14 @@ void menu(int value) {
     case SCS_OQ:         OpenCSG::setOption(OpenCSG::AlgorithmSetting, OpenCSG::SCS);
                          OpenCSG::setOption(OpenCSG::DepthComplexitySetting, OpenCSG::OcclusionQuery);
                          break;
-
-    case CAM_OUTSIDE:    inside = false; break;
-    case CAM_INSIDE:     inside = true; break;
-
-    case PARITY_ZFAIL:   OpenCSG::setOption(OpenCSG::ParityZPassSetting, OpenCSG::OptimizationDefault);
+    case CAM_OUTSIDE_PERF: inside = false;
+                         OpenCSG::setOption(OpenCSG::CameraOutsideOptimization, OpenCSG::OptimizationOn);
                          break;
-    case PARITY_ZPASS:   OpenCSG::setOption(OpenCSG::ParityZPassSetting, OpenCSG::OptimizationOn);
+    case CAM_OUTSIDE_NOPERF: inside = false;
+                         OpenCSG::setOption(OpenCSG::CameraOutsideOptimization, OpenCSG::OptimizationDefault);
+                         break;
+    case CAM_INSIDE:     inside = true;
+                         OpenCSG::setOption(OpenCSG::CameraOutsideOptimization, OpenCSG::OptimizationDefault);
                          break;
 
     default: break;
@@ -484,18 +483,14 @@ int main(int argc, char **argv)
     glutAddMenuEntry("SCS occlusion query", SCS_OQ);
 
     int menuCamera = glutCreateMenu(menu);
-    glutAddMenuEntry("Camera outside", CAM_OUTSIDE);
+    glutAddMenuEntry("Camera outside (with performance optimizations)", CAM_OUTSIDE_PERF);
+    glutAddMenuEntry("Camera outside (without performance optimizations)", CAM_OUTSIDE_NOPERF);
     glutAddMenuEntry("Camera inside", CAM_INSIDE);
-
-    int menuSettings = glutCreateMenu(menu);
-    glutAddMenuEntry("Parity with z-fail", PARITY_ZFAIL);
-    glutAddMenuEntry("Parity with z-pass", PARITY_ZPASS);
 
     glutCreateMenu(menu);
     glutAddSubMenu("CSG Shapes", menuShape);
     glutAddSubMenu("CSG Algorithms", menuAlgorithm);
     glutAddSubMenu("Camera", menuCamera);
-    glutAddSubMenu("Settings", menuSettings);
 
     // connect to right mouse button
     glutAttachMenu(GLUT_RIGHT_BUTTON);

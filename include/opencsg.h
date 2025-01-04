@@ -115,12 +115,12 @@ namespace OpenCSG {
 
     /// OpenCSG option for use with setOption() / getOption() below
     enum OptionType {
-        AlgorithmSetting        = 0,
-        DepthComplexitySetting  = 1,
-        OffscreenSetting        = 2,
-        DepthBoundsOptimization = 3,
-        ParityZPassSetting      = 4,
-        OptionTypeUnused        = 5
+        AlgorithmSetting          = 0,
+        DepthComplexitySetting    = 1,
+        OffscreenSetting          = 2,
+        DepthBoundsOptimization   = 3,
+        CameraOutsideOptimization = 4,
+        OptionTypeUnused          = 5
     };
 
     /// Sets an OpenCSG option.
@@ -201,33 +201,41 @@ namespace OpenCSG {
         OffscreenTypeUnused    = 5
     };
 
-    /// The Optimization flags set whether a specific kind of optimization is
-    /// enabled or not. This can be set for the following kinds of optimizations:
+    /// The Optimization flags set whether a specific kind of rendering per-
+    /// formance optimization is enabled or not. This can be set for the
+    /// following kind of optimizations:
+
     ///   - DepthBoundsOptimization: Improves rendering performance by using 
     ///     the depth bounds check found on some graphics hardware. By default,
     ///     this optimization is turned off! When you turn it on, you must
     ///     provide correct bounding boxes for all primitives, in particular
     ///     along the z-axis.
-    ///   - ParityZPassSetting: This setting only applies to the Goldfeather
-    ///     algorithm, and by default it is disabled. The parity value denotes
-    ///     the number of surfaces in front of a surface for that visibility
-    ///     is about to be determined. The textbook approach to determine the
-    ///     parity is to really render surfaces in front (z-pass). This has the
-    ///     drawback, though, that if the camera is inside of the CSG model,
-    ///     some surfaces could be clipped by the view frustum, resulting that
-    ///     rendering is not correct. The alternative, default approach is to
-    ///     render surfaces behind (z-fail). With that, clipping of the surfaces
-    ///     is much less likely to happen and easy to avoid. So this is the more
-    ///     robust setting. The performance of the settings is usually similar.
+
+    ///   - CameraOutsideOptimization: This setting enables rendering
+    ///     optimizations that are only valid if the camera is known to be
+    ///     outside of the CSG model. Currently this applies to the Goldfeather
+    ///     algorithm only. By default, this optimization is disabled.
     ///     If your camera is outside of the CSG model, you may enable the
     ///     z-pass setting to check if it works better for you.
+
+    ///     For the Goldfeather algorithm, the setting controls how the parity
+    ///     is calculated. The parity value is the number of surfaces in front
+    ///     of the surface for that visibility is about to be determined. The
+    ///     textbook approach to determine it is to render all surfaces that
+    ///     are in front (z-pass). This has the drawback, though, that if the
+    ///     camera is inside of the CSG model, some surfaces could be clipped by
+    ///     the view frustum, resulting that rendering is not correct. The
+    ///     alternative, default approach is to render surfaces behind (z-fail).
+    ///     With that, clipping of the surfaces is much less likely to happen
+    ///     and easy to avoid. So this is the more robust setting.
+    ///     The performance of the two approaches is usually similar.
+
     /// Each optimization can be independently set
-    ///   - OptimizationDefault     to its default value (depending of the kind
-    ///                             of optimization)
+    ///   - OptimizationDefault     to its default value
     ///   - OptimizationForceOn     on (does not check OpenGL extensions)
     ///   - OptimizationOn          on if required OpenGL extensions are supported,
     ///   - OptimizationOff         off
-    ///   - OptimizationUnused:     Invalid input. 
+    ///   - OptimizationUnused:     Invalid input.
     enum Optimization {
         OptimizationDefault   = 0,
         OptimizationForceOn   = 1,

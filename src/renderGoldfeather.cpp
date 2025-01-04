@@ -138,7 +138,7 @@ namespace OpenCSG {
 
         GLenum getParityDepthFunc()
         {
-            int setting = getOption(ParityZPassSetting);
+            int setting = getOption(CameraOutsideOptimization);
             if (setting == OptimizationOn || setting == OptimizationForceOn)
                 return GL_LEQUAL;
             else
