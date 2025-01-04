@@ -419,7 +419,7 @@ void menu(int value) {
                          OpenCSG::setOption(OpenCSG::CameraOutsideOptimization, OpenCSG::OptimizationDefault);
                          break;
     case CAM_INSIDE:     inside = true;
-                         OpenCSG::setOption(OpenCSG::CameraOutsideOptimization, OpenCSG::OptimizationDefault);
+                         OpenCSG::setOption(OpenCSG::CameraOutsideOptimization, OpenCSG::OptimizationOff);
                          break;
 
     default: break;

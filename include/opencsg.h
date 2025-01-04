@@ -213,29 +213,40 @@ namespace OpenCSG {
 
     ///   - CameraOutsideOptimization: This setting enables rendering
     ///     optimizations that are only valid if the camera is known to be
-    ///     outside of the CSG model. Currently this applies to the Goldfeather
-    ///     algorithm only. By default, this optimization is disabled.
-    ///     If your camera is outside of the CSG model, you may enable the
-    ///     z-pass setting to check if it works better for you.
+    ///     outside of the CSG model. By default, this setting is disabled.
+    ///     If the camera is outside of the CSG model, you may enable it
+    ///     to check if rendering works faster or better. If the camera is
+    ///     inside of the CSG model, rendering errors will occur.
 
     ///     For the Goldfeather algorithm, the setting controls how the parity
     ///     is calculated. The parity value is the number of surfaces in front
     ///     of the surface for that visibility is about to be determined. The
     ///     textbook approach to determine it is to render all surfaces that
     ///     are in front (z-pass). This has the drawback, though, that if the
-    ///     camera is inside of the CSG model, some surfaces could be clipped by
-    ///     the view frustum, resulting that rendering is not correct. The
+    ///     camera is inside of the CSG model, some surfaces could be clipped
+    ///     by the view frustum, resulting that rendering is not correct. The
     ///     alternative, default approach is to render surfaces behind (z-fail).
     ///     With that, clipping of the surfaces is much less likely to happen
     ///     and easy to avoid. So this is the more robust setting.
     ///     The performance of the two approaches is usually similar.
+
+    ///     In the SCS algorithm, the setting controls the workings in the
+    ///     subtraction phase of the algorithm. When subtracting a primitive
+    ///     relative to the current z-buffer, the default, textbook approach
+    ///     is to mark the visible, front-facing polygons of the primitive in
+    ///     the stencil buffer. (At these places then the z-buffer is updated
+    ///     with the back-facing polygons behind the z-buffer). This approach
+    ///     however fails if the back-faces of the subtracted primitive are
+    ///     clipped. The alternative, more compatible approach renders the
+    ///     primitive even one more time to avoid this problem. Due to the
+    ///     additional rendering pass, this approach is a bit slower.
 
     /// Each optimization can be independently set
     ///   - OptimizationDefault     to its default value
     ///   - OptimizationForceOn     on (does not check OpenGL extensions)
     ///   - OptimizationOn          on if required OpenGL extensions are supported,
     ///   - OptimizationOff         off
-    ///   - OptimizationUnused:     Invalid input.
+    ///   - OptimizationUnused      Invalid input
     enum Optimization {
         OptimizationDefault   = 0,
         OptimizationForceOn   = 1,

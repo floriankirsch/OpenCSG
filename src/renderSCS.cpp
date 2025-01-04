@@ -377,6 +377,9 @@ namespace OpenCSG {
                 return;
             }
 
+            int setting = getOption(CameraOutsideOptimization);
+            bool cameraInsideModel = (setting == OptimizationDefault || setting == OptimizationOff);
+
             glStencilMask(OpenGL::stencilMask);
             glEnable(GL_STENCIL_TEST);
             glEnable(GL_CULL_FACE);
@@ -394,21 +397,25 @@ namespace OpenCSG {
                 }
 
                 channelMgr->renderToChannel(false);
-                glDepthFunc(GL_GREATER);
-                glDepthMask(GL_FALSE);
+
+                glDepthMask(GL_FALSE );
                 glStencilFunc(GL_ALWAYS, stencilref, OpenGL::stencilMask);
                 glStencilOp(GL_KEEP, GL_KEEP, GL_REPLACE);
-                glCullFace(GL_FRONT);
 
+                if (cameraInsideModel)
                 {
+                    glDepthFunc(GL_GREATER);
+                    glCullFace(GL_FRONT);
+
                     for (Batch::const_iterator j = i->begin(); j != i->end(); ++j) {
                         (*j)->render();
                     }
+
+                    glStencilFunc(GL_EQUAL, stencilref, OpenGL::stencilMask);
+                    glStencilOp(GL_ZERO, GL_ZERO, GL_KEEP);
                 }
 
                 glDepthFunc(GL_LESS);
-                glStencilFunc(GL_EQUAL, stencilref, OpenGL::stencilMask);
-                glStencilOp(GL_REPLACE, GL_ZERO, GL_REPLACE);
                 glCullFace(GL_BACK);
 
                 {
@@ -469,6 +476,9 @@ namespace OpenCSG {
                 return false;
             }
 
+            int setting = getOption(CameraOutsideOptimization);
+            bool cameraInsideModel = (setting == OptimizationDefault || setting == OptimizationOff);
+
             glStencilMask(OpenGL::stencilMask);
             glEnable(GL_STENCIL_TEST);
             glEnable(GL_CULL_FACE);
@@ -490,26 +500,30 @@ namespace OpenCSG {
                 }
 
                 channelMgr->renderToChannel(false);
-                glDepthFunc(GL_GREATER);
+
                 glDepthMask(GL_FALSE);
                 glStencilFunc(GL_ALWAYS, stencilref, OpenGL::stencilMask);
                 glStencilOp(GL_KEEP, GL_KEEP, GL_REPLACE);
-                glCullFace(GL_FRONT);
 
                 occlusionTest->beginQuery();
+                if (cameraInsideModel)
                 {
-                    for (Batch::const_iterator j = i->begin(); j != i->end(); ++j) {
-                        (*j)->render();
+                    glDepthFunc(GL_GREATER);
+                    glCullFace(GL_FRONT);
+
+                    {
+                        for (Batch::const_iterator j = i->begin(); j != i->end(); ++j) {
+                            (*j)->render();
+                        }
                     }
+
+                    glStencilFunc(GL_EQUAL, stencilref, OpenGL::stencilMask);
+                    glStencilOp(GL_ZERO, GL_ZERO, GL_KEEP);
                 }
-                occlusionTest->endQuery();
 
                 glDepthFunc(GL_LESS);
-                glStencilFunc(GL_EQUAL, stencilref, OpenGL::stencilMask);
-                glStencilOp(GL_REPLACE, GL_ZERO, GL_REPLACE);
                 glCullFace(GL_BACK);
 
-                occlusionTest->beginQuery();
                 {
                     for (Batch::const_iterator j = i->begin(); j != i->end(); ++j) {
                         (*j)->render();
