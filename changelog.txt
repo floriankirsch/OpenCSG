@@ -1,3 +1,9 @@
+04.01.2025:
+    Fixed: Improve behavior when the camera is inside of the CSG model,
+        for the SCS algorithm. A slightly slower way to compute the
+        depth of the subtracted primitives has been implemented. As
+        an option, the former, faster algorithm can be enabled.
+
 01.01.2025:
     Fixed: The depth bounds test optimization in the Goldfeather algorithm
         was buggy, when using the old z-less parity test. It was incorrectly
@@ -6,7 +12,7 @@
 
 31.12.2024
     Fixed: Improve behavior when the camera is inside of the CSG model,
-        when the Goldfeather algorithm is used. The parity test now is
+        for the Goldfeather algorithm. The parity test now is
         computed by using a z-fail depth function, instead of z-pass.
         This is equivalent, but more robust, because for geometry
         behind the current z-buffer, depth-frustum culling usually
