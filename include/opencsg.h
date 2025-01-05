@@ -225,7 +225,7 @@ namespace OpenCSG {
     ///     is to mark the visible, front-facing polygons of the primitive in
     ///     the stencil buffer. (At these places then the z-buffer is updated
     ///     with the back-facing polygons behind the z-buffer). This approach
-    ///     however fails if the back-faces of the subtracted primitive are
+    ///     however fails if the front faces of the subtracted primitive are
     ///     clipped. The alternative, more compatible approach renders the
     ///     primitive even one more time to avoid this problem. Due to the
     ///     additional rendering pass, this approach is a bit slower.
