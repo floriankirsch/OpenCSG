@@ -33,7 +33,7 @@
 #include "includeGl.h"
 
 enum { 
-    CSG_BASIC, CSG_WIDGET, CSG_GRID2D, CSG_GRID3D, CSG_CUBERACK, CSG_CONCAVE,
+    CSG_BASIC, CSG_WIDGET, CSG_GRID2D, CSG_GRID3D, CSG_CUBERACK, CSG_PIPE, CSG_CONCAVE,
 
     ALGO_AUTOMATIC, GF_STANDARD, GF_DC, GF_OQ, SCS_STANDARD, SCS_DC, SCS_OQ,
 
@@ -41,21 +41,41 @@ enum {
 };
 
 std::vector<OpenCSG::Primitive*> primitives;
+std::vector<OpenCSG::Primitive*> primitives2;
+std::vector<OpenCSG::Primitive*> primitives3;
+
 
 bool               spin = true;
 bool               inside = false;
 float              rot = 0.0f;
 std::ostringstream fpsStream;
 
-void clearPrimitives() {
-    for (std::vector<OpenCSG::Primitive*>::const_iterator i = primitives.begin(); i != primitives.end(); ++i) {
-        OpenCSG::DisplayListPrimitive* p = 
-            static_cast<OpenCSG::DisplayListPrimitive*>(*i);
-        glDeleteLists(1, p->getDisplayListId());
-        delete p;
+std::vector<GLuint> displaylistGarbagePile;
+
+void clearPrimitives(std::vector<OpenCSG::Primitive*> & p)
+{
+    for (std::vector<OpenCSG::Primitive*>::const_iterator it = p.begin(); it != p.end(); ++it)
+    {
+        OpenCSG::DisplayListPrimitive* primitive = static_cast<OpenCSG::DisplayListPrimitive*>(*it);
+        GLuint id = primitive->getDisplayListId();
+        if (std::find(displaylistGarbagePile.begin(), displaylistGarbagePile.end(), id) == displaylistGarbagePile.end())
+        {
+            glDeleteLists(1, id);
+            displaylistGarbagePile.push_back(id);
+        }
+        delete primitive;
     }
 
-    primitives.clear();
+    p.clear();
+}
+
+void clearPrimitives()
+{
+    displaylistGarbagePile.clear();
+    clearPrimitives(primitives);
+    clearPrimitives(primitives2);
+    clearPrimitives(primitives3);
+    displaylistGarbagePile.clear();
 }
 
 void solidCylinder(GLdouble radius, GLdouble height, GLint slices, GLint stacks) {
@@ -248,6 +268,79 @@ void setCubeRack() {
     }
 }
 
+void setPipe() {
+
+    clearPrimitives();
+
+    GLuint id1 = glGenLists(1);
+    glNewList(id1, GL_COMPILE);
+    glPushMatrix();
+    glTranslatef(0.0f, 0.0f, -2.5f);
+    solidCylinder(0.6, 2.5, 20, 20);
+    glPopMatrix();
+    glEndList();
+
+    GLuint id2 = glGenLists(1);
+    glNewList(id2, GL_COMPILE);
+    glPushMatrix();
+    glTranslatef(0.0f, 0.0f, -2.51f);
+    solidCylinder(0.5, 2.52, 20, 20);
+    glPopMatrix();
+    glEndList();
+
+    GLuint id3 = glGenLists(1);
+    glNewList(id3, GL_COMPILE);
+    glPushMatrix();
+    glRotatef(90.0f, 0.0f, 1.0f, 0.0f);
+    glTranslatef(0.0f, 0.0f, -2.5f);
+    solidCylinder(0.6, 2.5, 20, 20);
+    glPopMatrix();
+    glEndList();
+
+    GLuint id4 = glGenLists(1);
+    glNewList(id4, GL_COMPILE);
+    glPushMatrix();
+    glRotatef(90.0f, 0.0f, 1.0f, 0.0f);
+    glTranslatef(0.0f, 0.0f, -2.51f);
+    solidCylinder(0.5, 2.52, 20, 20);
+    glPopMatrix();
+    glEndList();
+
+    GLuint id5 = glGenLists(1);
+    glNewList(id5, GL_COMPILE);
+    glutSolidSphere(0.6, 20, 20);
+    glEndList();
+
+    GLuint id6 = glGenLists(1);
+    glNewList(id6, GL_COMPILE);
+    glutSolidSphere(0.5, 20, 20);
+    glEndList();
+
+    GLuint id7 = glGenLists(1);
+    glNewList(id7, GL_COMPILE);
+    glPushMatrix();
+    glTranslatef(-0.8f, 1.0f, -0.8f);
+    glutSolidCube(2.0);
+    glPopMatrix();
+    glEndList();
+
+    primitives.push_back(new OpenCSG::DisplayListPrimitive(id1, OpenCSG::Intersection, 1));
+    primitives.push_back(new OpenCSG::DisplayListPrimitive(id2, OpenCSG::Subtraction, 1));
+    primitives.push_back(new OpenCSG::DisplayListPrimitive(id4, OpenCSG::Subtraction, 1));
+    primitives.push_back(new OpenCSG::DisplayListPrimitive(id7, OpenCSG::Subtraction, 1));
+
+    primitives2.push_back(new OpenCSG::DisplayListPrimitive(id3, OpenCSG::Intersection, 1));
+    primitives2.push_back(new OpenCSG::DisplayListPrimitive(id2, OpenCSG::Subtraction, 1));
+    primitives2.push_back(new OpenCSG::DisplayListPrimitive(id4, OpenCSG::Subtraction, 1));
+    primitives2.push_back(new OpenCSG::DisplayListPrimitive(id7, OpenCSG::Subtraction, 1));
+
+    primitives3.push_back(new OpenCSG::DisplayListPrimitive(id5, OpenCSG::Intersection, 1));
+    primitives3.push_back(new OpenCSG::DisplayListPrimitive(id6, OpenCSG::Subtraction, 1));
+    primitives3.push_back(new OpenCSG::DisplayListPrimitive(id2, OpenCSG::Subtraction, 1));
+    primitives3.push_back(new OpenCSG::DisplayListPrimitive(id4, OpenCSG::Subtraction, 1));
+    primitives3.push_back(new OpenCSG::DisplayListPrimitive(id7, OpenCSG::Subtraction, 1));
+}
+
 void setConcave() {
 
     clearPrimitives();
@@ -332,8 +425,16 @@ void display()
 
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
     OpenCSG::render(primitives);
+    OpenCSG::render(primitives2);
+    OpenCSG::render(primitives3);
     glDepthFunc(GL_EQUAL);
     for (std::vector<OpenCSG::Primitive*>::const_iterator i = primitives.begin(); i != primitives.end(); ++i) {
+        (*i)->render();
+    }
+    for (std::vector<OpenCSG::Primitive*>::const_iterator i = primitives2.begin(); i != primitives2.end(); ++i) {
+        (*i)->render();
+    }
+    for (std::vector<OpenCSG::Primitive*>::const_iterator i = primitives3.begin(); i != primitives3.end(); ++i) {
         (*i)->render();
     }
     glDepthFunc(GL_LESS);
@@ -390,6 +491,7 @@ void menu(int value) {
     case CSG_GRID2D:     setGrid2D();        break;
     case CSG_GRID3D:     setGrid3D();        break;
     case CSG_CUBERACK:   setCubeRack();      break;
+    case CSG_PIPE:       setPipe();          break;
     case CSG_CONCAVE:    setConcave();       break;
 
     case ALGO_AUTOMATIC: OpenCSG::setOption(OpenCSG::AlgorithmSetting, OpenCSG::Automatic);
@@ -471,6 +573,7 @@ int main(int argc, char **argv)
     glutAddMenuEntry("2D-Grid",  CSG_GRID2D);
     glutAddMenuEntry("3D-Grid",  CSG_GRID3D);
     glutAddMenuEntry("Cuberack", CSG_CUBERACK);
+    glutAddMenuEntry("Pipe",     CSG_PIPE);
     glutAddMenuEntry("Concave",  CSG_CONCAVE);
 
     int menuAlgorithm = glutCreateMenu(menu);
