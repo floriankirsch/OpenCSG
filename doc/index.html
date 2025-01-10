@@ -306,10 +306,8 @@ else <code>OcclusionQuery</code> or at the last resort <code>DepthComplexitySamp
 </p>
 
 <p>
-Aforesaid means that it is, currently, not possible to do CSG
-rendering of concave primitives and preserving the stencil buffer. I am
-looking for ways to change this situation (The ARB_buffer_region extension 
-appears to be a possible way for this). 
+Aforesaid means that it is not possible to do CSG
+rendering of concave primitives and preserving the stencil buffer.
 </p>
 
 <p>
@@ -361,15 +359,16 @@ from this optimization is probably only small.
 <a name="cameraoutsideoptimization"></a>
 The <code>CameraOutsideOptimization</code> setting enables rendering
 optimizations that are only valid if the camera is known to be
-outside of the CSG model. By default, this setting is disabled.
-If the camera is outside of the CSG model, you may enable it
-to check if rendering works faster or better. If the camera is
-inside of the CSG model, rendering errors will occur.
+outside of the CSG model. I.e., if the camera is inside of the
+CSG model and the setting is enabled, rendering errors occur
+that could be avoided otherwise. By default, this setting is
+enabled(!) for the SCS, but disabled for the Goldfeather algorithm.
+See the following remarks on the two algorithms for details:
 <p>
 
 </p>
 For the Goldfeather algorithm, the setting controls
-the way that the parity value for a surface is calculated, which is the
+the way that the parity value for a surface is calculated, which is
 the number of surfaces in front of the candidate surface in question. The textbook
 approach to determine it is to render all surfaces that are in front
 (z-pass). This has the drawback, though, that if the camera is inside
@@ -396,9 +395,10 @@ however fails if the front faces of the subtracted primitive are
 clipped. The alternative, more compatible approach renders the
 primitive even one more time to avoid this problem. Due to the
 additional rendering pass, this approach is a bit slower. Since
-1.7.0, OpenCSG implement this slower, more robust approach. To
-restore the original, faster, but less robust behavior, you can
-enable the <code>CameraOutsideOptimization</code> setting.
+1.7.0, OpenCSG implements this more robust approach. But
+it does not use it by default, mainly because not all kinds of
+rendering errors, related to the camera being inside the CSG model,
+are addressed by it.
 </p>
 
 <p>
@@ -650,7 +650,7 @@ and at <a href="https://github.com/Dav1dde/glad#License">the Glad github reposit
 <center><p>
 &copy; 2002-2025, Florian Kirsch, e-mail: <b>mail at opencsg dot org</b>, <br>
 2002-2005 Hasso-Plattner-Institute Potsdam.<br>
-Last change: 05-Jan-2025
+Last change: 10-Jan-2025
 </p></center>
 
 </body>

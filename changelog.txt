@@ -1,3 +1,9 @@
+12.01.2025:
+    Changed: For SCS, with respect to the changes for the camera inside
+        of the CSG model, restore the original behavior by default.
+        The new algorithm is now the option that must be specifically
+        activated.
+
 04.01.2025:
     Fixed: Improve behavior when the camera is inside of the CSG model,
         for the SCS algorithm. A slightly slower way to compute the
