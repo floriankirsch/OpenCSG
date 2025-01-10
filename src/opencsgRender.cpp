@@ -66,6 +66,18 @@ namespace OpenCSG {
             return;
         }
 
+        bool hasIntersected = false;
+        for (std::vector<Primitive*>::const_iterator itr = primitives.begin(); itr != primitives.end(); ++itr) {
+            Operation operation = (*itr)->getOperation();
+            if (operation == Intersection) {
+                hasIntersected = true;
+                break;
+            }
+        }
+        if (!hasIntersected) {
+            return;
+        }
+
         if (algorithm == Automatic) {
             algorithm = chooseAlgorithm(primitives);
             depthComplexityAlgorithm = chooseDepthComplexityAlgorithm(primitives);
