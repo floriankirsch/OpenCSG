@@ -378,7 +378,7 @@ namespace OpenCSG {
             }
 
             int setting = getOption(CameraOutsideOptimization);
-            bool cameraInsideModel = (setting == OptimizationDefault || setting == OptimizationOff);
+            bool cameraInsideModel = (setting == OptimizationOff);
 
             glStencilMask(OpenGL::stencilMask);
             glEnable(GL_STENCIL_TEST);
@@ -477,7 +477,7 @@ namespace OpenCSG {
             }
 
             int setting = getOption(CameraOutsideOptimization);
-            bool cameraInsideModel = (setting == OptimizationDefault || setting == OptimizationOff);
+            bool cameraInsideModel = (setting == OptimizationOff);
 
             glStencilMask(OpenGL::stencilMask);
             glEnable(GL_STENCIL_TEST);

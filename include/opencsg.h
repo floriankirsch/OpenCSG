@@ -134,7 +134,8 @@ namespace OpenCSG {
     /// The Algorithm specifies the method used for CSG rendering:
     ///   - Goldfeather: This algorithm handles convex and concave primitives.
     ///                  It handles the case that the camera is inside of
-    ///                  the CSG model better.
+    ///                  the CSG model better. Generally, it is also known
+    ///                  to be more robust.
     ///   - SCS        : This algorithm handles only convex primitives.
     ///                  It is usually faster than Goldfeather.
     ///   - Automatic  : This setting currently choses Goldfeather if the
@@ -202,10 +203,11 @@ namespace OpenCSG {
 
     ///   - CameraOutsideOptimization: This setting enables rendering
     ///     optimizations that are only valid if the camera is known to be
-    ///     outside of the CSG model. By default, this setting is disabled.
-    ///     If the camera is outside of the CSG model, you may enable it
-    ///     to check if rendering works faster or better. If the camera is
-    ///     inside of the CSG model, rendering errors will occur.
+    ///     outside of the CSG model. I.e., if the camera is inside of the
+    ///     CSG model and the setting is enabled, rendering errors occur
+    ///     that could be avoided otherwise. By default, this setting is
+    ///     enabled(!) for the SCS, but disabled for the Goldfeather algorithm.
+    ///     See the remarks for the two algorithms for details.
 
     ///     For the Goldfeather algorithm, the setting controls how the parity
     ///     is calculated. The parity value is the number of surfaces in front
@@ -214,10 +216,13 @@ namespace OpenCSG {
     ///     are in front (z-pass). This has the drawback, though, that if the
     ///     camera is inside of the CSG model, some surfaces could be clipped
     ///     by the view frustum, resulting that rendering is not correct. The
-    ///     alternative, default approach is to render surfaces behind (z-fail).
-    ///     With that, clipping of the surfaces is much less likely to happen
-    ///     and easy to avoid. So this is the more robust setting.
-    ///     The performance of the two approaches is usually similar.
+    ///     alternative approach is to render surfaces behind (z-fail). With
+    ///     that, clipping of the surfaces is much less likely to happen and
+    ///     easy to avoid. So this is the more robust setting and OpenCSG uses
+    ///     it by default. The performance of the two approaches is usually
+    ///     similar. If the camera is outside of the CSG model, you may enable
+    ///     the CameraOutsideOptimization setting to check if it somehow works
+    ///     better for your.
 
     ///     In the SCS algorithm, the setting controls the workings in the
     ///     subtraction phase of the algorithm. When subtracting a primitive
@@ -227,8 +232,15 @@ namespace OpenCSG {
     ///     with the back-facing polygons behind the z-buffer). This approach
     ///     however fails if the front faces of the subtracted primitive are
     ///     clipped. The alternative, more compatible approach renders the
-    ///     primitive even one more time to avoid this problem. Due to the
-    ///     additional rendering pass, this approach is a bit slower.
+    ///     primitive even one more time to avoid this problem. That approach,
+    ///     in OpenCSG, is disabled by default, i.e., by default the
+    ///     CameraOutsideOptimization is enabled. This is for two reasons:
+    ///     * SCS still does not handle all cases correctly with the
+    ///       CameraOutsideOptimization that is disabled. In particular,
+    ///       if the front, intersected primitives are clipped by the view
+    ///       frustum, rendering is incorrect. An example is the pipe model
+    ///       in the example application.
+    ///     * The more compatible approach is also consistently slower.
 
     /// Each optimization can be independently set
     ///   - OptimizationDefault     to its default value

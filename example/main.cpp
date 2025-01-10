@@ -37,7 +37,7 @@ enum {
 
     ALGO_AUTOMATIC, GF_STANDARD, GF_DC, GF_OQ, SCS_STANDARD, SCS_DC, SCS_OQ,
 
-    CAM_OUTSIDE_PERF, CAM_OUTSIDE_NOPERF, CAM_INSIDE
+    CAM_OUTSIDE_PERF, CAM_OUTSIDE_DEFAULT, CAM_OUTSIDE_NOPERF, CAM_INSIDE, CAM_INSIDE_DEFAULT
 };
 
 std::vector<OpenCSG::Primitive*> primitives;
@@ -517,11 +517,17 @@ void menu(int value) {
     case CAM_OUTSIDE_PERF: inside = false;
                          OpenCSG::setOption(OpenCSG::CameraOutsideOptimization, OpenCSG::OptimizationOn);
                          break;
-    case CAM_OUTSIDE_NOPERF: inside = false;
+    case CAM_OUTSIDE_DEFAULT: inside = false;
                          OpenCSG::setOption(OpenCSG::CameraOutsideOptimization, OpenCSG::OptimizationDefault);
+                         break;
+    case CAM_OUTSIDE_NOPERF: inside = false;
+                         OpenCSG::setOption(OpenCSG::CameraOutsideOptimization, OpenCSG::OptimizationOff);
                          break;
     case CAM_INSIDE:     inside = true;
                          OpenCSG::setOption(OpenCSG::CameraOutsideOptimization, OpenCSG::OptimizationOff);
+                         break;
+    case CAM_INSIDE_DEFAULT: inside = true;
+                         OpenCSG::setOption(OpenCSG::CameraOutsideOptimization, OpenCSG::OptimizationDefault);
                          break;
 
     default: break;
@@ -587,8 +593,10 @@ int main(int argc, char **argv)
 
     int menuCamera = glutCreateMenu(menu);
     glutAddMenuEntry("Camera outside (with performance optimizations)", CAM_OUTSIDE_PERF);
+    glutAddMenuEntry("Camera outside (default performance optimizations)", CAM_OUTSIDE_DEFAULT);
     glutAddMenuEntry("Camera outside (without performance optimizations)", CAM_OUTSIDE_NOPERF);
-    glutAddMenuEntry("Camera inside", CAM_INSIDE);
+    glutAddMenuEntry("Camera inside (default performance optimizations)", CAM_INSIDE_DEFAULT);
+    glutAddMenuEntry("Camera inside (without performance optimizations)", CAM_INSIDE);
 
     glutCreateMenu(menu);
     glutAddSubMenu("CSG Shapes", menuShape);
