@@ -38,17 +38,17 @@ namespace OpenCSG {
         // copy of the modelview matrix during CSG computation
         extern GLfloat modelview[16];
         // copy of the viewport size during CSG computation
-        extern int canvasPos[4];
+        extern GLint canvasPos[4];
 
         // number of stencil bits in the offscreen buffer
-        extern int stencilBits;
+        extern GLint stencilBits;
         // the number where the stencil value would "wrap around" to zero
         extern unsigned int stencilMax;
         // stencilMax - 1
         extern unsigned int stencilMask;
 
         // copy of the scissor settings for CSG computation
-        extern int scissorPos[4];
+        extern GLint scissorPos[4];
 
         // enables scissoring into area (given in pixel coordinates)
         void scissor(const PCArea& area);
