@@ -502,9 +502,10 @@ Currently, I know of the following applications making use of OpenCSG:
 <tr>
 <td valign="top" style="text-align: center;"><a href="http://neuron-ai.tuke.sk/~wagner/projects-csg.php"><img src="img/koraxcsg.jpg" alt="Icon for KoraX CSG-Editor" /></a></td>
 <td>
-	<a href="http://neuron-ai.tuke.sk/~wagner/projects-csg.php">koraX's CSG Editor</a>. This editor for
-	MS Windows allows to compose textured CSG shapes from a set of predefined primitives. The application
-	contains a very good online help that depicts nicely what CSG is about, and that furthermore
+	<a href="http://neuron-ai.tuke.sk/~wagner/projects-csg.php">koraX's CSG Editor</a>
+	(<a href="http://web.archive.org/web/20040602215714/http://neuron-ai.tuke.sk/~wagner/projects-csg.php">web archive link</a>).
+	This editor for MS Windows allows to compose textured CSG shapes from a set of predefined primitives.
+	The application contains a very good online help that depicts nicely what CSG is about, and that furthermore
 	contains some tutorial how to create 1) a graphical widget and 2) a pipe.
 </td>
 </tr>
@@ -595,14 +596,10 @@ about OpenCSG and about image-based CSG rendering have been written:
   </li>
   <li>
     <p><b>My camera is inside of the CSG model, and rendering is not correct. What can I do?</b> </p>
-    <p>Since version 1.7.0, if the camera is inside of subtracted primitives, OpenCSG
-       should handle these cases correctly. You must ensure that the back sides of the subtracted
-       primitives are not clipped by the view frustum.</p>
-  </li>
-  <li>
-    <p><b>In OpenCSG 1.7.0, rendering performance has become a bit slower. Can I restore the old rendering performance?</b> </p>
-    <p>This is due to the changes to handle the case that the camera is inside the CSG model.
-       The old behavior can be restored by enabling the <code>CameraOutsideOptimization</code> setting.</p>
+    <p>Since version 1.7.0, if the camera is inside of subtracted primitives, the Goldfeather
+       algorithm in OpenCSG should handle these cases correctly. You must ensure that the back sides of the subtracted
+       primitives are not clipped by the view frustum. For more information, read the documentation
+       on the <code>CameraOutsideOptimization</code> setting.</p>
   </li>
   <li>
     <p><b>What are the dependencies of the example program?</b> </p>
@@ -650,7 +647,7 @@ and at <a href="https://github.com/Dav1dde/glad#License">the Glad github reposit
 <center><p>
 &copy; 2002-2025, Florian Kirsch, e-mail: <b>mail at opencsg dot org</b>, <br>
 2002-2005 Hasso-Plattner-Institute Potsdam.<br>
-Last change: 10-Jan-2025
+Last change: 11-Jan-2025
 </p></center>
 
 </body>
