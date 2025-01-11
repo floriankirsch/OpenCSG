@@ -28,9 +28,7 @@ namespace OpenCSG {
 
         // ctor / dtor
         FrameBufferObjectExt::FrameBufferObjectExt()
-          : width(-1),
-            height(-1),
-            textureTarget(GL_TEXTURE_2D),
+          : textureTarget(GL_TEXTURE_2D),
             textureID(0),
             depthID(0),
             framebufferID(0),
@@ -54,15 +52,14 @@ namespace OpenCSG {
             return haveFBO;
         }
 
-        bool FrameBufferObjectExt::Initialize(int width, int height)
+        bool FrameBufferObjectExt::Initialize(Dimensions dims)
         {
             bool haveFBO =    OPENCSG_HAS_EXT(EXT_framebuffer_object) != 0
                            && OPENCSG_HAS_EXT(EXT_packed_depth_stencil) != 0;
             if (!haveFBO)
                 return false;
 
-            this->width = width;
-            this->height = height;
+            dimensions = dims;
 
             glGenFramebuffersEXT(1, &framebufferID);
             glGenRenderbuffersEXT(1, &depthID); 
@@ -78,13 +75,13 @@ namespace OpenCSG {
                 target = GL_TEXTURE_RECTANGLE_ARB;
 
             glBindTexture(target, textureID);
-            glTexImage2D(target, 0, GL_RGBA8, width, height, 0, GL_RGBA, GL_INT, 0);
+            glTexImage2D(target, 0, GL_RGBA8, GetWidth(), GetHeight(), 0, GL_RGBA, GL_INT, 0);
             glTexParameteri(target, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
             glTexParameteri(target, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
             glFramebufferTexture2DEXT(GL_FRAMEBUFFER_EXT, GL_COLOR_ATTACHMENT0_EXT, target, textureID, 0);
 
             glBindRenderbufferEXT(GL_RENDERBUFFER_EXT, depthID);
-            glRenderbufferStorageEXT(GL_RENDERBUFFER_EXT, GL_DEPTH_STENCIL_EXT, width, height);
+            glRenderbufferStorageEXT(GL_RENDERBUFFER_EXT, GL_DEPTH_STENCIL_EXT, GetWidth(), GetHeight());
             glFramebufferRenderbufferEXT(GL_FRAMEBUFFER_EXT, GL_DEPTH_ATTACHMENT_EXT, GL_RENDERBUFFER_EXT, depthID);
             glFramebufferRenderbufferEXT(GL_FRAMEBUFFER_EXT, GL_STENCIL_ATTACHMENT_EXT, GL_RENDERBUFFER_EXT, depthID);
 
@@ -121,8 +118,7 @@ namespace OpenCSG {
                 framebufferID = 0;
             }
 
-            this->width = -1;
-            this->height = -1;
+            dimensions = Dimensions();
 
             initialized = false;
 
@@ -130,16 +126,14 @@ namespace OpenCSG {
         }
 
         // If new requested size differs, regenerate FBO texture objects
-        bool FrameBufferObjectExt::Resize(int width, int height)
+        bool FrameBufferObjectExt::Resize(Dimensions dims)
         {
-            if (   this->width == width
-                && this->height == height
-            ) {
+            if (dimensions == dims) {
                 return true;
             }
 
             Reset();
-            return Initialize(width, height);
+            return Initialize(dims);
         }
 
         // Binds the created frame buffer texture such we can render into it.

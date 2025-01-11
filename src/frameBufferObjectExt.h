@@ -43,7 +43,7 @@ namespace OpenCSG {
 
             /// Initializes the frame buffer object with the intended width and height.
             /// The frame buffer object is created with RGBA and combined depth/stencil buffer.
-            virtual bool Initialize(int width, int height);
+            virtual bool Initialize(Dimensions dims);
 
             /// checks whether Initialize has been called before or not
             virtual bool IsInitialized() const { return initialized; }
@@ -51,7 +51,7 @@ namespace OpenCSG {
             /// Removes the frame buffer object OpenGL resources.
             virtual bool Reset();
             /// Change the size of the frame buffer object.
-            virtual bool Resize(int width, int height);
+            virtual bool Resize(Dimensions dims);
 
             /// Begin drawing to the frame buffer object. (i.e. use as "output" texture)
             virtual bool BeginCapture();
@@ -69,13 +69,13 @@ namespace OpenCSG {
             /// Returns the texture target this texture is bound to.
             virtual unsigned int GetTextureTarget() const { return textureTarget; }
             /// Returns the width of the frame buffer object.
-            virtual int GetWidth() const  { return width;  } 
+            virtual int GetWidth() const  { return dimensions.width;  }
             /// Returns the width of the frame buffer object.
-            virtual int GetHeight() const { return height; }
+            virtual int GetHeight() const { return dimensions.height; }
 
         protected:
-            int          width;     // width of the frame buffer object
-            int          height;    // height of the frame buffer object
+            // Width and height of the frame buffer object
+            Dimensions   dimensions;
 
             /// Texture stuff
             GLenum       textureTarget;

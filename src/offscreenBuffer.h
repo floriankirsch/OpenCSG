@@ -29,6 +29,24 @@
 
 namespace OpenCSG {
 
+    struct Dimensions
+    {
+        Dimensions()
+            : width(-1), height(1)
+        {
+        }
+        Dimensions(int w, int h)
+            : width(w), height(h)
+        {
+        }
+        bool operator==(const Dimensions& other)
+        {
+            return (width == other.width) && (height == other.height);
+        }
+        int width;
+        int height;
+    };
+
     namespace OpenGL {
 
         class OffscreenBuffer {
@@ -44,7 +62,7 @@ namespace OpenCSG {
 
             /// Call this once before use, to initialize the offscreen buffer
             /// with the intended width and height.
-            virtual bool Initialize(int width, int height) = 0;
+            virtual bool Initialize(Dimensions dims) = 0;
 
             /// checks whether Initialize has been called before or not
             virtual bool IsInitialized() const = 0;
@@ -53,7 +71,7 @@ namespace OpenCSG {
             virtual bool Reset() = 0;
             /// Change the size of the render texture. After this, Initialize
             /// must be called again.
-            virtual bool Resize(int width, int height) = 0;
+            virtual bool Resize(Dimensions dims) = 0;
 
             /// Begin drawing to the texture. (i.e. use as "output" texture)
             virtual bool BeginCapture() = 0;
