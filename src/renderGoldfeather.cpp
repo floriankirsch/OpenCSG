@@ -182,7 +182,6 @@ namespace OpenCSG {
         void discardFragments(
                 const Batch& batch,
                 int parity, int mask,
-                const ScissorMemo* scissor,
                 bool layered) {
 
             if (layered) {
@@ -199,7 +198,6 @@ namespace OpenCSG {
         void parityTestAndDiscard(
                 const Batch& shapesOfInterest,
                 const std::vector<Primitive*>& primitives,
-                const ScissorMemo* scissor,
                 bool layered,
                 unsigned int stencilMax) {
 
@@ -256,7 +254,7 @@ namespace OpenCSG {
                 // used, we discard fragments marked invisible by the parity test,
                 // and clear the stencil buffer.
                 if (parityValue >= stencilMax) {
-                    discardFragments(shapesOfInterest, allParityTestValues, parityValue - 1, scissor, layered);
+                    discardFragments(shapesOfInterest, allParityTestValues, parityValue - 1, layered);
                     parityValue = 1;
                     allParityTestValues = 0;
                 }
@@ -286,7 +284,7 @@ namespace OpenCSG {
 
             // discard fragments marked invisible the last parity tests (and clear the stencil buffer)
             if (parityValue != 1) { // that would mean no parity test had occured at all
-                discardFragments(shapesOfInterest, allParityTestValues, parityValue - 1, scissor, layered);
+                discardFragments(shapesOfInterest, allParityTestValues, parityValue - 1, layered);
             }
 
             glDisable(GL_STENCIL_TEST);
@@ -349,7 +347,7 @@ namespace OpenCSG {
                 else if (depthFunc == GL_LEQUAL)
                     scissor->enableDepthBoundsBack();
 
-                parityTestAndDiscard(*itr, primitives, scissor, false, OpenGL::stencilMask);
+                parityTestAndDiscard(*itr, primitives, false, OpenGL::stencilMask);
 
                 scissor->disableDepthBounds();
                 scissor->disableScissor();
@@ -409,7 +407,7 @@ namespace OpenCSG {
             // the algorithm is faster if the query is delayed.
             glClear(GL_STENCIL_BUFFER_BIT);
 
-            parityTestAndDiscard(primitives, primitives, scissor, true, OpenGL::stencilMax);
+            parityTestAndDiscard(primitives, primitives, true, OpenGL::stencilMax);
 
             unsigned int anyFragmentRendered = occlusionTest->getQueryResult();
             if (!anyFragmentRendered) {
@@ -474,7 +472,7 @@ namespace OpenCSG {
 
             glClear(GL_STENCIL_BUFFER_BIT);
 
-            parityTestAndDiscard(primitives, primitives, scissor, true, OpenGL::stencilMax);
+            parityTestAndDiscard(primitives, primitives, true, OpenGL::stencilMax);
 
             channelMgr->store(channelMgr->current(), primitives, layer);
 
