@@ -10,4 +10,4 @@ Note that OpenCSG comes with code that is not copyrighted by me,
 in particular GLEW (http://glew.sourceforge.net)
 These libraries are licensed under the terms of their respective authors. 
 
-2023, Florian Kirsch
+2025, Florian Kirsch

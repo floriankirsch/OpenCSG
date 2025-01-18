@@ -1,3 +1,6 @@
+18.01.2025:
+    Release 1.7.0
+
 12.01.2025:
     Changed: For SCS, with respect to the changes for the camera inside
         of the CSG model, restore the original behavior by default.
