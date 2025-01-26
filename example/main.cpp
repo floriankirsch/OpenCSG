@@ -33,7 +33,9 @@
 // of exit() with Visual Studio 2010
 #include "includeGl.h"
 
-enum { 
+enum {
+    BENCH_START,
+
     CSG_BASIC, CSG_WIDGET, CSG_GRID2D, CSG_GRID3D, CSG_CUBERACK, CSG_PIPE, CSG_CONCAVE,
 
     ALGO_AUTOMATIC, GF_STANDARD, GF_DC, GF_OQ, SCS_STANDARD, SCS_DC, SCS_OQ,
@@ -52,6 +54,10 @@ float              rot = 0.0f;
 std::ostringstream fpsStream;
 
 std::vector<GLuint> displaylistGarbagePile;
+
+bool               benchmode = false;
+int                benchShape = BENCH_START;
+int                benchAlgorithm = GF_STANDARD;
 
 void clearPrimitives(std::vector<OpenCSG::Primitive*> & p)
 {
@@ -440,49 +446,10 @@ void display()
     }
     glDepthFunc(GL_LESS);
 
-    renderfps();
+    if (!benchmode)
+        renderfps();
 
     glutSwapBuffers();
-}
-
-void idle() {
-
-    static int ancient = 0;
-    static int last = 0;
-    static int msec = 0;
-    last = msec;
-    msec = glutGet(GLUT_ELAPSED_TIME);
-    if (spin) {
-        rot += (msec-last)/10.0f;
-        while (rot >= 360.0f)
-            rot -= 360.0f;
-    }
-
-    static int fps = 0;
-    if (last / 1000 != msec / 1000) {
-
-        float correctedFps = static_cast<float>(fps) * 1000.0f / static_cast<float>(msec - ancient);
-        fpsStream.str("");
-        fpsStream << "fps: " << correctedFps << std::ends;
-
-        ancient = msec;
-        fps = 0;
-    }
-
-    display();
-
-    ++fps;
-}
-
-void key(unsigned char k, int, int) {
-    switch (k) {
-    case ' ':
-        spin = !spin;
-        break;
-    default:
-        break;
-    }
-    display();
 }
 
 void menu(int value) {
@@ -496,42 +463,171 @@ void menu(int value) {
     case CSG_CONCAVE:    setConcave();       break;
 
     case ALGO_AUTOMATIC: OpenCSG::setOption(OpenCSG::AlgorithmSetting, OpenCSG::Automatic);
-                         break;
+        break;
     case GF_STANDARD:    OpenCSG::setOption(OpenCSG::AlgorithmSetting, OpenCSG::Goldfeather);
-                         OpenCSG::setOption(OpenCSG::DepthComplexitySetting, OpenCSG::NoDepthComplexitySampling);
-                         break;
+        OpenCSG::setOption(OpenCSG::DepthComplexitySetting, OpenCSG::NoDepthComplexitySampling);
+        break;
     case GF_DC:          OpenCSG::setOption(OpenCSG::AlgorithmSetting, OpenCSG::Goldfeather);
-                         OpenCSG::setOption(OpenCSG::DepthComplexitySetting, OpenCSG::DepthComplexitySampling);
-                         break;
+        OpenCSG::setOption(OpenCSG::DepthComplexitySetting, OpenCSG::DepthComplexitySampling);
+        break;
     case GF_OQ:          OpenCSG::setOption(OpenCSG::AlgorithmSetting, OpenCSG::Goldfeather);
-                         OpenCSG::setOption(OpenCSG::DepthComplexitySetting, OpenCSG::OcclusionQuery);
-                         break;
+        OpenCSG::setOption(OpenCSG::DepthComplexitySetting, OpenCSG::OcclusionQuery);
+        break;
     case SCS_STANDARD:   OpenCSG::setOption(OpenCSG::AlgorithmSetting, OpenCSG::SCS);
-                         OpenCSG::setOption(OpenCSG::DepthComplexitySetting, OpenCSG::NoDepthComplexitySampling);
-                         break;
+        OpenCSG::setOption(OpenCSG::DepthComplexitySetting, OpenCSG::NoDepthComplexitySampling);
+        break;
     case SCS_DC:         OpenCSG::setOption(OpenCSG::AlgorithmSetting, OpenCSG::SCS);
-                         OpenCSG::setOption(OpenCSG::DepthComplexitySetting, OpenCSG::DepthComplexitySampling);
-                         break;
+        OpenCSG::setOption(OpenCSG::DepthComplexitySetting, OpenCSG::DepthComplexitySampling);
+        break;
     case SCS_OQ:         OpenCSG::setOption(OpenCSG::AlgorithmSetting, OpenCSG::SCS);
-                         OpenCSG::setOption(OpenCSG::DepthComplexitySetting, OpenCSG::OcclusionQuery);
-                         break;
+        OpenCSG::setOption(OpenCSG::DepthComplexitySetting, OpenCSG::OcclusionQuery);
+        break;
     case CAM_OUTSIDE_PERF: inside = false;
-                         OpenCSG::setOption(OpenCSG::CameraOutsideOptimization, OpenCSG::OptimizationOn);
-                         break;
+        OpenCSG::setOption(OpenCSG::CameraOutsideOptimization, OpenCSG::OptimizationOn);
+        break;
     case CAM_OUTSIDE_DEFAULT: inside = false;
-                         OpenCSG::setOption(OpenCSG::CameraOutsideOptimization, OpenCSG::OptimizationDefault);
-                         break;
+        OpenCSG::setOption(OpenCSG::CameraOutsideOptimization, OpenCSG::OptimizationDefault);
+        break;
     case CAM_OUTSIDE_NOPERF: inside = false;
-                         OpenCSG::setOption(OpenCSG::CameraOutsideOptimization, OpenCSG::OptimizationOff);
-                         break;
+        OpenCSG::setOption(OpenCSG::CameraOutsideOptimization, OpenCSG::OptimizationOff);
+        break;
     case CAM_INSIDE:     inside = true;
-                         OpenCSG::setOption(OpenCSG::CameraOutsideOptimization, OpenCSG::OptimizationOff);
-                         break;
+        OpenCSG::setOption(OpenCSG::CameraOutsideOptimization, OpenCSG::OptimizationOff);
+        break;
     case CAM_INSIDE_DEFAULT: inside = true;
-                         OpenCSG::setOption(OpenCSG::CameraOutsideOptimization, OpenCSG::OptimizationDefault);
-                         break;
+        OpenCSG::setOption(OpenCSG::CameraOutsideOptimization, OpenCSG::OptimizationDefault);
+        break;
 
     default: break;
+    }
+    display();
+}
+
+void printNewBenchLine()
+{
+    const char* shapeName = "";
+    switch (benchShape)
+    {
+    case CSG_BASIC:
+        shapeName = "  Simple";
+        break;
+    case CSG_WIDGET:
+        shapeName = "  Widget";
+        break;
+    case CSG_GRID2D:
+        shapeName = " 2D-Grid";
+        break;
+    case CSG_GRID3D:
+        shapeName = " 3D-Grid";
+        break;
+    case CSG_CUBERACK:
+        shapeName = "Cuberack";
+        break;
+    case CSG_PIPE:
+        shapeName = "    Pipe";
+        break;
+    case CSG_CONCAVE:
+        shapeName = " Concave";
+        break;
+    }
+    fprintf(stdout, "\n%s:    ", shapeName);
+}
+
+void applyBenchSetting()
+{
+    menu(benchAlgorithm);
+    menu(benchShape);
+}
+
+void nextBenchSetting()
+{
+    if (benchShape == BENCH_START)
+    {
+        rot = 0.0f;
+        fprintf(stdout, "\n            Goldfeather     DC          OQ         SCS          DC          OQ");
+        benchShape = CSG_BASIC;
+        benchAlgorithm = GF_STANDARD;
+        printNewBenchLine();
+        return applyBenchSetting();
+    }
+
+    ++benchAlgorithm;
+    if (   (benchShape != CSG_CONCAVE && benchAlgorithm <= SCS_OQ)
+        || (benchShape == CSG_CONCAVE && benchAlgorithm <= GF_OQ))
+        return applyBenchSetting();
+
+    benchAlgorithm = GF_STANDARD;
+    ++benchShape;
+    if (benchShape <= CSG_CONCAVE)
+    {
+        printNewBenchLine();
+        return applyBenchSetting();
+    }
+
+    benchmode = false;
+}
+
+void idle() {
+
+    static int ancient = 0;
+    static int last = 0;
+    static int msec = 0;
+    static int numFramesRendered = 0;
+
+    last = msec;
+    msec = glutGet(GLUT_ELAPSED_TIME);
+    if (spin) {
+        rot += static_cast<float>(msec-last) / 10.0f;
+    }
+
+    if (rot >= 360.0f)
+    {
+        while (rot >= 360.0f)
+            rot -= 360.0f;
+
+        if (benchmode)
+        {
+            float correctedFps = static_cast<float>(numFramesRendered) * 1000.0f / static_cast<float>(msec - ancient);
+            fprintf(stdout, "% 8.2f    ", correctedFps);
+            nextBenchSetting();
+
+            rot = 0.0f;
+            ancient = msec;
+            numFramesRendered = 0;
+        }
+    }
+
+    if (!benchmode)
+    {
+        if (last / 1000 != msec / 1000) {
+
+            float correctedFps = static_cast<float>(numFramesRendered) * 1000.0f / static_cast<float>(msec - ancient);
+            fpsStream.str("");
+            fpsStream << "fps: " << correctedFps << std::ends;
+
+            ancient = msec;
+            numFramesRendered = 0;
+        }
+    }
+
+    display();
+
+    ++numFramesRendered;
+}
+
+void key(unsigned char k, int, int) {
+    switch (k) {
+    case ' ':
+        spin = !spin;
+        break;
+    case 'b':
+        benchmode = true;
+        benchShape = BENCH_START;
+        nextBenchSetting();
+        fpsStream.str("");
+        break;
+    default:
+        break;
     }
     display();
 }
