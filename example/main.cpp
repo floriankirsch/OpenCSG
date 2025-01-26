@@ -40,7 +40,7 @@ enum {
 
     ALGO_AUTOMATIC, GF_STANDARD, GF_DC, GF_OQ, SCS_STANDARD, SCS_DC, SCS_OQ,
 
-    CAM_OUTSIDE_PERF, CAM_OUTSIDE_DEFAULT, CAM_OUTSIDE_NOPERF, CAM_INSIDE, CAM_INSIDE_DEFAULT
+    CAM_OUTSIDE_DEFAULT, CAM_OUTSIDE_PERF, CAM_OUTSIDE_NOPERF, CAM_INSIDE, CAM_INSIDE_DEFAULT
 };
 
 std::vector<OpenCSG::Primitive*> primitives;
@@ -58,6 +58,7 @@ std::vector<GLuint> displaylistGarbagePile;
 bool               benchmode = false;
 int                benchShape = BENCH_START;
 int                benchAlgorithm = GF_STANDARD;
+int                benchPerfOption = CAM_OUTSIDE_DEFAULT;
 
 void clearPrimitives(std::vector<OpenCSG::Primitive*> & p)
 {
@@ -482,11 +483,11 @@ void menu(int value) {
     case SCS_OQ:         OpenCSG::setOption(OpenCSG::AlgorithmSetting, OpenCSG::SCS);
         OpenCSG::setOption(OpenCSG::DepthComplexitySetting, OpenCSG::OcclusionQuery);
         break;
-    case CAM_OUTSIDE_PERF: inside = false;
-        OpenCSG::setOption(OpenCSG::CameraOutsideOptimization, OpenCSG::OptimizationOn);
-        break;
     case CAM_OUTSIDE_DEFAULT: inside = false;
         OpenCSG::setOption(OpenCSG::CameraOutsideOptimization, OpenCSG::OptimizationDefault);
+        break;
+    case CAM_OUTSIDE_PERF: inside = false;
+        OpenCSG::setOption(OpenCSG::CameraOutsideOptimization, OpenCSG::OptimizationOn);
         break;
     case CAM_OUTSIDE_NOPERF: inside = false;
         OpenCSG::setOption(OpenCSG::CameraOutsideOptimization, OpenCSG::OptimizationOff);
@@ -501,6 +502,25 @@ void menu(int value) {
     default: break;
     }
     display();
+}
+
+void printNewBenchTableHeadline()
+{
+    const char* optionName = "";
+    switch (benchPerfOption)
+    {
+    case CAM_OUTSIDE_DEFAULT:
+        optionName = "Default performance";
+        break;
+    case CAM_OUTSIDE_PERF:
+        optionName = "Fast performance (at the expense of compatibility)";
+        break;
+    case CAM_OUTSIDE_NOPERF:
+        optionName = "Slower performance (but more compatible)";
+        break;
+    }
+    fprintf(stdout, "\n%s", optionName);
+    fprintf(stdout, "\n            Goldfeather     DC          OQ         SCS          DC          OQ");
 }
 
 void printNewBenchLine()
@@ -537,16 +557,18 @@ void applyBenchSetting()
 {
     menu(benchAlgorithm);
     menu(benchShape);
+    menu(benchPerfOption);
 }
 
 void nextBenchSetting()
 {
     if (benchShape == BENCH_START)
     {
+        printNewBenchTableHeadline();
         rot = 0.0f;
-        fprintf(stdout, "\n            Goldfeather     DC          OQ         SCS          DC          OQ");
         benchShape = CSG_BASIC;
         benchAlgorithm = GF_STANDARD;
+        benchPerfOption = CAM_OUTSIDE_DEFAULT;
         printNewBenchLine();
         return applyBenchSetting();
     }
@@ -560,6 +582,16 @@ void nextBenchSetting()
     ++benchShape;
     if (benchShape <= CSG_CONCAVE)
     {
+        printNewBenchLine();
+        return applyBenchSetting();
+    }
+    fprintf(stdout, "\n");
+
+    benchShape = CSG_BASIC;
+    ++benchPerfOption;
+    if (benchPerfOption <= CAM_OUTSIDE_NOPERF)
+    {
+        printNewBenchTableHeadline();
         printNewBenchLine();
         return applyBenchSetting();
     }
@@ -689,8 +721,8 @@ int main(int argc, char **argv)
     glutAddMenuEntry("SCS occlusion query", SCS_OQ);
 
     int menuCamera = glutCreateMenu(menu);
-    glutAddMenuEntry("Camera outside (with performance optimizations)", CAM_OUTSIDE_PERF);
     glutAddMenuEntry("Camera outside (default performance optimizations)", CAM_OUTSIDE_DEFAULT);
+    glutAddMenuEntry("Camera outside (with performance optimizations)", CAM_OUTSIDE_PERF);
     glutAddMenuEntry("Camera outside (without performance optimizations)", CAM_OUTSIDE_NOPERF);
     glutAddMenuEntry("Camera inside (default performance optimizations)", CAM_INSIDE_DEFAULT);
     glutAddMenuEntry("Camera inside (without performance optimizations)", CAM_INSIDE);
