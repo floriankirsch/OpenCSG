@@ -32,6 +32,7 @@
 #include "openglHelper.h"
 #include "primitiveHelper.h"
 #include "scissorMemo.h"
+#include "sequencer.h"
 
 #include <algorithm>
 #include <map>
@@ -369,11 +370,10 @@ namespace OpenCSG {
             glDisable(GL_STENCIL_TEST);
         }
 
-        void subtractPrimitives(std::vector<Batch>::const_iterator begin,
-                                std::vector<Batch>::const_iterator end,
-                                const unsigned int iterations) {
+        void subtractPrimitives(const std::vector<Batch>& batches,
+                                const unsigned int depthComplexity = -1) {
 
-            if (begin == end) {
+            if (batches.empty()) {
                 return;
             }
 
@@ -384,11 +384,27 @@ namespace OpenCSG {
             glEnable(GL_STENCIL_TEST);
             glEnable(GL_CULL_FACE);
 
+            size_t numberOfBatches = batches.size();
+            BouncingSequencer bounce(numberOfBatches);
+            SchoenfieldSequencer schoenfield(numberOfBatches);
+            Sequencer * sequencer = 0;
+            size_t numIterations;
+            if (depthComplexity == -1)
+            {
+                sequencer = &schoenfield;
+                numIterations = sequencer->size();
+            }
+            else
+            {
+                sequencer = &bounce;
+                numIterations = sequencer->sizeForDepthComplexity(depthComplexity);
+            }
+
             unsigned int stencilref = 0;
-            int sense = 1;
-            unsigned int changes = 0;
-            std::vector<Batch>::const_iterator i = begin;
-            do {
+            for (size_t i = 0; i < numIterations; ++i)
+            {
+                const Batch& batch = batches[sequencer->index(i)];
+
                 // create a distinct reference value
                 ++stencilref;
                 if (stencilref == OpenGL::stencilMax) {
@@ -407,7 +423,7 @@ namespace OpenCSG {
                     glDepthFunc(GL_GREATER);
                     glCullFace(GL_FRONT);
 
-                    for (Batch::const_iterator j = i->begin(); j != i->end(); ++j) {
+                    for (Batch::const_iterator j = batch.begin(); j != batch.end(); ++j) {
                         (*j)->render();
                     }
 
@@ -419,7 +435,7 @@ namespace OpenCSG {
                 glCullFace(GL_BACK);
 
                 {
-                    for (Batch::const_iterator j = i->begin(); j != i->end(); ++j) {
+                    for (Batch::const_iterator j = batch.begin(); j != batch.end(); ++j) {
                         (*j)->render();
                     }
                 }
@@ -433,41 +449,21 @@ namespace OpenCSG {
                 glStencilOp(GL_ZERO, GL_ZERO, GL_ZERO);
 
                 {
-                    for (Batch::const_iterator j = i->begin(); j != i->end(); ++j) {
+                    for (Batch::const_iterator j = batch.begin(); j != batch.end(); ++j) {
                         RenderData * primitiveData = getRenderData(*j);
                         GLubyte * id = primitiveData->bufferId.vec();
                         glColor4ubv(id);
                         (*j)->render();
                     }
                 }
-
-                if (sense == 1) {
-                    ++i;
-                    if (i == end) {
-                        sense = 0;
-                        --i; if (i == begin) break; // only one subtracted shape
-                        --i;
-                        ++changes;
-                    }
-                } else {
-                    if (i == begin) {
-                        sense = 1;
-                        ++i;
-                        ++changes;
-                    } else {
-                        --i;
-                    }
-                }
-            } while (changes < iterations);
+            };
 
             glDisable(GL_STENCIL_TEST);
         }
 
-        bool subtractPrimitivesWithOcclusionQueries(std::vector<Batch>::const_iterator begin,
-                                                    std::vector<Batch>::const_iterator end) {
+        bool subtractPrimitivesWithOcclusionQueries(const std::vector<Batch>& batches) {
 
-            const std::size_t numberOfBatches = end - begin;
-            if (numberOfBatches == 0) {
+            if (batches.empty()) {
                 return true;
             }
 
@@ -475,6 +471,8 @@ namespace OpenCSG {
             if (!occlusionTest) {
                 return false;
             }
+
+            const std::size_t numberOfBatches = batches.size();
 
             int setting = getOption(CameraOutsideOptimization);
             bool cameraInsideModel = (setting == OptimizationOff);
@@ -484,14 +482,18 @@ namespace OpenCSG {
             glEnable(GL_CULL_FACE);
 
             std::vector<unsigned int> fragmentcount(numberOfBatches, 0);
+            unsigned int shapesWithoutUpdate = 0;
+
+            SimpleSequencer sequencer(numberOfBatches);
+            size_t numIterations = sequencer.size();
 
             unsigned int stencilref = 0;
-            std::vector<Batch>::const_iterator i = begin;
-            unsigned int shapesWithoutUpdate = 0;
-            unsigned int shapeCount = 0;
-            int idx = 0;
 
-            do {
+            for (size_t i = 0; i < numIterations; ++i)
+            {
+                size_t idx = sequencer.index(i);
+                const Batch& batch = batches[idx];
+
                 // create a distinct reference value
                 ++stencilref;
                 if (stencilref == OpenGL::stencilMax) {
@@ -512,7 +514,7 @@ namespace OpenCSG {
                     glCullFace(GL_FRONT);
 
                     {
-                        for (Batch::const_iterator j = i->begin(); j != i->end(); ++j) {
+                        for (Batch::const_iterator j = batch.begin(); j != batch.end(); ++j) {
                             (*j)->render();
                         }
                     }
@@ -525,7 +527,7 @@ namespace OpenCSG {
                 glCullFace(GL_BACK);
 
                 {
-                    for (Batch::const_iterator j = i->begin(); j != i->end(); ++j) {
+                    for (Batch::const_iterator j = batch.begin(); j != batch.end(); ++j) {
                         (*j)->render();
                     }
                 }
@@ -541,7 +543,7 @@ namespace OpenCSG {
                 glStencilOp(GL_ZERO, GL_ZERO, GL_ZERO);
 
                 {
-                    for (Batch::const_iterator j = i->begin(); j != i->end(); ++j) {
+                    for (Batch::const_iterator j = batch.begin(); j != batch.end(); ++j) {
                         RenderData * primitiveData = getRenderData(*j);
                         GLubyte * id = primitiveData->bufferId.vec();
                         glColor4ubv(id);
@@ -555,17 +557,10 @@ namespace OpenCSG {
                     shapesWithoutUpdate = 0;
                 } else {
                     ++shapesWithoutUpdate;
+                    if (shapesWithoutUpdate >= numberOfBatches)
+                        break;
                 }
-
-                ++i; ++idx; if (i == end) {
-                    i = begin;
-                    idx = 0;
-                }
-
-                ++shapeCount;
-                if (shapeCount >= (numberOfBatches) * (numberOfBatches) - (numberOfBatches) + 1) break;
-
-            } while (shapesWithoutUpdate < numberOfBatches);
+            }
 
             delete occlusionTest;
 
@@ -658,15 +653,15 @@ namespace OpenCSG {
         scissor->enableDepthBounds();
         switch (algorithm) {
         case OcclusionQuery:
-            if (subtractPrimitivesWithOcclusionQueries(subtractedBatches.begin(), subtractedBatches.end()))
+            if (subtractPrimitivesWithOcclusionQueries(subtractedBatches.batches()))
                 break; // success
             // Maybe we just should give up here?
             // fall through
         case NoDepthComplexitySampling:
-            subtractPrimitives(subtractedBatches.begin(), subtractedBatches.end(), static_cast<unsigned int>(subtractedBatches.size()));
+            subtractPrimitives(subtractedBatches.batches());
             break;
         case DepthComplexitySampling:
-            subtractPrimitives(subtractedBatches.begin(), subtractedBatches.end(), depthComplexity);
+            subtractPrimitives(subtractedBatches.batches(), depthComplexity);
             break;
         }
         scissor->disableDepthBounds();
