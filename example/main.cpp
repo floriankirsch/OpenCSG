@@ -56,6 +56,7 @@ std::ostringstream fpsStream;
 std::vector<GLuint> displaylistGarbagePile;
 
 bool               benchmode = false;
+bool               benchSettingFrameOne = false;
 int                benchShape = BENCH_START;
 int                benchAlgorithm = GF_STANDARD;
 int                benchPerfOption = CAM_OUTSIDE_DEFAULT;
@@ -558,6 +559,7 @@ void applyBenchSetting()
     menu(benchAlgorithm);
     menu(benchShape);
     menu(benchPerfOption);
+    benchSettingFrameOne = true;
 }
 
 void nextBenchSetting()
@@ -610,6 +612,15 @@ void idle() {
     msec = glutGet(GLUT_ELAPSED_TIME);
     if (spin) {
         rot += static_cast<float>(msec-last) / 10.0f;
+    }
+
+    if (benchSettingFrameOne)
+    {
+        rot = 0;
+        benchSettingFrameOne = false;
+        last = msec;
+        ancient = msec;
+        numFramesRendered = 0;
     }
 
     if (rot >= 360.0f)
