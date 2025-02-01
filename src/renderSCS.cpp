@@ -371,7 +371,7 @@ namespace OpenCSG {
         }
 
         void subtractPrimitives(const std::vector<Batch>& batches,
-                                const unsigned int depthComplexity = -1) {
+                                const unsigned int depthComplexity = 0) {
 
             if (batches.empty()) {
                 return;
@@ -389,7 +389,7 @@ namespace OpenCSG {
             SchoenfieldSequencer schoenfield(numberOfBatches);
             Sequencer * sequencer = 0;
             size_t numIterations;
-            if (depthComplexity == -1)
+            if (depthComplexity == 0)
             {
                 sequencer = &schoenfield;
                 numIterations = sequencer->size();
