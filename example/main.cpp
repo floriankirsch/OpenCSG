@@ -573,20 +573,25 @@ void nextBenchSetting()
         benchAlgorithm = GF_STANDARD;
         benchPerfOption = CAM_OUTSIDE_DEFAULT;
         printNewBenchLine();
-        return applyBenchSetting();
+        applyBenchSetting();
+        return;
     }
 
     ++benchAlgorithm;
     if (   (benchShape != CSG_CONCAVE && benchAlgorithm <= SCS_OQ)
         || (benchShape == CSG_CONCAVE && benchAlgorithm <= GF_OQ))
-        return applyBenchSetting();
+    {
+        applyBenchSetting();
+        return;
+    }
 
     benchAlgorithm = GF_STANDARD;
     ++benchShape;
     if (benchShape <= CSG_CONCAVE)
     {
         printNewBenchLine();
-        return applyBenchSetting();
+        applyBenchSetting();
+        return;
     }
     fprintf(stdout, "\n");
 
@@ -596,7 +601,8 @@ void nextBenchSetting()
     {
         printNewBenchTableHeadline();
         printNewBenchLine();
-        return applyBenchSetting();
+        applyBenchSetting();
+        return;
     }
 
     benchmode = false;
