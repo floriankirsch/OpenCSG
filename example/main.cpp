@@ -522,7 +522,7 @@ void printNewBenchTableHeadline()
         break;
     }
     fprintf(stdout, "\n%s", optionName);
-    fprintf(stdout, "\n            Goldfeather     DC          OQ         SCS          DC          OQ");
+    fprintf(stdout, "\n           Goldfeather    DC         OQ        SCS         DC         OQ");
 }
 
 void printNewBenchLine()
@@ -552,7 +552,7 @@ void printNewBenchLine()
         shapeName = " Concave";
         break;
     }
-    fprintf(stdout, "\n%s:    ", shapeName);
+    fprintf(stdout, "\n%s:", shapeName);
 }
 
 void applyBenchSetting()
@@ -567,11 +567,11 @@ void nextBenchSetting()
 {
     if (benchShape == BENCH_START)
     {
-        printNewBenchTableHeadline();
         rot = 0.0f;
         benchShape = CSG_BASIC;
         benchAlgorithm = GF_STANDARD;
         benchPerfOption = CAM_OUTSIDE_DEFAULT;
+        printNewBenchTableHeadline();
         printNewBenchLine();
         applyBenchSetting();
         return;
@@ -638,7 +638,7 @@ void idle() {
         if (benchmode)
         {
             float correctedFps = static_cast<float>(numFramesRendered) * 1000.0f / static_cast<float>(msec - ancient);
-            fprintf(stdout, "% 8.2f    ", correctedFps);
+            fprintf(stdout, "% 11.2f", correctedFps);
             nextBenchSetting();
 
             rot = 0.0f;
