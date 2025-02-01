@@ -437,14 +437,15 @@ void display()
     OpenCSG::render(primitives2);
     OpenCSG::render(primitives3);
     glDepthFunc(GL_EQUAL);
-    for (std::vector<OpenCSG::Primitive*>::const_iterator i = primitives.begin(); i != primitives.end(); ++i) {
-        (*i)->render();
+    std::vector<OpenCSG::Primitive*>::const_iterator itr;
+    for (itr = primitives.begin(); itr != primitives.end(); ++itr) {
+        (*itr)->render();
     }
-    for (std::vector<OpenCSG::Primitive*>::const_iterator i = primitives2.begin(); i != primitives2.end(); ++i) {
-        (*i)->render();
+    for (itr = primitives2.begin(); itr != primitives2.end(); ++itr) {
+        (*itr)->render();
     }
-    for (std::vector<OpenCSG::Primitive*>::const_iterator i = primitives3.begin(); i != primitives3.end(); ++i) {
-        (*i)->render();
+    for (itr = primitives3.begin(); itr != primitives3.end(); ++itr) {
+        (*itr)->render();
     }
     glDepthFunc(GL_LESS);
 
