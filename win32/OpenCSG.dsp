@@ -211,6 +211,14 @@ SOURCE=..\src\scissorMemo.h
 # End Source File
 # Begin Source File
 
+SOURCE=..\src\sequencer.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=..\src\sequencer.h
+# End Source File
+# Begin Source File
+
 SOURCE=..\src\settings.cpp
 # End Source File
 # Begin Source File

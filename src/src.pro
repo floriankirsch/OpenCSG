@@ -34,6 +34,7 @@ HEADERS		= ../include/opencsg.h \
 		  openglHelper.h \
 		  primitiveHelper.h \
 		  scissorMemo.h \
+		  sequencer.h \
 		  settings.h
 SOURCES		= glad/src/gl.cpp \
 		  area.cpp \
@@ -50,4 +51,5 @@ SOURCES		= glad/src/gl.cpp \
 		  renderGoldfeather.cpp \
 		  renderSCS.cpp \
 		  scissorMemo.cpp \
+		  sequencer.cpp \
 		  settings.cpp
