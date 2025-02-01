@@ -373,10 +373,6 @@ namespace OpenCSG {
         void subtractPrimitives(const std::vector<Batch>& batches,
                                 const unsigned int depthComplexity = 0) {
 
-            if (batches.empty()) {
-                return;
-            }
-
             int setting = getOption(CameraOutsideOptimization);
             bool cameraInsideModel = (setting == OptimizationOff);
 
@@ -462,10 +458,6 @@ namespace OpenCSG {
         }
 
         bool subtractPrimitivesWithOcclusionQueries(const std::vector<Batch>& batches) {
-
-            if (batches.empty()) {
-                return true;
-            }
 
             OpenGL::OcclusionQuery* occlusionTest = OpenGL::getOcclusionQuery(true);
             if (!occlusionTest) {
@@ -650,21 +642,24 @@ namespace OpenCSG {
         glClearDepth(1.0);
 
         renderIntersectedFront(intersected);
-        scissor->enableDepthBounds();
-        switch (algorithm) {
-        case OcclusionQuery:
-            if (subtractPrimitivesWithOcclusionQueries(subtractedBatches.batches()))
-                break; // success
-            // Maybe we just should give up here?
-            // fall through
-        case NoDepthComplexitySampling:
-            subtractPrimitives(subtractedBatches.batches());
-            break;
-        case DepthComplexitySampling:
-            subtractPrimitives(subtractedBatches.batches(), depthComplexity);
-            break;
+        if (!subtractedBatches.batches().empty())
+        {
+            scissor->enableDepthBounds();
+            switch (algorithm) {
+            case OcclusionQuery:
+                if (subtractPrimitivesWithOcclusionQueries(subtractedBatches.batches()))
+                    break; // success
+                // Maybe we just should give up here?
+                // fall through
+            case NoDepthComplexitySampling:
+                subtractPrimitives(subtractedBatches.batches());
+                break;
+            case DepthComplexitySampling:
+                subtractPrimitives(subtractedBatches.batches(), depthComplexity);
+                break;
+            }
+            scissor->disableDepthBounds();
         }
-        scissor->disableDepthBounds();
         renderIntersectedBack(intersected);
 
         scissor->disableScissor();
