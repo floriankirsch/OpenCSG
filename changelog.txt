@@ -1,3 +1,7 @@
+02.02.2025:
+    Changed: Added CMake files to replace the old qmake files in the
+        middle term.
+
 18.01.2025:
     Release 1.7.0
 
