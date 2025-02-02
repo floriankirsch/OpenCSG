@@ -17,7 +17,7 @@ opencsgexample.exe has been built. Be sure to pick the correct
 Microsoft Visual Studio 6
 -------------------------
 
-The Visual Studio 6 solution OpenCSG.sln assumes that the original
+The Visual Studio 6 solution OpenCSG.dsw assumes that the original
 GLUT for Windows is setup as described in
 https://user.xmission.com/~nate/glut.html
 
@@ -28,11 +28,23 @@ Linux
 -----
 
 1) As prerequisites, you must install OpenGL development packages,
-   and, for the example application, glut.
-2) Just type 'make'. Maybe you must adjust the Makefiles in
-   the src/ and the example/ directory for sucessful compilation.
-3) The OpenCSG library will have been build in lib/, and the example
-   "opencsgexample" will reside in the src/ directory. To run the
+   and, for the example application, glut. To create the makefiles,
+   additionally you need CMake.
+2) Just type:
+
+   cmake CMakeLists.txt
+
+   This will generate the makefiles in the src and example directory.
+   To create makefiles with optimizations enabled, maybe type instead
+ 
+   cmake -DCMAKE_BUILD_TYPE=Release CMakeLists.txt
+
+   Then type:
+
+   make
+
+3) The OpenCSG library will have been build in src/, and the example
+   "opencsgexample" will reside in the example/ directory. To run the
    opencsg example, you must ensure that libopencsg.so lib is in your
    LD_LIBRARY_PATH (e.G., one way to do this is to copy it to /usr/local/lib
    and running "ldconfig -v"). 'make install' is an automatic way to
