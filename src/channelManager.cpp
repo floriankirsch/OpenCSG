@@ -351,18 +351,18 @@ namespace OpenCSG {
     }
 
 
-    void ChannelManager::setupProjectiveTexture(bool fixedFunction)
+    void ChannelManager::setupProjectiveTexture(ProjTextureSetup setup)
     {
-        static const float splane[4] = { 1.0f, 0.0f, 0.0f, 0.0f };
-        static const float tplane[4] = { 0.0f, 1.0f, 0.0f, 0.0f };
-        static const float rplane[4] = { 0.0f, 0.0f, 1.0f, 0.0f };
-        static const float qplane[4] = { 0.0f, 0.0f, 0.0f, 1.0f };
-
         mOffscreenBuffer->Bind();
         mOffscreenBuffer->EnableTextureTarget();
 
-        if (fixedFunction)
+        if (setup == FixedFunction)
         {
+            static const float splane[4] = { 1.0f, 0.0f, 0.0f, 0.0f };
+            static const float tplane[4] = { 0.0f, 1.0f, 0.0f, 0.0f };
+            static const float rplane[4] = { 0.0f, 0.0f, 1.0f, 0.0f };
+            static const float qplane[4] = { 0.0f, 0.0f, 0.0f, 1.0f };
+
             glTexGeni(GL_S, GL_TEXTURE_GEN_MODE, GL_EYE_LINEAR);
             glTexGeni(GL_T, GL_TEXTURE_GEN_MODE, GL_EYE_LINEAR);
             glTexGeni(GL_R, GL_TEXTURE_GEN_MODE, GL_EYE_LINEAR);
@@ -377,48 +377,51 @@ namespace OpenCSG {
             glEnable(GL_TEXTURE_GEN_Q);
         }
 
-        glMatrixMode(GL_TEXTURE);
-
-        const int dx = OpenGL::canvasPos[2] - OpenGL::canvasPos[0];
-        const int dy = OpenGL::canvasPos[3] - OpenGL::canvasPos[1];
-
-        // with NV_texture_rectangle texture coordinates range between
-        // 0 and dx resp. dy
-        float factorX = static_cast<float>(dx);
-        float factorY = static_cast<float>(dy);
-
-        // Do not check for the non-power-of-two extension, but simply for
-        // the texture format. This seems safer, since it should work always.
-        if (!isRectangularTexture()) {
-            // with ordinary pow-of-two texture coordinates are between 0 and 1
-            // but we must assure only the used part of the texture is taken.
-            factorX /= static_cast<float>(mOffscreenBuffer->GetWidth());
-            factorY /= static_cast<float>(mOffscreenBuffer->GetHeight());
-        }
-
-        float   texCorrect[16] = { factorX, 0.0f, 0.0f, 0.0f,
-                                   0.0f, factorY, 0.0f, 0.0f,
-                                   0.0f,    0.0f, 1.0f, 0.0f,
-                                   0.0f,    0.0f, 0.0f, 1.0f };
-
-        static const float p2ndc[16] = { 0.5f, 0.0f, 0.0f, 0.0f,
-                                         0.0f, 0.5f, 0.0f, 0.0f,
-                                         0.0f, 0.0f, 0.5f, 0.0f,
-                                         0.5f, 0.5f, 0.5f, 1.0f };
-        glPushMatrix();
-        glLoadMatrixf(texCorrect);
-        glMultMatrixf(p2ndc);
-        if (fixedFunction)
+        if (setup == FixedFunction || setup == ARBShader)
         {
-            glMultMatrixf(OpenGL::projection);
-            glMultMatrixf(OpenGL::modelview);
+            glMatrixMode(GL_TEXTURE);
+
+            const int dx = OpenGL::canvasPos[2] - OpenGL::canvasPos[0];
+            const int dy = OpenGL::canvasPos[3] - OpenGL::canvasPos[1];
+
+            // with NV_texture_rectangle texture coordinates range between
+            // 0 and dx resp. dy
+            float factorX = static_cast<float>(dx);
+            float factorY = static_cast<float>(dy);
+
+            // Do not check for the non-power-of-two extension, but simply for
+            // the texture format. This seems safer, since it should work always.
+            if (!isRectangularTexture()) {
+                // with ordinary pow-of-two texture coordinates are between 0 and 1
+                // but we must assure only the used part of the texture is taken.
+                factorX /= static_cast<float>(mOffscreenBuffer->GetWidth());
+                factorY /= static_cast<float>(mOffscreenBuffer->GetHeight());
+            }
+
+            float   texCorrect[16] = { factorX, 0.0f, 0.0f, 0.0f,
+                                       0.0f, factorY, 0.0f, 0.0f,
+                                       0.0f,    0.0f, 1.0f, 0.0f,
+                                       0.0f,    0.0f, 0.0f, 1.0f };
+
+            static const float p2ndc[16] = { 0.5f, 0.0f, 0.0f, 0.0f,
+                                             0.0f, 0.5f, 0.0f, 0.0f,
+                                             0.0f, 0.0f, 0.5f, 0.0f,
+                                             0.5f, 0.5f, 0.5f, 1.0f };
+            glPushMatrix();
+            glLoadMatrixf(texCorrect);
+            glMultMatrixf(p2ndc);
+            if (setup == FixedFunction)
+            {
+                glMultMatrixf(OpenGL::projection);
+                glMultMatrixf(OpenGL::modelview);
+            }
+            glMatrixMode(GL_MODELVIEW);
         }
-        glMatrixMode(GL_MODELVIEW);
     }
 
-    void ChannelManager::resetProjectiveTexture(bool fixedFunction)
+    void ChannelManager::resetProjectiveTexture(ProjTextureSetup setup)
     {
-        if (fixedFunction)
+        if (setup == FixedFunction)
         {
             glDisable(GL_TEXTURE_GEN_S);
             glDisable(GL_TEXTURE_GEN_T);
@@ -426,9 +429,12 @@ namespace OpenCSG {
             glDisable(GL_TEXTURE_GEN_Q);
         }
 
-        glMatrixMode(GL_TEXTURE);
-        glPopMatrix();
-        glMatrixMode(GL_MODELVIEW);
+        if (setup == FixedFunction || setup == ARBShader)
+        {
+            glMatrixMode(GL_TEXTURE);
+            glPopMatrix();
+            glMatrixMode(GL_MODELVIEW);
+        }
 
         mOffscreenBuffer->DisableTextureTarget();
     }

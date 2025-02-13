@@ -71,8 +71,8 @@ namespace OpenCSG {
 
         void SCSChannelManagerAlphaOnly::merge() {
 
-            bool isFixedFunction = true;
-            setupProjectiveTexture(isFixedFunction);
+            ProjTextureSetup setup = FixedFunction;
+            setupProjectiveTexture(setup);
 
             glEnable(GL_ALPHA_TEST);
             glEnable(GL_CULL_FACE);
@@ -130,20 +130,21 @@ namespace OpenCSG {
             glDisable(GL_CULL_FACE);
             glDepthFunc(GL_LEQUAL);
 
-            resetProjectiveTexture(isFixedFunction);
+            resetProjectiveTexture(setup);
 
             clear();
         }
 
         // Stores Ids in the all components of the color buffer
         // -> in theory, 2^32-1 primitives are possible
-        class SCSChannelManagerFragmentProgram : public ChannelManagerForBatches {
+        // ARB variant
+        class SCSChannelManagerARBProgram : public ChannelManagerForBatches {
         public:
             virtual Channel request();
             virtual void merge();
         };
 
-        Channel SCSChannelManagerFragmentProgram::request() {
+        Channel SCSChannelManagerARBProgram::request() {
             ChannelManagerForBatches::request();
             mCurrentChannel = AllChannels;
             mOccupiedChannels = mCurrentChannel;
@@ -151,7 +152,7 @@ namespace OpenCSG {
         }
 
         // Emulates eye texgen
-        static const char mergeVertexProgram[] =
+        static const char mergeARBVertexProgram[] =
 "!!ARBvp1.0 OPTION ARB_position_invariant;\n"
 "ATTRIB  pos = vertex.position;\n"
 "ATTRIB  col = vertex.color;\n"
@@ -186,7 +187,7 @@ namespace OpenCSG {
         // in contract to the GL_EQUAL in SCSChannelManagerAlphaOnly above.
         // The scaling by 2.0f is required for NVidia hardware, which considers
         // the alpha function GL_LESS, 0.5f/255.0f as GL_LESS, 0.0f for some reason.
-        static const char mergeFragmentProgramRect[] =
+        static const char mergeARBFragmentProgramRect[] =
 "!!ARBfp1.0\n"
 "TEMP    temp;\n"
 "ATTRIB  tex0 = fragment.texcoord[0];\n"
@@ -199,7 +200,7 @@ namespace OpenCSG {
 "DP4     out, temp, scaleByTwo;\n"
 "END";
 
-        static const char mergeFragmentProgram2D[] =
+        static const char mergeARBFragmentProgram2D[] =
 "!!ARBfp1.0\n"
 "TEMP    temp;\n"
 "ATTRIB  tex0 = fragment.texcoord[0];\n"
@@ -212,21 +213,21 @@ namespace OpenCSG {
 "DP4     out, temp, scaleByTwo;\n"
 "END";
 
-        void SCSChannelManagerFragmentProgram::merge()
+        void SCSChannelManagerARBProgram::merge()
         {
-            GLuint vId = OpenGL::getARBVertexProgram(mergeVertexProgram, (sizeof(mergeVertexProgram) / sizeof(mergeVertexProgram[0])) - 1);
+            GLuint vId = OpenGL::getARBVertexProgram(mergeARBVertexProgram, (sizeof(mergeARBVertexProgram) / sizeof(mergeARBVertexProgram[0])) - 1);
             glBindProgramARB(GL_VERTEX_PROGRAM_ARB, vId);
             glEnable(GL_VERTEX_PROGRAM_ARB);
 
             GLuint fId =
-                 isRectangularTexture()
-                   ? OpenGL::getARBFragmentProgram(mergeFragmentProgramRect, (sizeof(mergeFragmentProgramRect) / sizeof(mergeFragmentProgramRect[0])) - 1)
-                   : OpenGL::getARBFragmentProgram(mergeFragmentProgram2D, (sizeof(mergeFragmentProgram2D) / sizeof(mergeFragmentProgram2D[0])) - 1);
+                isRectangularTexture()
+                  ? OpenGL::getARBFragmentProgram(mergeARBFragmentProgramRect, (sizeof(mergeARBFragmentProgramRect) / sizeof(mergeARBFragmentProgramRect[0])) - 1)
+                  : OpenGL::getARBFragmentProgram(mergeARBFragmentProgram2D, (sizeof(mergeARBFragmentProgram2D) / sizeof(mergeARBFragmentProgram2D[0])) - 1);
             glBindProgramARB(GL_FRAGMENT_PROGRAM_ARB, fId);
             glEnable(GL_FRAGMENT_PROGRAM_ARB);
 
-            bool isFixedFunction = false;
-            setupProjectiveTexture(isFixedFunction);
+            ProjTextureSetup setup = ARBShader;
+            setupProjectiveTexture(setup);
 
             glEnable(GL_ALPHA_TEST);
             glEnable(GL_CULL_FACE);
@@ -262,7 +263,121 @@ namespace OpenCSG {
             glDisable(GL_FRAGMENT_PROGRAM_ARB);
             glDisable(GL_VERTEX_PROGRAM_ARB);
 
-            resetProjectiveTexture(isFixedFunction);
+            resetProjectiveTexture(setup);
+
+            clear();
+        }
+
+        // Stores Ids in the all components of the color buffer
+        // -> in theory, 2^32-1 primitives are possible
+        // GLSL variant
+        class SCSChannelManagerGLSLProgram : public ChannelManagerForBatches {
+        public:
+            virtual Channel request();
+            virtual void merge();
+        };
+
+        Channel SCSChannelManagerGLSLProgram::request() {
+            ChannelManagerForBatches::request();
+            mCurrentChannel = AllChannels;
+            mOccupiedChannels = mCurrentChannel;
+            return mCurrentChannel;
+        }
+
+        static const char mergeVertexProgram[] =
+            "#version 110\n"
+            "void main() {\n"
+            "    gl_Position = ftransform();\n"
+            "}\n";
+
+        // Subtract color from texture value, takes the absolute value
+        // and adds all components into each channel of the result, scaled by 2.0f.
+        // This way, all 32-bits of the color channel can be used
+        // for an 'equal' alpha test, i.e, to check if value in texture
+        // and color are equal.
+
+        // Note that 1.0f/255.0f cannot be the result of the above computation.
+        // Either the result is 0 (if all components were equal, disregarding
+        // numerical errors), or larger/equal than 2.0f/255.0f. The alpha function
+        // then is actually set to  GL_LESS, 1.0f/255.0f. This is robust,
+        // in contract to the GL_EQUAL in SCSChannelManagerAlphaOnly above.
+        // The scaling by 2.0f is required for NVidia hardware, which considers
+        // the alpha function GL_LESS, 0.5f/255.0f as GL_LESS, 0.0f for some reason.
+        static const char mergeFragmentProgramRect[] =
+            "#version 110\n"
+            "#extension GL_ARB_texture_rectangle : enable\n"
+            "uniform sampler2DRect texture0;\n"
+            "uniform vec4 color;\n"
+            "void main() {\n"
+            "    vec4 temp = texture2DRect(texture0, gl_FragCoord.xy);\n"
+            "    temp = abs(temp - color);\n"
+            "    if (length(temp) > 0.001)\n"
+            "        discard;\n"
+            "    gl_FragColor = color;\n"
+            "}\n";
+
+        static const char mergeFragmentProgram2D[] =
+            "#version 130\n"
+            "uniform sampler2D texture0;\n"
+            "uniform vec4 color;\n"
+            "void main() {\n"
+            "    ivec2 texSize = textureSize(texture0, 0);\n"
+            "    vec2 texCoord = vec2(gl_FragCoord.x / texSize.x, gl_FragCoord.y / texSize.y);\n"
+            "    vec4 temp = texture2D(texture0, texCoord);\n"
+            "    temp = temp - color;\n"
+            "    if (length(temp) > 0.001)\n"
+            "        discard;\n"
+            "    gl_FragColor = color;\n"
+            "}\n";
+
+        void SCSChannelManagerGLSLProgram::merge()
+        {
+            GLuint glslProgram =
+                isRectangularTexture()
+                    ? OpenGL::getGLSLProgram("rect", mergeVertexProgram, mergeFragmentProgramRect)
+                    : OpenGL::getGLSLProgram("2d", mergeVertexProgram, mergeFragmentProgram2D);
+
+            GLint col = glGetUniformLocation(glslProgram, "color");
+
+            glUseProgram(glslProgram);
+
+            ProjTextureSetup setup = GLSLProgram;
+            setupProjectiveTexture(setup);
+
+            glDisable(GL_ALPHA_TEST);
+            glEnable(GL_CULL_FACE);
+            glEnable(GL_DEPTH_TEST);
+            glDepthFunc(GL_LESS);
+            glDepthMask(GL_TRUE);
+            glColorMask(GL_FALSE, GL_FALSE, GL_FALSE, GL_FALSE);
+
+            std::vector<Channel> channels;
+            channels.push_back(AllChannels);
+            for (std::vector<Channel>::const_iterator c = channels.begin(); c!=channels.end(); ++c) {
+
+                scissor->recall(*c);
+                scissor->enableScissor();
+
+                const std::vector<Primitive*> primitives = getPrimitives(*c);
+                for (std::vector<Primitive*>::const_iterator j = primitives.begin(); j != primitives.end(); ++j) {
+                    glCullFace((*j)->getOperation() == Intersection ? GL_BACK : GL_FRONT);
+                    RenderData* primitiveData = getRenderData(*j);
+                    GLubyte * id = primitiveData->bufferId.vec();
+                    glUniform4f(col, static_cast<float>(static_cast<double>(id[0]) / 255.0),
+                                     static_cast<float>(static_cast<double>(id[1]) / 255.0),
+                                     static_cast<float>(static_cast<double>(id[2]) / 255.0),
+                                     static_cast<float>(static_cast<double>(id[3]) / 255.0));
+                    (*j)->render();
+                }
+            }
+
+            scissor->disableScissor();
+
+            glDisable(GL_CULL_FACE);
+            glDepthFunc(GL_LEQUAL);
+            glUseProgram(0);
+
+            resetProjectiveTexture(setup);
 
             clear();
         }
@@ -270,10 +385,15 @@ namespace OpenCSG {
 
         ChannelManagerForBatches* getChannelManager() {
 
+            if (GLAD_GL_VERSION_2_0)
+            {
+                return new SCSChannelManagerGLSLProgram;
+            }
+
             if (   OPENCSG_HAS_EXT(ARB_vertex_program)
                 && OPENCSG_HAS_EXT(ARB_fragment_program)
             ) {
-                return new SCSChannelManagerFragmentProgram;
+                return new SCSChannelManagerARBProgram;
             }
 
             return new SCSChannelManagerAlphaOnly;

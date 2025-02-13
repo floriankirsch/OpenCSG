@@ -42,6 +42,10 @@ namespace OpenCSG {
         NoChannel = 0, Alpha = 1, Red = 2, Green = 4, Blue = 8, AllChannels = 15
     };
 
+    enum ProjTextureSetup {
+        FixedFunction = 0, ARBShader = 1, GLSLProgram = 2
+    };
+
     class ChannelManager {
     public:
         /// An offscreen buffer is used to collect CSG results in its four
@@ -74,12 +78,14 @@ namespace OpenCSG {
 
         /// activates or deactivates rendering into a channel
         void renderToChannel(bool on);
-        /// setups texture stuff that makes the size of the offscreen buffer
-        /// and the size of the main canvas correspond. activates texture
-        /// containing the content of the offscreen buffer
-        void setupProjectiveTexture(bool fixedFunction);
+        /// Setups texture stuff that makes the size of the offscreen buffer
+        /// and the size of the main canvas correspond. Activates texture
+        /// containing the content of the offscreen buffer. The actual
+        /// workings depends on whether the fixed function pipeline, an
+        /// ARB shader, or a GLSL program is used.
+        void setupProjectiveTexture(ProjTextureSetup setup);
         /// undoes texture settings
-        void resetProjectiveTexture(bool fixedFunction);
+        void resetProjectiveTexture(ProjTextureSetup setup);
         /// activate texenv settings such that information in channel is
         /// moved into alpha, to allow alpha testing of the channel.
         static void setupTexEnv(Channel channel);

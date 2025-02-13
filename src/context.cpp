@@ -54,6 +54,7 @@ namespace OpenCSG {
             FrameBufferObject* fARB;
             FrameBufferObjectExt* fEXT;
             std::map<const char*, GLuint> idFP;
+            std::map<const char*, GLuint> idGLSL;
         };
 
         static std::map<int, ContextData> gContextDataMap;
@@ -124,6 +125,57 @@ namespace OpenCSG {
             return getARBProgram(GL_FRAGMENT_PROGRAM_ARB, prog, len);
         }
 
+        GLuint getGLSLShader(GLenum target, const char* prog)
+        {
+            GLuint id = glCreateShader(target);
+            glShaderSource(id, 1, &prog, 0);
+            glCompileShader(id);
+
+            GLint success;
+            char infoLog[512];
+
+            glGetShaderiv(id, GL_COMPILE_STATUS, &success);
+            if (!success) {
+                glGetShaderInfoLog(id, 512, NULL, infoLog);
+                //std::cerr << "Vertex Shader Compilation Error: " << infoLog << std::endl;
+            }
+
+            return id;
+        }
+
+        GLuint getGLSLVertexShader(const char* prog)
+        {
+            return getGLSLShader(GL_VERTEX_SHADER, prog);
+        }
+
+        GLuint getGLSLFragmentShader(const char* prog)
+        {
+            return getGLSLShader(GL_FRAGMENT_SHADER, prog);
+        }
+
+        GLuint getGLSLProgram(const char* programId, const char* vertexProg, const char* fragmentProg)
+        {
+            int context = getContext();
+            ContextData& contextData = gContextDataMap[context];
+
+            std::map<const char*, GLuint>::iterator it = contextData.idGLSL.find(programId);
+            if (it == contextData.idGLSL.end())
+            {
+                GLuint vertexShader = getGLSLVertexShader(vertexProg);
+                GLuint fragmentShader = getGLSLFragmentShader(fragmentProg);
+                GLuint shaderProgram = glCreateProgram();
+                glAttachShader(shaderProgram, vertexShader);
+                glAttachShader(shaderProgram, fragmentShader);
+                glLinkProgram(shaderProgram);
+                glDeleteShader(vertexShader);
+                glDeleteShader(fragmentShader);
+
+                it = contextData.idGLSL.insert(std::pair<const char*, GLuint>(programId, shaderProgram)).first;
+            }
+
+            return it->second;
+        }
+
         void freeResources()
         {
             int context = getContext();
@@ -132,10 +184,19 @@ namespace OpenCSG {
             {
                 delete itr->second.fARB;
                 delete itr->second.fEXT;
-                std::map<const char*, GLuint> & idFP = itr->second.idFP;
-                for (std::map<const char*, GLuint>::iterator it = idFP.begin(); it != idFP.end(); ++it)
                 {
-                    glDeleteProgramsARB(1, &(it->second));
+                    std::map<const char*, GLuint> & idFP = itr->second.idFP;
+                    for (std::map<const char*, GLuint>::iterator it = idFP.begin(); it != idFP.end(); ++it)
+                    {
+                        glDeleteProgramsARB(1, &(it->second));
+                    }
+                }
+                {
+                    std::map<const char*, GLuint> & idGLSL = itr->second.idGLSL;
+                    for (std::map<const char*, GLuint>::iterator it = idGLSL.begin(); it != idGLSL.end(); ++it)
+                    {
+                        glDeleteProgram(it->second);
+                    }
                 }
                 gContextDataMap.erase(itr);
             }

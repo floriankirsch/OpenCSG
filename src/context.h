@@ -61,6 +61,15 @@ namespace OpenCSG {
         /// active context in OpenCSG.
         GLuint getARBFragmentProgram(const char* prog, int len);
 
+        GLuint getGLSLVertexShader(const char* prog);
+
+        GLuint getGLSLFragmentShader(const char* prog);
+
+        /// Given a constant(!), null-terminated vertex and fragment
+        /// program strings, returns a GLSL program object, for the
+        /// currently active context in OpenCSG.
+        GLuint getGLSLProgram(const char* programId, const char* vertexShader, const char* fragmentShader);
+
         /// Frees all resources (offscreen buffers, fragment programs...)
         /// allocated for the currently active context in OpenCSG.
         void freeResources();
