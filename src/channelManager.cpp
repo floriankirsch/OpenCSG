@@ -259,7 +259,7 @@ namespace OpenCSG {
         // find free channel
         if ((mOccupiedChannels & Alpha) == 0) {
             channel = Alpha;
-        }  else if (OPENCSG_HAS_EXT(ARB_texture_env_dot3)) {
+        }  else if (OPENCSG_HAS_EXT(ARB_texture_env_dot3) || GLAD_GL_VERSION_1_3) {
             if ((mOccupiedChannels & Red) == 0)   {
                 channel = Red;
             } else if ((mOccupiedChannels & Green) == 0) {
@@ -445,7 +445,7 @@ namespace OpenCSG {
             glTexEnvi(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_REPLACE);
         } else {
             // replicate color into alpha
-            if (OPENCSG_HAS_EXT(ARB_texture_env_dot3)) {
+            if (OPENCSG_HAS_EXT(ARB_texture_env_dot3) || GLAD_GL_VERSION_1_3) {
                 switch (channel) {
                 case Red: 
                     glColor3f(1.0f, 0.5f, 0.5f); 

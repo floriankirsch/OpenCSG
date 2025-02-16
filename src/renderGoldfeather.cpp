@@ -27,11 +27,13 @@
 #include "opencsgRender.h"
 #include "batch.h"
 #include "channelManager.h"
+#include "context.h"
 #include "occlusionQuery.h"
 #include "openglHelper.h"
 #include "primitiveHelper.h"
 #include "scissorMemo.h"
 #include <algorithm>
+#include <cassert>
 
 namespace OpenCSG {
 
@@ -95,7 +97,132 @@ namespace OpenCSG {
             clear();
         }
 
-        GoldfeatherChannelManager* channelMgr;
+
+        // Stores Ids in the all components of the color buffer
+        // -> in theory, 2^32-1 primitives are possible
+        // GLSL variant
+        class GoldfeatherChannelManagerGLSLProgram : public ChannelManagerForBatches {
+        public:
+            virtual void merge();
+        };
+
+
+        static const char mergeVertexProgram[] =
+            "#version 110\n"
+            "void main() {\n"
+            "    gl_Position = ftransform();\n"
+            "}\n";
+
+        static const char mergeFragmentProgramRect[] =
+            "#version 110\n"
+            "#extension GL_ARB_texture_rectangle : enable\n"
+            "uniform sampler2DRect texture0;\n"
+            "uniform vec4 color;\n"
+            "void main() {\n"
+            "    vec4 temp = texture2DRect(texture0, gl_FragCoord.xy);\n"
+            "    float d = dot(temp, color);\n"
+            "    if (d < 0.5)\n"
+            "        discard;\n"
+            "    gl_FragColor = color;\n"
+            "}\n";
+
+        static const char mergeFragmentProgram2D[] =
+            "#version 130\n"
+            "uniform sampler2D texture0;\n"
+            "uniform vec4 color;\n"
+            "void main() {\n"
+            "    ivec2 texSize = textureSize(texture0, 0);\n" // textureSize requires OpenGL 3.0
+            "    vec2 texCoord = vec2(gl_FragCoord.x / texSize.x, gl_FragCoord.y / texSize.y);\n"
+            "    vec4 temp = texture2D(texture0, texCoord);\n"
+            "    float d = dot(temp, color);\n"
+            "    if (d < 0.5)\n"
+            "        discard;\n"
+            "    gl_FragColor = color;\n"
+            "}\n";
+
+        void GoldfeatherChannelManagerGLSLProgram::merge()
+        {
+            GLuint glslProgram =
+                isRectangularTexture()
+                  ? OpenGL::getGLSLProgram("gfrect", mergeVertexProgram, mergeFragmentProgramRect)
+                  : OpenGL::getGLSLProgram("gf2d", mergeVertexProgram, mergeFragmentProgram2D);
+
+            GLint col = glGetUniformLocation(glslProgram, "color");
+
+            glUseProgram(glslProgram);
+
+            ProjTextureSetup setup = GLSLProgram;
+            setupProjectiveTexture(setup);
+
+            glDisable(GL_ALPHA_TEST);
+            glEnable(GL_CULL_FACE);
+            glEnable(GL_DEPTH_TEST);
+            glDepthFunc(GL_LESS);
+            glDepthMask(GL_TRUE);
+            glColorMask(GL_FALSE, GL_FALSE, GL_FALSE, GL_FALSE);
+
+            std::vector<Channel> channels = occupied();
+            for (std::vector<Channel>::const_iterator c = channels.begin(); c != channels.end(); ++c) {
+
+                const std::vector<Primitive*> primitives = getPrimitives(*c);
+
+                scissor->recall(*c);
+                scissor->enableScissor();
+
+                GLfloat refColor[4] = { 0.0f, 0.0f, 0.0f, 0.0f };
+
+                switch (*c) {
+                case Alpha:
+                    refColor[3] = 1.0f;
+                    break;
+                case Red:
+                    refColor[0] = 1.0f;
+                    break;
+                case Green:
+                    refColor[1] = 1.0f;
+                    break;
+                case Blue:
+                    refColor[2] = 1.0f;
+                    break;
+                default:
+                    // should not happen!
+                    assert(0);
+                };
+
+                glUniform4fv(col, 1, refColor);
+
+                if (getLayer(*c) == -1) {
+
+                    glEnable(GL_CULL_FACE);
+                    for (Batch::const_iterator j = primitives.begin(); j != primitives.end(); ++j) {
+                        glCullFace((*j)->getOperation() == Intersection ? GL_BACK : GL_FRONT);
+                        (*j)->render();
+                    }
+                }
+                else {
+                    // shapes of interest: we need to determine the appropriate layer of
+                    // the shapes, using stencil counting
+                    glClearStencil(0);
+                    glStencilMask(OpenGL::stencilMask);
+                    glClear(GL_STENCIL_BUFFER_BIT);
+                    OpenGL::renderLayer(getLayer(*c), primitives);
+                    glDisable(GL_STENCIL_TEST);
+                }
+            }
+
+            scissor->disableScissor();
+
+            glDisable(GL_CULL_FACE);
+            glDepthFunc(GL_LEQUAL);
+            glUseProgram(0);
+
+            resetProjectiveTexture(setup);
+
+            clear();
+        }
+
+
+        ChannelManagerForBatches* channelMgr;
 
         void touchFragments(const Batch& batch) {
             glMatrixMode(GL_PROJECTION);
@@ -484,9 +611,20 @@ namespace OpenCSG {
         delete scissor;
     }
 
+    ChannelManagerForBatches* getChannelManager() {
+
+        if (GLAD_GL_VERSION_2_0)
+        {
+            return new GoldfeatherChannelManagerGLSLProgram;
+        }
+
+        return new GoldfeatherChannelManager;
+    }
+
     void renderGoldfeather(const std::vector<Primitive*>& primitives, DepthComplexityAlgorithm algorithm)
     {
-        channelMgr = new GoldfeatherChannelManager;
+        ChannelManagerForBatches * channelMgr = getChannelManager();
+
         if (channelMgr->init())
         {
             switch (algorithm) {

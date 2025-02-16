@@ -321,7 +321,7 @@ namespace OpenCSG {
             "uniform sampler2D texture0;\n"
             "uniform vec4 color;\n"
             "void main() {\n"
-            "    ivec2 texSize = textureSize(texture0, 0);\n"
+            "    ivec2 texSize = textureSize(texture0, 0);\n" // textureSize requires OpenGL 3.0
             "    vec2 texCoord = vec2(gl_FragCoord.x / texSize.x, gl_FragCoord.y / texSize.y);\n"
             "    vec4 temp = texture2D(texture0, texCoord);\n"
             "    temp = temp - color;\n"
@@ -334,8 +334,8 @@ namespace OpenCSG {
         {
             GLuint glslProgram =
                 isRectangularTexture()
-                    ? OpenGL::getGLSLProgram("rect", mergeVertexProgram, mergeFragmentProgramRect)
-                    : OpenGL::getGLSLProgram("2d", mergeVertexProgram, mergeFragmentProgram2D);
+                    ? OpenGL::getGLSLProgram("scsrect", mergeVertexProgram, mergeFragmentProgramRect)
+                    : OpenGL::getGLSLProgram("scs2d", mergeVertexProgram, mergeFragmentProgram2D);
 
             GLint col = glGetUniformLocation(glslProgram, "color");
 
