@@ -623,7 +623,7 @@ namespace OpenCSG {
 
     void renderGoldfeather(const std::vector<Primitive*>& primitives, DepthComplexityAlgorithm algorithm)
     {
-        ChannelManagerForBatches * channelMgr = getChannelManager();
+        channelMgr = getChannelManager();
 
         if (channelMgr->init())
         {
