@@ -25,6 +25,7 @@
 #ifndef __OpenCSG__opencsg_h__
 #define __OpenCSG__opencsg_h__
 
+#include <string>
 #include <vector>
 
 /// OpenCSG version. The version number has been introduced with version 1.3.2.
@@ -112,6 +113,26 @@ namespace OpenCSG {
     /// some parameters for specifying Algorithm and DepthComplexityAlgorithm 
     /// directly. 
     void render(const std::vector<Primitive*>& primitives);
+
+    /// Sets a vertex shader that is used by OpenCSG for transforming the
+    /// geometry. By default, or when an empty vertex shader is set, OpenCSG
+    /// uses the fixed function pipeline. When setting a non-empty vertex
+    /// shader, that shader is used. There is no need, and no possibilty,
+    /// to set a corresponding fragment shader. OpenCSG internally sets
+    /// a matching fragment shader itself.
+
+    /// The shader should only set the gl_Position of the input point.
+    /// Usually it is something as:
+    /**
+            #version 110
+            void main() {
+                gl_Position = gl_ModelViewProjectionMatrix * gl_Vertex;
+            }
+    **/
+    /// Important is that the shader should transform the vertices in
+    /// exactly the same way as later, when the geometry is shaded
+    /// using the GL_EQUAL depth function.
+    void setVertexShader(const std::string& vertexShader);
 
     /// OpenCSG option for use with setOption() / getOption() below
     enum OptionType {

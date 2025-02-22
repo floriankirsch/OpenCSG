@@ -28,7 +28,13 @@
 #include "opencsgConfig.h"
 #include <opencsg.h>
 
+#include <string>
+
 namespace OpenCSG {
+
+    /// redeclared from opencsg.h
+    void setVertexShader(const std::string& vertexShader);
+    const char* getVertexShader();
 
     /// redeclared from opencsg.h
     void setOption(OptionType option, int newSetting);

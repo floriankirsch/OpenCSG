@@ -22,7 +22,29 @@
 #include "opencsgConfig.h"
 #include <opencsg.h>
 
+#include <algorithm>
+#include <string>
+#include <utility>
+
 namespace OpenCSG {
+
+    static std::string gVertexShader;
+
+    void setVertexShader(const std::string& vertexShader) {
+        if (gVertexShader == vertexShader)
+            return;
+
+	std::string memoryForNewShader = vertexShader;
+	std::swap(gVertexShader, memoryForNewShader);
+    }
+
+    const char* getVertexShader()
+    {
+        if (gVertexShader.length() == 0)
+            return 0;
+
+        return gVertexShader.c_str();
+    }
 
     static int* gSetting = 0;
 

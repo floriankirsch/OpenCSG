@@ -32,6 +32,7 @@
 #include "openglHelper.h"
 #include "primitiveHelper.h"
 #include "scissorMemo.h"
+#include "settings.h"
 
 #include <algorithm>
 #include <map>
@@ -334,8 +335,8 @@ namespace OpenCSG {
         {
             GLuint glslProgram =
                 isRectangularTexture()
-                    ? OpenGL::getGLSLProgram("scsrect", mergeVertexProgram, mergeFragmentProgramRect)
-                    : OpenGL::getGLSLProgram("scs2d", mergeVertexProgram, mergeFragmentProgram2D);
+                    ? OpenGL::getGLSLProgram("scsrect", getVertexShader(), mergeFragmentProgramRect)
+                    : OpenGL::getGLSLProgram("scs2d", getVertexShader(), mergeFragmentProgram2D);
 
             GLint col = glGetUniformLocation(glslProgram, "color");
 
@@ -387,7 +388,9 @@ namespace OpenCSG {
 
             if (GLAD_GL_VERSION_2_0)
             {
-                return new SCSChannelManagerGLSLProgram;
+                bool useGLSL = getVertexShader() != 0;
+                if (useGLSL)
+                    return new SCSChannelManagerGLSLProgram;
             }
 
             if (   OPENCSG_HAS_EXT(ARB_vertex_program)
