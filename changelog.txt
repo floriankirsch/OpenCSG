@@ -1,3 +1,9 @@
+23.02.2025:
+    Added: GLSL shaders for the channel manager merge. Currently
+        these are used by default, but the plan is to activate
+        them only when the calling application providing a trivial
+        vertex shader.
+
 02.02.2025:
     Changed: Added CMake files to replace the old qmake files in the
         middle term.
