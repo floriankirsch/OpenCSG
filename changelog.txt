@@ -1,4 +1,8 @@
 23.02.2025:
+    Added: API to set the GLSL vertex shader from the calling
+        application.
+
+22.02.2025:
     Added: GLSL shaders for the channel manager merge. Currently
         these are used by default, but the plan is to activate
         them only when the calling application providing a trivial
