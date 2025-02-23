@@ -30,8 +30,8 @@
 
 /// OpenCSG version. The version number has been introduced with version 1.3.2.
 /// Format is Major|Minor|Patch, each of them being 4-bit wide.
-#define OPENCSG_VERSION 0x0171
-#define OPENCSG_VERSION_STRING "OpenCSG 1.7.1"
+#define OPENCSG_VERSION 0x0180
+#define OPENCSG_VERSION_STRING "OpenCSG 1.8.0"
 
 namespace OpenCSG {
 
