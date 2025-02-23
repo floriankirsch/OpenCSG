@@ -514,11 +514,13 @@ renderGoldfeather.o: renderGoldfeather.cpp opencsgConfig.h \
 		openglExt.h \
 		glad/include/KHR/khrplatform.h \
 		glad/include/glad/gl.h \
+		context.h \
 		occlusionQuery.h \
 		openglHelper.h \
 		area.h \
 		primitiveHelper.h \
-		scissorMemo.h
+		scissorMemo.h \
+		settings.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o renderGoldfeather.o renderGoldfeather.cpp
 
 renderSCS.o: renderSCS.cpp opencsgConfig.h \
@@ -534,7 +536,8 @@ renderSCS.o: renderSCS.cpp opencsgConfig.h \
 		openglHelper.h \
 		area.h \
 		primitiveHelper.h \
-		scissorMemo.h
+		scissorMemo.h \
+		settings.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o renderSCS.o renderSCS.cpp
 
 scissorMemo.o: scissorMemo.cpp opencsgConfig.h \
