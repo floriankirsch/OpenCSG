@@ -143,10 +143,12 @@ namespace OpenCSG {
 
         void GoldfeatherChannelManagerGLSLProgram::merge()
         {
+            const int GFIdOffset = 0;
+            const char* programID = getVertexShader() + (isRectangularTexture() ? 1 : 0) + GFIdOffset;
             GLuint glslProgram =
                 isRectangularTexture()
-                  ? OpenGL::getGLSLProgram("gfrect", getVertexShader(), mergeFragmentProgramRect)
-                  : OpenGL::getGLSLProgram("gf2d", getVertexShader(), mergeFragmentProgram2D);
+                  ? OpenGL::getGLSLProgram(programID, getVertexShader(), mergeFragmentProgramRect)
+                  : OpenGL::getGLSLProgram(programID, getVertexShader(), mergeFragmentProgram2D);
 
             GLint col = glGetUniformLocation(glslProgram, "color");
 

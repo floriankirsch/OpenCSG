@@ -333,10 +333,12 @@ namespace OpenCSG {
 
         void SCSChannelManagerGLSLProgram::merge()
         {
+            const int SCSIdOffset = 2;
+            const char* programID = getVertexShader() + (isRectangularTexture() ? 1 : 0) + SCSIdOffset;
             GLuint glslProgram =
                 isRectangularTexture()
-                    ? OpenGL::getGLSLProgram("scsrect", getVertexShader(), mergeFragmentProgramRect)
-                    : OpenGL::getGLSLProgram("scs2d", getVertexShader(), mergeFragmentProgram2D);
+                    ? OpenGL::getGLSLProgram(programID, getVertexShader(), mergeFragmentProgramRect)
+                    : OpenGL::getGLSLProgram(programID, getVertexShader(), mergeFragmentProgram2D);
 
             GLint col = glGetUniformLocation(glslProgram, "color");
 

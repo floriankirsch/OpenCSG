@@ -23,27 +23,49 @@
 #include <opencsg.h>
 
 #include <algorithm>
+#include <list>
 #include <string>
 #include <utility>
 
 namespace OpenCSG {
 
-    static std::string gVertexShader;
+    // Stores constant strings of all vertex shaders that were ever provided to OpenCSG.
+    // This would compile with std::set as well. But I expect very few shaders here, only.
+    // Note that std::vector would be incorrect, because when resizing the vector,
+    // the strings could be relocated. This must not happen, because the string pointers
+    // are used as keys for the actual GLSL program IDs.
+    typedef std::list<std::string> VertexShaders;
 
-    void setVertexShader(const std::string& vertexShader) {
-        if (gVertexShader == vertexShader)
+    static VertexShaders gVertexShaders;
+    static VertexShaders::const_iterator gCurrentVertexShader = gVertexShaders.end();
+
+    void setVertexShader(const std::string& vertexShader)
+    {
+        if (vertexShader.length() == 0)
+        {
+            gCurrentVertexShader = gVertexShaders.end();
+            return;
+        }
+
+        if (gCurrentVertexShader != gVertexShaders.end() && *gCurrentVertexShader == vertexShader)
             return;
 
-	std::string memoryForNewShader = vertexShader;
-	std::swap(gVertexShader, memoryForNewShader);
+        VertexShaders::const_iterator it = std::find(gVertexShaders.begin(), gVertexShaders.end(), vertexShader);
+        if (it != gVertexShaders.end())
+        {
+            gCurrentVertexShader = it;
+            return;
+        }
+
+        gCurrentVertexShader = gVertexShaders.insert(it, vertexShader);
     }
 
     const char* getVertexShader()
     {
-        if (gVertexShader.length() == 0)
+        if (gCurrentVertexShader == gVertexShaders.end())
             return 0;
 
-        return gVertexShader.c_str();
+        return gCurrentVertexShader->c_str();
     }
 
     static int* gSetting = 0;
