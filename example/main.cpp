@@ -40,7 +40,9 @@ enum {
 
     ALGO_AUTOMATIC, GF_STANDARD, GF_DC, GF_OQ, SCS_STANDARD, SCS_DC, SCS_OQ,
 
-    CAM_OUTSIDE_DEFAULT, CAM_OUTSIDE_PERF, CAM_OUTSIDE_NOPERF, CAM_INSIDE, CAM_INSIDE_DEFAULT
+    CAM_OUTSIDE_DEFAULT, CAM_OUTSIDE_PERF, CAM_OUTSIDE_NOPERF, CAM_INSIDE, CAM_INSIDE_DEFAULT,
+
+    GLSL_FIXED_FUNCTION, GLSL_FTRANSFORM, GLSL_MVP_COMBINED, GLSL_MVP_SEPARATE
 };
 
 std::vector<OpenCSG::Primitive*> primitives;
@@ -455,6 +457,27 @@ void display()
     glutSwapBuffers();
 }
 
+namespace
+{
+    const std::string ftransformShader =
+        "#version 110\n"
+        "void main() {\n"
+        "    gl_Position = ftransform();\n"
+        "}\n";
+
+    const std::string mvpCombinedShader =
+        "#version 110\n"
+        "void main() {\n"
+        "    gl_Position = gl_ModelViewProjectionMatrix * gl_Vertex;\n"
+        "}\n";
+
+    const std::string mvpSeparateShader =
+        "#version 110\n"
+        "void main() {\n"
+        "    gl_Position = gl_ProjectionMatrix * gl_ModelViewMatrix * gl_Vertex;\n"
+        "}\n";
+}
+
 void menu(int value) {
     switch (value) {
     case CSG_BASIC:      setBasicShape();    break;
@@ -465,7 +488,8 @@ void menu(int value) {
     case CSG_PIPE:       setPipe();          break;
     case CSG_CONCAVE:    setConcave();       break;
 
-    case ALGO_AUTOMATIC: OpenCSG::setOption(OpenCSG::AlgorithmSetting, OpenCSG::Automatic);
+    case ALGO_AUTOMATIC:
+        OpenCSG::setOption(OpenCSG::AlgorithmSetting, OpenCSG::Automatic);
         break;
     case GF_STANDARD:    OpenCSG::setOption(OpenCSG::AlgorithmSetting, OpenCSG::Goldfeather);
         OpenCSG::setOption(OpenCSG::DepthComplexitySetting, OpenCSG::NoDepthComplexitySampling);
@@ -500,7 +524,18 @@ void menu(int value) {
     case CAM_INSIDE_DEFAULT: inside = true;
         OpenCSG::setOption(OpenCSG::CameraOutsideOptimization, OpenCSG::OptimizationDefault);
         break;
-
+    case GLSL_FIXED_FUNCTION:
+        OpenCSG::setVertexShader("");
+        break;
+    case GLSL_FTRANSFORM:
+        OpenCSG::setVertexShader(ftransformShader);
+        break;
+    case GLSL_MVP_COMBINED:
+        OpenCSG::setVertexShader(mvpCombinedShader);
+        break;
+    case GLSL_MVP_SEPARATE:
+        OpenCSG::setVertexShader(mvpSeparateShader);
+        break;
     default: break;
     }
     display();
@@ -745,10 +780,17 @@ int main(int argc, char **argv)
     glutAddMenuEntry("Camera inside (default performance optimizations)", CAM_INSIDE_DEFAULT);
     glutAddMenuEntry("Camera inside (without performance optimizations)", CAM_INSIDE);
 
+    int menuGLSL = glutCreateMenu(menu);
+    glutAddMenuEntry("Fixed function", GLSL_FIXED_FUNCTION);
+    glutAddMenuEntry("ftransform()", GLSL_FTRANSFORM);
+    glutAddMenuEntry("gl_ModelViewProjectionMatrix * gl_Vertex", GLSL_MVP_COMBINED);
+    glutAddMenuEntry("gl_ProjectionMatrix * gl_ModelViewMatrix * gl_Vertex", GLSL_MVP_SEPARATE);
+
     glutCreateMenu(menu);
     glutAddSubMenu("CSG Shapes", menuShape);
     glutAddSubMenu("CSG Algorithms", menuAlgorithm);
     glutAddSubMenu("Camera", menuCamera);
+    glutAddSubMenu("Vertex Shader", menuGLSL);
 
     // connect to right mouse button
     glutAttachMenu(GLUT_RIGHT_BUTTON);
