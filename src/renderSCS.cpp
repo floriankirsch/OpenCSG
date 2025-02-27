@@ -285,25 +285,12 @@ namespace OpenCSG {
             return mCurrentChannel;
         }
 
-        static const char mergeVertexProgram[] =
-            "#version 110\n"
-            "void main() {\n"
-            "    gl_Position = ftransform();\n"
-            "}\n";
-
-        // Subtract color from texture value, takes the absolute value
-        // and adds all components into each channel of the result, scaled by 2.0f.
+        // Subtract color from texture value, and if the result is not 0
+        // (including some epsilon, which is less than 1.0/(256*256),
+        // discards the fragment.
         // This way, all 32-bits of the color channel can be used
         // for an 'equal' alpha test, i.e, to check if value in texture
         // and color are equal.
-
-        // Note that 1.0f/255.0f cannot be the result of the above computation.
-        // Either the result is 0 (if all components were equal, disregarding
-        // numerical errors), or larger/equal than 2.0f/255.0f. The alpha function
-        // then is actually set to  GL_LESS, 1.0f/255.0f. This is robust,
-        // in contract to the GL_EQUAL in SCSChannelManagerAlphaOnly above.
-        // The scaling by 2.0f is required for NVidia hardware, which considers
-        // the alpha function GL_LESS, 0.5f/255.0f as GL_LESS, 0.0f for some reason.
         static const char mergeFragmentProgramRect[] =
             "#version 110\n"
             "#extension GL_ARB_texture_rectangle : enable\n"
@@ -311,8 +298,8 @@ namespace OpenCSG {
             "uniform vec4 color;\n"
             "void main() {\n"
             "    vec4 temp = texture2DRect(texture0, gl_FragCoord.xy);\n"
-            "    temp = abs(temp - color);\n"
-            "    if (length(temp) > 0.001)\n"
+            "    temp = temp - color;\n"
+            "    if (dot(temp, temp) > 0.000001)\n"
             "        discard;\n"
             "    gl_FragColor = color;\n"
             "}\n";
@@ -326,7 +313,7 @@ namespace OpenCSG {
             "    vec2 texCoord = vec2(gl_FragCoord.x / texSize.x, gl_FragCoord.y / texSize.y);\n"
             "    vec4 temp = texture2D(texture0, texCoord);\n"
             "    temp = temp - color;\n"
-            "    if (length(temp) > 0.001)\n"
+            "    if (dot(temp, temp) > 0.000001)\n"
             "        discard;\n"
             "    gl_FragColor = color;\n"
             "}\n";

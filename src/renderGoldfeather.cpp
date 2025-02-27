@@ -108,12 +108,6 @@ namespace OpenCSG {
         };
 
 
-        static const char mergeVertexProgram[] =
-            "#version 110\n"
-            "void main() {\n"
-            "    gl_Position = ftransform();\n"
-            "}\n";
-
         static const char mergeFragmentProgramRect[] =
             "#version 110\n"
             "#extension GL_ARB_texture_rectangle : enable\n"
