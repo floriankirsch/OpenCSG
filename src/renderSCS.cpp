@@ -386,7 +386,11 @@ namespace OpenCSG {
         }
 
 
-        ChannelManagerForBatches* getChannelManager() {
+        // With Nouveau drivers on Linux and an NVidia GTX 710, the ARB_position_invariant
+        // option appears to be buggy sometimes, and this causes z-buffer artifacts.
+        // If less than 256 primitives are provided, resort to the fixed-function
+        // implementation that does not have this problem.
+        ChannelManagerForBatches* getChannelManager(bool needMoreThan255Primitives) {
 
             if (GLAD_GL_VERSION_2_0)
             {
@@ -395,7 +399,8 @@ namespace OpenCSG {
                     return new SCSChannelManagerGLSLProgram;
             }
 
-            if (   OPENCSG_HAS_EXT(ARB_vertex_program)
+            if (   needMoreThan255Primitives
+                && OPENCSG_HAS_EXT(ARB_vertex_program)
                 && OPENCSG_HAS_EXT(ARB_fragment_program)
             ) {
                 return new SCSChannelManagerARBProgram;
@@ -721,7 +726,7 @@ namespace OpenCSG {
 
     void renderSCS(const std::vector<Primitive*>& primitives, DepthComplexityAlgorithm algorithm) {
 
-        channelMgr = getChannelManager();
+        channelMgr = getChannelManager(primitives.size() > 255);
         if (!channelMgr->init())
         {
             delete channelMgr;

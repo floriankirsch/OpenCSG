@@ -1,3 +1,10 @@
+27.02.2025:
+    Changed: For SCS, if there are less than 256 primitives,
+        use the old fixed-function implementation to merge
+        the color channel. It does not suffer from z-artifacts
+        as the 32-bit Id-buffer algorithm, that can be observed
+        with the Nouveau drivers on Linux.
+
 23.02.2025:
     Added: API to set the GLSL vertex shader from the calling
         application.
