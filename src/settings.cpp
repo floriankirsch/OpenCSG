@@ -37,7 +37,7 @@ namespace OpenCSG {
     typedef std::list<std::string> VertexShaders;
 
     static VertexShaders gVertexShaders;
-    static VertexShaders::const_iterator gCurrentVertexShader = gVertexShaders.end();
+    static VertexShaders::iterator gCurrentVertexShader = gVertexShaders.end();
 
     void setVertexShader(const std::string& vertexShader)
     {
@@ -50,7 +50,7 @@ namespace OpenCSG {
         if (gCurrentVertexShader != gVertexShaders.end() && *gCurrentVertexShader == vertexShader)
             return;
 
-        VertexShaders::const_iterator it = std::find(gVertexShaders.begin(), gVertexShaders.end(), vertexShader);
+        VertexShaders::iterator it = std::find(gVertexShaders.begin(), gVertexShaders.end(), vertexShader);
         if (it != gVertexShaders.end())
         {
             gCurrentVertexShader = it;
