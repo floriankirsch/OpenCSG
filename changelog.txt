@@ -1,3 +1,11 @@
+28.02.2025:
+    Changed: For SCS, implemented a performance optimization,
+        namely permutation embedding sequences. The primitives
+        to be subtracted are processed in a specific order that
+        allows for fewer subtraction operations than before.
+        The performance gain can be up to 10%, even though
+        it usually is less.
+
 27.02.2025:
     Changed: For SCS, if there are less than 256 primitives,
         use the old fixed-function implementation to merge
