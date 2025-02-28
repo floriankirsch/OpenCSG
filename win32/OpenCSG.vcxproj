@@ -199,6 +199,7 @@
     <ClCompile Include="..\src\renderGoldfeather.cpp" />
     <ClCompile Include="..\src\renderSCS.cpp" />
     <ClCompile Include="..\src\scissorMemo.cpp" />
+    <ClCompile Include="..\src\sequencer.cpp" />
     <ClCompile Include="..\src\settings.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -218,6 +219,7 @@
     <ClInclude Include="..\src\openglHelper.h" />
     <ClInclude Include="..\src\primitiveHelper.h" />
     <ClInclude Include="..\src\scissorMemo.h" />
+    <ClInclude Include="..\src\sequencer.h" />
     <ClInclude Include="..\src\settings.h" />
     <ClInclude Include="..\include\opencsg.h" />
   </ItemGroup>

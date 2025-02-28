@@ -110,6 +110,10 @@ namespace OpenCSG {
         }
     }
 
+    const std::vector<Batch>& Batcher::batches() const {
+        return mBatches;
+    }
+
     std::vector<Batch>::const_iterator Batcher::begin() const {
         return mBatches.begin();
     }

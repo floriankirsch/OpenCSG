@@ -42,6 +42,8 @@ namespace OpenCSG {
         /// subdivides an array of primitives into batches
         Batcher(const std::vector<Primitive*>& primitives);
 
+        /// returns all batches as constant reference
+        const std::vector<Batch>& batches() const;
         /// returns first batch
         std::vector<Batch>::const_iterator begin() const;
         /// returns end of batches
