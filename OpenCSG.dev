@@ -321,16 +321,6 @@ Priority=1000
 OverrideBuildCmd=0
 BuildCmd=
 
-[Unit32]
-FileName=src\sequencer.cpp
-CompileCpp=1
-Folder=Source Files/OpenCSG
-Compile=1
-Link=1
-Priority=1000
-OverrideBuildCmd=0
-BuildCmd=
-
 [VersionInfo]
 Major=0
 Minor=1

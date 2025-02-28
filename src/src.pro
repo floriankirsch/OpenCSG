@@ -51,5 +51,4 @@ SOURCES		= glad/src/gl.cpp \
 		  renderGoldfeather.cpp \
 		  renderSCS.cpp \
 		  scissorMemo.cpp \
-		  sequencer.cpp \
 		  settings.cpp

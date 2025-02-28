@@ -170,6 +170,7 @@ DIST          = /usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/spec_pre.prf \
 		openglHelper.h \
 		primitiveHelper.h \
 		scissorMemo.h \
+		sequencer.h \
 		settings.h glad/src/gl.cpp \
 		area.cpp \
 		batch.cpp \
@@ -537,6 +538,7 @@ renderSCS.o: renderSCS.cpp opencsgConfig.h \
 		area.h \
 		primitiveHelper.h \
 		scissorMemo.h \
+		sequencer.h \
 		settings.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o renderSCS.o renderSCS.cpp
 

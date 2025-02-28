@@ -19,6 +19,7 @@ add_library(opencsg
     renderGoldfeather.cpp
     renderSCS.cpp
     scissorMemo.cpp scissorMemo.h
+    sequencer.h
     settings.cpp settings.h
 )
 
