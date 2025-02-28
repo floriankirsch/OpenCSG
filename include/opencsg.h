@@ -117,7 +117,7 @@ namespace OpenCSG {
     /// Sets a vertex shader that is used by OpenCSG for transforming the
     /// geometry. By default, or when an empty vertex shader is set, OpenCSG
     /// uses the fixed function pipeline. When setting a non-empty vertex
-    /// shader, that shader is used. There is no need, and no possibilty,
+    /// shader, that shader is used. There is no need, and no possibility,
     /// to set a corresponding fragment shader. OpenCSG internally sets
     /// a matching fragment shader itself.
 
