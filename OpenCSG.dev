@@ -9,7 +9,7 @@ CppCompiler=-D__GNUWIN32__ -W -Wall -DWIN32 -DNDEBUG -D_WINDOWS_@@_
 Includes=include;glew/include;.
 Linker=-lopengl32_@@_-lglu32_@@_-lfreeglut_@@_
 Libs=freeglut\lib
-UnitCount=38
+UnitCount=39
 Folders="Header Files","Source Files","Source Files/OpenCSG","Source Files/OpenCSGexample"
 ObjFiles=
 PrivateResource=
@@ -381,7 +381,7 @@ OverrideBuildCmd=0
 BuildCmd=
 
 [Unit39]
-FileName=src\frameBufferObjectExt.cpp
+FileName=src\sequencer.h
 CompileCpp=1
 Folder=Source Files/OpenCSG
 Compile=1

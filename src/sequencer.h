@@ -16,7 +16,7 @@
 // 51 Franklin Street, Fifth Floor, Boston, MA 02110 - 1301 USA.
 
 //
-// scsSequencer.h
+// sequencer.h
 //
 // algorithms to create short permutation embedding sequences.
 // c.f. https://oeis.org/A062714. Such sequences are used in the
