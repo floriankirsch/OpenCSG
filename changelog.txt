@@ -1,6 +1,13 @@
+02.03.2025:
+    Release 1.8.0
+
+28.02.2025:
+    Removed: old qmake-based make files. On non-Windows build plarforms,
+        use CMake instead.
+
 28.02.2025:
     Changed: For SCS, implemented a performance optimization,
-        namely permutation embedding sequences. The primitives
+        namely shorter permutation embedding sequences. The primitives
         to be subtracted are processed in a specific order that
         allows for fewer subtraction operations than before.
         The performance gain can be up to 10%, even though

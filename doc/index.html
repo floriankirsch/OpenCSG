@@ -41,7 +41,7 @@
 
 <hr>
 
-<h3> <a href="news.html">Latest release: OpenCSG 1.7.0 (18-Jan-2025)</a></h3>
+<h3> <a href="news.html">Latest release: OpenCSG 1.8.0 (02-Mar-2025)</a></h3>
 
 <hr>
 
@@ -51,7 +51,7 @@
 OpenCSG is a library that does image-based CSG rendering using OpenGL.
 It is written in C++ and supports most modern graphics hardware using
 Microsoft Windows or the Linux operating system. 
-The current version is <a href="https://www.opencsg.org/OpenCSG-1.7.0.tar.gz">OpenCSG-1.7.0</a>.
+The current version is <a href="https://www.opencsg.org/OpenCSG-1.8.0.tar.gz">OpenCSG-1.7.0</a>.
 </p>
 
 <p>
@@ -129,7 +129,7 @@ they are no longer supported.
 </p>
 
 <p>
-OpenCSG is written in C++, uses namespaces and requires the STL. 
+OpenCSG is written in C++ 98, uses namespaces and requires the STL.
 It compiles with all reasonable C++ compilers such as gcc, Clang, or 
 Microsoft Visual Studio. Workspaces for Visual Studio 2022, Visual C++ 6.
 and <a href="http://www.bloodshed.net/devcpp.html">Dev-C++ 5.11</a> are
@@ -235,6 +235,8 @@ namespace OpenCSG { <br>
 <br>
 &nbsp; void <b><a href="#rendershape">render</a></b>(const std::vector&lt;Primitive*&gt;&amp; primitives); <br>
 <br>
+&nbsp; void <b><a href="#vertexshader">setVertexShader</a></b>(const std::string&amp; vertexShader); <br>
+<br>
 &nbsp; void <b><a href="#context">setContext</a></b>(int context); <br>
 &nbsp; int <b><a href="#context">getContext</a></b>(); <br>
 &nbsp; void <b><a href="#context">freeResources</a></b>(); <br>
@@ -267,7 +269,7 @@ box, but it allows for various performance optimizations.
 
 <p>
 <a name="interfacerenderprimitive"></a>
-The abstract <b><code>render</code> method</b> of the primitive is implemented in a
+The abstract <b><code>render</code></b> method of the primitive is implemented in a
 derived class. Your implementation must not alter the modelview or projection 
 matrix (use <code>glPushMatrix</code> / <code>glPopMatrix</code> if in doubt).
 Also you must not change the primary color in your implementation, since 
@@ -277,10 +279,28 @@ whatever else.
 </p>
 
 <p>
-The <b><code>render</code> function</b> performs, as said above, z-shading of
+The <b><code>render</code></b> function performs, as said above, z-shading of
 a CSG expression. The content of the stencil buffer is destroyed when
 handling concave primitives or when using the <code>DepthComplexitySampling</code> 
 strategy.
+</p>
+
+<p>
+<a name="vertexshader"></a>
+Optionally, with <b><code>setVertexShader</code></b> the code of a GLSL <b>vertex shader</b>
+can be provided to OpenCSG, that is used by OpenCSG for transforming the
+geometry. By default, or when an empty vertex shader is set, OpenCSG
+uses the fixed function pipeline. When setting a non-empty vertex
+shader, that shader is used. There is no need, and no possibility,
+to set a corresponding fragment shader. OpenCSG internally sets
+a matching fragment shader itself.
+</p>
+
+<p>
+The intent is that the shader can transform the vertices in
+exactly the same way as later, when the geometry is shaded
+by the caller using the GL_EQUAL depth function. This approach
+is needed to avoid z-artifacts when using GLSL.
 </p>
 
 <p>
@@ -314,7 +334,7 @@ rendering of concave primitives and preserving the stencil buffer.
 <a name="depthalgorithm"></a>
 If the <code>Automatic</code> setting is not used,
 the <b><code>DepthComplexityAlgorithm</code></b> parameter specifies the strategy 
-for profiting from depth complexity.
+for profiting from <b>depth complexity</b>.
 </p>
 <ul>
 <li><code>NoDepthComplexitySampling</code>: Does not employ the depth complexity.
@@ -422,18 +442,19 @@ OpenGL resources for the currently active OpenCSG context.
 <h3> <a name="download">Download</a> </h3>
 
 <p>
-Download <a href="https://www.opencsg.org/OpenCSG-1.7.0.tar.gz">OpenCSG-1.7.0.tar.gz</a>.
+Download <a href="https://www.opencsg.org/OpenCSG-1.8.0.tar.gz">OpenCSG-1.8.0.tar.gz</a>.
 The archive has no dependencies that must be provided externally. The only library
 that OpenCSG depends on, and which it comes with, is <a href="https://gen.glad.sh">Glad</a>.
 Glad is used to load OpenGL function pointers and for OpenGL extension checking. 
 Note that other helper libraries, i.e., RenderTexture and GLEW, are no longer part
 of OpenCSG since version 1.6.0.
-OpenCSG comes with CMake files for Linux and with project files for Visual Studio 2022,
-Visual C++ 6, and Dev-C++ 5. It is released under the GPL version 2 or newer.
+OpenCSG comes with <a href="https://cmake.org">CMake</a> files for Linux and with project files
+for Visual Studio 2022, Visual C++ 6, and Dev-C++ 5. It is released under the GPL version 2 or newer.
 </p>
 
 <p>
 Older versions are still available for download:<br>
+&nbsp;&nbsp; <a href="https://www.opencsg.org/OpenCSG-1.7.0.tar.gz">OpenCSG-1.7.0</a> <br>
 &nbsp;&nbsp; <a href="https://www.opencsg.org/OpenCSG-1.6.0.tar.gz">OpenCSG-1.6.0</a> <br>
 &nbsp;&nbsp; <a href="https://www.opencsg.org/OpenCSG-1.5.1.tar.gz">OpenCSG-1.5.1</a> <br>
 &nbsp;&nbsp; <a href="https://www.opencsg.org/OpenCSG-1.5.0.tar.gz">OpenCSG-1.5.0</a> <br>
@@ -648,7 +669,7 @@ and at <a href="https://github.com/Dav1dde/glad#License">the Glad github reposit
 <center><p>
 &copy; 2002-2025, Florian Kirsch, e-mail: <b>mail at opencsg dot org</b>, <br>
 2002-2005 Hasso-Plattner-Institute Potsdam.<br>
-Last change: 18-Jan-2025
+Last change: 02-Mar-2025
 </p></center>
 
 </body>
