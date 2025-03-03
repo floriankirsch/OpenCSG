@@ -384,11 +384,12 @@ namespace OpenCSG {
             const int dx = OpenGL::canvasPos[2] - OpenGL::canvasPos[0];
             const int dy = OpenGL::canvasPos[3] - OpenGL::canvasPos[1];
 
-            // with NV_texture_rectangle texture coordinates range between
+            // with ARB_texture_rectangle texture coordinates range between
             // 0 and dx resp. dy
             float factorX = static_cast<float>(dx);
             float factorY = static_cast<float>(dy);
 
+            // Otherwise, if the texture rectangle extension is not used:
             // Do not check for the non-power-of-two extension, but simply for
             // the texture format. This seems safer, since it should work always.
             if (!isRectangularTexture()) {

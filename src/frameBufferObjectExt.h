@@ -90,7 +90,6 @@ namespace OpenCSG {
         private:
             FrameBufferObjectExt(const FrameBufferObjectExt&);
             FrameBufferObjectExt& operator=(const FrameBufferObjectExt&);
-
         };
 
     } // namespace OpenGL
