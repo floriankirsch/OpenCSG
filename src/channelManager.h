@@ -82,8 +82,10 @@ namespace OpenCSG {
         /// and the size of the main canvas correspond. Activates texture
         /// containing the content of the offscreen buffer. The actual
         /// workings depends on whether the fixed function pipeline, an
-        /// ARB shader, or a GLSL program is used.
-        void setupProjectiveTexture(ProjTextureSetup setup);
+        /// ARB shader, or a GLSL program is used. texSizeInv is the uniform
+        /// location of a 2d-vector that is supposed to take the inverse of
+        /// the texture size. For non-GLSL, texSizeInv is ignored.
+        void setupProjectiveTexture(ProjTextureSetup setup, GLint texSizeInv = -1);
         /// undoes texture settings
         void resetProjectiveTexture(ProjTextureSetup setup);
         /// activate texenv settings such that information in channel is

@@ -351,7 +351,7 @@ namespace OpenCSG {
     }
 
 
-    void ChannelManager::setupProjectiveTexture(ProjTextureSetup setup)
+    void ChannelManager::setupProjectiveTexture(ProjTextureSetup setup, GLint texSizeInv)
     {
         mOffscreenBuffer->Bind();
         mOffscreenBuffer->EnableTextureTarget();
@@ -417,6 +417,18 @@ namespace OpenCSG {
                 glMultMatrixf(OpenGL::modelview);
             }
             glMatrixMode(GL_MODELVIEW);
+        }
+        else if (setup == GLSLProgram)
+        {
+            // If the texture rectangle extension is not used, the uniform
+            // with the inverse texture size must be set. The value is used
+            // in the 2d fragment shader to map pixel coordinates to texture
+            // coordinates between 0 and 1.
+            if (!isRectangularTexture())
+            {
+                glUniform2f(texSizeInv, 1.0f / (std::max)(mOffscreenBuffer->GetWidth(), 1),
+                                        1.0f / (std::max)(mOffscreenBuffer->GetHeight(), 1));
+            }
         }
     }
 

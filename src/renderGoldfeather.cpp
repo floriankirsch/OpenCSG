@@ -122,12 +122,12 @@ namespace OpenCSG {
             "}\n";
 
         static const char mergeFragmentProgram2D[] =
-            "#version 130\n"
+            "#version 110\n"
             "uniform sampler2D texture0;\n"
+            "uniform vec2 texSizeInv;\n"
             "uniform vec4 color;\n"
             "void main() {\n"
-            "    ivec2 texSize = textureSize(texture0, 0);\n" // textureSize requires OpenGL 3.0
-            "    vec2 texCoord = vec2(gl_FragCoord.x / texSize.x, gl_FragCoord.y / texSize.y);\n"
+            "    vec2 texCoord = vec2(gl_FragCoord.x * texSizeInv.x, gl_FragCoord.y * texSizeInv.y);\n"
             "    vec4 temp = texture2D(texture0, texCoord);\n"
             "    float d = dot(temp, color);\n"
             "    if (d < 0.5)\n"
@@ -145,11 +145,12 @@ namespace OpenCSG {
                   : OpenGL::getGLSLProgram(programID, getVertexShader(), mergeFragmentProgram2D);
 
             GLint col = glGetUniformLocation(glslProgram, "color");
+            GLint texSizeInv = glGetUniformLocation(glslProgram, "texSizeInv");
 
             glUseProgram(glslProgram);
 
             ProjTextureSetup setup = GLSLProgram;
-            setupProjectiveTexture(setup);
+            setupProjectiveTexture(setup, texSizeInv);
 
             glDisable(GL_ALPHA_TEST);
             glEnable(GL_CULL_FACE);
