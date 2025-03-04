@@ -99,9 +99,6 @@ namespace OpenCSG {
         }
 
 
-        // Stores Ids in the all components of the color buffer
-        // -> in theory, 2^32-1 primitives are possible
-        // GLSL variant
         class GoldfeatherChannelManagerGLSLProgram : public ChannelManagerForBatches {
         public:
             virtual void merge();
