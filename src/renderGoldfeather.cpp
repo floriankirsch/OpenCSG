@@ -142,7 +142,9 @@ namespace OpenCSG {
                   : OpenGL::getGLSLProgram(programID, getVertexShader(), mergeFragmentProgram2D);
 
             GLint col = glGetUniformLocation(glslProgram, "color");
-            GLint texSizeInv = glGetUniformLocation(glslProgram, "texSizeInv");
+            GLint texSizeInv = -1;
+            if (!isRectangularTexture())
+                texSizeInv = glGetUniformLocation(glslProgram, "texSizeInv");
 
             glUseProgram(glslProgram);
 
