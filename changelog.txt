@@ -1,8 +1,16 @@
+06.03.2025:
+    Fixed: Removed unused target for CMake, potentially causing build errors
+
+04.03.2025
+    Fixed: Make new GLSL shaders API also work if the OpenGL supports
+        version 2.0 or 2.1 only. This in particular fixes this API
+        on MacOSX with openscad.
+
 02.03.2025:
     Release 1.8.0
 
 28.02.2025:
-    Removed: old qmake-based make files. On non-Windows build plarforms,
+    Removed: old qmake-based make files. On non-Windows build platforms,
         use CMake instead.
 
 28.02.2025:

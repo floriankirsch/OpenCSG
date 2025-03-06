@@ -14,8 +14,8 @@ opencsgexample.exe has been built. Be sure to pick the correct
 64- or 32-bit version of the dll.
 
 
-Linux
------
+Linux and MacOSX
+----------------
 
 1) As prerequisites, you must install OpenGL development packages,
    and, for the example application, glut. To create the makefiles,
