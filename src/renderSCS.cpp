@@ -377,11 +377,7 @@ namespace OpenCSG {
         }
 
 
-        // With Nouveau drivers on Linux and an NVidia GTX 710, the ARB_position_invariant
-        // option appears to be buggy sometimes, and this causes z-buffer artifacts.
-        // If less than 256 primitives are provided, resort to the fixed-function
-        // implementation that does not have this problem.
-        ChannelManagerForBatches* getChannelManager(bool needMoreThan255Primitives) {
+        ChannelManagerForBatches* getChannelManager() {
 
             if (GLAD_GL_VERSION_2_0)
             {
@@ -390,13 +386,20 @@ namespace OpenCSG {
                     return new SCSChannelManagerGLSLProgram;
             }
 
-            if (   needMoreThan255Primitives
-                && OPENCSG_HAS_EXT(ARB_vertex_program)
+            // The ARB vertex program path has the following problem:
+            // With Nouveau drivers on Linux and an NVidia GTX 710, the ARB_position_invariant
+            // option appears to be buggy sometimes, and this causes z-buffer artifacts.
+            if (   OPENCSG_HAS_EXT(ARB_vertex_program)
                 && OPENCSG_HAS_EXT(ARB_fragment_program)
             ) {
                 return new SCSChannelManagerARBProgram;
             }
 
+            // The fallback path, using fixed function OpenGL, has its own problems:
+            // Obviously, it does not support more than 255 primitives. More importantly,
+            // due to the alpha test and the GL_EQUAL alpha function used here, due
+            // to accuracy problems, the alpha test for some IDs may incorrectly fail.
+            // Then, some primitives of the CSG share are completely missing.
             return new SCSChannelManagerAlphaOnly;
         }
 
@@ -703,7 +706,7 @@ namespace OpenCSG {
 
     void renderSCS(const std::vector<Primitive*>& primitives, DepthComplexityAlgorithm algorithm) {
 
-        channelMgr = getChannelManager(primitives.size() > 255);
+        channelMgr = getChannelManager();
         if (!channelMgr->init())
         {
             delete channelMgr;
