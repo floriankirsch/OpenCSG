@@ -30,10 +30,13 @@ target_include_directories(opencsg PUBLIC
 set_target_properties(opencsg PROPERTIES
     VERSION ${PROJECT_VERSION}
     SOVERSION ${PROJECT_VERSION_MAJOR}
-    PUBLIC_HEADER "${CMAKE_SOURCE_DIR}/include/opencsg.h" 
+    PUBLIC_HEADER "${CMAKE_SOURCE_DIR}/include/opencsg.h"
 )
 
 find_package(OpenGL REQUIRED)
+find_package(GLEW REQUIRED)
+
+target_link_libraries(opencsg PRIVATE GLEW::GLEW)
 
 install(TARGETS opencsg
     LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
