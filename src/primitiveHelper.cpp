@@ -101,8 +101,8 @@ namespace OpenCSG {
             int dx = area.maxx - area.minx;
             int dy = area.maxy - area.miny;
 
-            unsigned int size = dx*dy;
-            GLubyte* buf = new GLubyte[dx*dy];
+            std::size_t size = static_cast<std::size_t>(dx) * dy;
+            GLubyte * buf = new GLubyte[size];
 
             glPixelStorei(GL_PACK_SWAP_BYTES, GL_FALSE);
             glPixelStorei(GL_PACK_ALIGNMENT, 1);
