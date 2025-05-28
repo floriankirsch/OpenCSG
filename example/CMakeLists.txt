@@ -18,5 +18,6 @@ target_link_libraries(opencsgexample PRIVATE
 )
 
 install(TARGETS opencsgexample
+    BUNDLE DESTINATION ${CMAKE_INSTALL_PREFIX}/Applications
     RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
 )
