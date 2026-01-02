@@ -217,9 +217,15 @@ namespace OpenCSG {
 
         void SCSChannelManagerARBProgram::merge()
         {
-            GLuint vId = OpenGL::getARBVertexProgram(mergeARBVertexProgram, (sizeof(mergeARBVertexProgram) / sizeof(mergeARBVertexProgram[0])) - 1);
-            glBindProgramARB(GL_VERTEX_PROGRAM_ARB, vId);
-            glEnable(GL_VERTEX_PROGRAM_ARB);
+            // ProjTextureSetup setup = FixedFunction;
+            ProjTextureSetup setup = ARBShader;
+
+            if (setup == ARBShader)
+            {
+                GLuint vId = OpenGL::getARBVertexProgram(mergeARBVertexProgram, (sizeof(mergeARBVertexProgram) / sizeof(mergeARBVertexProgram[0])) - 1);
+                glBindProgramARB(GL_VERTEX_PROGRAM_ARB, vId);
+                glEnable(GL_VERTEX_PROGRAM_ARB);
+            }
 
             GLuint fId =
                 isRectangularTexture()
@@ -228,7 +234,6 @@ namespace OpenCSG {
             glBindProgramARB(GL_FRAGMENT_PROGRAM_ARB, fId);
             glEnable(GL_FRAGMENT_PROGRAM_ARB);
 
-            ProjTextureSetup setup = ARBShader;
             setupProjectiveTexture(setup);
 
             glEnable(GL_ALPHA_TEST);
@@ -263,7 +268,11 @@ namespace OpenCSG {
             glDisable(GL_CULL_FACE);
             glDepthFunc(GL_LEQUAL);
             glDisable(GL_FRAGMENT_PROGRAM_ARB);
-            glDisable(GL_VERTEX_PROGRAM_ARB);
+
+            if (setup == ARBShader)
+            {
+                glDisable(GL_VERTEX_PROGRAM_ARB);
+            }
 
             resetProjectiveTexture(setup);
 
