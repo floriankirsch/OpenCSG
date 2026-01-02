@@ -37,6 +37,7 @@
 
 #include <algorithm>
 #include <map>
+#include <string>
 
 namespace OpenCSG {
 
@@ -142,9 +143,18 @@ namespace OpenCSG {
         // ARB variant
         class SCSChannelManagerARBProgram : public ChannelManagerForBatches {
         public:
+            SCSChannelManagerARBProgram(ProjTextureSetup);
             virtual Channel request();
             virtual void merge();
+
+        private:
+            ProjTextureSetup mProjTextureSetup;
         };
+
+	SCSChannelManagerARBProgram::SCSChannelManagerARBProgram(ProjTextureSetup setup)
+	  : mProjTextureSetup(setup)
+	{
+	}
 
         Channel SCSChannelManagerARBProgram::request() {
             ChannelManagerForBatches::request();
@@ -217,10 +227,7 @@ namespace OpenCSG {
 
         void SCSChannelManagerARBProgram::merge()
         {
-            // ProjTextureSetup setup = FixedFunction;
-            ProjTextureSetup setup = ARBShader;
-
-            if (setup == ARBShader)
+            if (mProjTextureSetup == ARBShader)
             {
                 GLuint vId = OpenGL::getARBVertexProgram(mergeARBVertexProgram, (sizeof(mergeARBVertexProgram) / sizeof(mergeARBVertexProgram[0])) - 1);
                 glBindProgramARB(GL_VERTEX_PROGRAM_ARB, vId);
@@ -234,7 +241,7 @@ namespace OpenCSG {
             glBindProgramARB(GL_FRAGMENT_PROGRAM_ARB, fId);
             glEnable(GL_FRAGMENT_PROGRAM_ARB);
 
-            setupProjectiveTexture(setup);
+            setupProjectiveTexture(mProjTextureSetup);
 
             glEnable(GL_ALPHA_TEST);
             glEnable(GL_CULL_FACE);
@@ -269,12 +276,12 @@ namespace OpenCSG {
             glDepthFunc(GL_LEQUAL);
             glDisable(GL_FRAGMENT_PROGRAM_ARB);
 
-            if (setup == ARBShader)
+            if (mProjTextureSetup == ARBShader)
             {
                 glDisable(GL_VERTEX_PROGRAM_ARB);
             }
 
-            resetProjectiveTexture(setup);
+            resetProjectiveTexture(mProjTextureSetup);
 
             clear();
         }
@@ -398,10 +405,18 @@ namespace OpenCSG {
             // The ARB vertex program path has the following problem:
             // With Nouveau drivers on Linux and an NVidia GTX 710, the ARB_position_invariant
             // option appears to be buggy sometimes, and this causes z-buffer artifacts.
+	    // On the other hand, historical Intel drives failed to work for
+	    // fixed-function vertex setup together with ARB vertex programs.
             if (   OPENCSG_HAS_EXT(ARB_vertex_program)
                 && OPENCSG_HAS_EXT(ARB_fragment_program)
             ) {
-                return new SCSChannelManagerARBProgram;
+                std::string vendor;
+                if (const char * v = (const char*)glGetString(GL_VENDOR))
+                    vendor = v;
+		bool isIntel = vendor.find("Intel") == 0;
+
+                ProjTextureSetup setup = isIntel ? ARBShader : FixedFunction;
+                return new SCSChannelManagerARBProgram(setup);
             }
 
             // The fallback path, using fixed function OpenGL, has its own problems:
