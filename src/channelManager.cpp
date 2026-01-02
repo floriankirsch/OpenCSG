@@ -27,6 +27,8 @@
 #include "offscreenBuffer.h"
 #include "openglHelper.h"
 #include "settings.h"
+
+#include <algorithm>
 #include <cassert>
 
 namespace OpenCSG {

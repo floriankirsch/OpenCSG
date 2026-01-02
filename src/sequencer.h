@@ -28,6 +28,8 @@
 
 #include "opencsgConfig.h"
 
+#include <algorithm>
+
 namespace OpenCSG {
 
     class Sequencer
