@@ -151,10 +151,10 @@ namespace OpenCSG {
             ProjTextureSetup mProjTextureSetup;
         };
 
-	SCSChannelManagerARBProgram::SCSChannelManagerARBProgram(ProjTextureSetup setup)
-	  : mProjTextureSetup(setup)
-	{
-	}
+        SCSChannelManagerARBProgram::SCSChannelManagerARBProgram(ProjTextureSetup setup)
+          : mProjTextureSetup(setup)
+        {
+        }
 
         Channel SCSChannelManagerARBProgram::request() {
             ChannelManagerForBatches::request();
@@ -405,15 +405,15 @@ namespace OpenCSG {
             // The ARB vertex program path has the following problem:
             // With Nouveau drivers on Linux and an NVidia GTX 710, the ARB_position_invariant
             // option appears to be buggy sometimes, and this causes z-buffer artifacts.
-	    // On the other hand, historical Intel drives failed to work for
-	    // fixed-function vertex setup together with ARB vertex programs.
+            // On the other hand, historical Intel drives failed to work for
+            // fixed-function vertex setup together with ARB vertex programs.
             if (   OPENCSG_HAS_EXT(ARB_vertex_program)
                 && OPENCSG_HAS_EXT(ARB_fragment_program)
             ) {
                 std::string vendor;
                 if (const char * v = (const char*)glGetString(GL_VENDOR))
                     vendor = v;
-		bool isIntel = vendor.find("Intel") == 0;
+                bool isIntel = vendor.find("Intel") == 0;
 
                 ProjTextureSetup setup = isIntel ? ARBShader : FixedFunction;
                 return new SCSChannelManagerARBProgram(setup);
