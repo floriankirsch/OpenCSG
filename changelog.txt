@@ -1,3 +1,10 @@
+03.01.2026
+    Fixed: For SCS, when merging the color channel in the ARB shader path,
+        probe for Intel hardware/drivers and use the ARB vertex program
+        for vertex setup then. Otherwise, setup the vertices with the fixed
+        function code path again. This change fixes the z-artifacts
+        that happen with the Nouveau drivers on Linux.
+
 09.03.2025:
     Release 1.8.1
 
