@@ -11,7 +11,7 @@
 08.03.2025:
     Reverted: For SCS, when merging the color channel, prefer the ARB shader
         program code path again. The fixed-function implementation fixed the
-	z-artifacts, but traded in a different kind of rendering error
+        z-artifacts, but traded in a different kind of rendering error
         with software OpenGL rendering on MacOS X.
 
 06.03.2025:
