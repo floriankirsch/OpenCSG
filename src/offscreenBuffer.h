@@ -39,9 +39,9 @@ namespace OpenCSG {
             : width(w), height(h)
         {
         }
-        bool operator==(const Dimensions& other)
+        friend bool operator==(const Dimensions& me, const Dimensions& other)
         {
-            return (width == other.width) && (height == other.height);
+            return (me.width == other.width) && (me.height == other.height);
         }
         int width;
         int height;
