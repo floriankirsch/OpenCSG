@@ -48,8 +48,6 @@ namespace OpenCSG {
             /// checks whether Initialize has been called before or not
             virtual bool IsInitialized() const { return initialized; }
 
-            /// Removes the frame buffer object OpenGL resources.
-            virtual bool Reset();
             /// Change the size of the frame buffer object.
             virtual bool Resize(Dimensions dims);
 
@@ -73,7 +71,10 @@ namespace OpenCSG {
             /// Returns the width of the frame buffer object.
             virtual int GetHeight() const { return dimensions.height; }
 
-        protected:
+        private:
+            FrameBufferObject(const FrameBufferObject&);
+            FrameBufferObject& operator=(const FrameBufferObject&);
+
             // Width and height of the frame buffer object
             Dimensions   dimensions;
 
@@ -87,9 +88,8 @@ namespace OpenCSG {
 
             bool         initialized;
 
-        private:
-            FrameBufferObject(const FrameBufferObject&);
-            FrameBufferObject& operator=(const FrameBufferObject&);
+            /// Removes the frame buffer object OpenGL resources.
+            bool Reset();
         };
 
     } // namespace OpenGL
