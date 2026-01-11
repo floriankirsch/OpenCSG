@@ -430,7 +430,7 @@ namespace OpenCSG {
 
         class IDGenerator {
         public:
-            IDGenerator() : counter(0) {};
+            IDGenerator() : counter(0) {}
             IdBufferId newID() {
                 ++counter;
                 IdBufferId newId;
@@ -439,7 +439,7 @@ namespace OpenCSG {
                 newId.b =  (counter >>  8) & 0xff;
                 newId.a =  (counter >>  0) & 0xff;
                 return newId;
-            };
+            }
 
         private:
             unsigned int counter;
@@ -599,7 +599,7 @@ namespace OpenCSG {
                         (*j)->render();
                     }
                 }
-            };
+            }
 
             glDisable(GL_STENCIL_TEST);
         }
