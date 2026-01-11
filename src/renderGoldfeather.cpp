@@ -184,7 +184,7 @@ namespace OpenCSG {
                 default:
                     // should not happen!
                     assert(0);
-                };
+                }
 
                 glUniform4fv(col, 1, refColor);
 
@@ -416,7 +416,7 @@ namespace OpenCSG {
 
     } // unnamed namespace
 
-    void renderGoldfeather(const std::vector<Primitive*>& primitives) 
+    static void renderGoldfeather(const std::vector<Primitive*>& primitives)
     {
         scissor = new ScissorMemo;
 
@@ -485,7 +485,7 @@ namespace OpenCSG {
         delete scissor;
     }
 
-    bool renderOcclusionQueryGoldfeather(const std::vector<Primitive*>& primitives)
+    static bool renderOcclusionQueryGoldfeather(const std::vector<Primitive*>& primitives)
     {
         scissor = new ScissorMemo;
 
@@ -563,7 +563,7 @@ namespace OpenCSG {
         return retVal;
     }
 
-    void renderDepthComplexitySamplingGoldfeather(const std::vector<Primitive*>& primitives) 
+    static void renderDepthComplexitySamplingGoldfeather(const std::vector<Primitive*>& primitives)
     {
         scissor = new ScissorMemo;
 
@@ -608,7 +608,7 @@ namespace OpenCSG {
         delete scissor;
     }
 
-    ChannelManagerForBatches* getChannelManager() {
+    static ChannelManagerForBatches* getChannelManager() {
 
         if (GLAD_GL_VERSION_2_0)
         {

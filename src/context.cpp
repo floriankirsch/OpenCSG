@@ -91,7 +91,7 @@ namespace OpenCSG {
             return 0;
         }
 
-        GLuint getARBProgram(GLenum target, const char* prog, int len)
+        static GLuint getARBProgram(GLenum target, const char* prog, int len)
         {
             int context = getContext();
             ContextData& contextData = gContextDataMap[context];
@@ -125,7 +125,7 @@ namespace OpenCSG {
             return getARBProgram(GL_FRAGMENT_PROGRAM_ARB, prog, len);
         }
 
-        GLuint getGLSLShader(GLenum target, const char* prog)
+        static GLuint getGLSLShader(GLenum target, const char* prog)
         {
             GLuint id = glCreateShader(target);
             glShaderSource(id, 1, &prog, 0);

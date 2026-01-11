@@ -70,7 +70,7 @@ namespace OpenCSG {
 
     static int* gSetting = 0;
 
-    void initIntOptions() {
+    static void initIntOptions() {
         if (!gSetting) {
             gSetting = new int[OptionTypeUnused];
             for (int i=0; i<OptionTypeUnused; ++i) {
