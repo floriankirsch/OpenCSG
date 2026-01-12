@@ -77,6 +77,9 @@ namespace OpenCSG {
         void calculateArea();
 
     private:
+        ScissorMemo(const ScissorMemo&);
+        ScissorMemo& operator=(const ScissorMemo&);
+
         NDCVolume mIntersection;
         NDCVolume mCurrent;
         NDCVolume mArea;

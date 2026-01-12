@@ -129,6 +129,9 @@ namespace OpenCSG {
         void clear();
 
     private:
+        ChannelManagerForBatches(const ChannelManagerForBatches&);
+        ChannelManagerForBatches& operator=(const ChannelManagerForBatches&);
+
         std::vector<std::pair<std::vector<Primitive*>, int> > mPrimitives;
     };
 

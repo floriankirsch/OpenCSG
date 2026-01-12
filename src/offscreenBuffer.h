@@ -52,7 +52,7 @@ namespace OpenCSG {
         class OffscreenBuffer {
 
         public: // abstract base class
-
+            OffscreenBuffer() {};
             virtual ~OffscreenBuffer() {};
 
             /// Reads the current settings, such as the currently bound FBO.
@@ -90,6 +90,10 @@ namespace OpenCSG {
             virtual int GetWidth() const = 0;
             /// Returns the width of the offscreen buffer.
             virtual int GetHeight() const = 0;
+
+        private:
+            OffscreenBuffer(const OffscreenBuffer&);
+            OffscreenBuffer& operator=(const OffscreenBuffer&);
         };
     } // namespace OpenGL
 

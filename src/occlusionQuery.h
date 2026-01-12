@@ -33,6 +33,7 @@ namespace OpenCSG {
 
         class OcclusionQuery {
         public: // abstract base class
+            OcclusionQuery() {};
             virtual ~OcclusionQuery() {};
 
             /// begins an occlusion query
@@ -46,8 +47,9 @@ namespace OpenCSG {
             /// whether any fragment has been rendered or not.
             virtual unsigned int getQueryResult() = 0;
 
-        protected:
-            OcclusionQuery() {};
+        private:
+            OcclusionQuery(const OcclusionQuery&);
+            OcclusionQuery& operator=(const OcclusionQuery&);
         };
 
         /// checks for OpenGL-extensions and returns a matching occlusion
