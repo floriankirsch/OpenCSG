@@ -59,6 +59,7 @@ std::vector<GLuint> displaylistGarbagePile;
 
 bool               benchmode = false;
 bool               benchSettingFrameOne = false;
+bool               skipCubeRack = false;
 int                benchShape = BENCH_START;
 int                benchAlgorithm = GF_STANDARD;
 int                benchPerfOption = CAM_OUTSIDE_DEFAULT;
@@ -622,6 +623,8 @@ void nextBenchSetting()
 
     benchAlgorithm = GF_STANDARD;
     ++benchShape;
+    if (skipCubeRack && (benchShape == CSG_CUBERACK))
+        ++benchShape;
     if (benchShape <= CSG_CONCAVE)
     {
         printNewBenchLine();
@@ -674,6 +677,9 @@ void idle() {
         {
             float correctedFps = static_cast<float>(numFramesRendered) * 1000.0f / static_cast<float>(msec - ancient);
             fprintf(stdout, "% 11.2f", correctedFps);
+            // On a configuration that already chokes on the smaller models, do not bench the cube rack (it is far slower)
+            if (correctedFps < 60.0f)
+                skipCubeRack = true;
             nextBenchSetting();
 
             rot = 0.0f;
@@ -706,6 +712,7 @@ void key(unsigned char k, int, int) {
         spin = !spin;
         break;
     case 'b':
+        skipCubeRack = false;
         benchmode = true;
         benchShape = BENCH_START;
         nextBenchSetting();
