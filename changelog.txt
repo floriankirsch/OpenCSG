@@ -1,3 +1,6 @@
+98.02.2026:
+    Release 1.8.2
+
 03.01.2026
     Fixed: For SCS, when merging the color channel in the ARB shader path,
         probe for Intel hardware/drivers and use the ARB vertex program
