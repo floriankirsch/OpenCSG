@@ -296,6 +296,23 @@ namespace OpenCSG {
     /// context. 
     void freeResources();
 
+    /// Function pointer type for an OpenGL function loader
+    /// (e.g. glfwGetProcAddress, eglGetProcAddress, OSMesaGetProcAddress, wglGetProcAddress).
+    typedef void (*GLFunctionPointer)(void);
+    typedef GLFunctionPointer (*GLProcAddressFunc)(const char* name);
+
+    /// Sets a custom OpenGL function loader.
+    /// When specified, OpenCSG uses this function to resolve OpenGL and
+    /// extension function pointers rather than the default system loader.
+    /// This is useful when rendering into offscreen contexts (such as OSMesa
+    /// or headless EGL) or when managing context-specific function pointers.
+    /// Pass nullptr to restore the default system loader.
+    void setGLProcAddress(GLProcAddressFunc procAddress);
+
+    /// Returns the currently configured custom OpenGL function loader,
+    /// or nullptr if the default system loader is used.
+    GLProcAddressFunc getGLProcAddress();
+
 } // namespace OpenCSG
 
 #endif // __OpenCSG__opencsg_h__

@@ -30,6 +30,7 @@
 namespace OpenCSG {
 
     static int gContext = 0;
+    static GLProcAddressFunc gGLProcAddress = nullptr;
 
     /// redeclared from opencsg.h
     void setContext(int context) {
@@ -44,6 +45,16 @@ namespace OpenCSG {
     /// redeclared from opencsg.h
     void freeResources() {
         OpenGL::freeResources();
+    }
+
+    /// redeclared from opencsg.h
+    void setGLProcAddress(GLProcAddressFunc procAddress) {
+        gGLProcAddress = procAddress;
+    }
+
+    /// redeclared from opencsg.h
+    GLProcAddressFunc getGLProcAddress() {
+        return gGLProcAddress;
     }
 
     namespace OpenGL {
@@ -69,9 +80,14 @@ namespace OpenCSG {
             // never been correctly considered. So I decided to ignore this
             // potential problem until I get concrete complaints.
             static bool sHaveOpenGLFunctions = false;
-            if (!sHaveOpenGLFunctions)
-                initExtensionLibrary();
+            static GLProcAddressFunc sLoadedGLProcAddress = nullptr;
+
+            if (sHaveOpenGLFunctions && sLoadedGLProcAddress == gGLProcAddress)
+                return;
+
+            initExtensionLibrary(gGLProcAddress);
             sHaveOpenGLFunctions = true;
+            sLoadedGLProcAddress = gGLProcAddress;
         }
 
         OffscreenBuffer* getOffscreenBuffer(OffscreenType type) {
