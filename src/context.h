@@ -36,6 +36,10 @@ namespace OpenCSG {
     int getContext();
     /// redeclared from opencsg.h
     void freeResources();
+    /// redeclared from opencsg.h
+    void setGLProcAddress(GLProcAddressFunc procAddress);
+    /// redeclared from opencsg.h
+    GLProcAddressFunc getGLProcAddress();
 
     namespace OpenGL {
 

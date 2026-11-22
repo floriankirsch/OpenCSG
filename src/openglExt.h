@@ -24,6 +24,8 @@
 #ifndef __OpenCSG__opengl_ext_h__
 #define __OpenCSG__opengl_ext_h__
 
+#include <opencsg.h>
+
 #if 0 // OpenGL extension checking via GLEW. This is
       // what was used up to OpenCSG 1.5.1 (without
       // this funny #define, of course). GLEW has its
@@ -34,7 +36,7 @@
 
 #define OPENCSG_HAS_EXT(name) GLEW_ ## name
 
-inline void initExtensionLibrary()
+inline void initExtensionLibrary(GLProcAddressFunc = nullptr)
 {
     // implemented empty for historic reasons. In the past, it was
     // expected that glewInit() was called from the external
@@ -66,9 +68,13 @@ namespace OpenCSG {
 
     #define OPENCSG_HAS_EXT(name) GLAD_GL_ ## name
 
-    inline void initExtensionLibrary()
+    inline void initExtensionLibrary(GLProcAddressFunc procAddress = nullptr)
     {
-        gladLoaderLoadGL();
+        if (procAddress) {
+            gladLoadGL(reinterpret_cast<GLADloadfunc>(procAddress));
+        } else {
+            gladLoaderLoadGL();
+        }
     }
 
 } // namespace OpenCSG
